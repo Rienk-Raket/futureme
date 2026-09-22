@@ -913,6 +913,8 @@ html[data-thema="donker"]{--werk:#ff6b76;--werk-zacht:#2d1519}
 
 /* ==================== Vaste lasten: hangend bakje op een tijdlijn ==================== */
 .segment.vier button{font-size:calc(12px * var(--t));padding:0 2px;white-space:nowrap}
+.segment.vijf{flex-wrap:wrap}
+.segment.vijf button{flex:1 1 30%;min-height:34px;font-size:calc(12px * var(--t));padding:5px 2px;white-space:nowrap}
 .vl-kaart{background:var(--card);border-radius:17px;box-shadow:var(--shadow);padding:14px 10px 10px;margin:10px 0 4px;overflow:hidden}
 .vl-lijn{position:relative;height:190px;margin-top:10px;touch-action:pan-y}
 .vl-rail{position:absolute;left:0;right:0;top:96px;height:3px;border-radius:2px;z-index:1;
@@ -1346,12 +1348,12 @@ function secTekst(sec) {
 /* ==========================================================================
    3. Opslag — IndexedDB
    ========================================================================== */
-const DB_NAAM = "futureme", DB_VERSIE = 3;
+const DB_NAAM = "futureme", DB_VERSIE = 4;
 const WINKELS = {
   taken: "id", projecten: "id", labels: "id", afspraken: "id", checklists: "id",
   gewoontes: "id", gewoontelog: "id", dagboek: "id", tijdlog: "id",
   personen: "id", bijlagen: "id", filters: "id", gebeurtenissen: "id",
-  werkdocs: "id", uitgaven: "id", incassos: "id", instellingen: "sleutel"
+  werkdocs: "id", uitgaven: "id", incassos: "id", potjes: "id", instellingen: "sleutel"
 };
 let db = null;
 
@@ -1403,7 +1405,7 @@ const S = {
   taken: [], projecten: [], labels: [], afspraken: [], checklists: [],
   gewoontes: [], gewoontelog: [], dagboek: [], tijdlog: [],
   personen: [], bijlagen: [], filters: [], gebeurtenissen: [], werkdocs: [],
-  uitgaven: [], incassos: [], instellingen: {}
+  uitgaven: [], incassos: [], potjes: [], instellingen: {}
 };
 const vind = (lijst, id) => S[lijst].find(x => x.id === id);
 
@@ -2047,7 +2049,7 @@ const KOPPEN = {
     const c = typeof rookCijfers === "function" ? rookCijfers() : null;
     return c ? c.heleDagen + " dagen · " + eur(c.bespaard) + " bespaard" : "Bijhouden wat het scheelt";
   }],
-  financieel: ["Financieel", () => ({ budget: "Dagbudget", uitgaven: "Wat gaf je uit?", incasso: "Automatische incasso's" }[V.finModus || "budget"])],
+  financieel: ["Financieel", () => ({ budget: "Dagbudget", uitgaven: "Wat gaf je uit?", vast: "Vaste lasten", incasso: "Automatische incasso's", potjes: "Inkomen verdelen" }[V.finModus || "budget"])],
   overzicht: ["Overzicht", () => ({ week: "Deze week", maand: "Deze maand", vooruit: "Wat er aan zit te komen" }[V.ovModus || "week"])],
   focus: ["Focus", () => "Eén ding tegelijk"],
   vandaag: ["Vandaag", () => langDatumLabel(vandaagISO())],
@@ -6492,8 +6494,9 @@ const eurKort = n => "€" + Math.round(+n || 0).toLocaleString("nl-NL");
 const maandSleutel = iso => iso.slice(0, 7);
 const dagenInMaand = iso => new Date(parseISO(iso).getFullYear(), parseISO(iso).getMonth() + 1, 0).getDate();
 const maandBudget = iso => +inst("budget_" + maandSleutel(iso), inst("budgetStandaard", 0)) || 0;
-const uitgavenOp = iso => S.uitgaven.filter(u => u.datum === iso).reduce((s, u) => s + u.bedrag, 0);
-const uitgavenMaand = iso => S.uitgaven.filter(u => maandSleutel(u.datum) === maandSleutel(iso)).reduce((s, u) => s + u.bedrag, 0);
+/* Uitgaven die aan een potje hangen gaan niet van het dagbudget af — die tellen hier niet mee. */
+const uitgavenOp = iso => S.uitgaven.filter(u => u.datum === iso && !u.potjeId).reduce((s, u) => s + u.bedrag, 0);
+const uitgavenMaand = iso => S.uitgaven.filter(u => maandSleutel(u.datum) === maandSleutel(iso) && !u.potjeId).reduce((s, u) => s + u.bedrag, 0);
 
 const CATEGORIEEN = [
   ["boodschappen", "Boodschappen", "#0f8b6c"], ["eten", "Eten buiten de deur", "#c2410c"],
@@ -6561,15 +6564,138 @@ function geldTelling() {
   return b.over < 0 ? "!" : "";
 }
 
+/* ---------- Potjes: inkomen verdelen over eigen budgetjes ---------- */
+const POTJE_PALET = ["#0f8b6c", "#2f6fed", "#c2410c", "#7a4fd6", "#be185d", "#0e7490", "#c0202f", "#a16207"];
+const potjeKleur = i => POTJE_PALET[i % POTJE_PALET.length];
+const maandInkomen = iso => +inst("inkomen_" + maandSleutel(iso), inst("inkomenStandaard", 0)) || 0;
+const potjeUitgegeven = (id, iso) => S.uitgaven
+  .filter(u => u.potjeId === id && maandSleutel(u.datum) === maandSleutel(iso))
+  .reduce((s, u) => s + u.bedrag, 0);
+const potjeOver = (p, iso) => (+p.bedrag || 0) - potjeUitgegeven(p.id, iso);
+const potjesVerdeeld = () => S.potjes.reduce((s, p) => s + (+p.bedrag || 0), 0);
+
+function finPotjes() {
+  const v = vandaagISO();
+  const inkomen = maandInkomen(v);
+  const potjes = S.potjes.slice().sort((a, b) => (b.bedrag || 0) - (a.bedrag || 0));
+  const verdeeld = potjesVerdeeld();
+  const onverdeeld = inkomen - verdeeld;
+
+  let h = `<div class="geldkaart" style="background:linear-gradient(160deg,#7a4fd6,#4f46b8)">
+    <div class="lbl">Maandinkomen</div>
+    <div class="bedrag">${eur(inkomen)}</div>
+    <div class="lbl">${potjes.length ? eur(verdeeld) + " verdeeld over " + potjes.length + " potje" + (potjes.length === 1 ? "" : "s") : "Nog niets verdeeld"}</div>
+    <div class="knoprij" style="margin-top:13px">
+      <button class="knop primair" data-act="fin-potje-nieuw" style="background:#fff;color:#4f46b8">${ico("plus")} Potje</button>
+      <button class="knop rand" data-act="fin-inkomen" style="border-color:rgba(255,255,255,.5);color:#fff">${ico("pen")} Inkomen</button>
+    </div>
+  </div>`;
+
+  if (!inkomen) h += `<div class="banner blauw">${ico("let")}<div><b>Nog geen inkomen ingevuld</b>
+    Vul in wat je maandelijks binnenkrijgt. Dat is niet verplicht om potjes te gebruiken, maar zo zie je wat er nog te verdelen is.</div></div>`;
+
+  if (potjes.length) {
+    h += `<div class="card card-pad">
+      <div style="display:flex;justify-content:space-between;font-size:calc(14px * var(--t))">
+        <b>Verdeling</b>${inkomen ? `<span class="klein" style="color:${onverdeeld < 0 ? "var(--red)" : "var(--muted)"}">${eur(onverdeeld)} onverdeeld</span>` : ""}</div>
+      <div style="display:flex;height:11px;border-radius:6px;overflow:hidden;margin-top:9px;gap:2px;background:var(--card2)">
+        ${potjes.map(p => `<i style="flex:${Math.max(+p.bedrag || 0, 0.01)};background:${p.kleur}"></i>`).join("")}
+        ${inkomen && onverdeeld > 0 ? `<i style="flex:${onverdeeld};background:var(--line)"></i>` : ""}
+      </div>
+      <div class="chiprij" style="margin-top:9px">
+        ${potjes.map(p => `<span class="chip" style="color:${p.kleur};background:color-mix(in srgb,${p.kleur} 13%,transparent)">${esc(p.naam)} ${eurKort(p.bedrag)}</span>`).join("")}</div>
+    </div>`;
+  }
+
+  if (!potjes.length) {
+    h += `<div class="card">${leeg("🫙", "Nog geen potjes",
+      "Maak een potje aan, bijvoorbeeld “Benzine” met € 320 per maand. Kies dat potje straks bij het loggen van een uitgave en het bedrag gaat van het potje af, niet van je dagbudget.")}</div>`;
+    return h;
+  }
+
+  h += sectie("Potjes deze maand", potjes.length);
+  h += `<div class="card">${potjes.map(p => potjeRij(p, v)).join("")}</div>`;
+  h += `<div class="klein" style="text-align:center;margin-top:10px">Elke nieuwe maand beginnen je potjes weer vol. Wat je erin overhoudt, neemt niet vanzelf over.</div>`;
+  return h;
+}
+
+function potjeRij(p, iso) {
+  const over = potjeOver(p, iso);
+  const pct = p.bedrag ? clamp(Math.round((p.bedrag - over) / p.bedrag * 100), 0, 100) : 0;
+  const op = over < 0;
+  return `<button class="rijknop" data-act="fin-potje-open" data-id="${p.id}" style="flex-direction:column;align-items:stretch;gap:7px">
+    <span style="display:flex;align-items:center;gap:10px;width:100%">
+      <span class="kleurbol" style="background:${p.kleur}"></span>
+      <span class="nm" style="flex:1">${esc(p.naam)}</span>
+      <span style="font-weight:700;color:${op ? "var(--red)" : "var(--text)"}">${eur(over)}</span>
+    </span>
+    <span class="balk" style="height:6px;margin-left:22px">
+      <i style="width:${pct}%;background:${op ? "var(--red)" : p.kleur}"></i></span>
+    <span class="klein" style="margin-left:22px">van ${eur(p.bedrag)} per maand</span>
+  </button>`;
+}
+
+function inkomenBlad() {
+  const v = vandaagISO();
+  bladOpen("Maandinkomen", `
+    <div class="veld"><label for="i-bedrag">Wat komt er deze maand binnen?</label>
+      <input class="invoer" id="i-bedrag" type="number" inputmode="decimal" step="0.01" min="0"
+        value="${maandInkomen(v) || ""}" placeholder="bv. 2400" style="font-size:calc(22px * var(--t));font-weight:700"></div>
+    <div class="veld"><span class="labeltekst">Volgende maanden</span>
+      <div class="keuzerij">
+        <button class="keuze" data-istd="0" aria-pressed="${!(inst("inkomenStandaard", 0) > 0)}">Alleen deze maand</button>
+        <button class="keuze" data-istd="1" aria-pressed="${inst("inkomenStandaard", 0) > 0}">Ook volgende maanden</button>
+      </div></div>
+  `, `<button class="knop breed primair" id="i-ok">Opslaan</button>`);
+  $("#bladinhoud").onclick = e => {
+    const k = e.target.closest("[data-istd]");
+    if (k) $$("[data-istd]").forEach(x => x.setAttribute("aria-pressed", x === k));
+  };
+  setTimeout(() => $("#i-bedrag").focus(), 260);
+  $("#i-ok").onclick = async () => {
+    const n = +$("#i-bedrag").value || 0;
+    await zetInst("inkomen_" + maandSleutel(v), n);
+    const alt = $$("[data-istd]").find(x => x.getAttribute("aria-pressed") === "true");
+    await zetInst("inkomenStandaard", alt && alt.dataset.istd === "1" ? n : 0);
+    bladSluit(); teken(); toast("Inkomen bijgewerkt: " + eur(n));
+  };
+}
+
+function potjeBlad(id) {
+  const bestaat = id ? vind("potjes", id) : null;
+  const p = bestaat || { id: uid(), naam: "", bedrag: 0, kleur: potjeKleur(S.potjes.length), ts: new Date().toISOString() };
+  bladOpen(bestaat ? "Potje bewerken" : "Nieuw potje", `
+    <div class="veld"><label for="p-naam">Naam</label>
+      <input class="invoer" id="p-naam" type="text" value="${esc(p.naam)}" placeholder="bv. Benzine"></div>
+    <div class="veld"><label for="p-bedrag">Bedrag per maand</label>
+      <input class="invoer" id="p-bedrag" type="number" inputmode="decimal" step="0.01" min="0"
+        value="${p.bedrag || ""}" placeholder="bv. 320" style="font-size:calc(22px * var(--t));font-weight:700"></div>
+    <div class="klein">Elke maand begint dit potje weer vol. Kies dit potje bij het loggen van een uitgave en het bedrag gaat van het potje af, niet van je dagbudget.</div>
+    ${bestaat ? `<button class="knop breed gevaar" id="p-weg" style="margin-top:12px">${ico("prullenbak")} Verwijderen</button>` : ""}
+  `, `<button class="knop breed primair" id="p-ok">${bestaat ? "Opslaan" : "Aanmaken"}</button>`);
+  if (bestaat) $("#p-weg").onclick = () => bevestig("Potje verwijderen?",
+    esc(p.naam) + " wordt verwijderd. Uitgaven die je er al aan koppelde blijven gewoon bestaan, maar tellen nergens meer bij op.", "Verwijderen",
+    async () => { await verwijder("potjes", p.id); ga("financieel"); toast("Verwijderd"); });
+  $("#p-ok").onclick = async () => {
+    const naam = $("#p-naam").value.trim();
+    if (!naam) { toast("Geef het potje een naam"); $("#p-naam").focus(); return; }
+    p.naam = naam;
+    p.bedrag = +$("#p-bedrag").value || 0;
+    await bewaar("potjes", p);
+    bladSluit(); teken(); toast("Potje opgeslagen");
+  };
+  setTimeout(() => $("#p-naam").focus(), 260);
+}
+
 /* ---------- Het financiële scherm ---------- */
 V.finModus = "budget";
 
 function vwFinancieel() {
   const m = V.finModus || "budget";
-  let h = `<div class="segment vier" style="margin:10px 0 2px">
-    ${[["budget", "Dagbudget"], ["uitgaven", "Uitgaven"], ["vast", "Vaste lasten"], ["incasso", "Incasso's"]].map(([k, l]) =>
+  let h = `<div class="segment vijf" style="margin:10px 0 2px">
+    ${[["budget", "Dagbudget"], ["uitgaven", "Uitgaven"], ["potjes", "Potjes"], ["vast", "Vaste lasten"], ["incasso", "Incasso's"]].map(([k, l]) =>
       `<button data-act="fin" data-m="${k}" aria-pressed="${m === k}">${l}</button>`).join("")}</div>`;
-  return h + (m === "uitgaven" ? finUitgaven() : m === "vast" ? finVaste()
+  return h + (m === "uitgaven" ? finUitgaven() : m === "vast" ? finVaste() : m === "potjes" ? finPotjes()
     : m === "incasso" ? finIncasso() : finBudget());
 }
 
@@ -6671,10 +6797,11 @@ function finUitgaven() {
         <span>${esc(datumLabel(dag, true))}</span>
         <span style="color:${d.over < 0 ? "var(--red)" : "var(--green)"}">${eur(d.over)} over</span></div>`;
     }
+    const potje = u.potjeId ? vind("potjes", u.potjeId) : null;
     h += `<button class="rijknop" data-act="fin-bewerk" data-id="${u.id}">
       <span class="kleurbol" style="background:${catKleur(u.categorie)}"></span>
       <span class="nm">${esc(u.omschrijving || catNaam(u.categorie))}
-        <span class="klein" style="display:block">${esc(catNaam(u.categorie))}</span></span>
+        <span class="klein" style="display:block">${esc(catNaam(u.categorie))}${potje ? ` · <span style="color:${potje.kleur}">${esc(potje.naam)}</span>` : ""}</span></span>
       <span class="rechts" style="font-weight:700">${eur(u.bedrag)}</span></button>`;
   });
   h += `</div>`;
@@ -6763,7 +6890,8 @@ function budgetBlad() {
 
 function uitgaveBlad(id) {
   const bestaat = id ? vind("uitgaven", id) : null;
-  const u = bestaat || { id: uid(), datum: vandaagISO(), bedrag: 0, omschrijving: "", categorie: "boodschappen", ts: new Date().toISOString() };
+  const u = bestaat || { id: uid(), datum: vandaagISO(), bedrag: 0, omschrijving: "", categorie: "boodschappen", potjeId: null, ts: new Date().toISOString() };
+  const potjes = S.potjes.slice().sort((a, b) => a.naam.localeCompare(b.naam));
   bladOpen(bestaat ? "Uitgave bewerken" : "Uitgave loggen", `
     <div class="veld"><label for="u-bedrag">Bedrag</label>
       <input class="invoer" id="u-bedrag" type="number" inputmode="decimal" step="0.01" min="0"
@@ -6772,20 +6900,51 @@ function uitgaveBlad(id) {
       <div class="keuzerij">${CATEGORIEEN.map(([k, n, kl]) =>
         `<button class="keuze" data-cat="${k}" aria-pressed="${u.categorie === k}"
           style="${u.categorie === k ? `color:${kl};border-color:${kl};background:color-mix(in srgb,${kl} 12%,transparent)` : ""}">${esc(n)}</button>`).join("")}</div></div>
+    <div class="veld"><span class="labeltekst">Van welk budget?</span>
+      ${potjes.length ? `<div class="keuzerij">
+        <button class="keuze" data-potje="" aria-pressed="${!u.potjeId}">Dagbudget</button>
+        ${potjes.map(p => `<button class="keuze" data-potje="${p.id}" aria-pressed="${u.potjeId === p.id}"
+          style="${u.potjeId === p.id ? `color:${p.kleur};border-color:${p.kleur};background:color-mix(in srgb,${p.kleur} 12%,transparent)` : ""}">${esc(p.naam)}</button>`).join("")}
+      </div>
+      <div class="klein" id="u-potje-info" style="margin-top:6px"></div>`
+      : `<div class="klein">Gaat van je dagbudget af. Je hebt nog geen potjes —
+        <button data-act="fin-potje-nieuw" style="color:var(--accent);font-weight:700;text-decoration:underline">maak er een aan</button>
+        om een uitgave zoals benzine apart bij te houden.</div>`}</div>
     <div class="veld"><label for="u-oms">Omschrijving (mag leeg)</label>
       <input class="invoer" id="u-oms" type="text" value="${esc(u.omschrijving)}" placeholder="bv. Albert Heijn"></div>
     <div class="veld"><label for="u-datum">Datum</label>
       <input class="invoer" id="u-datum" type="date" value="${u.datum}"></div>
     ${bestaat ? `<button class="knop breed gevaar" id="u-weg" style="margin-top:8px">${ico("prullenbak")} Verwijderen</button>` : ""}
   `, `<button class="knop breed primair" id="u-ok">${bestaat ? "Opslaan" : "Vastleggen"}</button>`);
-  $("#bladinhoud").onclick = e => {
-    const k = e.target.closest("[data-cat]"); if (!k) return;
-    $$("[data-cat]").forEach(x => {
-      const aan = x === k, kl = catKleur(x.dataset.cat);
-      x.setAttribute("aria-pressed", aan);
-      x.style.cssText = aan ? `color:${kl};border-color:${kl};background:color-mix(in srgb,${kl} 12%,transparent)` : "";
-    });
+  const potjeInfoToon = () => {
+    const el = $("#u-potje-info"); if (!el) return;
+    const gekozen = $$("[data-potje]").find(x => x.getAttribute("aria-pressed") === "true");
+    const pid = gekozen ? gekozen.dataset.potje : "";
+    if (!pid) { el.textContent = "Gaat van je dagbudget af."; return; }
+    const p = vind("potjes", pid);
+    el.textContent = p ? `Nog ${eur(potjeOver(p, u.datum))} in ${p.naam} deze maand.` : "";
   };
+  $("#bladinhoud").onclick = e => {
+    const kCat = e.target.closest("[data-cat]");
+    if (kCat) {
+      $$("[data-cat]").forEach(x => {
+        const aan = x === kCat, kl = catKleur(x.dataset.cat);
+        x.setAttribute("aria-pressed", aan);
+        x.style.cssText = aan ? `color:${kl};border-color:${kl};background:color-mix(in srgb,${kl} 12%,transparent)` : "";
+      });
+      return;
+    }
+    const kPot = e.target.closest("[data-potje]");
+    if (kPot) {
+      $$("[data-potje]").forEach(x => {
+        const aan = x === kPot, p = x.dataset.potje ? vind("potjes", x.dataset.potje) : null;
+        x.setAttribute("aria-pressed", aan);
+        x.style.cssText = aan && p ? `color:${p.kleur};border-color:${p.kleur};background:color-mix(in srgb,${p.kleur} 12%,transparent)` : "";
+      });
+      potjeInfoToon();
+    }
+  };
+  potjeInfoToon();
   if (bestaat) $("#u-weg").onclick = () => bevestig("Uitgave verwijderen?", eur(u.bedrag) + " " + esc(u.omschrijving), "Verwijderen",
     async () => { await verwijder("uitgaven", u.id); teken(); toast("Verwijderd"); });
   $("#u-ok").onclick = async () => {
@@ -6796,11 +6955,18 @@ function uitgaveBlad(id) {
     u.datum = $("#u-datum").value || vandaagISO();
     const k = $$("[data-cat]").find(x => x.getAttribute("aria-pressed") === "true");
     u.categorie = k ? k.dataset.cat : "overig";
+    const kp = $$("[data-potje]").find(x => x.getAttribute("aria-pressed") === "true");
+    u.potjeId = kp && kp.dataset.potje ? kp.dataset.potje : null;
     await bewaar("uitgaven", u);
     if (!bestaat) await logGebeurtenis("geld", `${eur(u.bedrag)} · ${u.omschrijving || catNaam(u.categorie)}`, u.id, { datum: u.datum });
-    const b = dagbudget(u.datum);
     bladSluit(); teken();
-    toast(b.over >= 0 ? `Nog ${eur(b.over)} voor ${u.datum === vandaagISO() ? "vandaag" : "die dag"}` : `${eur(-b.over)} over je dagbudget`);
+    if (u.potjeId) {
+      const p = vind("potjes", u.potjeId), over = p ? potjeOver(p, u.datum) : 0;
+      toast(p ? (over >= 0 ? `Nog ${eur(over)} in ${p.naam}` : `${eur(-over)} over ${p.naam}`) : "Opgeslagen");
+    } else {
+      const b = dagbudget(u.datum);
+      toast(b.over >= 0 ? `Nog ${eur(b.over)} voor ${u.datum === vandaagISO() ? "vandaag" : "die dag"}` : `${eur(-b.over)} over je dagbudget`);
+    }
   };
   setTimeout(() => $("#u-bedrag").focus(), 260);
 }
@@ -6984,6 +7150,12 @@ document.addEventListener("click", async e => {
     incassoBlad(null);
   } else if (act === "fin-incasso-open") {
     incassoBlad(el.dataset.id);
+  } else if (act === "fin-inkomen") {
+    inkomenBlad();
+  } else if (act === "fin-potje-nieuw") {
+    potjeBlad(null);
+  } else if (act === "fin-potje-open") {
+    potjeBlad(el.dataset.id);
   } else if (act === "fin-ics-alles") {
     incassoNaarAgenda(S.incassos);
   } else if (act === "fin-forecast") {
