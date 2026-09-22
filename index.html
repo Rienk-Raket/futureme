@@ -383,6 +383,12 @@ select.invoer{background-image:linear-gradient(45deg,transparent 50%,var(--muted
 .kal-punt{width:5px;height:5px;border-radius:50%;background:var(--accent)}
 .kal-punt.p1{background:var(--red)}
 .kal-punt.afspraak{background:var(--purple)}
+.kal-punt.incasso{background:var(--green)}
+.kal-tgl{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:99px;border:1px solid var(--line);
+  background:var(--card2);font-size:calc(11.5px * var(--t));font-weight:700;color:var(--muted);white-space:nowrap}
+.kal-tgl .stip{width:8px;height:8px;border-radius:50%;background:var(--green);opacity:.35}
+.kal-tgl[aria-pressed="true"]{color:var(--green);border-color:color-mix(in srgb,var(--green) 45%,var(--line))}
+.kal-tgl[aria-pressed="true"] .stip{opacity:1}
 .kal-dag[aria-pressed="true"] .kal-punt{background:var(--accent-text)}
 
 /* ---------- Tijdlijn / logboek ---------- */
@@ -1219,7 +1225,7 @@ html[data-thema="donker"]{--werk:#ff6b76;--werk-zacht:#2d1519}
     <button data-tab="vandaag"><svg><use href="#i-vandaag"/></svg><span>Vandaag</span></button>
     <button data-tab="komend"><svg><use href="#i-komend"/></svg><span>Komend</span></button>
     <button data-tab="afspraken"><svg><use href="#i-groep"/></svg><span>Afspraken</span></button>
-    <button data-tab="logboek"><svg><use href="#i-logboek"/></svg><span>Logboek</span></button>
+    <button data-tab="financieel"><svg><use href="#i-portemonnee"/></svg><span>Financieel</span></button>
     <button data-tab="meer"><svg><use href="#i-meer"/></svg><span>Meer</span></button>
   </nav>
 </div>
@@ -2015,7 +2021,7 @@ function sorteerTaken(a, b) {
    9. Weergave-status & navigatie
    ========================================================================== */
 const V = { view: "start", param: null, tab: "start", stapel: [], zoek: "", logFilter: "alles", afsprFilter: "alles", kalDatum: vandaagISO(), planMin: null };
-const TABS = ["start", "vandaag", "komend", "afspraken", "logboek", "meer"];
+const TABS = ["start", "vandaag", "komend", "afspraken", "financieel", "meer"];
 
 function ga(view, param, terugStap) {
   if (!terugStap && V.view !== view) V.stapel.push({ view: V.view, param: V.param });
@@ -2314,13 +2320,14 @@ function vwLogboek() {
 
 function vwMeer() {
   const M = [
+    ["foto", "camera", "Foto of bestand", "Bewaren bij een taak", { act: "start-knop", soort: "foto" }],
     ["werk", "koffer", "Werk", "Meetings, plannen, reflectie"],
-    ["financieel", "portemonnee", "Financieel", "Dagbudget en incasso's"],
     ["overzicht", "grafiek", "Overzicht", "Week, maand en vooruitblik"],
     ["projecten", "map", "Projecten", "Indelen en overzicht"],
     ["kalender", "komend", "Kalender", "Maandweergave en tijdlijn"],
     ["checklists", "lijst", "Checklists", "Boodschappen, inpaklijst, sjablonen"],
     ["afspraken", "groep", "Afspraken", "Voorbereiding, notities, uitkomst"],
+    ["logboek", "logboek", "Logboek", "Alles wat je deed"],
     ["gewoontes", "vuur", "Gewoontes", "Streaks en weekoverzicht"],
     ["roken", "blad", "Rookvrij", "Wat stoppen je oplevert"],
     ["dagboek", "boek", "Dagboek", "Stemming, energie, gedachten"],
@@ -2332,8 +2339,8 @@ function vwMeer() {
     ["backup", "download", "Back-up", "Export, import, agenda"],
     ["help", "vraag", "Uitleg", "Installeren en beperkingen"]
   ];
-  let h = `<div class="menu-grid">` + M.map(([v, i, n, d]) =>
-    `<button class="menu-kaart" data-act="ga" data-view="${v}">${ico(i)}<span class="nm">${n}</span><span class="ds">${d}</span></button>`).join("") + `</div>`;
+  let h = `<div class="menu-grid">` + M.map(([v, i, n, d, extra]) =>
+    `<button class="menu-kaart" data-act="${extra ? extra.act : "ga"}" data-${extra ? "soort" : "view"}="${extra ? extra.soort : v}">${ico(i)}<span class="nm">${n}</span><span class="ds">${d}</span></button>`).join("") + `</div>`;
   const tot = S.taken.length, af = S.taken.filter(t => t.af).length;
   h += `<div class="hr"></div><div class="klein" style="text-align:center">
     FutureMe · ${tot} taken (${af} afgerond) · ${S.afspraken.length} afspraken · ${S.gebeurtenissen.length} logregels<br>
@@ -2374,15 +2381,31 @@ function vwProject() {
   return h;
 }
 
+function kalIncassoAan() {
+  return typeof tlAan === "function" ? tlAan("incasso") : inst("tlFilter_incasso", true);
+}
+function kalIncassosIn(van, tot) {
+  if (!kalIncassoAan()) return [];
+  if (typeof werkStand === "function" && werkStand() === "alleen") return [];
+  return typeof incassosIn === "function" ? incassosIn(van, tot) : [];
+}
 function vwKalender() {
   const sel = V.kalDatum, d = parseISO(sel);
   const eerste = new Date(d.getFullYear(), d.getMonth(), 1);
   const start = plusDagen(dISO(eerste), -((eerste.getDay() + 6) % 7));
+  const incassoAan = kalIncassoAan();
+  const einde = plusDagen(start, 41);
+  const incassoPerDag = {};
+  kalIncassosIn(start, einde).forEach(x => (incassoPerDag[x.datum] = incassoPerDag[x.datum] || []).push(x.incasso));
   let h = `<div class="card card-pad">
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
       <button class="icon-btn" data-act="kal-maand" data-n="-1">${ico("pijll")}</button>
       <b style="flex:1;text-align:center;font-size:16px">${MAANDNAMEN[d.getMonth()]} ${d.getFullYear()}</b>
       <button class="icon-btn" data-act="kal-maand" data-n="1">${ico("pijlr")}</button>
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px">
+      <button class="kal-tgl" data-act="tl-filter" data-f="incasso" aria-pressed="${incassoAan}">
+        <span class="stip"></span>Incasso's ${incassoAan ? "tonen" : "verbergen"}</button>
     </div>
     <div class="kal-kop">${["ma","di","wo","do","vr","za","zo"].map(x => `<span>${x}</span>`).join("")}</div>
     <div class="kal">`;
@@ -2390,10 +2413,12 @@ function vwKalender() {
     const dag = plusDagen(start, i), dt = parseISO(dag);
     const taken = S.taken.filter(t => t.datum === dag && !t.af && werkOk(t));
     const afspr = S.afspraken.filter(a => a.datum === dag && werkOk(a));
+    const incasso = incassoPerDag[dag] || [];
     const punten = [];
     if (taken.some(t => t.prioriteit === 1)) punten.push('<i class="kal-punt p1"></i>');
     if (taken.some(t => t.prioriteit !== 1)) punten.push('<i class="kal-punt"></i>');
     if (afspr.length) punten.push('<i class="kal-punt afspraak"></i>');
+    if (incasso.length) punten.push('<i class="kal-punt incasso"></i>');
     h += `<button class="kal-dag${dt.getMonth() !== d.getMonth() ? " buiten" : ""}${dag === vandaagISO() ? " vandaag" : ""}"
       aria-pressed="${dag === sel}" data-act="kal-dag" data-datum="${dag}">
       ${dt.getDate()}<span class="kal-punten">${punten.join("")}</span></button>`;
@@ -2401,10 +2426,13 @@ function vwKalender() {
   h += `</div></div>`;
   const taken = S.taken.filter(t => t.datum === sel && werkOk(t)).sort(sorteerTaken);
   const afspr = S.afspraken.filter(a => a.datum === sel && werkOk(a)).sort((a, b) => (a.tijd || "") < (b.tijd || "") ? -1 : 1);
-  h += sectie(langDatumLabel(sel), taken.length + afspr.length,
+  const incasso = incassoPerDag[sel] || [];
+  h += sectie(langDatumLabel(sel), taken.length + afspr.length + incasso.length,
     `<button class="actie" data-act="nieuw-op-datum" data-datum="${sel}">Toevoegen</button>`);
+  if (incasso.length && typeof incassoRij === "function")
+    h += `<div class="card">${incasso.map(i => incassoRij(i, sel)).join("")}</div>`;
   if (afspr.length) h += `<div class="card">${afspr.map(afspraakRij).join("")}</div>`;
-  h += taken.length ? takenLijst(taken) : (afspr.length ? "" : `<div class="card">${leeg("📅", "Niets gepland")}</div>`);
+  h += taken.length ? takenLijst(taken) : (afspr.length || incasso.length ? "" : `<div class="card">${leeg("📅", "Niets gepland")}</div>`);
   return h;
 }
 
@@ -3579,7 +3607,6 @@ function vwStart() {
     ${knop3d({ soort: "gewoonte", naam: "Gewoonte", uitleg: gewOpen ? gewOpen + " nog te doen" : "Streak bijhouden", kleur: "#c2410c", telling: gewOpen || "" })}
     ${knop3d({ soort: "dagboek", naam: "Dagboek", uitleg: dbVandaag ? "Vandaag al geschreven" : "Hoe gaat het?", kleur: "#be185d" })}
     ${knop3d({ soort: "notitie", naam: "Notitie", uitleg: "Zomaar in je logboek", kleur: "#475569" })}
-    ${knop3d({ soort: "foto", naam: "Foto of bestand", uitleg: "Bewaren bij een taak", kleur: "#0e7490" })}
     ${knop3d({ soort: "focus", naam: "Focussessie", uitleg: "Timer op één taak", kleur: "#1f2937", breed: true })}
   </div>`;
 
