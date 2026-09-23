@@ -300,6 +300,15 @@ nav#tabs button:active{opacity:.6}
 .banner b{display:block;margin-bottom:2px}
 .banner svg{width:20px;height:20px;flex:0 0 auto;margin-top:1px}
 .banner .sluit{margin-left:auto;min-width:32px;min-height:32px;display:flex;align-items:center;justify-content:center;opacity:.7}
+.incasso-mini{margin:12px 0;border-radius:15px;overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.incasso-mini summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:11px;padding:13px 14px;min-height:var(--tap)}
+.incasso-mini summary::-webkit-details-marker{display:none}
+.incasso-mini .titel{display:block;font-weight:700;font-size:calc(14.5px * var(--t))}
+.incasso-mini .chev{width:16px;height:16px;color:var(--line2);flex:0 0 auto;transition:transform .2s}
+.incasso-mini[open] summary{border-bottom:1px solid var(--line)}
+.incasso-mini[open] .chev{transform:rotate(90deg)}
+.incasso-mini .inhoud .actie{display:flex;justify-content:center;width:100%;padding:11px;font-weight:700;
+  color:var(--accent);font-size:calc(13.5px * var(--t));border-top:1px solid var(--line);min-height:var(--tap)}
 
 /* ---------- Formulier ---------- */
 .veld{margin:14px 0}
@@ -4091,6 +4100,10 @@ document.addEventListener("click", async e => {
       else pinInstellen();
       return;
     }
+    if ((sleutel === "budgetDynamisch" || sleutel === "budgetMeenemen") && !nu) {
+      const ander = sleutel === "budgetDynamisch" ? "budgetMeenemen" : "budgetDynamisch";
+      if (inst(ander, false)) await zetInst(ander, false);
+    }
     await zetInst(sleutel, !nu);
     pasInstellingenToe(); teken();
   }
@@ -6546,13 +6559,22 @@ function dagbudget(iso) {
   const teVerdelen = Math.max(0, maand - reserve);
   const dagen = dagenInMaand(iso);
   const uit = uitgavenOp(iso);
+  if (inst("budgetDynamisch", false)) {
+    // Dynamisch: wat er nog in het budget zit (startbedrag min alle uitgaven tot nu),
+    // gedeeld door het VASTE aantal dagen van de maand — niet de resterende dagen.
+    const ervoor = S.uitgaven
+      .filter(u => maandSleutel(u.datum) === maandSleutel(iso) && u.datum < iso && !u.potjeId)
+      .reduce((s, u) => s + u.bedrag, 0);
+    const basis = Math.max(0, teVerdelen - ervoor) / dagen;
+    return { basis, uitgegeven: uit, over: basis - uit, maand, reserve, modus: "dynamisch" };
+  }
   if (!inst("budgetMeenemen", false)) {
     const basis = teVerdelen / dagen;
     return { basis, uitgegeven: uit, over: basis - uit, maand, reserve, modus: "vast" };
   }
   const dagnr = parseISO(iso).getDate();
   const ervoor = S.uitgaven
-    .filter(u => maandSleutel(u.datum) === maandSleutel(iso) && u.datum < iso)
+    .filter(u => maandSleutel(u.datum) === maandSleutel(iso) && u.datum < iso && !u.potjeId)
     .reduce((s, u) => s + u.bedrag, 0);
   const restDagen = Math.max(1, dagen - dagnr + 1);
   const basis = Math.max(0, teVerdelen - ervoor) / restDagen;
@@ -6690,9 +6712,63 @@ function potjeBlad(id) {
 /* ---------- Het financiële scherm ---------- */
 V.finModus = "budget";
 
+/** Cijfers voor het financiële dashboardpaneel, analoog aan dagCijfers(). */
+function finCijfers(iso) {
+  const b = dagbudget(iso);
+  const maandUit = uitgavenMaand(iso);
+  const dagen = dagenInMaand(iso);
+  const pct = b.maand ? clamp(Math.round((maandUit + b.reserve) / b.maand * 100), 0, 100) : 0;
+  const potjes = S.potjes || [];
+  const potjesOver = potjes.reduce((s, p) => s + potjeOver(p, iso), 0);
+  const incassosWeek = incassosIn(iso, plusDagen(iso, 6));
+  return { b, maandUit, dagen, pct, potjes, potjesOver, incassosWeek };
+}
+
+/** Financieel dashboardpaneel, zelfde opzet als dagPaneel() maar dan met geldcijfers. */
+function finPaneel() {
+  const v = vandaagISO(), c = finCijfers(v);
+  const negatief = c.b.over < 0;
+  const ws = weekStart(v);
+  const week = Array.from({ length: 7 }, (_, i) => {
+    const d = plusDagen(ws, i);
+    return { d, n: uitgavenOp(d), toekomst: d > v };
+  });
+  const max = Math.max(1, c.b.basis || 1, ...week.map(w => w.n));
+  const volgende = c.incassosWeek[0];
+  return `<div class="dagpaneel">
+    <div class="dp-kop">
+      <div style="flex:1;min-width:0">
+        <div class="dp-datum">Financieel overzicht</div>
+        <div class="dp-sub">${esc(MAANDNAMEN[parseISO(v).getMonth()])} · ${c.b.maand ? `${eur(c.maandUit)} van ${eur(c.b.maand)} uitgegeven` : "nog geen maandbudget"}</div>
+      </div>
+      <div class="ring" style="--p:${c.pct}"><span>${c.b.maand ? c.pct + "%" : "–"}</span></div>
+    </div>
+    <div class="dp-stats">
+      <button class="dp-stat${negatief ? " alarm" : ""}" data-act="fin" data-m="budget"><b>${eur(c.b.over)}</b><span>vandaag over</span></button>
+      <button class="dp-stat" data-act="fin" data-m="uitgaven"><b>${eur(c.maandUit)}</b><span>deze maand</span></button>
+      <button class="dp-stat" data-act="fin" data-m="potjes"><b>${eur(c.potjesOver)}</b><span>in potjes</span></button>
+      <button class="dp-stat" data-act="fin" data-m="incasso"><b>${c.incassosWeek.length}</b><span>incasso${c.incassosWeek.length === 1 ? "" : "'s"}</span></button>
+    </div>
+    ${volgende ? `<button class="dp-volgende" data-act="fin-incasso-open" data-id="${volgende.incasso.id}">
+      ${ico("kringloop")}<span class="tijd">${esc(datumLabel(volgende.datum))}</span><span class="wat">${esc(volgende.incasso.naam)}</span>${ico("pijlr")}</button>` : ""}
+    <div class="dp-weekstrip">
+      ${week.map(w => `<button class="${w.d === v ? "nu" : ""}${w.toekomst ? " toekomst" : ""}"
+        data-act="fin-dag" data-datum="${w.d}" aria-label="${esc(datumLabel(w.d, true))}">
+        <span class="st" style="height:${Math.max(6, Math.round(w.n / max * 100))}%"></span>
+        <span class="dg">${DAGKORT[weekdagVan(w.d)]}</span></button>`).join("")}
+    </div>
+    <div class="dp-knoppen">
+      <button class="dp-knop" data-act="fin" data-m="uitgaven">${ico("plus")} Uitgaven</button>
+      <button class="dp-knop" data-act="fin" data-m="potjes">${ico("grafiek")} Potjes</button>
+      <button class="dp-knop" data-act="fin" data-m="vast">${ico("komend")} Vaste lasten</button>
+    </div>
+  </div>`;
+}
+
 function vwFinancieel() {
   const m = V.finModus || "budget";
-  let h = `<div class="segment vijf" style="margin:10px 0 2px">
+  let h = finPaneel();
+  h += `<div class="segment vijf" style="margin:10px 0 2px">
     ${[["budget", "Dagbudget"], ["uitgaven", "Uitgaven"], ["potjes", "Potjes"], ["vast", "Vaste lasten"], ["incasso", "Incasso's"]].map(([k, l]) =>
       `<button data-act="fin" data-m="${k}" aria-pressed="${m === k}">${l}</button>`).join("")}</div>`;
   return h + (m === "uitgaven" ? finUitgaven() : m === "vast" ? finVaste() : m === "potjes" ? finPotjes()
@@ -6731,10 +6807,13 @@ function finBudget() {
     <div class="hr"></div>
     <div class="klein"><p><b>Zo rekent de app:</b> ${b.modus === "vast"
       ? `maandbudget ${eur(b.maand)}${b.reserve ? " min " + eur(b.reserve) + " aan incasso's" : ""} gedeeld door ${dagen} dagen = ${eur(b.basis)} per dag. Wat je vandaag uitgeeft gaat daar direct vanaf.`
+      : b.modus === "dynamisch"
+      ? `wat er nog in het budget zit${b.reserve ? " (incasso's al gereserveerd)" : ""}, gedeeld door alle ${dagen} dagen van de maand — niet alleen de dagen die nog komen. Elke uitgave verlaagt je dagbudget meteen.`
       : `wat er nog over is${b.reserve ? " (incasso's al gereserveerd)" : ""}, gedeeld door de ${b.restDagen} dagen die deze maand nog komen.`}</p></div>
   </div>`;
 
   h += `<div class="card card-pad">
+    ${schakelaar("budgetDynamisch", "Dynamisch dagbudget", "Rekent niet met een vast bedrag per dag, maar met wat er nu nog in het budget zit gedeeld door alle dagen van de maand. Geeft je vandaag minder als je gisteren te veel uitgaf.", inst("budgetDynamisch", false))}
     ${schakelaar("budgetMeenemen", "Restant meenemen", "Uit: elke dag hetzelfde bedrag. Aan: wat je overhoudt of te veel uitgeeft wordt over de resterende dagen verdeeld.", inst("budgetMeenemen", false))}
     ${schakelaar("budgetIncasso", "Incasso's reserveren", "Haalt de incasso's van deze maand eerst van je budget af.", inst("budgetIncasso", false))}
   </div>`;
@@ -7089,16 +7168,32 @@ function incassoWaarschuwingen() {
   });
   return uit.sort((a, b) => a.dagen - b.dagen);
 }
-function incassoBanner() {
-  const w = incassoWaarschuwingen();
-  if (!w.length) return "";
-  const totaal = w.reduce((s, x) => s + (x.incasso.bedrag || 0), 0);
-  const stevig = w.some(x => x.incasso.intensiteit === "stevig");
-  return `<button class="banner ${stevig ? "rood" : ""}" style="width:100%;text-align:left" data-act="fin" data-m="incasso">
-    ${ico("kringloop")}<span style="flex:1"><b>${w.length === 1
-      ? `${esc(w[0].incasso.naam)} wordt ${w[0].dagen === 0 ? "vandaag" : "over " + w[0].dagen + " dag" + (w[0].dagen === 1 ? "" : "en")} afgeschreven`
-      : `${w.length} incasso's op komst — samen ${eur(totaal)}`}</b>
-    ${w.map(x => esc(x.incasso.naam) + " " + eur(x.incasso.bedrag) + " op " + esc(datumLabel(x.datum))).slice(0, 3).join(" · ")}</span>${ico("pijlr")}</button>`;
+function incassoMini() {
+  const v = vandaagISO();
+  const inWeek = incassosIn(v, plusDagen(v, 6));
+  if (!inWeek.length) return "";
+  const totaal = inWeek.reduce((s, x) => s + x.incasso.bedrag, 0);
+  let kop;
+  if (inWeek.length === 1) {
+    const dagen = dagVerschil(inWeek[0].datum, v);
+    const wanneer = dagen <= 0 ? "vandaag" : dagen === 1 ? "morgen" : `over ${dagen} dagen`;
+    kop = `${inWeek[0].incasso.naam} wordt ${wanneer} afgeschreven`;
+  } else {
+    kop = `${inWeek.length} incasso's op komst — samen ${eur(totaal)}`;
+  }
+  return `<details class="incasso-mini">
+    <summary>
+      ${ico("kringloop", "width:19px;height:19px;color:var(--accent);flex:0 0 auto")}
+      <span style="flex:1;min-width:0">
+        <span class="titel">${esc(kop)}</span>
+      </span>
+      <svg class="chev"><use href="#i-pijlr"/></svg>
+    </summary>
+    <div class="inhoud">
+      ${inWeek.map(x => incassoRij(x.incasso, x.datum)).join("")}
+      <button class="actie" data-act="fin" data-m="incasso">Alle incasso's</button>
+    </div>
+  </details>`;
 }
 /** Bij 'stevig' komt er automatisch een taak op je lijst. */
 async function incassoTaken() {
@@ -7140,6 +7235,9 @@ document.addEventListener("click", async e => {
   if (act === "fin") {
     V.finModus = el.dataset.m;
     if (V.view === "financieel") teken(); else ga("financieel");
+  } else if (act === "fin-dag") {
+    const d = el.dataset.datum;
+    toast(`${datumLabel(d)}: ${eur(uitgavenOp(d))} uitgegeven`);
   } else if (act === "fin-budget") {
     budgetBlad();
   } else if (act === "fin-uitgave") {
@@ -7187,7 +7285,7 @@ start = async function () { await _start15(); try { await incassoTaken(); } catc
 
 /* Banner met aankomende incasso's bovenaan het startscherm */
 const _dagPaneel15 = dagPaneel;
-dagPaneel = () => incassoBanner() + _dagPaneel15();
+dagPaneel = () => incassoMini() + _dagPaneel15();
 </script>
 <script>
 "use strict";
