@@ -1132,6 +1132,34 @@ html[data-thema="donker"]{--gezond:#4ade80;--gezond-zacht:#123322}
 .wk-knop{margin-top:20px}
 .wk-link{display:block;margin:10px auto 0;padding:8px 12px;color:var(--muted);font-size:calc(14px * var(--t));font-weight:600}
 
+/* ==================== Widget: uitgave loggen ==================== */
+.ug-widget{--ug:#0f766e;background:var(--card);border-radius:20px;box-shadow:var(--shadow);padding:12px 14px 12px;margin:14px 0 4px}
+.ug-kop{display:flex;align-items:center;gap:9px}
+.ug-kop b{font-size:calc(15.5px * var(--t));flex:1;min-width:0;white-space:nowrap}
+.ug-ico{width:30px;height:30px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+  background:color-mix(in srgb,var(--ug) 14%,transparent);color:var(--ug)}
+.ug-ico svg{width:18px;height:18px}
+.ug-naar{display:flex;align-items:center;gap:2px;color:var(--ug);font-size:calc(12.5px * var(--t));font-weight:700;min-height:34px;padding:0 2px;white-space:nowrap}
+.ug-naar.rood{color:var(--red)}
+.ug-balk{height:4px;border-radius:2px;background:var(--line);overflow:hidden;margin:8px 0 2px}
+.ug-balk i{display:block;height:100%;background:var(--ug);border-radius:2px}
+.ug-balk.rood i{background:var(--red)}
+.ug-rij{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:8px;margin-top:10px}
+.ug-bedragvak{display:flex;align-items:center;gap:4px;min-width:0;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:0 10px;min-height:48px}
+.ug-bedragvak span{font-size:calc(19px * var(--t));font-weight:800;color:var(--muted)}
+.ug-bedrag{flex:1;width:100%;min-width:0;border:0;background:none;outline:none;font-size:calc(21px * var(--t)) !important;font-weight:800;font-variant-numeric:tabular-nums}
+.ug-oms{width:100%;min-width:0;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:0 11px;min-height:48px;outline:none}
+.ug-bedragvak:focus-within,.ug-oms:focus{border-color:var(--ug)}
+.ug-cats{display:flex;gap:6px;overflow-x:auto;margin:10px -14px 0;padding:0 14px 2px;scrollbar-width:none}
+.ug-cats::-webkit-scrollbar{display:none}
+.ug-cat{flex:0 0 auto;min-height:34px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:var(--card);
+  font-size:calc(13px * var(--t));font-weight:600;color:var(--muted);white-space:nowrap}
+.ug-cat[aria-pressed="true"]{color:var(--c);border-color:var(--c);background:color-mix(in srgb,var(--c) 12%,transparent)}
+.ug-voet{display:flex;align-items:center;gap:10px;margin-top:11px}
+.ug-meer{flex:0 0 auto;min-height:42px;padding:0 6px;color:var(--muted);font-weight:600;font-size:calc(13.5px * var(--t))}
+.ug-knop{flex:1;min-height:44px;padding:0 18px;border-radius:12px;background:var(--ug);color:#fff;font-weight:750;font-size:calc(15px * var(--t))}
+.ug-knop:active{transform:translateY(1px);opacity:.9}
+
 /* ==================== Mindmap ==================== */
 :root{--mm-dot:rgba(16,18,22,.10);--mm-canvas:#f7f7fa}
 @media (prefers-color-scheme: dark){ html:not([data-thema="licht"]){--mm-dot:rgba(255,255,255,.07);--mm-canvas:#0d0f13} }
@@ -4011,13 +4039,15 @@ function catKnop(opt) {
   </button>`;
 }
 function vwStart() {
-  let h = typeof dagPaneel === "function" ? dagPaneel() : "";
+  // Nieuw is puur voor vastleggen: geen weekoverzicht (dat staat op Vandaag) en geen uitgaven-widget (die staat op het dagoverzicht).
+  let h = "";
 
   h += `<div class="startgrid">
     ${knop3d({ soort: "snel", naam: "Snel typen", uitleg: "“morgen 15:00 tandarts #zorg”", kleur: "#ea580c", breed: true })}
     ${catKnop({ view: "persoonlijk", ill: "persoonlijk", naam: "Persoonlijk", uitleg: "Taken, afspraken en alles er tussenin", kleur: "#2f6fed" })}
     ${catKnop({ view: "werk", ill: "werk", naam: "Werk", uitleg: "Meetings, plannen, strategie en reflectie", kleur: "#c0202f", telling: (typeof werkTelling === "function" ? werkTelling() : "") })}
     ${catKnop({ view: "gezondheid", ill: "gezondheid", naam: "Gezondheid", uitleg: "Eten, sport, water en gewicht", kleur: "#16a34a", telling: (typeof vsTelling === "function" ? vsTelling() : "") })}
+    ${catKnop({ view: "financieel", ill: "financieel", naam: "Financieel", uitleg: "Dagbudget, uitgaven en incasso's", kleur: "#0f766e", telling: (typeof geldTelling === "function" ? geldTelling() : "") })}
     ${catKnop({ view: "mindmap", ill: "mindmap", naam: "Mindmap", uitleg: "Ideeën, doelen en plannen uittekenen", kleur: "#7a4fd6" })}
   </div>`;
 
@@ -4058,8 +4088,7 @@ function vwPersoonlijk() {
     ${knop3d({ soort: "checklist", naam: "Checklist", uitleg: "Lijstje om af te vinken", kleur: "#0f8b6c", telling: S.checklists.filter(c => !c.sjabloon).length || "" })}
     ${knop3d({ soort: "gewoonte", naam: "Gewoonte", uitleg: gewOpen ? gewOpen + " nog te doen" : "Streak bijhouden", kleur: "#c2410c", telling: gewOpen || "" })}
     ${knop3d({ soort: "dagboek", naam: "Dagboek", uitleg: dbVandaag ? "Vandaag al geschreven" : "Hoe gaat het?", kleur: "#be185d" })}
-    ${knop3d({ soort: "notitie", naam: "Notitie", uitleg: "Zomaar in je logboek", kleur: "#475569" })}
-    ${knop3d({ soort: "financieel", naam: "Financieel", uitleg: "Dagbudget, uitgaven en incasso's", kleur: "#0f766e", telling: (typeof geldTelling === "function" ? geldTelling() : "") })}
+    ${knop3d({ soort: "notitie", naam: "Notitie", uitleg: "Zomaar in je logboek", kleur: "#475569", breed: true })}
     ${knop3d({ soort: "focus", naam: "Focussessie", uitleg: "Timer op één taak", kleur: "#1f2937", breed: true })}
   </div>`;
 
@@ -11896,7 +11925,7 @@ function wkEindMin(x) {
 function wkSlotZin(items, v) {
   const laat = openTaken().filter(t => t.datum && t.datum < v).length + S.afspraken.filter(afspraakLaat).length;
   if (laat) return `Er ${laat === 1 ? "staat" : "staan"} nog ${wkN(laat, "ding", "dingen")} van eerder open — pak ${laat === 1 ? "dat" : "die"} rustig mee.`;
-  const nu = wkMin(nuTijd());
+  const nu = wkNacht(wkMin(nuTijd()));
   const getimed = items.filter(x => x.tijd);
   const volgende = getimed.find(x => wkMin(x.tijd) >= nu);
   if (volgende && wkMin(volgende.tijd) - nu <= 120) return `Als eerste: ${wkItemTekst(volgende)}.`;
@@ -11953,33 +11982,36 @@ function wkRing(items) {
 }
 
 /* ---------- Beeld 2: de dagstrook ---------- */
+/* De strook loopt vast van 06:00 tot 02:00 's nachts. Tijden vóór 06:00 horen bij de nacht
+   ná vandaag (00:30 staat dus achteraan, niet vooraan). */
+const WK_VAN = 6 * 60, WK_TOT = 26 * 60;
+const wkNacht = m => m < WK_VAN ? m + 24 * 60 : m;
 function wkStrook(items) {
-  const getimed = items.filter(x => x.tijd);
-  let van = 7 * 60, tot = 22 * 60;
-  getimed.forEach(x => { van = Math.min(van, Math.floor(wkMin(x.tijd) / 60) * 60); tot = Math.max(tot, Math.ceil(wkEindMin(x) / 60) * 60); });
-  tot = Math.min(tot, 24 * 60);
+  const van = WK_VAN, tot = WK_TOT;
+  const getimed = items.filter(x => x.tijd && wkNacht(wkMin(x.tijd)) <= tot);
   const B = 300, pos = m => Math.max(0, Math.min(B, (m - van) / (tot - van) * B));
   let h = "";
-  for (let u = Math.ceil(van / 60); u * 60 <= tot; u++) {
-    const x = pos(u * 60), label = u % 3 === 0;
+  for (let u = van / 60; u * 60 <= tot; u++) {
+    const x = pos(u * 60), label = u % 3 === 0 || u * 60 === tot;
     h += `<line x1="${x}" x2="${x}" y1="${label ? 30 : 33}" y2="36" style="stroke:var(--line2)" stroke-width="1"/>`;
     if (label) h += `<text x="${x}" y="48" text-anchor="middle" class="wk-strook-uur">${pad(u % 24)}</text>`;
   }
   const banen = [[], [], []];
   getimed.forEach(x => {
-    const s = pos(wkMin(x.tijd)), e = Math.max(s + 5, pos(wkEindMin(x)));
+    const start = wkNacht(wkMin(x.tijd)), eind = start + (wkEindMin(x) - wkMin(x.tijd) + 24 * 60) % (24 * 60) || 30;
+    const s = pos(start), e = Math.max(s + 5, pos(eind));
     const baan = banen.findIndex(b => !b.some(([a, z]) => s < z + 2 && e > a - 2));
     const i = baan < 0 ? 2 : baan; banen[i].push([s, e]);
     h += `<rect x="${s}" y="${26 - i * 9}" width="${e - s}" height="7" rx="3.5" style="fill:${WK_CAT[x.cat].kleur}" opacity=".85"><title>${esc(x.titel + " · " + x.tijd)}</title></rect>`;
   });
-  const nu = wkMin(nuTijd());
+  const nu = wkNacht(wkMin(nuTijd()));
   if (nu >= van && nu <= tot) h += `<line x1="${pos(nu)}" x2="${pos(nu)}" y1="2" y2="38" style="stroke:var(--red)" stroke-width="1.6" stroke-dasharray="2 2"/>
     <circle cx="${pos(nu)}" cy="2.5" r="2.5" style="fill:var(--red)"/>`;
-  const zonder = items.length - getimed.length;
+  const zonder = items.filter(x => !x.tijd).length, buiten = items.filter(x => x.tijd).length - getimed.length;
   return `<div class="wk-strook">
-    <svg viewBox="-6 0 312 52" preserveAspectRatio="none" role="img" aria-label="Je dag van ${wkTijd(van)} tot ${wkTijd(tot)}">
+    <svg viewBox="-6 0 312 52" preserveAspectRatio="none" role="img" aria-label="Je dag van ${wkTijd(van)} tot ${wkTijd(tot % (24 * 60))} 's nachts">
       <line x1="0" x2="${B}" y1="36" y2="36" style="stroke:var(--line2)" stroke-width="1.4"/>${h}</svg>
-    <div class="wk-strook-onder">${getimed.length ? wkN(getimed.length, "ding", "dingen") + " met een tijd" : "Nog niets met een vaste tijd"}${zonder ? " · " + zonder + " zonder vaste tijd" : ""}</div>
+    <div class="wk-strook-onder">${getimed.length ? wkN(getimed.length, "ding", "dingen") + " met een tijd" : "Nog niets met een vaste tijd"}${zonder ? " · " + zonder + " zonder vaste tijd" : ""}${buiten ? " · " + buiten + " tussen 02:00 en 06:00" : ""}</div>
   </div>`;
 }
 
@@ -12017,6 +12049,102 @@ Object.defineProperty(KOPPEN, "welkom", {
   get: () => [typeof groet === "function" ? groet() : "Welkom", () => { const s = langDatumLabel(vandaagISO()); return s[0].toUpperCase() + s.slice(1); }],
   configurable: true, enumerable: true
 });
+</script>
+<script>
+"use strict";
+/* ==========================================================================
+   46. Widget “Uitgave loggen” — op het dagoverzicht en in Nieuw
+   Bedrag, waarvoor en categorie; gaat direct in Financieel (en je logboek).
+   ========================================================================== */
+/** Categorieën op volgorde van gebruik (laatste 90 dagen), anders de standaardvolgorde. */
+function ugCategorieen() {
+  const grens = plusDagen(vandaagISO(), -90), tel = {};
+  S.uitgaven.forEach(u => { if (u.datum >= grens) tel[u.categorie] = (tel[u.categorie] || 0) + 1; });
+  return CATEGORIEEN.map((c, i) => ({ c, n: tel[c[0]] || 0, i })).sort((a, b) => b.n - a.n || a.i - b.i).map(x => x.c);
+}
+function ugStand() {
+  const b = dagbudget(vandaagISO());
+  if (!b.maand) return { kort: `${eur(b.uitgegeven)} vandaag`, pct: null, rood: false };
+  const pct = b.basis > 0 ? Math.min(100, Math.round(b.uitgegeven / b.basis * 100)) : 100;
+  return b.over >= 0 ? { kort: `nog ${eur(b.over)} over`, pct, rood: false }
+    : { kort: `${eur(-b.over)} te veel`, pct: 100, rood: true };
+}
+function ugWidget(plek) {
+  const cats = ugCategorieen(), laatst = inst("ugLaatsteCat", cats[0][0]);
+  const st = ugStand();
+  return `<div class="ug-widget" data-plek="${plek}">
+    <div class="ug-kop">
+      <span class="ug-ico">${ico("portemonnee")}</span>
+      <b>Uitgave loggen</b>
+      <button class="ug-naar${st.rood ? " rood" : ""}" data-act="ga" data-view="financieel" aria-label="Naar Financieel: ${esc(st.kort)}">${esc(st.kort)} ${ico("pijlr", "width:13px;height:13px")}</button>
+    </div>
+    ${st.pct != null ? `<div class="ug-balk${st.rood ? " rood" : ""}" title="${st.pct}% van je dagbudget"><i style="width:${st.pct}%"></i></div>` : ""}
+    <div class="ug-rij">
+      <label class="ug-bedragvak"><span>€</span>
+        <input class="ug-bedrag" type="text" inputmode="decimal" autocomplete="off" placeholder="0,00" aria-label="Bedrag" enterkeyhint="done"></label>
+      <input class="ug-oms" type="text" placeholder="Waaraan?" aria-label="Omschrijving (mag leeg)" enterkeyhint="done">
+    </div>
+    <div class="ug-cats" role="group" aria-label="Categorie">${cats.map(([k, n, kl]) =>
+      `<button class="ug-cat" data-ug-cat="${k}" style="--c:${kl}" aria-pressed="${k === laatst}">${esc(n)}</button>`).join("")}</div>
+    <div class="ug-voet">
+      <button class="ug-meer" data-act="ug-meer">Meer opties</button>
+      <button class="ug-knop" data-act="ug-log">Loggen</button>
+    </div>
+  </div>`;
+}
+async function ugLog(w) {
+  const veld = $(".ug-bedrag", w);
+  const bedrag = Math.round(csvGetal(veld.value) * 100) / 100;
+  if (!(bedrag > 0)) { toast("Vul een bedrag in"); veld.focus(); return; }
+  const k = $('[data-ug-cat][aria-pressed="true"]', w);
+  const categorie = k ? k.dataset.ugCat : "overig";
+  const omschrijving = $(".ug-oms", w).value.trim();
+  const u = { id: uid(), datum: vandaagISO(), bedrag, omschrijving, categorie, potjeId: null, ts: new Date().toISOString() };
+  await bewaar("uitgaven", u);
+  const g = await logGebeurtenis("geld", `${eur(u.bedrag)} · ${omschrijving || catNaam(categorie)}`, u.id, { datum: u.datum });
+  await zetInst("ugLaatsteCat", categorie);
+  tril(8);
+  teken();
+  const b = dagbudget(vandaagISO());
+  toast(`${eur(bedrag)} gelogd${b.maand ? (b.over >= 0 ? " · nog " + eur(b.over) + " over vandaag" : " · " + eur(-b.over) + " over je dagbudget") : ""}`,
+    "Ongedaan maken", async () => { await verwijder("uitgaven", u.id); await verwijder("gebeurtenissen", g.id); teken(); toast("Weggehaald"); }, 5500);
+}
+/** “Meer…”: het volledige uitgavenblad, alvast ingevuld met wat je in de widget typte. */
+function ugMeer(w) {
+  const bedrag = csvGetal($(".ug-bedrag", w).value), oms = $(".ug-oms", w).value.trim();
+  const k = $('[data-ug-cat][aria-pressed="true"]', w);
+  uitgaveBlad(null);
+  if (bedrag > 0) $("#u-bedrag").value = Math.round(bedrag * 100) / 100;
+  if (oms) $("#u-oms").value = oms;
+  if (k) { const knop = $(`#bladinhoud [data-cat="${k.dataset.ugCat}"]`); if (knop) knop.click(); }
+}
+document.addEventListener("click", e => {
+  const c = e.target.closest("[data-ug-cat]");
+  if (c) {
+    $$("[data-ug-cat]", c.closest(".ug-widget")).forEach(x => x.setAttribute("aria-pressed", x === c));
+    return;
+  }
+  const l = e.target.closest('[data-act="ug-log"]');
+  if (l) { ugLog(l.closest(".ug-widget")); return; }
+  const m = e.target.closest('[data-act="ug-meer"]');
+  if (m) ugMeer(m.closest(".ug-widget"));
+});
+document.addEventListener("keydown", e => {
+  if (e.key !== "Enter" || !e.target.closest) return;
+  const w = e.target.closest(".ug-widget");
+  if (!w || !e.target.matches(".ug-bedrag,.ug-oms")) return;
+  e.preventDefault();
+  ugLog(w);
+});
+
+/* ---------- Plaatsen: op het dagoverzicht (onder de tegels) ---------- */
+if (typeof vwWelkom === "function") {
+  const _vwWelkom23 = vwWelkom;
+  vwWelkom = () => {
+    const h = _vwWelkom23(), merk = '<button class="knop breed primair wk-knop"', i = h.indexOf(merk);
+    return i < 0 ? h + ugWidget("welkom") : h.slice(0, i) + ugWidget("welkom") + h.slice(i);
+  };
+}
 </script>
 <script>
 "use strict";
