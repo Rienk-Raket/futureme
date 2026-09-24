@@ -156,6 +156,8 @@ h1#titel{font-size:calc(26px * var(--t));line-height:1.15;font-weight:800;letter
 }
 .icon-btn:active{background:var(--card2)}
 .icon-btn svg{width:22px;height:22px;display:block}
+.icon-btn{position:relative}
+.icon-btn .tab-dot{position:absolute;top:7px;right:7px;transform:none}
 
 main#scherm{
   flex:1 1 auto;overflow-y:auto;overflow-x:hidden;
@@ -184,6 +186,19 @@ nav#tabs button svg{width:23px;height:23px}
 nav#tabs button[aria-current="true"]{color:var(--accent)}
 nav#tabs button:active{opacity:.6}
 .tab-dot{position:absolute;transform:translate(13px,-11px);width:8px;height:8px;border-radius:50%;background:var(--red)}
+
+/* ---------- De "+" middenin de onderbalk, verhoogd boven de rest ---------- */
+nav#tabs button.tab-plus{
+  flex:0 0 auto;width:56px;min-height:56px;align-self:flex-start;
+  margin:-22px 3px 0;border-radius:50%;
+  background:linear-gradient(177deg, color-mix(in srgb,var(--accent) 80%,#fff) 0%, var(--accent) 55%, color-mix(in srgb,var(--accent) 84%,#000) 100%);
+  box-shadow:0 4px 0 0 color-mix(in srgb,var(--accent) 55%,#000),
+    0 8px 16px -3px color-mix(in srgb,var(--accent) 55%,transparent),
+    inset 0 1.5px 0 0 rgba(255,255,255,.4), 0 0 0 4px var(--bg);
+  color:#fff !important;
+}
+nav#tabs button.tab-plus svg{width:25px;height:25px}
+nav#tabs button.tab-plus:active{transform:translateY(3px);box-shadow:0 1px 0 0 color-mix(in srgb,var(--accent) 55%,#000),0 3px 8px -2px color-mix(in srgb,var(--accent) 45%,transparent),0 0 0 4px var(--bg)}
 
 /* ---------- Kaarten & lijsten ---------- */
 .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);margin:12px 0;overflow:hidden}
@@ -419,8 +434,8 @@ select.invoer{background-image:linear-gradient(45deg,transparent 50%,var(--muted
 /* ---------- Voortgang ---------- */
 .balk{height:7px;border-radius:4px;background:var(--line);overflow:hidden}
 .balk>i{display:block;height:100%;background:var(--green);border-radius:4px;transition:width .3s}
-.ring{--p:0;width:44px;height:44px;border-radius:50%;flex:0 0 auto;
-  background:conic-gradient(var(--green) calc(var(--p)*1%), var(--line) 0);
+.ring{--p:0;--rc:var(--green);width:44px;height:44px;border-radius:50%;flex:0 0 auto;
+  background:conic-gradient(var(--rc) calc(var(--p)*1%), var(--line) 0);
   display:flex;align-items:center;justify-content:center;font-size:calc(11px * var(--t));font-weight:800}
 .ring>span{width:34px;height:34px;border-radius:50%;background:var(--card);display:flex;align-items:center;justify-content:center}
 
@@ -727,6 +742,36 @@ html[data-rust="1"] .knop3d .bal3d{background:var(--card2);color:var(--muted)}
   display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .tl2-kaart:active{transform:scale(.98)}
 
+/* ---------- Ingeklapte tijdlijn: horizontale strook met alleen bolletjes ---------- */
+.tl-mini{
+  display:block;width:100%;text-align:left;background:var(--card);border-radius:16px;
+  box-shadow:var(--shadow);padding:14px 12px 11px;margin:12px 0 6px;border:none;
+  transform-origin:top center;transition:opacity .25s ease,transform .25s ease;
+}
+.tl-mini.tl-mini-weg{opacity:0;transform:scaleY(.4) translateY(-8px);pointer-events:none}
+.tlm-rail{display:flex;align-items:flex-end;gap:1px;height:56px;position:relative}
+.tlm-rail::before{content:"";position:absolute;left:0;right:0;bottom:15px;height:2px;background:var(--line);border-radius:1px}
+.tlm-dag{flex:1 1 0;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;min-width:0;position:relative}
+.tlm-stips{display:flex;flex-direction:column-reverse;align-items:center;gap:2px;margin-bottom:4px;min-height:6px}
+.tlm-stip{width:5px;height:5px;border-radius:50%;background:var(--dot);flex:0 0 auto}
+.tlm-meer{font-size:7px;color:var(--muted);font-weight:800}
+.tlm-lijn{width:2px;height:13px;border-radius:1px;background:var(--line2)}
+.tlm-dag.nu .tlm-lijn{background:var(--accent);width:3px;height:17px}
+.tlm-dag.nu .tlm-stip{width:7px;height:7px;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)}
+.tlm-hint{display:flex;align-items:center;justify-content:center;gap:5px;margin-top:11px;
+  font-size:calc(11.5px * var(--t));color:var(--muted);font-weight:650}
+.tl-mini:active .tlm-hint{color:var(--accent)}
+
+/* ---------- Uitklap-animatie: van horizontaal naar de verticale tijdlijn ---------- */
+@keyframes tlDagGroei{from{opacity:0;transform:scaleY(.6) translateY(-4px)}to{opacity:1;transform:none}}
+@keyframes tlKaartPop{from{opacity:0;transform:translateY(7px) scale(.82)}to{opacity:1;transform:none}}
+.tl2-onthuld > .tl2-week,.tl2-onthuld > .tl2-dag{animation:tlDagGroei .32s cubic-bezier(.22,1,.36,1) both}
+.tl2-onthuld .tl2-rij{animation:tlKaartPop .34s cubic-bezier(.22,1,.36,1) both}
+@media (prefers-reduced-motion: reduce){
+  .tl2-onthuld > .tl2-week,.tl2-onthuld > .tl2-dag,.tl2-onthuld .tl2-rij{animation:none}
+  .tl-mini{transition:none}
+}
+
 #naarvandaag{
   position:fixed;left:50%;transform:translateX(-50%) translateY(10px);bottom:calc(var(--navh) + 12px);z-index:44;
   background:var(--accent);color:var(--accent-text);border-radius:999px;padding:0 16px;min-height:40px;
@@ -872,11 +917,53 @@ html[data-thema="donker"]{--werk:#ff6b76;--werk-zacht:#2d1519}
   background:var(--card2);color:var(--muted);font-size:calc(12px * var(--t));font-weight:700;flex:0 0 auto;
 }
 .werkpil svg{width:15px;height:15px}
+
+/* ==================== Voeding & Sport (Gezondheid) ==================== */
+:root{--gezond:#16a34a;--gezond-zacht:#e7f7ec}
+@media (prefers-color-scheme: dark){
+  html:not([data-thema="licht"]){--gezond:#4ade80;--gezond-zacht:#123322}
+}
+html[data-thema="donker"]{--gezond:#4ade80;--gezond-zacht:#123322}
+.chip.gezond{background:var(--gezond-zacht);color:var(--gezond)}
+.vs-ringen{display:flex;justify-content:space-around;gap:6px;margin:12px 0 8px}
+.vs-ring-item{display:flex;flex-direction:column;align-items:center;gap:7px;flex:1 1 0;min-width:0}
+.vs-ring-item .ring{width:64px;height:64px;font-size:calc(12.5px * var(--t))}
+.vs-ring-item .ring>span{width:50px;height:50px;flex-direction:column;gap:0;line-height:1.15}
+.vs-ring-item .ring>span small{font-size:calc(9.5px * var(--t));font-weight:650;color:var(--muted)}
+.vs-ring-item .lab{font-size:calc(11.5px * var(--t));color:var(--muted);font-weight:650;text-align:center}
+.vs-maaltijd{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:12px 14px;margin:10px 0}
+.vs-maaltijd .kop{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.vs-maaltijd .kop b{font-size:calc(14.5px * var(--t))}
+.vs-maaltijd .kop span{font-size:calc(12.5px * var(--t));color:var(--muted);font-weight:650}
+.vs-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line)}
+.vs-item:first-of-type{border-top:none}
+.vs-item .nm{flex:1;min-width:0;font-size:calc(13.5px * var(--t))}
+.vs-item .nm small{display:block;color:var(--muted);font-size:calc(11.5px * var(--t));font-weight:500}
+.vs-item .kc{font-size:calc(12.5px * var(--t));color:var(--muted);font-weight:650;flex:0 0 auto}
+.vs-toevoeg{display:flex;align-items:center;justify-content:center;gap:5px;width:100%;margin-top:8px;
+  min-height:38px;border-radius:11px;background:var(--card2);color:var(--accent);font-size:calc(13px * var(--t));font-weight:650}
+.vs-zoekrij{display:flex;align-items:center;gap:9px;padding:10px 2px;border-top:1px solid var(--line)}
+.vs-zoekrij:first-of-type{border-top:none}
+.vs-zoekrij .nm{flex:1;min-width:0;text-align:left}
+.vs-zoekrij .nm b{display:block;font-size:calc(13.5px * var(--t))}
+.vs-zoekrij .nm small{display:block;color:var(--muted);font-size:calc(11.5px * var(--t))}
+.vs-macro{display:flex;align-items:center;gap:8px;margin:9px 0}
+.vs-macro .lab{width:88px;flex:0 0 auto;font-size:calc(12px * var(--t));color:var(--muted);font-weight:650}
+.vs-macro .balk{flex:1}
+.vs-macro .waarde{width:64px;flex:0 0 auto;text-align:right;font-size:calc(11.5px * var(--t));color:var(--muted);font-weight:650}
+.vs-lijn{position:relative;height:70px;margin:10px 0}
+.vs-lijn svg{width:100%;height:100%;display:block;overflow:visible}
+.vs-sportkaart{display:flex;align-items:center;gap:11px;padding:12px 2px}
+.vs-sportkaart .dot{width:11px;height:11px;border-radius:50%;background:var(--gezond);flex:0 0 auto}
+.vs-sportkaart .nm{flex:1;min-width:0}
+.vs-sportkaart .nm b{display:block;font-size:calc(14px * var(--t))}
+.vs-sportkaart .nm small{display:block;color:var(--muted);font-size:calc(12px * var(--t));margin-top:1px}
 .werkpil[data-f="alleen"]{background:var(--werk-zacht);color:var(--werk)}
 .werkpil[data-f="uit"]{background:var(--card2);color:var(--faint);text-decoration:line-through}
 .werk-kop{
-  background:linear-gradient(160deg, color-mix(in srgb,var(--werk) 88%,#fff) 0%, var(--werk) 60%, color-mix(in srgb,var(--werk) 86%,#000) 100%);
-  color:#fff;border-radius:18px;padding:15px;box-shadow:0 8px 20px -8px var(--werk);margin:10px 0 4px;position:relative;overflow:hidden;
+  --kk:var(--werk);
+  background:linear-gradient(160deg, color-mix(in srgb,var(--kk) 88%,#fff) 0%, var(--kk) 60%, color-mix(in srgb,var(--kk) 86%,#000) 100%);
+  color:#fff;border-radius:18px;padding:15px;box-shadow:0 8px 20px -8px var(--kk);margin:10px 0 4px;position:relative;overflow:hidden;
 }
 .werk-kop .ttl{font-size:calc(17px * var(--t));font-weight:750}
 .werk-kop .sub{font-size:calc(12.5px * var(--t));opacity:.85;margin-top:2px}
@@ -888,9 +975,9 @@ html[data-thema="donker"]{--werk:#ff6b76;--werk-zacht:#2d1519}
 .werkgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:12px 0 4px}
 .werkknop{
   display:flex;align-items:center;gap:9px;background:var(--card);border-radius:13px;padding:11px;
-  box-shadow:var(--shadow);min-height:56px;text-align:left;border-left:3px solid var(--k,var(--werk));
+  box-shadow:var(--shadow);min-height:56px;text-align:left;border-left:3px solid var(--k,var(--kk,var(--werk)));
 }
-.werkknop svg{width:19px;height:19px;color:var(--k,var(--werk));flex:0 0 auto}
+.werkknop svg{width:19px;height:19px;color:var(--k,var(--kk,var(--werk)));flex:0 0 auto}
 .werkknop .nm{font-size:calc(13.5px * var(--t));font-weight:650;line-height:1.2}
 .docrij{display:flex;align-items:flex-start;gap:11px;width:100%;padding:11px 13px;border-bottom:1px solid var(--line);text-align:left;min-height:var(--tap)}
 .docrij:last-child{border-bottom:0}
@@ -1058,6 +1145,9 @@ html[data-thema="donker"]{--werk:#ff6b76;--werk-zacht:#2d1519}
 <symbol id="i-lijst" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6.5h11M9 12h11M9 17.5h11"/><path d="M4 6.2l1 1 1.6-1.8M4 11.7l1 1 1.6-1.8M4 17.2l1 1 1.6-1.8"/></symbol>
 <symbol id="i-hart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.2S3.5 15 3.5 9.3A4.8 4.8 0 0 1 12 6.4a4.8 4.8 0 0 1 8.5 2.9c0 5.7-8.5 10.9-8.5 10.9z"/></symbol>
 <symbol id="i-instel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.5 12c0-.6-.1-1.1-.2-1.6l2-1.5-2-3.4-2.3 1a7.6 7.6 0 0 0-2.7-1.6L13.9 2h-3.8l-.4 2.9a7.6 7.6 0 0 0-2.7 1.6l-2.3-1-2 3.4 2 1.5a7.8 7.8 0 0 0 0 3.2l-2 1.5 2 3.4 2.3-1a7.6 7.6 0 0 0 2.7 1.6l.4 2.9h3.8l.4-2.9a7.6 7.6 0 0 0 2.7-1.6l2.3 1 2-3.4-2-1.5c.1-.5.2-1 .2-1.6z"/></symbol>
+<symbol id="i-druppel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5c4 5 6.5 8.7 6.5 12A6.5 6.5 0 0 1 5.5 15.5c0-3.3 2.5-7 6.5-12z"/></symbol>
+<symbol id="i-weegschaal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M7 21h10"/><path d="M5 7h5M14 7h5"/><path d="M2.5 11.5L5 7l2.5 4.5a2.7 2.7 0 0 1-5 0z"/><path d="M16.5 11.5L19 7l2.5 4.5a2.7 2.7 0 0 1-5 0z"/></symbol>
+<symbol id="i-sport" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12h1.8M19.7 12h1.8"/><path d="M4.3 9.2v5.6M19.7 9.2v5.6"/><rect x="6.3" y="8.2" width="2.6" height="7.6" rx="1"/><rect x="15.1" y="8.2" width="2.6" height="7.6" rx="1"/><path d="M8.9 12h6.2"/></symbol>
 <symbol id="i-vraag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.3 9.3a2.8 2.8 0 1 1 3.7 2.7c-.6.2-1 .8-1 1.5v.5M12 17.2v.1"/></symbol>
 <symbol id="i-boek" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5S10 4 6 4H3.5v14H6c4 0 6 2 6 2s2-2 6-2h2.5V4H18c-4 0-6 2.5-6 2.5z"/><path d="M12 6.5V20"/></symbol>
 <symbol id="i-tijd" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2.5h6M12 5.5v3"/><circle cx="12" cy="14.5" r="7"/><path d="M12 11.5v3l2 1.5"/></symbol>
@@ -1188,6 +1278,19 @@ html[data-thema="donker"]{--werk:#ff6b76;--werk-zacht:#2d1519}
 </g></symbol>
 <symbol id="i-blad" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20.5C3 15 5 8.5 11 5.5c3.4-1.7 7-1.6 9.5-1 .5 2.7.4 6.4-1.3 9.6-3 5.6-9.3 7.2-14.2 6.4z"/><path d="M4.5 20.5C7 16 10.5 12.5 15 10"/></symbol>
 
+<symbol id="ill-persoonlijk" viewBox="0 0 100 80"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M14 40L40 18l26 22" stroke-opacity=".8"/>
+  <path d="M20 36v26h40V36" fill="currentColor" fill-opacity=".16" stroke-opacity=".75"/>
+  <path d="M34 62V46h12v16" fill="currentColor" fill-opacity=".4" stroke="none"/>
+  <path d="M62 30a10 10 0 1 1 14 9c-1.2 3-1.2 5.6 0 8.6" stroke-width="2.6" stroke-opacity=".9"/>
+  <circle cx="70" cy="30" r="3.4" fill="currentColor" stroke="none"/>
+</g></symbol>
+<symbol id="ill-gezondheid" viewBox="0 0 100 80"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M50 62C30 48 16 38 16 25a13 13 0 0 1 24-7 13 13 0 0 1 24 7c0 13-14 23-14 23z"
+        fill="currentColor" fill-opacity=".2" stroke-opacity=".85"/>
+  <path d="M12 44h12l5-9 6 15 5-11 4 5h14" stroke-width="2.8" stroke-opacity=".9"/>
+  <circle cx="80" cy="20" r="6" fill="currentColor" fill-opacity=".3" stroke-opacity=".7"/>
+</g></symbol>
 <symbol id="ill-rook" viewBox="0 0 100 80"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
   <path d="M18 66c-3.5-16 2.5-34 20-42 10-4.6 21-4.4 28-3 1.6 7.6 1.2 18-4 27.6C53.5 64.8 34 69.5 18 66z"
         fill="currentColor" fill-opacity=".2" stroke-opacity=".85"/>
@@ -1203,6 +1306,7 @@ html[data-thema="donker"]{--werk:#ff6b76;--werk-zacht:#2d1519}
       <button class="icon-btn verborgen" id="terug" aria-label="Terug"><svg><use href="#i-pijll"/></svg></button>
       <h1 id="titel">Vandaag</h1>
       <button class="werkpil" id="werkpil" data-f="alles" aria-label="Werkfilter"><svg><use href="#i-koffer"/></svg><span>Werk</span></button>
+      <button class="icon-btn" id="inboxknop" data-act="ga" data-view="meldingen" aria-label="Inbox"><svg><use href="#i-inbox"/></svg><span class="tab-dot verborgen" id="inboxdot"></span></button>
       <button class="icon-btn" id="zoekknop" aria-label="Zoeken"><svg><use href="#i-zoek"/></svg></button>
       <button class="icon-btn" id="instelknop" aria-label="Instellingen"><svg><use href="#i-instel"/></svg></button>
     </div>
@@ -1232,9 +1336,9 @@ html[data-thema="donker"]{--werk:#ff6b76;--werk-zacht:#2d1519}
   </div>
 
   <nav id="tabs">
-    <button data-tab="start" aria-current="true"><svg><use href="#i-plus"/></svg><span>Nieuw</span></button>
     <button data-tab="vandaag"><svg><use href="#i-vandaag"/></svg><span>Vandaag</span></button>
     <button data-tab="komend"><svg><use href="#i-komend"/></svg><span>Komend</span></button>
+    <button class="tab-plus" data-tab="start" aria-current="true" aria-label="Nieuw"><svg><use href="#i-plus"/></svg></button>
     <button data-tab="afspraken"><svg><use href="#i-groep"/></svg><span>Afspraken</span></button>
     <button data-tab="financieel"><svg><use href="#i-portemonnee"/></svg><span>Financieel</span></button>
     <button data-tab="meer"><svg><use href="#i-meer"/></svg><span>Meer</span></button>
@@ -1262,6 +1366,7 @@ html[data-thema="donker"]{--werk:#ff6b76;--werk-zacht:#2d1519}
 <div id="toast" role="status" aria-live="polite"></div>
 <input type="file" id="bestandkiezer" accept="image/*,application/pdf,text/*" multiple class="verborgen">
 <input type="file" id="jsonkiezer" accept="application/json,.json" class="verborgen">
+<input type="file" id="csvkiezer" accept=".csv,text/csv,text/plain" class="verborgen">
 <script>
 "use strict";
 /* ==========================================================================
@@ -1357,12 +1462,14 @@ function secTekst(sec) {
 /* ==========================================================================
    3. Opslag — IndexedDB
    ========================================================================== */
-const DB_NAAM = "futureme", DB_VERSIE = 4;
+const DB_NAAM = "futureme", DB_VERSIE = 5;
 const WINKELS = {
   taken: "id", projecten: "id", labels: "id", afspraken: "id", checklists: "id",
   gewoontes: "id", gewoontelog: "id", dagboek: "id", tijdlog: "id",
   personen: "id", bijlagen: "id", filters: "id", gebeurtenissen: "id",
-  werkdocs: "id", uitgaven: "id", incassos: "id", potjes: "id", instellingen: "sleutel"
+  werkdocs: "id", uitgaven: "id", incassos: "id", potjes: "id", instellingen: "sleutel",
+  vs_producten: "id", vs_logs: "id", vs_gewicht: "id", vs_sport: "id", vs_sportlog: "id",
+  meldingen: "id"
 };
 let db = null;
 
@@ -1414,7 +1521,9 @@ const S = {
   taken: [], projecten: [], labels: [], afspraken: [], checklists: [],
   gewoontes: [], gewoontelog: [], dagboek: [], tijdlog: [],
   personen: [], bijlagen: [], filters: [], gebeurtenissen: [], werkdocs: [],
-  uitgaven: [], incassos: [], potjes: [], instellingen: {}
+  uitgaven: [], incassos: [], potjes: [], instellingen: {},
+  vs_producten: [], vs_logs: [], vs_gewicht: [], vs_sport: [], vs_sportlog: [],
+  meldingen: []
 };
 const vind = (lijst, id) => S[lijst].find(x => x.id === id);
 
@@ -2064,6 +2173,9 @@ const KOPPEN = {
   vandaag: ["Vandaag", () => langDatumLabel(vandaagISO())],
   komend: ["Komende 7 dagen", () => "week " + weekNummer(vandaagISO())],
   inbox: ["Inbox", () => "Nog niet ingedeeld"],
+  persoonlijk: ["Persoonlijk", () => "Taken, afspraken en alles er tussenin"],
+  gezondheid: ["Gezondheid", () => (typeof vsOnderschrift === "function" ? vsOnderschrift() : "Eten, sport, water en gewicht")],
+  meldingen: ["Inbox", () => (typeof meldingenOnderschrift === "function" ? meldingenOnderschrift() : "Berichten en herinneringen")],
   logboek: ["Logboek", () => "Alles wat je deed"],
   meer: ["Meer", () => "Alle onderdelen"],
   projecten: ["Projecten", () => S.projecten.length + " projecten"],
@@ -2112,7 +2224,10 @@ function teken() {
     projecten: vwProjecten, project: vwProject, kalender: vwKalender, checklists: vwChecklists,
     checklist: vwChecklist, afspraken: vwAfspraken, afspraak: vwAfspraak, gewoontes: vwGewoontes,
     dagboek: vwDagboek, zoeken: vwZoeken, filters: vwFilters, personen: vwPersonen,
-    stats: vwStats, backup: vwBackup, help: vwHelp, tijd: vwTijd
+    stats: vwStats, backup: vwBackup, help: vwHelp, tijd: vwTijd,
+    persoonlijk: (typeof vwPersoonlijk === "function" ? vwPersoonlijk : vwStart),
+    gezondheid: (typeof vwGezondheid === "function" ? vwGezondheid : vwStart),
+    meldingen: (typeof vwMeldingen === "function" ? vwMeldingen : vwStart)
   }[V.view] || vwVandaag;
   $("#scherm").innerHTML = fn();
   naTekenen();
@@ -3017,6 +3132,15 @@ function bevestig(titel, tekst, knop, klaar) {
   $("#bevAnnuleer").onclick = bladSluit;
   $("#bevOk").onclick = () => { bladSluit(); klaar(); };
 }
+/** Voor definitief verwijderen — altijd dezelfde (speelse) dubbelcheck, ongeacht wat er weg gaat. */
+function bevestigVerwijderen(klaar) {
+  bladOpen("Verwijderen?",
+    `<p class="klein" style="font-size:15px;margin:10px 2px 18px">Ewa zebbi, zeg wollah je wil deze definitief verwijderen a sah.</p>`,
+    `<div class="knoprij"><button class="knop rand" id="bevAnnuleer">Nee</button>
+     <button class="knop gevaar" id="bevOk">Ja</button></div>`);
+  $("#bevAnnuleer").onclick = bladSluit;
+  $("#bevOk").onclick = () => { bladSluit(); klaar(); };
+}
 
 /* ---------- Taakblad ---------- */
 const PRIO_NAAM = { 1: "P1 urgent", 2: "P2 belangrijk", 3: "P3 normaal", 4: "P4 ooit" };
@@ -3254,7 +3378,7 @@ async function taakActie(actie, id, werk) {
     await bewaar("taken", k); bladSluit(); teken(); toast("Kopie gemaakt"); return;
   }
   if (actie === "verwijder") {
-    bevestig("Taak verwijderen?", `<b>${esc(t.titel)}</b> wordt definitief verwijderd.`, "Verwijderen", async () => {
+    bevestigVerwijderen(async () => {
       await verwijder("taken", t.id); teken(); toast("Verwijderd");
     });
   }
@@ -3377,7 +3501,7 @@ function openAfspraakBlad(id, voorinvulling) {
       return;
     }
     if (e.target.closest("[data-aweg]")) {
-      bevestig("Afspraak verwijderen?", `<b>${esc(a.titel)}</b> en alle notities verdwijnen.`, "Verwijderen", async () => {
+      bevestigVerwijderen(async () => {
         await verwijder("afspraken", a.id); ga("afspraken"); toast("Verwijderd");
       });
     }
@@ -3443,7 +3567,7 @@ function openGewoonteBlad(id) {
       $("#g-weekveld").style.display = week ? "" : "none";
     }
   };
-  if (bestaat) $("#g-weg").onclick = () => bevestig("Gewoonte verwijderen?", "De reeks en geschiedenis verdwijnen ook.", "Verwijderen",
+  if (bestaat) $("#g-weg").onclick = () => bevestigVerwijderen(
     async () => { await verwijder("gewoontes", g.id); teken(); toast("Verwijderd"); });
   $("#g-opslaan").onclick = async () => {
     const naam = $("#g-naam").value.trim();
@@ -3485,7 +3609,7 @@ function openDagboekBlad(datum) {
     const en = e.target.closest("[data-den]");
     if (en) { $$("[data-den]").forEach(x => x.setAttribute("aria-pressed", x === en)); }
   };
-  if (bestaat) $("#d-weg").onclick = () => bevestig("Notitie verwijderen?", "Deze dagboeknotitie wordt gewist.", "Verwijderen",
+  if (bestaat) $("#d-weg").onclick = () => bevestigVerwijderen(
     async () => { await verwijder("dagboek", d.id); teken(); toast("Verwijderd"); });
   $("#d-opslaan").onclick = async () => {
     const s = $$("[data-stem]").find(x => x.getAttribute("aria-pressed") === "true");
@@ -3526,7 +3650,7 @@ function openProjectBlad(id) {
     const k = e.target.closest("[data-kleur]");
     if (k) $$("[data-kleur]").forEach(x => x.setAttribute("aria-pressed", x === k));
   };
-  if (bestaat) $("#p-weg").onclick = () => bevestig("Project verwijderen?", `Taken uit <b>${esc(p.naam)}</b> gaan terug naar de inbox.`, "Verwijderen", async () => {
+  if (bestaat) $("#p-weg").onclick = () => bevestigVerwijderen(async () => {
     for (const t of takenVanProject(p.id)) { t.projectId = null; await bewaar("taken", t); }
     await verwijder("projecten", p.id); ga("projecten"); toast("Project verwijderd");
   });
@@ -3595,30 +3719,25 @@ function knop3d(opt) {
     </span>
   </button>`;
 }
+/** De 3 categorieknoppen — elk brengt je naar een eigen "vandaag" voor dat onderwerp. */
+function catKnop(opt) {
+  return `<button class="knop3d breed" style="--k:${opt.kleur}" data-act="ga" data-view="${opt.view}" aria-label="${esc(opt.naam)}">
+    <svg class="ill3d" viewBox="0 0 100 80" aria-hidden="true" focusable="false"><use href="#ill-${opt.ill}"/></svg>
+    ${opt.telling ? `<span class="bal3d">${opt.telling}</span>` : ""}
+    <span class="tekst3d">
+      <span class="nm3d" style="display:block">${esc(opt.naam)}</span>
+      <span class="ds3d" style="display:block">${esc(opt.uitleg)}</span>
+    </span>
+  </button>`;
+}
 function vwStart() {
-  const v = vandaagISO();
-  const laat = openTaken().filter(t => t.datum && t.datum < v).length;
-  const vandaagOpen = openTaken().filter(t => t.datum === v).length;
-  const afsprVandaag = S.afspraken.filter(a => a.datum === v).length;
-  const deadlineLaat = S.afspraken.filter(a => afspraakLaat(a)).length;
-  const gewVandaag = gewoontesVoor(v);
-  const gewOpen = gewVandaag.filter(g => !gewoonteAf(g.id, v)).length;
-  const dbVandaag = S.dagboek.find(d => d.datum === v);
-
   let h = typeof dagPaneel === "function" ? dagPaneel() : "";
 
   h += `<div class="startgrid">
     ${knop3d({ soort: "snel", naam: "Snel typen", uitleg: "“morgen 15:00 tandarts #zorg”", kleur: "#2f6fed", breed: true })}
-    ${knop3d({ soort: "werk", naam: "Werk", uitleg: "Meetings, plannen, strategie en reflectie", kleur: "#c0202f", breed: true, telling: (typeof werkTelling === "function" ? werkTelling() : "") })}
-    ${knop3d({ soort: "financieel", naam: "Financieel", uitleg: "Dagbudget, uitgaven en incasso's", kleur: "#0f766e", breed: true, telling: (typeof geldTelling === "function" ? geldTelling() : "") })}
-    ${knop3d({ soort: "taak", naam: "Taak", uitleg: "Iets wat je moet doen", kleur: "#2f6fed", telling: openTaken().length || "" })}
-    ${knop3d({ soort: "gesprek", naam: "Afspraak", uitleg: "Gesprek op een moment", kleur: "#7a4fd6", telling: afsprVandaag || "" })}
-    ${knop3d({ soort: "toezegging", naam: "Toezegging", uitleg: "Wat je iemand beloofde", kleur: "#4f46b8", telling: deadlineLaat || "" })}
-    ${knop3d({ soort: "checklist", naam: "Checklist", uitleg: "Lijstje om af te vinken", kleur: "#0f8b6c", telling: S.checklists.filter(c => !c.sjabloon).length || "" })}
-    ${knop3d({ soort: "gewoonte", naam: "Gewoonte", uitleg: gewOpen ? gewOpen + " nog te doen" : "Streak bijhouden", kleur: "#c2410c", telling: gewOpen || "" })}
-    ${knop3d({ soort: "dagboek", naam: "Dagboek", uitleg: dbVandaag ? "Vandaag al geschreven" : "Hoe gaat het?", kleur: "#be185d" })}
-    ${knop3d({ soort: "notitie", naam: "Notitie", uitleg: "Zomaar in je logboek", kleur: "#475569" })}
-    ${knop3d({ soort: "focus", naam: "Focussessie", uitleg: "Timer op één taak", kleur: "#1f2937", breed: true })}
+    ${catKnop({ view: "persoonlijk", ill: "persoonlijk", naam: "Persoonlijk", uitleg: "Taken, afspraken en alles er tussenin", kleur: "#2f6fed" })}
+    ${catKnop({ view: "werk", ill: "werk", naam: "Werk", uitleg: "Meetings, plannen, strategie en reflectie", kleur: "#c0202f", telling: (typeof werkTelling === "function" ? werkTelling() : "") })}
+    ${catKnop({ view: "gezondheid", ill: "gezondheid", naam: "Gezondheid", uitleg: "Eten, sport, water en gewicht", kleur: "#16a34a", telling: (typeof vsTelling === "function" ? vsTelling() : "") })}
   </div>`;
 
   const vast = S.filters.filter(f => f.vast);
@@ -3632,6 +3751,40 @@ function vwStart() {
   h += `<button class="startstrip" data-act="ga" data-view="logboek">
     ${ico("logboek", "width:20px;height:20px;color:var(--muted)")}
     <span class="nm">Laatst gelogd: ${esc(S.gebeurtenissen.length ? S.gebeurtenissen.slice().sort((a, b) => a.ts < b.ts ? 1 : -1)[0].tekst.slice(0, 44) : "nog niets")}</span>
+    ${ico("pijlr", "width:16px;height:16px;color:var(--line2)")}</button>`;
+  return h;
+}
+
+/* ---------- Persoonlijk — de oude vastlegknoppen, nu per categorie ---------- */
+function vwPersoonlijk() {
+  const v = vandaagISO();
+  const afsprVandaag = S.afspraken.filter(a => a.datum === v).length;
+  const deadlineLaat = S.afspraken.filter(a => afspraakLaat(a)).length;
+  const gewVandaag = gewoontesVoor(v);
+  const gewOpen = gewVandaag.filter(g => !gewoonteAf(g.id, v)).length;
+  const dbVandaag = S.dagboek.find(d => d.datum === v);
+
+  let h = `<div class="werk-kop" style="--kk:#2f6fed">
+    <svg class="ill" viewBox="0 0 100 80" aria-hidden="true"><use href="#ill-persoonlijk"/></svg>
+    <div class="ttl">Persoonlijk</div>
+    <div class="sub">Alles wat bij je leven hoort, buiten werk om</div>
+  </div>`;
+
+  h += `<div class="startgrid">
+    ${knop3d({ soort: "taak", naam: "Taak", uitleg: "Iets wat je moet doen", kleur: "#2f6fed", telling: openTaken().length || "" })}
+    ${knop3d({ soort: "gesprek", naam: "Afspraak", uitleg: "Gesprek op een moment", kleur: "#7a4fd6", telling: afsprVandaag || "" })}
+    ${knop3d({ soort: "toezegging", naam: "Toezegging", uitleg: "Wat je iemand beloofde", kleur: "#4f46b8", telling: deadlineLaat || "" })}
+    ${knop3d({ soort: "checklist", naam: "Checklist", uitleg: "Lijstje om af te vinken", kleur: "#0f8b6c", telling: S.checklists.filter(c => !c.sjabloon).length || "" })}
+    ${knop3d({ soort: "gewoonte", naam: "Gewoonte", uitleg: gewOpen ? gewOpen + " nog te doen" : "Streak bijhouden", kleur: "#c2410c", telling: gewOpen || "" })}
+    ${knop3d({ soort: "dagboek", naam: "Dagboek", uitleg: dbVandaag ? "Vandaag al geschreven" : "Hoe gaat het?", kleur: "#be185d" })}
+    ${knop3d({ soort: "notitie", naam: "Notitie", uitleg: "Zomaar in je logboek", kleur: "#475569" })}
+    ${knop3d({ soort: "financieel", naam: "Financieel", uitleg: "Dagbudget, uitgaven en incasso's", kleur: "#0f766e", telling: (typeof geldTelling === "function" ? geldTelling() : "") })}
+    ${knop3d({ soort: "focus", naam: "Focussessie", uitleg: "Timer op één taak", kleur: "#1f2937", breed: true })}
+  </div>`;
+
+  h += `<button class="startstrip" data-act="ga" data-view="vandaag">
+    ${ico("vandaag", "width:20px;height:20px;color:var(--muted)")}
+    <span class="nm">Bekijk je hele dag op de tijdlijn</span>
     ${ico("pijlr", "width:16px;height:16px;color:var(--line2)")}</button>`;
   return h;
 }
@@ -3941,7 +4094,7 @@ async function bulkActie(wat) {
     for (const id of ids) { const t = vind("taken", id); if (t && !t.af) await vinkTaak(id); }
     bulkUit(); toast(ids.length + " taken afgevinkt");
   } else if (wat === "weg") {
-    bevestig("Taken verwijderen?", `${ids.length} taken worden definitief verwijderd.`, "Verwijderen", async () => {
+    bevestigVerwijderen(async () => {
       for (const id of ids) await verwijder("taken", id);
       bulkUit(); toast("Verwijderd");
     });
@@ -4475,7 +4628,7 @@ document.addEventListener("click", async e => {
     }
     case "afspraak-verwijder": {
       const a = vind("afspraken", id);
-      bevestig("Afspraak verwijderen?", `<b>${esc(a.titel)}</b> en alle notities verdwijnen.`, "Verwijderen", async () => {
+      bevestigVerwijderen(async () => {
         await verwijder("afspraken", id); ga("afspraken"); toast("Verwijderd");
       });
       break;
@@ -4556,7 +4709,7 @@ document.addEventListener("click", async e => {
     }
     case "cl-verwijder": {
       const c = vind("checklists", id);
-      bevestig("Lijst verwijderen?", `<b>${esc(c.naam)}</b> wordt gewist.`, "Verwijderen", async () => {
+      bevestigVerwijderen(async () => {
         await verwijder("checklists", id); ga("checklists"); toast("Verwijderd");
       });
       break;
@@ -4634,7 +4787,7 @@ document.addEventListener("click", async e => {
     }
     case "meldingen-aan": vraagMeldingen(); break;
     case "wis-alles":
-      bevestig("Alles wissen?", "Alle taken, afspraken, checklists, gewoontes en logboekregels worden definitief gewist. Maak eerst een back-up.", "Alles wissen", async () => {
+      bevestigVerwijderen(async () => {
         for (const w of Object.keys(WINKELS)) { await idbLeeg(w); S[w] = w === "instellingen" ? {} : []; }
         ga("vandaag"); toast("Alles gewist");
       });
@@ -4682,7 +4835,7 @@ function naTekenen() {
     knop.addEventListener("pointerdown", () => {
       tm = setTimeout(() => {
         const f = vind("filters", knop.dataset.id);
-        bevestig("Slimme lijst verwijderen?", `<b>${esc(f.naam)}</b>`, "Verwijderen",
+        bevestigVerwijderen(
           async () => { await verwijder("filters", f.id); teken(); });
       }, 600);
     });
@@ -5215,6 +5368,36 @@ const tlAan = soort => inst("tlFilter_" + soort, true);
 V.tlTerug = 30;          // hoeveel dagen terug er getekend worden
 const TL_VOORUIT = 14;   // en hoeveel dagen vooruit
 
+/* ---------- De briefing: alles wat vandaag toe doet, in één oogopslag ----------
+   Combineert het dagpaneel (taken/afspraken/gewoontes/incasso's) met een
+   geld- en rookstrook, zodat je bij het openen van Vandaag meteen weet waar je staat. */
+function briefingGeld() {
+  const heeftFin = typeof dagbudget === "function";
+  const v = vandaagISO();
+  const rook = typeof rookCijfers === "function" ? rookCijfers() : null;
+  const tegels = [];
+  if (heeftFin) {
+    const b = dagbudget(v);
+    if (b.maand) tegels.push({ w: eur(b.over), l: b.over < 0 ? "over je dagbudget" : "dagbudget over", view: "financieel", alarm: b.over < 0 });
+    else tegels.push({ w: eur(uitgavenOp(v)), l: "uitgegeven vandaag", view: "financieel" });
+  }
+  if (rook) {
+    tegels.push({ w: eur(rook.perDag), l: "bespaard vandaag", view: "roken" });
+    tegels.push({ w: getal(rook.sigDag), l: "sigaretten niet", view: "roken" });
+  }
+  if (!tegels.length) return "";
+  return `<div class="dagpaneel" style="padding-top:12px;margin-top:8px">
+    <div class="dp-stats" style="grid-template-columns:repeat(${tegels.length},1fr)">
+      ${tegels.map(t => `<button class="dp-stat${t.alarm ? " alarm" : ""}" data-act="ga" data-view="${t.view}"><b>${t.w}</b><span>${esc(t.l)}</span></button>`).join("")}
+    </div>
+  </div>`;
+}
+/** De briefing: het bestaande dagpaneel (taken/afspraken/gewoontes/incasso's), plus — als
+    die er zijn — een tweede strookje met geld en, bij het bijhouden van roken, wat dat oplevert. */
+function briefing() {
+  return (typeof dagPaneel === "function" ? dagPaneel() : "") + briefingGeld();
+}
+
 /** Alle items per dag, met respect voor de filters. */
 function tijdlijnItems(van, tot) {
   const perDag = {};
@@ -5277,6 +5460,28 @@ function tlDag(d, lijst) {
   </div>`;
 }
 
+/* ---------- Ingeklapte weergave: horizontale strook, alleen bolletjes ---------- */
+const TLM_TERUG = 7, TLM_VOORUIT = 7;
+function tlMini(items) {
+  const v = vandaagISO();
+  const van = plusDagen(v, -TLM_TERUG), tot = plusDagen(v, TLM_VOORUIT);
+  let dagen = "";
+  for (let d = van; d <= tot; d = plusDagen(d, 1)) {
+    const lijst = items[d] || [];
+    const isNu = d === v;
+    dagen += `<div class="tlm-dag${isNu ? " nu" : ""}" data-datum="${d}">
+      <div class="tlm-stips">${lijst.slice(0, 7).map(x =>
+        `<span class="tlm-stip" style="--dot:${x.kleur || (TL_SOORTEN[x.soort] || [])[1] || "var(--accent)"}"></span>`).join("")}
+        ${lijst.length > 7 ? `<span class="tlm-meer">+${lijst.length - 7}</span>` : ""}</div>
+      <div class="tlm-lijn"></div>
+    </div>`;
+  }
+  return `<button class="tl-mini" data-act="tl-uitklap" aria-label="Tijdlijn uitklappen">
+    <div class="tlm-rail">${dagen}</div>
+    <div class="tlm-hint">${ico("pijlr", "width:13px;height:13px;transform:rotate(90deg)")} Tik om de tijdlijn uit te klappen</div>
+  </button>`;
+}
+
 function vwVandaagTijdlijn() {
   const v = vandaagISO();
   const van = plusDagen(v, -V.tlTerug), tot = plusDagen(v, TL_VOORUIT);
@@ -5285,8 +5490,11 @@ function vwVandaagTijdlijn() {
   const laatste = S.gebeurtenissen.slice().sort((a, b) => a.ts < b.ts ? 1 : -1)[0];
   const laat = openTaken().filter(t => t.datum && t.datum < v).length
     + S.afspraken.filter(a => afspraakLaat(a)).length;
+  const uitgeklapt = !!V.tlUitgeklapt;
 
-  let h = `<div class="tl2-balk">
+  let h = briefing();
+
+  h += `<div class="tl2-balk">
     <button class="tl2-laatst" data-act="ga" data-view="logboek">
       <span class="stip"></span>
       <span class="tx"><b>Laatst gelogd</b> · ${esc(laatste ? laatste.tekst : "nog niets")}</span>
@@ -5297,6 +5505,9 @@ function vwVandaagTijdlijn() {
         `<button class="tl2-chip" style="--dot:${kl}" data-act="tl-filter" data-f="${k}" aria-pressed="${tlAan(k)}">
           <span class="stip" style="background:${kl}"></span>${lab}</button>`).join("")}
       ${werkChip("tl2-chip")}
+      ${uitgeklapt
+        ? `<button class="tl2-chip" data-act="tl-inklap">${ico("pijll", "width:14px;height:14px;transform:rotate(90deg)")} Inklappen</button>`
+        : ""}
       <button class="tl2-chip" data-act="tl-modus" data-m="lijst">${ico("lijst", "width:14px;height:14px")} Lijst</button>
     </div>
   </div>`;
@@ -5305,7 +5516,13 @@ function vwVandaagTijdlijn() {
     ${ico("let")}<span style="flex:1"><b>${laat} ${laat === 1 ? "ding is" : "dingen zijn"} over tijd</b>
     Bekijk ze in de lijstweergave.</span>${ico("pijlr")}</button>`;
 
-  h += `<div class="tl2">`;
+  if (!uitgeklapt) {
+    h += tlMini(items);
+    return h;
+  }
+
+  const onthuld = V._tlOnthul; V._tlOnthul = false;   // animeert alleen direct na het uitklappen, niet bij elke tekening
+  h += `<div class="tl2${onthuld ? " tl2-onthuld" : ""}">`;
   h += `<div style="text-align:center;margin:2px 0 6px;position:relative;z-index:3">
     <button class="knop klein rand" data-act="tl-verder">${ico("pijll", "transform:rotate(90deg)")} Verder terug</button></div>`;
 
@@ -5383,6 +5600,7 @@ teken = function () {
 };
 const _ga11 = ga;
 ga = function (view, param, terugStap) {
+  if (view === "vandaag") V.tlUitgeklapt = false;   // elke keer dat je het tabblad opent: weer de briefing + ingeklapt
   tlBewaar = false;
   _ga11(view, param, terugStap);
   tlBewaar = true;
@@ -5420,6 +5638,24 @@ document.addEventListener("click", async e => {
   } else if (act === "tl-dag") {
     tril(8);
     ga("dag", el.dataset.datum);
+  } else if (act === "tl-uitklap") {
+    const rail = el.closest(".tl-mini");
+    if (!rail || rail.classList.contains("tl-mini-weg")) return;
+    tril(6);
+    rail.classList.add("tl-mini-weg");
+    setTimeout(() => {
+      V.tlUitgeklapt = true;
+      V._tlOnthul = true;
+      tlBewaar = false; teken(); tlBewaar = true;
+      centreerVandaag(false);
+      requestAnimationFrame(() => centreerVandaag(true));
+    }, 240);
+  } else if (act === "tl-inklap") {
+    tril(6);
+    V.tlUitgeklapt = false;
+    tlBewaar = false; teken(); tlBewaar = true;
+    $("#scherm").scrollTop = 0;
+    $("#naarvandaag").classList.remove("zicht");
   } else if (act === "tl-open") {
     const soort = el.dataset.soort, id = el.dataset.id;
     if (!id) return;
@@ -6459,7 +6695,7 @@ document.addEventListener("click", async e => {
     }, true);
   } else if (act === "doc-weg") {
     const d = vind("werkdocs", id);
-    bevestig("Document verwijderen?", `<b>${esc(d.titel || "Zonder titel")}</b> en alles erin verdwijnt.`, "Verwijderen",
+    bevestigVerwijderen(
       async () => { await verwijder("werkdocs", id); ga("werk"); toast("Verwijderd"); });
   }
 });
@@ -6695,8 +6931,7 @@ function potjeBlad(id) {
     <div class="klein">Elke maand begint dit potje weer vol. Kies dit potje bij het loggen van een uitgave en het bedrag gaat van het potje af, niet van je dagbudget.</div>
     ${bestaat ? `<button class="knop breed gevaar" id="p-weg" style="margin-top:12px">${ico("prullenbak")} Verwijderen</button>` : ""}
   `, `<button class="knop breed primair" id="p-ok">${bestaat ? "Opslaan" : "Aanmaken"}</button>`);
-  if (bestaat) $("#p-weg").onclick = () => bevestig("Potje verwijderen?",
-    esc(p.naam) + " wordt verwijderd. Uitgaven die je er al aan koppelde blijven gewoon bestaan, maar tellen nergens meer bij op.", "Verwijderen",
+  if (bestaat) $("#p-weg").onclick = () => bevestigVerwijderen(
     async () => { await verwijder("potjes", p.id); ga("financieel"); toast("Verwijderd"); });
   $("#p-ok").onclick = async () => {
     const naam = $("#p-naam").value.trim();
@@ -6796,6 +7031,8 @@ function finBudget() {
   if (!b.maand) h += `<div class="banner blauw">${ico("let")}<div><b>Nog geen maandbudget</b>
     Vul in wat je deze maand te besteden hebt. De app deelt dat door ${dagen} dagen en houdt je dagbudget bij.</div></div>`;
 
+  h += `<div class="knoprij" style="margin:10px 0 2px">${csvKnop("budget", "Budget importeren (CSV)")}</div>`;
+
   h += `<div class="card card-pad">
     <div style="display:flex;justify-content:space-between;font-size:calc(14px * var(--t))">
       <b>${MAANDNAMEN[parseISO(v).getMonth()]}</b><span class="klein">dag ${dagnr} van ${dagen}</span></div>
@@ -6851,7 +7088,8 @@ function finUitgaven() {
   const cats = Object.entries(perCat).sort((a, b) => b[1] - a[1]);
   const totaal = maandU.reduce((s, u) => s + u.bedrag, 0);
 
-  let h = `<button class="knop breed primair" style="margin:10px 0" data-act="fin-uitgave">${ico("plus")} Uitgave loggen</button>`;
+  let h = `<button class="knop breed primair" style="margin:10px 0" data-act="fin-uitgave">${ico("plus")} Uitgave loggen</button>
+    <div class="knoprij" style="margin:0 0 10px">${csvKnop("uitgaven", "Uitgaven importeren (CSV)")}</div>`;
   if (!maandU.length) return h + `<div class="card">${leeg("🧾", "Nog niets uitgegeven deze maand",
     "Log een uitgave en hij gaat meteen van je dagbudget af.")}</div>`;
 
@@ -6902,7 +7140,8 @@ function finIncasso() {
   const v = vandaagISO();
   const komend = incassosIn(v, plusDagen(v, 62));
   const perMaand = incassoMaand(v);
-  let h = `<button class="knop breed primair" style="margin:10px 0" data-act="fin-incasso-nieuw">${ico("plus")} Incasso toevoegen</button>`;
+  let h = `<button class="knop breed primair" style="margin:10px 0" data-act="fin-incasso-nieuw">${ico("plus")} Incasso toevoegen</button>
+    <div class="knoprij" style="margin:0 0 10px">${csvKnop("incasso", "Incasso's importeren (CSV)")}</div>`;
   if (!S.incassos.length) return h + `<div class="card">${leeg("🔁", "Nog geen incasso's",
     "Zet je vaste lasten erin: huur, verzekering, abonnementen. De app rekent uit wanneer ze komen en waarschuwt je vooraf.")}</div>`;
 
@@ -7024,7 +7263,7 @@ function uitgaveBlad(id) {
     }
   };
   potjeInfoToon();
-  if (bestaat) $("#u-weg").onclick = () => bevestig("Uitgave verwijderen?", eur(u.bedrag) + " " + esc(u.omschrijving), "Verwijderen",
+  if (bestaat) $("#u-weg").onclick = () => bevestigVerwijderen(
     async () => { await verwijder("uitgaven", u.id); teken(); toast("Verwijderd"); });
   $("#u-ok").onclick = async () => {
     const n = +$("#u-bedrag").value || 0;
@@ -7116,7 +7355,7 @@ function incassoBlad(id) {
   };
   if (bestaat) {
     $("#i-ics").onclick = () => incassoNaarAgenda([i]);
-    $("#i-weg").onclick = () => bevestig("Incasso verwijderen?", esc(i.naam), "Verwijderen",
+    $("#i-weg").onclick = () => bevestigVerwijderen(
       async () => { await verwijder("incassos", i.id); ga("financieel"); toast("Verwijderd"); });
   }
   $("#i-ok").onclick = async () => {
@@ -7227,6 +7466,143 @@ tijdlijnItems = (van, tot) => {
   return uit;
 };
 
+/* ---------- CSV-import vanuit een ingevuld Excel-sjabloon ----------
+   Zo kan iemand het sjabloon elke maand invullen, als CSV opslaan
+   (Excel doet dat in NL vaak met een puntkomma — dat herkent de app zelf)
+   en dat bestand hier uploaden, zonder alles los in de app te hoeven typen. */
+const csvKnop = (doel, label) => `<button class="knop klein rand" data-act="fin-csv" data-doel="${doel}">${ico("upload")} ${esc(label || "CSV importeren")}</button>`;
+
+function csvVeld(regel, sep) {
+  const velden = []; let veld = "", inQuotes = false;
+  for (let i = 0; i < regel.length; i++) {
+    const c = regel[i];
+    if (inQuotes) {
+      if (c === '"') { if (regel[i + 1] === '"') { veld += '"'; i++; } else inQuotes = false; }
+      else veld += c;
+    } else if (c === '"') inQuotes = true;
+    else if (c === sep) { velden.push(veld); veld = ""; }
+    else veld += c;
+  }
+  velden.push(veld);
+  return velden;
+}
+function csvNaarRijen(tekst) {
+  const schoon = tekst.replace(/^﻿/, "").replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+  const regels = schoon.split("\n").filter(r => r.trim() !== "");
+  if (!regels.length) return [];
+  const sep = (regels[0].match(/;/g) || []).length > (regels[0].match(/,/g) || []).length ? ";" : ",";
+  const kop = csvVeld(regels[0], sep).map(k => k.trim().toLowerCase());
+  return regels.slice(1).map(regel => {
+    const velden = csvVeld(regel, sep);
+    const rij = {};
+    kop.forEach((k, i) => { rij[k] = (velden[i] || "").trim(); });
+    return rij;
+  });
+}
+/** Nederlandse en internationale getalnotatie: "1.234,56", "42,50", "42.50", "€ 42,50" mogen allemaal. */
+function csvGetal(s) {
+  let t = String(s == null ? "" : s).trim().replace(/[€\s]/g, "");
+  if (!t) return 0;
+  const neg = /^-/.test(t) || /^\(.*\)$/.test(t);
+  t = t.replace(/^-/, "").replace(/^\(|\)$/g, "");
+  if (t.includes(",") && t.includes(".")) {
+    t = t.lastIndexOf(",") > t.lastIndexOf(".") ? t.replace(/\./g, "").replace(",", ".") : t.replace(/,/g, "");
+  } else if (t.includes(",")) t = t.replace(",", ".");
+  const n = parseFloat(t);
+  return (isNaN(n) ? 0 : n) * (neg ? -1 : 1);
+}
+/** yyyy-mm-dd blijft zo. dd-mm-jjjj (met - of /) wordt omgezet — is het eerste getal boven de 12,
+    dan kan dat alleen de dag zijn; is juist het tweede boven de 12, dan staat de maand toch eerst
+    (bv. een Excel-export in het Engels). Zijn beide 12 of minder, dan gaat de app uit van de
+    Nederlandse volgorde dag-maand. Leeg of onherkenbaar → terugvalwaarde. */
+function csvDatum(s, terug) {
+  const t = String(s || "").trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(t)) return t;
+  const m = t.match(/^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})$/);
+  if (m) {
+    let dag = +m[1], maand = +m[2];
+    if (maand > 12 && dag <= 12) { const w = dag; dag = maand; maand = w; }
+    if (dag >= 1 && dag <= 31 && maand >= 1 && maand <= 12) return `${m[3]}-${pad(maand)}-${pad(dag)}`;
+  }
+  return terug !== undefined ? terug : vandaagISO();
+}
+/** Zoek een sleutel op de interne naam of het Nederlandse label, ongeacht hoofdletters. */
+function csvSleutel(waarde, lijst, terug) {
+  const t = String(waarde || "").trim().toLowerCase();
+  if (!t) return terug;
+  const m = lijst.find(([k, n]) => k.toLowerCase() === t || String(n || "").toLowerCase() === t);
+  return m ? m[0] : terug;
+}
+function csvJaNee(s, terug) {
+  const t = String(s || "").trim().toLowerCase();
+  if (!t) return terug;
+  return ["ja", "j", "yes", "y", "true", "waar", "1", "actief"].includes(t);
+}
+
+async function importUitgavenCSV(bestand) {
+  const rijen = csvNaarRijen(await bestand.text());
+  let aantal = 0; const potjesNietGevonden = new Set();
+  for (const r of rijen) {
+    const bedrag = csvGetal(r.bedrag);
+    if (!bedrag) continue;
+    const datum = csvDatum(r.datum);
+    const categorie = csvSleutel(r.categorie, CATEGORIEEN, "overig");
+    const omschrijving = (r.omschrijving || "").trim();
+    let potjeId = null;
+    const potjeNaam = (r.potje || "").trim();
+    if (potjeNaam) {
+      const p = S.potjes.find(x => x.naam.toLowerCase() === potjeNaam.toLowerCase());
+      if (p) potjeId = p.id; else potjesNietGevonden.add(potjeNaam);
+    }
+    await bewaar("uitgaven", { id: uid(), datum, bedrag, categorie, omschrijving, potjeId, ts: new Date().toISOString() });
+    aantal++;
+  }
+  teken();
+  toast(`${aantal} uitgave${aantal === 1 ? "" : "n"} geïmporteerd` +
+    (potjesNietGevonden.size ? ` — potje niet gevonden: ${[...potjesNietGevonden].join(", ")}` : ""), null, null, 6000);
+}
+
+const HERINNER_LIJST = [[7, "week ervoor"], [3, "3 dagen"], [1, "dag ervoor"], [0, "op de dag zelf"]];
+async function importIncassosCSV(bestand) {
+  const rijen = csvNaarRijen(await bestand.text());
+  let aantal = 0;
+  for (const r of rijen) {
+    const naam = (r.naam || "").trim();
+    if (!naam) continue;
+    const bedrag = csvGetal(r.bedrag);
+    const freq = csvSleutel(r.frequentie, Object.entries(FREQ).map(([k, f]) => [k, f[0]]), "maand");
+    const start = csvDatum(r["eerstvolgende datum"] || r.datum, vandaagISO());
+    const cat = csvSleutel(r.categorie, VLCATS, "abonnement");
+    const herinnerRuw = (r.herinneren || r.herinnering || "").split(/[,;]/).map(x => x.trim().toLowerCase()).filter(Boolean);
+    const herinner = herinnerRuw.map(x => {
+      const m = HERINNER_LIJST.find(([d, lab]) => String(d) === x || lab === x);
+      return m ? m[0] : (/^\d+$/.test(x) ? +x : null);
+    }).filter(x => x !== null).sort((a, b) => b - a);
+    const intensiteit = csvSleutel(r.nadruk || r.nadrukkelijkheid, Object.entries(INTENSITEIT).map(([k, x]) => [k, x.naam]), "zacht");
+    const actief = csvJaNee(r.actief, true);
+    await bewaar("incassos", { id: uid(), naam, bedrag, freq, start, cat, herinner, intensiteit, actief, agenda: false });
+    aantal++;
+  }
+  teken();
+  toast(`${aantal} post${aantal === 1 ? "" : "en"} geïmporteerd`, null, null, 5000);
+}
+
+async function importDagbudgetCSV(bestand) {
+  const rijen = csvNaarRijen(await bestand.text());
+  let aantal = 0;
+  for (const r of rijen) {
+    const bedrag = csvGetal(r.maandbudget || r.bedrag);
+    if (!bedrag) continue;
+    const maandRuw = (r.maand || "").trim();
+    const maand = /^\d{4}-\d{2}$/.test(maandRuw) ? maandRuw : maandSleutel(csvDatum(maandRuw));
+    await zetInst("budget_" + maand, bedrag);
+    if (csvJaNee(r["ook voor volgende maanden"] || r.standaard, false)) await zetInst("budgetStandaard", bedrag);
+    aantal++;
+  }
+  teken();
+  toast(`Dagbudget bijgewerkt voor ${aantal} maand${aantal === 1 ? "" : "en"}`, null, null, 5000);
+}
+
 /* ---------- Acties ---------- */
 document.addEventListener("click", async e => {
   const el = e.target.closest("[data-act]");
@@ -7248,6 +7624,20 @@ document.addEventListener("click", async e => {
     incassoBlad(null);
   } else if (act === "fin-incasso-open") {
     incassoBlad(el.dataset.id);
+  } else if (act === "fin-csv") {
+    const doel = el.dataset.doel;
+    const k = $("#csvkiezer");
+    k.onchange = async () => {
+      const f = k.files && k.files[0];
+      k.value = "";
+      if (!f) return;
+      try {
+        if (doel === "uitgaven") await importUitgavenCSV(f);
+        else if (doel === "incasso") await importIncassosCSV(f);
+        else if (doel === "budget") await importDagbudgetCSV(f);
+      } catch (err) { toast("Kon dit bestand niet lezen — is het een CSV uit het sjabloon?"); }
+    };
+    k.click();
   } else if (act === "fin-inkomen") {
     inkomenBlad();
   } else if (act === "fin-potje-nieuw") {
@@ -7354,10 +7744,12 @@ function finVaste() {
         `<span class="chip" style="color:${vlKleur(k)};background:color-mix(in srgb,${vlKleur(k)} 13%,transparent)">${esc(vlNaam(k))} ${eurKort(n)}</span>`).join("")}</div>` : ""}
   </div>`;
 
+  const csvRij = `<div class="knoprij" style="margin:10px 0 2px">${csvKnop("incasso", "Vaste lasten importeren (CSV)")}</div>`;
+
   if (!actief.length) {
     return h + `<div class="card">${leeg("🏠", "Nog geen vaste lasten",
       "Zet je huur, energie, verzekeringen en abonnementen erin. Je ziet dan precies wanneer ze van je rekening gaan.")}</div>
-      <button class="knop breed primair" data-act="fin-incasso-nieuw">${ico("plus")} Vaste last toevoegen</button>`;
+      <button class="knop breed primair" data-act="fin-incasso-nieuw">${ico("plus")} Vaste last toevoegen</button>` + csvRij;
   }
 
   h += `<div class="vl-kaart">
@@ -7394,7 +7786,7 @@ function finVaste() {
     </div>
   </div>`;
 
-  h += `<button class="knop breed primair" style="margin:12px 0 4px" data-act="fin-incasso-nieuw">${ico("plus")} Vaste last toevoegen</button>`;
+  h += `<button class="knop breed primair" style="margin:12px 0 4px" data-act="fin-incasso-nieuw">${ico("plus")} Vaste last toevoegen</button>` + csvRij;
 
   VLCATS.forEach(([k, naam]) => {
     const lijst = actief.filter(i => (i.cat || "abonnement") === k).sort((a, b) => perMaand(b) - perMaand(a));
@@ -7795,6 +8187,888 @@ document.addEventListener("click", async e => {
   }
 });
 </script>
+<script>
+"use strict";
+/* ==========================================================================
+   40. Voeding & Sport (Gezondheid)
+   Een kleine, ingebouwde voedingsdatabase (geen NEVO/RIVM-data — een
+   praktische startset met veelgebruikte producten) plus je eigen producten,
+   dagdoelen, een gewichtstrend en een sportplanning met herhalingen die
+   overal in de app (tijdlijn, .ics-export) vanzelf meedoet.
+   ========================================================================== */
+
+/* ---------- Basisvoeding: per 100 g/ml — kcal, eiwit, vet, koolhydraten ---------- */
+const VS_BASIS = [
+  ["Volkoren brood", 224, 9, 3.3, 38, 35, "snee"],
+  ["Wit brood", 265, 8, 1.5, 51, 35, "snee"],
+  ["Beschuit", 385, 10, 4, 76, 8, "stuk"],
+  ["Volkoren beschuit", 397, 11, 3, 76, 8, "stuk"],
+  ["Roggebrood", 220, 6.5, 1.2, 44, 35, "snee"],
+  ["Havermout (droog)", 375, 13, 7, 61, 40, "portie"],
+  ["Cornflakes", 378, 7, 1, 84, 30, "portie"],
+  ["Muesli", 360, 9, 6, 65, 50, "portie"],
+  ["Rijstwafel", 387, 8, 3, 80, 9, "stuk"],
+  ["Basmatirijst, gekookt", 121, 2.7, 0.4, 25, 150, "portie"],
+  ["Rijst, gekookt", 130, 2.7, 0.3, 28, 150, "portie"],
+  ["Volkoren pasta, gekookt", 124, 5, 1, 25, 200, "portie"],
+  ["Pasta, gekookt", 131, 5, 1, 27, 200, "portie"],
+  ["Aardappel, gekookt", 87, 2, 0.1, 20, 150, "portie"],
+  ["Aardappelpuree", 105, 2, 3, 16, 150, "portie"],
+  ["Friet, gebakken", 280, 3.4, 14, 35, 150, "portie"],
+  ["Cracker, volkoren", 420, 10, 12, 68, 8, "stuk"],
+  ["Cracotte", 383, 11, 2, 71, 8, "stuk"],
+  ["Croissant", 406, 8, 21, 45, 60, "stuk"],
+  ["Goudse kaas 48+", 356, 25, 28, 0, 20, "plak"],
+  ["Jong belegen kaas", 348, 25, 27, 0, 20, "plak"],
+  ["Light kaas 30+", 263, 30, 15, 0, 20, "plak"],
+  ["Halfvolle melk", 46, 3.4, 1.5, 4.7, 200, "glas"],
+  ["Volle melk", 64, 3.3, 3.6, 4.5, 200, "glas"],
+  ["Havermelk", 47, 1, 1.5, 7, 200, "glas"],
+  ["Sojamelk", 33, 3, 1.8, 1, 200, "glas"],
+  ["Magere yoghurt", 45, 4.5, 0.2, 5.5, 150, "portie"],
+  ["Griekse yoghurt", 97, 4, 8, 4, 150, "portie"],
+  ["Skyr naturel", 63, 11, 0.2, 4, 150, "portie"],
+  ["Kwark, mager", 60, 12, 0.3, 4, 150, "portie"],
+  ["Slagroom", 292, 2, 31, 3, 30, "eetlepel"],
+  ["Boter", 730, 0.6, 81, 0.5, 5, "klontje"],
+  ["Halvarine", 270, 0.2, 30, 0.5, 5, "klontje"],
+  ["Olijfolie", 884, 0, 100, 0, 10, "eetlepel"],
+  ["Ei, gekookt", 155, 13, 11, 1.1, 55, "stuk"],
+  ["Kipfilet, gebakken", 165, 31, 3.6, 0, 125, "portie"],
+  ["Kipfilet, rauw", 120, 22, 2.5, 0, 125, "portie"],
+  ["Rundergehakt, mager, gebakken", 217, 26, 12, 0, 100, "portie"],
+  ["Runderlapje", 158, 27, 5, 0, 125, "portie"],
+  ["Varkenshaas", 143, 22, 5.5, 0, 125, "portie"],
+  ["Zalm, gebakken", 208, 22, 13, 0, 125, "portie"],
+  ["Tonijn in water, blik", 116, 26, 1, 0, 90, "portie"],
+  ["Garnalen", 99, 21, 1, 0.5, 90, "portie"],
+  ["Tofu naturel", 76, 8, 4.8, 0.7, 100, "portie"],
+  ["Bruine bonen, blik", 90, 6, 0.5, 15, 150, "portie"],
+  ["Kikkererwten, blik", 139, 7.5, 2.6, 20, 150, "portie"],
+  ["Linzen, gekookt", 116, 9, 0.4, 20, 150, "portie"],
+  ["Hummus", 246, 8, 15, 20, 40, "portie"],
+  ["Pindakaas", 588, 25, 50, 16, 15, "eetlepel"],
+  ["Noten, gemengd, ongezouten", 607, 18, 54, 13, 25, "handje"],
+  ["Amandelen", 579, 21, 50, 22, 25, "handje"],
+  ["Appel", 52, 0.3, 0.2, 14, 120, "stuk", "fruit"],
+  ["Banaan", 89, 1.1, 0.3, 23, 120, "stuk", "fruit"],
+  ["Peer", 57, 0.4, 0.1, 15, 130, "stuk", "fruit"],
+  ["Sinaasappel", 47, 0.9, 0.1, 12, 150, "stuk", "fruit"],
+  ["Mandarijn", 53, 0.8, 0.3, 13, 90, "stuk", "fruit"],
+  ["Druiven", 69, 0.7, 0.2, 18, 100, "portie", "fruit"],
+  ["Aardbeien", 32, 0.7, 0.3, 7.7, 150, "portie", "fruit"],
+  ["Blauwe bessen", 57, 0.7, 0.3, 14, 100, "portie", "fruit"],
+  ["Avocado", 160, 2, 15, 8.5, 100, "half", "fruit"],
+  ["Tomaat", 18, 0.9, 0.2, 3.9, 100, "stuk", "groente"],
+  ["Komkommer", 15, 0.7, 0.1, 3.6, 100, "portie", "groente"],
+  ["Paprika", 31, 1, 0.3, 6, 100, "portie", "groente"],
+  ["Broccoli, gekookt", 35, 2.4, 0.4, 7, 100, "portie", "groente"],
+  ["Sla, krop", 15, 1.4, 0.2, 2.9, 50, "portie", "groente"],
+  ["Wortel", 41, 0.9, 0.2, 10, 80, "portie", "groente"],
+  ["Ui", 40, 1.1, 0.1, 9, 50, "stuk", "groente"],
+  ["Courgette", 17, 1.2, 0.3, 3.1, 100, "portie", "groente"],
+  ["Spinazie", 23, 2.9, 0.4, 3.6, 100, "portie", "groente"],
+  ["Champignons", 22, 3.1, 0.3, 3.3, 100, "portie", "groente"],
+  ["Hagelslag, puur", 470, 4, 22, 65, 15, "eetlepel"],
+  ["Jam", 250, 0.4, 0.1, 60, 15, "eetlepel"],
+  ["Honing", 304, 0.3, 0, 82, 15, "eetlepel"],
+  ["Chocolade, puur", 546, 5, 31, 61, 20, "stukje"],
+  ["Chocolade, melk", 535, 7.6, 30, 57, 20, "stukje"],
+  ["Chips, paprika", 536, 6, 34, 52, 30, "handje"],
+  ["Popcorn, naturel", 387, 12, 5, 78, 25, "portie"],
+  ["Snickers", 488, 8.4, 24, 60, 50, "reep"],
+  ["Pizza margherita", 266, 11, 10, 33, 200, "punt"],
+  ["Hamburger, fastfood", 250, 13, 9, 30, 110, "stuk"],
+  ["Koffie, zwart", 1, 0.1, 0, 0.1, 150, "kop"],
+  ["Thee, zonder suiker", 1, 0, 0, 0.3, 150, "kop"],
+  ["Cola", 42, 0, 0, 10.6, 250, "glas"],
+  ["Sinaasappelsap", 45, 0.7, 0.1, 10.4, 200, "glas"],
+  ["Bier, pils", 43, 0.4, 0, 3.2, 250, "glas"],
+  ["Wijn, rood", 85, 0.1, 0, 2.6, 150, "glas"]
+];
+function vsBasisLijst() {
+  return VS_BASIS.map(([naam, kcal, eiwit, vet, kh, portie, eenheid, groep], i) =>
+    ({ id: "basis:" + i, bron: "basis", naam, kcal100: kcal, eiwit100: eiwit, vet100: vet, kh100: kh, portie, eenheid, groep: groep || "" }));
+}
+function vsAlleProducten() {
+  return vsBasisLijst().concat(S.vs_producten.map(p => Object.assign({ bron: "eigen" }, p)));
+}
+function vsProduct(id) {
+  if (!id) return null;
+  if (String(id).startsWith("basis:")) return vsBasisLijst().find(p => p.id === id) || null;
+  return S.vs_producten.find(p => p.id === id) || null;
+}
+function vsZoekProducten(q) {
+  q = (q || "").toLowerCase().trim();
+  const alles = vsAlleProducten();
+  const gunstig = (a, b) => (a.bron === "eigen" ? -1 : 0) - (b.bron === "eigen" ? -1 : 0);
+  if (!q) return alles.slice().sort(gunstig).slice(0, 24);
+  return alles.filter(p => p.naam.toLowerCase().includes(q)).sort(gunstig).slice(0, 30);
+}
+function vsRecent(n) {
+  const gezien = new Set(), uit = [];
+  S.vs_logs.slice().sort((a, b) => b.ts < a.ts ? -1 : 1).forEach(l => {
+    if (gezien.has(l.voedingId)) return;
+    gezien.add(l.voedingId); uit.push(l.voedingId);
+  });
+  return uit.slice(0, n || 8).map(vsProduct).filter(Boolean);
+}
+
+/* ---------- Doelen (opgeslagen als instellingen, net als het dagbudget) ---------- */
+function vsDoelen() {
+  return {
+    kcalMin: inst("vsDoelKcalMin", 1900), kcalMax: inst("vsDoelKcalMax", 2300),
+    eiwit: inst("vsDoelEiwit", 90), vet: inst("vsDoelVet", 75), kh: inst("vsDoelKh", 250),
+    water: inst("vsDoelWater", 2000), groente: inst("vsDoelGroenteFruit", 250),
+    sportPerWeek: inst("vsDoelSportPerWeek", 3), beweegMinPerWeek: inst("vsDoelBeweegMin", 150),
+    trainingsBonus: inst("vsTrainingsBonus", 350), gewicht: inst("vsDoelGewicht", null)
+  };
+}
+
+/* ---------- Vandaag: logs & cijfers ---------- */
+function vsLogsOp(datum) { return S.vs_logs.filter(l => l.datum === datum); }
+function vsCijfersOp(datum) {
+  const logs = vsLogsOp(datum).filter(l => l.moment !== "water");
+  const water = vsLogsOp(datum).filter(l => l.moment === "water").reduce((s, l) => s + (l.ml || 0), 0);
+  const groente = logs.reduce((s, l) => s + (l.groenteFruitGram || 0), 0);
+  return {
+    kcal: logs.reduce((s, l) => s + l.kcal, 0),
+    eiwit: logs.reduce((s, l) => s + l.eiwit, 0),
+    vet: logs.reduce((s, l) => s + l.vet, 0),
+    kh: logs.reduce((s, l) => s + l.kh, 0),
+    water, groente, logs
+  };
+}
+function vsIsTrainingsdag(datum) {
+  return typeof vsSportOccurrences === "function" && vsSportOccurrences(datum, datum).length > 0;
+}
+function vsKcalDoelVandaag(datum) {
+  const d = vsDoelen();
+  const bonus = vsIsTrainingsdag(datum) ? d.trainingsBonus : 0;
+  return { min: d.kcalMin + bonus, max: d.kcalMax + bonus, bonus };
+}
+function vsMoment(moment) { return { ontbijt: "Ontbijt", lunch: "Lunch", diner: "Diner", tussendoor: "Tussendoor" }[moment] || moment; }
+
+async function vsLogToevoegen(opt) {
+  const p = opt.product;
+  const factor = opt.gram / 100;
+  const log = {
+    id: uid(), datum: opt.datum || vandaagISO(), moment: opt.moment,
+    bron: p.bron, voedingId: p.id, naam: p.naam, hoeveelheid: opt.gram, label: opt.label || (opt.gram + " g"),
+    kcal: Math.round(p.kcal100 * factor), eiwit: +(p.eiwit100 * factor).toFixed(1),
+    vet: +(p.vet100 * factor).toFixed(1), kh: +(p.kh100 * factor).toFixed(1),
+    groenteFruitGram: (p.groep === "groente" || p.groep === "fruit") ? opt.gram : 0,
+    ts: new Date().toISOString()
+  };
+  await bewaar("vs_logs", log);
+  return log;
+}
+async function vsWaterToevoegen(datum, ml) {
+  const log = { id: uid(), datum: datum || vandaagISO(), moment: "water", ml, kcal: 0, eiwit: 0, vet: 0, kh: 0, ts: new Date().toISOString() };
+  await bewaar("vs_logs", log);
+  return log;
+}
+async function vsNieuwProduct(v) {
+  const p = { id: uid(), bron: "eigen", naam: v.naam, kcal100: v.kcal100, eiwit100: v.eiwit100, vet100: v.vet100, kh100: v.kh100, portie: v.portie || 100, eenheid: v.eenheid || "portie", groep: "", gemaakt: new Date().toISOString() };
+  await bewaar("vs_producten", p);
+  return p;
+}
+async function vsGewichtToevoegen(datum, kg) {
+  const bestaand = S.vs_gewicht.find(g => g.datum === datum);
+  const g = bestaand || { id: uid(), datum };
+  g.kg = kg; g.ts = new Date().toISOString();
+  await bewaar("vs_gewicht", g);
+  return g;
+}
+function vsGewichtReeks(n) {
+  return S.vs_gewicht.slice().sort((a, b) => a.datum < b.datum ? -1 : 1).slice(-(n || 30));
+}
+function vsGewichtTrend() {
+  const r = vsGewichtReeks(14);
+  if (r.length < 2) return null;
+  return +(r[r.length - 1].kg - r[0].kg).toFixed(1);
+}
+
+/* ---------- Weekcijfers voor de "Energie per dag"-grafiek ---------- */
+function vsWeekReeks(dagen) {
+  const v = vandaagISO();
+  return Array.from({ length: dagen }, (_, i) => plusDagen(v, -(dagen - 1) + i)).map(d => ({ datum: d, ...vsCijfersOp(d) }));
+}
+
+/* ---------- Sportplanning: herhalende en losse trainingen ---------- */
+const VS_SPORTSOORT = { kracht: "Kracht", cardio: "Cardio", sportles: "Sportles", algemeen: "Algemeen" };
+function vsSportInPauze(s, datum) {
+  return s.pauzeVan && s.pauzeTot && datum >= s.pauzeVan && datum <= s.pauzeTot;
+}
+/** Alle keren dat er gesport moet worden tussen van en tot (incl.). */
+function vsSportOccurrences(van, tot) {
+  const uit = [];
+  S.vs_sport.forEach(s => {
+    if (!s.datum) return;
+    const voegToe = d => {
+      if (d < van || d > tot) return;
+      if (s.eindigt === "op" && s.eindDatum && d > s.eindDatum) return;
+      if (vsSportInPauze(s, d)) return;
+      uit.push({ datum: d, sportId: s.id, titel: s.titel, tijd: s.tijd || "", duurMin: s.duurMin || 60, soort: s.soort });
+    };
+    if (!s.herhaal) { voegToe(s.datum); return; }
+    let d = s.datum >= van ? s.datum : van;
+    // begin bij de eerst mogelijke herhaling op of na "van"
+    if (d > s.datum) {
+      let k = s.datum;
+      for (let i = 0; i < 400 && k < van; i++) k = volgendeDatum(k, s.herhaal);
+      d = k;
+    }
+    for (let i = 0; i < 400 && d && d <= tot; i++) { voegToe(d); d = volgendeDatum(d, s.herhaal); }
+  });
+  uit.sort((a, b) => a.datum === b.datum ? (a.tijd || "").localeCompare(b.tijd || "") : (a.datum < b.datum ? -1 : 1));
+  return uit;
+}
+function vsSportVandaag() { return vsSportOccurrences(vandaagISO(), vandaagISO()); }
+function vsSportStatus(sportId, datum) {
+  const l = S.vs_sportlog.find(x => x.sportId === sportId && x.datum === datum);
+  return l ? l.status : null;
+}
+async function vsSportAfvinken(sportId, datum, status) {
+  const bestaand = S.vs_sportlog.find(x => x.sportId === sportId && x.datum === datum);
+  const l = bestaand || { id: uid(), sportId, datum };
+  l.status = status; l.ts = new Date().toISOString();
+  await bewaar("vs_sportlog", l);
+  return l;
+}
+function vsSportWeekTelling() {
+  const v = vandaagISO(), ws = weekStart(v);
+  const dezeWeek = vsSportOccurrences(ws, plusDagen(ws, 6));
+  const gedaan = dezeWeek.filter(o => vsSportStatus(o.sportId, o.datum) === "gedaan").length;
+  return { totaal: dezeWeek.length, gedaan };
+}
+function vsSportNaarIcs(s) {
+  if (!s.datum) return null;
+  return icsEvenement({ uid: "vs-" + s.id, titel: "Sporten: " + s.titel, datum: s.datum, tijd: s.tijd, duurMin: s.duurMin || 60, herhaal: s.herhaal, alarmMin: s.herinnerMin == null ? 60 : s.herinnerMin });
+}
+async function vsExporteerSportagenda() {
+  const evs = S.vs_sport.map(vsSportNaarIcs).filter(Boolean);
+  if (!evs.length) { toast("Nog geen sportafspraken om te exporteren"); return; }
+  await deelOfDownload("futureme-sportagenda.ics", icsBestand(evs), "text/calendar");
+}
+
+/* ---------- Badge & onderschrift voor het Gezondheid-knopje ---------- */
+function vsTelling() {
+  const v = vandaagISO(), vandaagSport = vsSportVandaag().filter(o => vsSportStatus(o.sportId, v) !== "gedaan");
+  return vandaagSport.length || "";
+}
+function vsOnderschrift() {
+  const v = vandaagISO(), c = vsCijfersOp(v), d = vsKcalDoelVandaag(v);
+  return c.kcal ? `${getal(c.kcal)} kcal vandaag${d.bonus ? " · trainingsdag" : ""}` : "Nog niets gelogd vandaag";
+}
+
+/* ---------- Weergave: Gezondheid ---------- */
+function vwGezondheid() {
+  const m = V.vsModus || "vandaag";
+  let h = `<div class="segment vier" style="margin:2px 0 2px">
+    ${[["vandaag", "Vandaag"], ["loggen", "Loggen"], ["doelen", "Doelen"], ["planning", "Planning"]].map(([k, l]) =>
+      `<button data-act="vs" data-m="${k}" aria-pressed="${m === k}">${l}</button>`).join("")}</div>`;
+  return h + (m === "loggen" ? vsVwLoggen() : m === "doelen" ? vsVwDoelen() : m === "planning" ? vsVwPlanning() : vsVwVandaag());
+}
+
+function vsVwVandaag() {
+  const v = vandaagISO(), c = vsCijfersOp(v), d = vsDoelen(), kd = vsKcalDoelVandaag(v);
+  const kcalPct = clamp(Math.round(c.kcal / kd.max * 100), 0, 100);
+  const eiwitPct = clamp(Math.round(c.eiwit / d.eiwit * 100), 0, 100);
+  const waterPct = clamp(Math.round(c.water / d.water * 100), 0, 100);
+  const sportVandaag = vsSportVandaag();
+
+  let h = `<div class="vs-ringen">
+    <div class="vs-ring-item"><div class="ring" style="--p:${kcalPct};--rc:var(--gezond)"><span><b>${getal(c.kcal)}</b><small>/ ${getal(kd.max)}</small></span></div><div class="lab">kcal</div></div>
+    <div class="vs-ring-item"><div class="ring" style="--p:${eiwitPct};--rc:var(--accent)"><span><b>${getal(Math.round(c.eiwit))}</b><small>/ ${getal(d.eiwit)} g</small></span></div><div class="lab">eiwit</div></div>
+    <div class="vs-ring-item"><div class="ring" style="--p:${waterPct};--rc:#0ea5e9"><span><b>${(c.water / 1000).toFixed(1)}</b><small>/ ${(d.water / 1000).toFixed(1)} L</small></span></div><div class="lab">water</div></div>
+  </div>`;
+
+  h += `<div class="vs-macro">
+    <span class="lab">Koolhydraten</span><div class="balk"><i style="width:${clamp(c.kh / d.kh * 100, 0, 100)}%"></i></div>
+    <span class="waarde">${getal(Math.round(c.kh))}/${getal(d.kh)} g</span></div>
+  <div class="vs-macro">
+    <span class="lab">Vet</span><div class="balk"><i style="width:${clamp(c.vet / d.vet * 100, 0, 100)}%"></i></div>
+    <span class="waarde">${getal(Math.round(c.vet))}/${getal(d.vet)} g</span></div>
+  <div class="vs-macro">
+    <span class="lab">Groente/fruit</span><div class="balk"><i style="width:${clamp(c.groente / d.groente * 100, 0, 100)}%"></i></div>
+    <span class="waarde">${getal(c.groente)}/${getal(d.groente)} g</span></div>`;
+
+  h += `<div class="knoprij" style="margin-top:10px;flex-wrap:wrap">
+    <button class="knop klein rand" data-act="vs-water" data-ml="250">${ico("druppel", "width:15px;height:15px")} +250 ml</button>
+    <button class="knop klein rand" data-act="vs-water" data-ml="500">${ico("druppel", "width:15px;height:15px")} +500 ml</button>
+  </div>`;
+
+  if (sportVandaag.length) {
+    sportVandaag.forEach(o => {
+      const st = vsSportStatus(o.sportId, v);
+      h += `<button class="banner ${st === "gedaan" ? "blauw" : "rood"}" style="width:100%;text-align:left;margin-top:10px" data-act="ga" data-view="gezondheid">
+        ${ico(st === "gedaan" ? "check" : "sport")}
+        <span style="flex:1"><b>${st === "gedaan" ? "Training gedaan" : "Trainingsdag"}</b>${esc(o.titel)}${o.tijd ? " · " + esc(o.tijd) : ""}${kd.bonus ? " · doel +" + kd.bonus + " kcal · eet 1–3 uur vooraf koolhydraten" : ""}</span>
+        ${st === "gedaan" ? "" : `<span data-act="vs-sport-vink" data-id="${o.sportId}" data-datum="${o.datum}" style="display:flex">${ico("check")}</span>`}
+      </button>`;
+    });
+  }
+
+  const MOMENTEN = ["ontbijt", "lunch", "diner", "tussendoor"];
+  MOMENTEN.forEach(m => {
+    const items = c.logs.filter(l => l.moment === m);
+    const kcal = items.reduce((s, l) => s + l.kcal, 0);
+    h += `<div class="vs-maaltijd">
+      <div class="kop"><b>${vsMoment(m)}</b><span>${kcal ? getal(kcal) + " kcal" : ""}</span></div>
+      ${items.map(l => `<div class="vs-item">
+        <span class="nm">${esc(l.naam)}<small>${esc(l.label)}</small></span>
+        <span class="kc">${getal(l.kcal)} kcal</span>
+        <button class="icon-btn" style="min-width:30px;min-height:30px" data-act="vs-log-weg" data-id="${l.id}">${ico("x", "width:14px;height:14px")}</button>
+      </div>`).join("")}
+      <button class="vs-toevoeg" data-act="vs-log" data-moment="${m}">${ico("plus", "width:15px;height:15px")} Toevoegen</button>
+    </div>`;
+  });
+  return h;
+}
+
+function vsVwLoggen() {
+  const q = V.vsZoek || "";
+  const gevonden = vsZoekProducten(q);
+  const recent = q ? [] : vsRecent(8);
+  return `<div class="veld" style="margin-top:6px">
+    <input class="invoer" id="vs-zoekveld" type="text" value="${esc(q)}" placeholder="Zoek een product…" enterkeyhint="search">
+  </div>
+  ${recent.length ? `<div class="klein" style="margin:4px 2px 2px"><b>Recent</b></div>
+    <div class="card">${recent.map(p => vsZoekrij(p)).join("")}</div>` : ""}
+  <div class="klein" style="margin:10px 2px 2px"><b>${q ? "Zoekresultaten" : "Alles"}</b></div>
+  <div class="card">${gevonden.length ? gevonden.map(p => vsZoekrij(p)).join("") : leeg("🥗", "Niets gevonden", "Voeg 'm toe als eigen product.")}</div>
+  <button class="knop breed rand" style="margin-top:12px" data-act="vs-nieuw-product">${ico("plus")} Eigen product toevoegen</button>`;
+}
+function vsZoekrij(p) {
+  return `<button class="vs-zoekrij" data-act="vs-kies-product" data-id="${p.id}">
+    ${ico(p.bron === "eigen" ? "ster" : "vuur", "width:18px;height:18px;color:var(--gezond);flex:0 0 auto")}
+    <span class="nm"><b>${esc(p.naam)}</b><small>${getal(p.kcal100)} kcal · ${p.eiwit100}g eiwit / 100 g${p.bron === "eigen" ? " · eigen product" : ""}</small></span>
+    ${ico("pijlr", "width:15px;height:15px;color:var(--line2)")}
+  </button>`;
+}
+
+function vsVwDoelen() {
+  const d = vsDoelen(), reeks = vsWeekReeks(14);
+  const gem = Math.round(reeks.reduce((s, r) => s + r.kcal, 0) / reeks.length) || 0;
+  const max = Math.max(d.kcalMax, ...reeks.map(r => r.kcal), 1);
+  const sportW = vsSportWeekTelling();
+  const gewicht = vsGewichtReeks(30);
+  const trend = vsGewichtTrend();
+
+  let h = `<div class="card card-pad">
+    <div style="display:flex;justify-content:space-between;align-items:baseline">
+      <b style="font-size:calc(15px * var(--t))">Energie per dag</b>
+      <span class="klein">gem. ${getal(gem)}</span>
+    </div>
+    <div class="grafiek">
+      ${reeks.map(r => `<div class="kolom"><span class="staaf" style="height:${Math.max(3, Math.round(r.kcal / max * 100))}%;background:${r.kcal >= d.kcalMin && r.kcal <= d.kcalMax ? "var(--gezond)" : "var(--amber)"}"></span><span class="dag">${DAGKORT[weekdagVan(r.datum)]}</span></div>`).join("")}
+    </div>
+    <div class="klein" style="margin-top:6px">Doel: ${getal(d.kcalMin)}–${getal(d.kcalMax)} kcal per dag.</div>
+  </div>`;
+
+  h += `<div class="card card-pad">
+    <b style="font-size:calc(15px * var(--t))">Sporten</b>
+    <div class="klein" style="margin-top:2px">${sportW.gedaan} van de ${sportW.totaal || d.sportPerWeek} deze week · doel ${d.sportPerWeek}× per week</div>
+    <div class="balk" style="margin-top:8px"><i style="width:${clamp((sportW.gedaan / (d.sportPerWeek || 1)) * 100, 0, 100)}%"></i></div>
+  </div>`;
+
+  h += `<div class="card card-pad">
+    <div style="display:flex;justify-content:space-between;align-items:baseline">
+      <b style="font-size:calc(15px * var(--t))">Gewicht · trend</b>
+      ${trend != null ? `<span class="klein" style="color:${trend <= 0 ? "var(--gezond)" : "var(--muted)"}">${trend > 0 ? "+" : ""}${trend} kg</span>` : ""}
+    </div>
+    ${gewicht.length >= 2 ? vsLijnSvg(gewicht) : `<div class="klein" style="margin-top:8px">Nog geen twee metingen om een trend te tonen.</div>`}
+    <button class="knop klein rand" style="margin-top:10px" data-act="vs-gewicht">${ico("weegschaal", "width:15px;height:15px")} Gewicht loggen</button>
+  </div>`;
+
+  h += vsWeekevaluatie();
+
+  h += `<button class="knop breed rand" style="margin-top:4px" data-act="vs-doelen-bewerk">${ico("doel")} Doelen aanpassen</button>`;
+  return h;
+}
+function vsLijnSvg(reeks) {
+  const w = 300, hh = 60, kgs = reeks.map(r => r.kg), min = Math.min(...kgs), max = Math.max(...kgs);
+  const spreiding = Math.max(0.2, max - min);
+  const pts = reeks.map((r, i) => {
+    const x = reeks.length > 1 ? (i / (reeks.length - 1)) * w : 0;
+    const y = hh - ((r.kg - min) / spreiding) * (hh - 10) - 5;
+    return x + "," + y;
+  }).join(" ");
+  return `<div class="vs-lijn"><svg viewBox="0 0 ${w} ${hh}" preserveAspectRatio="none">
+    <polyline points="${pts}" fill="none" stroke="var(--gezond)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg></div>`;
+}
+function vsWeekevaluatie() {
+  const v = vandaagISO(), ws = weekStart(v);
+  if (v !== plusDagen(ws, 6) && weekdagVan(v) !== 0) return ""; // alleen tonen rond het einde van de week (zondag)
+  const reeks = Array.from({ length: 7 }, (_, i) => plusDagen(ws, i)).map(vsCijfersOp);
+  const d = vsDoelen();
+  const dagenBinnenDoel = reeks.filter(r => r.kcal >= d.kcalMin && r.kcal <= d.kcalMax).length;
+  const gemEiwit = Math.round(reeks.reduce((s, r) => s + r.eiwit, 0) / 7);
+  const sportW = vsSportWeekTelling();
+  const tip = gemEiwit < d.eiwit * 0.8
+    ? "Tip: plan wat vaker een eiwitrijk moment, zoals kwark of vis."
+    : sportW.gedaan < sportW.totaal
+      ? "Tip: er staat deze week nog een training open."
+      : "Mooi op schema deze week.";
+  return `<div class="card card-pad">
+    <b style="font-size:calc(15px * var(--t))">Weekevaluatie</b>
+    <div class="klein" style="margin-top:6px">
+      ${dagenBinnenDoel} van de 7 dagen binnen je energiedoel · gemiddeld ${gemEiwit} g eiwit per dag · ${sportW.gedaan}/${sportW.totaal || d.sportPerWeek} keer gesport.
+      <br>${tip}
+    </div>
+  </div>`;
+}
+
+function vsVwPlanning() {
+  const modus = V.vsPlanModus || "week";
+  const v = vandaagISO();
+  let h = `<div class="segment" style="margin:2px 0 10px">
+    ${[["week", "Week"], ["lijst", "Lijst"], ["reeksen", "Reeksen"]].map(([k, l]) =>
+      `<button data-act="vs-planmodus" data-m="${k}" aria-pressed="${modus === k}">${l}</button>`).join("")}
+  </div>`;
+
+  if (modus === "reeksen") {
+    if (!S.vs_sport.length) h += `<div class="card">${leeg("🏃", "Nog geen sportreeks", "Maak een herhalende training of een losse sportafspraak.")}</div>`;
+    else h += `<div class="card">${S.vs_sport.map(s => {
+      const w = vsSportOccurrences(v, plusDagen(v, 90));
+      const gedaan = w.filter(o => o.sportId === s.id && vsSportStatus(o.sportId, o.datum) === "gedaan").length;
+      const gepland = w.filter(o => o.sportId === s.id).length;
+      return `<button class="vs-sportkaart" data-act="vs-sport-open" data-id="${s.id}" style="width:100%;text-align:left;border-top:1px solid var(--line)">
+        <span class="dot"></span>
+        <span class="nm"><b>${esc(s.titel)}</b><small>${VS_SPORTSOORT[s.soort] || ""} · ${s.herhaal ? esc(herhaalTekst(s.herhaal)) : "eenmalig"}${s.pauzeVan ? " · gepauzeerd" : ""}</small></span>
+        <span class="klein">${gedaan}/${gepland || 1}</span>
+      </button>`;
+    }).join("")}</div>`;
+  } else {
+    const tot = modus === "week" ? plusDagen(v, 6) : plusDagen(v, 60);
+    const van = modus === "week" ? weekStart(v) : v;
+    const occ = vsSportOccurrences(van, tot);
+    if (!occ.length) h += `<div class="card">${leeg("🏃", "Niets gepland", "Zet een vaste training neer — die verschijnt vanzelf op je tijdlijn.")}</div>`;
+    else h += `<div class="card">${occ.map(o => {
+      const st = vsSportStatus(o.sportId, o.datum);
+      return `<button class="vs-sportkaart" data-act="vs-sport-open" data-id="${o.sportId}" style="width:100%;text-align:left;border-top:1px solid var(--line)">
+        <span class="dot" style="${st === "gedaan" ? "background:var(--line2)" : ""}"></span>
+        <span class="nm"><b>${esc(datumLabel(o.datum, true))}${o.tijd ? " · " + esc(o.tijd) : ""}</b><small>${esc(o.titel)}${st === "gedaan" ? " · gedaan" : ""}</small></span>
+      </button>`;
+    }).join("")}</div>`;
+  }
+
+  h += `<div class="knoprij" style="margin-top:12px;flex-wrap:wrap">
+    <button class="knop rand" data-act="vs-sport-nieuw">${ico("plus")} Nieuwe sportafspraak</button>
+    <button class="knop rand" data-act="vs-sport-export">${ico("komend")} Exporteer naar Agenda</button>
+  </div>`;
+  return h;
+}
+
+/* ---------- Blad: eten loggen (portie kiezen) ---------- */
+function vsLogBlad(product, moment) {
+  const portie = product.portie || 100, eenheid = product.eenheid || "portie";
+  bladOpen("Toevoegen aan " + vsMoment(moment), `
+    <div class="klein" style="margin-bottom:6px"><b>${esc(product.naam)}</b> · ${getal(product.kcal100)} kcal / 100 g</div>
+    <div class="rij3" id="vs-portiekeuze">
+      ${[0.5, 1, 1.5, 2].map(f => `<button class="keuze" data-portiefactor="${f}" aria-pressed="${f === 1}">${f}×</button>`).join("")}
+      <button class="keuze" data-portiefactor="eigen">gram</button>
+    </div>
+    <div class="veld" id="vs-gramveld" style="display:none;margin-top:10px">
+      <label for="vs-gram">Aantal gram</label>
+      <input class="invoer" id="vs-gram" type="number" min="1" max="2000" inputmode="numeric" value="${portie}">
+    </div>
+    <div class="card card-pad" style="margin-top:12px" id="vs-preview"></div>
+  `, `<button class="knop breed primair" id="vs-log-ok">Toevoegen</button>`);
+  let gram = portie;
+  const preview = () => {
+    const f = gram / 100;
+    $("#vs-preview").innerHTML = `<div class="rij3" style="text-align:center">
+      <div><b>${Math.round(product.kcal100 * f)}</b><div class="klein">kcal</div></div>
+      <div><b>${(product.eiwit100 * f).toFixed(1)}g</b><div class="klein">eiwit</div></div>
+      <div><b>${(product.kh100 * f).toFixed(1)}g</b><div class="klein">kh</div></div>
+    </div>`;
+  };
+  preview();
+  $$("[data-portiefactor]", $("#vs-portiekeuze")).forEach(b => b.onclick = () => {
+    $$("[data-portiefactor]", $("#vs-portiekeuze")).forEach(x => x.setAttribute("aria-pressed", "false"));
+    b.setAttribute("aria-pressed", "true");
+    if (b.dataset.portiefactor === "eigen") { $("#vs-gramveld").style.display = ""; gram = +$("#vs-gram").value || portie; }
+    else { $("#vs-gramveld").style.display = "none"; gram = Math.round(portie * +b.dataset.portiefactor); }
+    preview();
+  });
+  $("#vs-gram").oninput = () => { gram = +$("#vs-gram").value || 0; preview(); };
+  $("#vs-log-ok").onclick = async () => {
+    if (!gram) { toast("Vul een aantal gram in"); return; }
+    const f = $("[data-portiefactor][aria-pressed=\"true\"]", $("#vs-portiekeuze"));
+    const label = f && f.dataset.portiefactor !== "eigen" ? f.dataset.portiefactor + "× " + eenheid + " (" + gram + " g)" : gram + " g";
+    await vsLogToevoegen({ product, gram, moment, label });
+    bladSluit(); teken();
+    toast("Toegevoegd aan " + vsMoment(moment));
+  };
+}
+function vsNieuwProductBlad() {
+  bladOpen("Eigen product", `
+    <div class="veld"><label for="vp-naam">Naam</label><input class="invoer" id="vp-naam" type="text" placeholder="Bv. Havermout met banaan"></div>
+    <div class="klein" style="margin:4px 2px 10px">Vul de waarden per 100 gram of 100 ml in — dat vind je meestal op de verpakking.</div>
+    <div class="rij2">
+      <div class="veld"><label for="vp-kcal">Kcal / 100 g</label><input class="invoer" id="vp-kcal" type="number" min="0" inputmode="numeric"></div>
+      <div class="veld"><label for="vp-eiwit">Eiwit / 100 g</label><input class="invoer" id="vp-eiwit" type="number" min="0" step="0.1" inputmode="decimal"></div>
+    </div>
+    <div class="rij2">
+      <div class="veld"><label for="vp-vet">Vet / 100 g</label><input class="invoer" id="vp-vet" type="number" min="0" step="0.1" inputmode="decimal"></div>
+      <div class="veld"><label for="vp-kh">Koolhydraten / 100 g</label><input class="invoer" id="vp-kh" type="number" min="0" step="0.1" inputmode="decimal"></div>
+    </div>
+    <div class="rij2">
+      <div class="veld"><label for="vp-portie">Standaardportie (g)</label><input class="invoer" id="vp-portie" type="number" min="1" inputmode="numeric" value="100"></div>
+      <div class="veld"><label for="vp-eenheid">Eenheid</label><input class="invoer" id="vp-eenheid" type="text" value="portie" placeholder="snee, plak, glas…"></div>
+    </div>
+  `, `<button class="knop breed primair" id="vp-ok">Opslaan</button>`);
+  $("#vp-ok").onclick = async () => {
+    const naam = $("#vp-naam").value.trim();
+    if (!naam) { toast("Vul een naam in"); return; }
+    const p = await vsNieuwProduct({
+      naam, kcal100: +$("#vp-kcal").value || 0, eiwit100: +$("#vp-eiwit").value || 0,
+      vet100: +$("#vp-vet").value || 0, kh100: +$("#vp-kh").value || 0,
+      portie: +$("#vp-portie").value || 100, eenheid: $("#vp-eenheid").value.trim() || "portie"
+    });
+    bladSluit(); toast("Product opgeslagen"); teken();
+    vsLogBlad(p, V.vsLogMoment || "tussendoor");
+  };
+}
+function vsGewichtBlad() {
+  const laatste = vsGewichtReeks(1)[0];
+  bladOpen("Gewicht loggen", `
+    <div class="veld"><label for="vg-kg">Gewicht vandaag (kg)</label>
+      <input class="invoer" id="vg-kg" type="number" min="20" max="300" step="0.1" inputmode="decimal" value="${laatste && laatste.datum === vandaagISO() ? laatste.kg : ""}"></div>
+  `, `<button class="knop breed primair" id="vg-ok">Opslaan</button>`);
+  setTimeout(() => $("#vg-kg").focus(), 250);
+  $("#vg-ok").onclick = async () => {
+    const kg = +$("#vg-kg").value;
+    if (!kg) { toast("Vul je gewicht in"); return; }
+    await vsGewichtToevoegen(vandaagISO(), kg);
+    bladSluit(); teken(); toast("Gewicht opgeslagen");
+  };
+}
+/** Doelen bewerken — kcal-band, macro's, sportdoel, gewichtsdoel. */
+function vsDoelenBlad() {
+  const d = vsDoelen();
+  bladOpen("Doelen aanpassen", `
+    <div class="veld"><span class="labeltekst">Energie per dag (kcal)</span>
+      <div class="rij2">
+        <input class="invoer" id="vd-kcalmin" type="number" inputmode="numeric" value="${d.kcalMin}" placeholder="minimaal">
+        <input class="invoer" id="vd-kcalmax" type="number" inputmode="numeric" value="${d.kcalMax}" placeholder="maximaal">
+      </div></div>
+    <div class="rij3">
+      <div class="veld"><label for="vd-eiwit">Eiwit (g)</label><input class="invoer" id="vd-eiwit" type="number" inputmode="numeric" value="${d.eiwit}"></div>
+      <div class="veld"><label for="vd-vet">Vet (g)</label><input class="invoer" id="vd-vet" type="number" inputmode="numeric" value="${d.vet}"></div>
+      <div class="veld"><label for="vd-kh">Kh (g)</label><input class="invoer" id="vd-kh" type="number" inputmode="numeric" value="${d.kh}"></div>
+    </div>
+    <div class="rij2">
+      <div class="veld"><label for="vd-water">Water (ml)</label><input class="invoer" id="vd-water" type="number" inputmode="numeric" value="${d.water}"></div>
+      <div class="veld"><label for="vd-groente">Groente/fruit (g)</label><input class="invoer" id="vd-groente" type="number" inputmode="numeric" value="${d.groente}"></div>
+    </div>
+    <div class="rij2">
+      <div class="veld"><label for="vd-sport">Sporten (× per week)</label><input class="invoer" id="vd-sport" type="number" min="0" max="14" inputmode="numeric" value="${d.sportPerWeek}"></div>
+      <div class="veld"><label for="vd-bonus">Extra kcal op trainingsdagen</label><input class="invoer" id="vd-bonus" type="number" inputmode="numeric" value="${d.trainingsBonus}"></div>
+    </div>
+    <div class="veld"><label for="vd-gewicht">Streefgewicht (kg, optioneel)</label><input class="invoer" id="vd-gewicht" type="number" step="0.1" inputmode="decimal" value="${d.gewicht || ""}"></div>
+  `, `<button class="knop breed primair" id="vd-ok">Opslaan</button>`);
+  $("#vd-ok").onclick = async () => {
+    await zetInst("vsDoelKcalMin", +$("#vd-kcalmin").value || 0);
+    await zetInst("vsDoelKcalMax", +$("#vd-kcalmax").value || 0);
+    await zetInst("vsDoelEiwit", +$("#vd-eiwit").value || 0);
+    await zetInst("vsDoelVet", +$("#vd-vet").value || 0);
+    await zetInst("vsDoelKh", +$("#vd-kh").value || 0);
+    await zetInst("vsDoelWater", +$("#vd-water").value || 0);
+    await zetInst("vsDoelGroenteFruit", +$("#vd-groente").value || 0);
+    await zetInst("vsDoelSportPerWeek", +$("#vd-sport").value || 0);
+    await zetInst("vsTrainingsBonus", +$("#vd-bonus").value || 0);
+    await zetInst("vsDoelGewicht", $("#vd-gewicht").value ? +$("#vd-gewicht").value : null);
+    bladSluit(); teken(); toast("Doelen bewaard");
+  };
+}
+/** Nieuwe of te bewerken sportafspraak. */
+function vsSportBlad(id) {
+  const s = id ? S.vs_sport.find(x => x.id === id) : null;
+  const bestaat = !!s;
+  const h = s ? Object.assign({}, s) : { titel: "Sporten", soort: "kracht", datum: vandaagISO(), tijd: "18:30", duurMin: 60, herhaal: null, eindigt: null, eindDatum: "", herinnerMin: 60, pauzeVan: "", pauzeTot: "" };
+  bladOpen(bestaat ? "Sportafspraak bewerken" : "Nieuwe sportafspraak", `
+    <div class="veld"><label for="vs-titel">Titel</label><input class="invoer" id="vs-titel" type="text" value="${esc(h.titel)}"></div>
+    <div class="veld"><span class="labeltekst">Soort</span>
+      <div class="keuzerij">${Object.entries(VS_SPORTSOORT).map(([k, l]) => `<button class="keuze" data-vssoort="${k}" aria-pressed="${h.soort === k}">${l}</button>`).join("")}</div></div>
+    <div class="rij3">
+      <div class="veld"><label for="vs-datum">Start</label><input class="invoer" id="vs-datum" type="date" value="${h.datum}"></div>
+      <div class="veld"><label for="vs-tijd">Tijd</label><input class="invoer" id="vs-tijd" type="time" value="${h.tijd}"></div>
+      <div class="veld"><label for="vs-duur">Duur (min)</label><input class="invoer" id="vs-duur" type="number" inputmode="numeric" value="${h.duurMin}"></div>
+    </div>
+    <div class="veld"><span class="labeltekst">Herhaling</span>
+      <select class="invoer" id="vs-herhaal-soort">
+        <option value=""${!h.herhaal ? " selected" : ""}>Niet herhalen</option>
+        <option value="week"${h.herhaal && h.herhaal.soort === "week" ? " selected" : ""}>Wekelijks op dagen</option>
+        <option value="maand"${h.herhaal && h.herhaal.soort === "maand" ? " selected" : ""}>Maandelijks</option>
+      </select>
+      <div id="vs-herhaal-dagen" class="keuzerij" style="margin-top:9px;${h.herhaal && h.herhaal.soort === "week" ? "" : "display:none"}">
+        ${[1, 2, 3, 4, 5, 6, 0].map(d => `<button class="keuze dag" data-vsdag="${d}" aria-pressed="${h.herhaal && (h.herhaal.dagen || []).includes(d)}">${DAGKORT[d]}</button>`).join("")}
+      </div></div>
+    <div class="rij2">
+      <div class="veld"><span class="labeltekst">Eindigt</span>
+        <div class="keuzerij">
+          <button class="keuze" data-vseind="nooit" aria-pressed="${h.eindigt !== "op"}">Nooit</button>
+          <button class="keuze" data-vseind="op" aria-pressed="${h.eindigt === "op"}">Op datum</button>
+        </div></div>
+      <div class="veld" id="vs-einddatumveld" style="${h.eindigt === "op" ? "" : "display:none"}"><label for="vs-einddatum">Einddatum</label><input class="invoer" id="vs-einddatum" type="date" value="${h.eindDatum || ""}"></div>
+    </div>
+    <div class="veld"><label for="vs-herinner">Herinnering (minuten vooraf)</label><input class="invoer" id="vs-herinner" type="number" inputmode="numeric" value="${h.herinnerMin}"></div>
+    <details class="veld" ${h.pauzeVan ? "open" : ""}>
+      <summary class="labeltekst" style="cursor:pointer;min-height:38px;display:flex;align-items:center">Pauzeren (bv. vakantie of blessure)</summary>
+      <div class="rij2">
+        <div class="veld"><label for="vs-pauzevan">Van</label><input class="invoer" id="vs-pauzevan" type="date" value="${h.pauzeVan || ""}"></div>
+        <div class="veld"><label for="vs-pauzetot">Tot en met</label><input class="invoer" id="vs-pauzetot" type="date" value="${h.pauzeTot || ""}"></div>
+      </div>
+    </details>
+    ${bestaat ? `<button class="knop breed gevaar" style="margin-top:6px" data-act="vs-sport-weg" data-id="${s.id}">${ico("prullenbak")} Verwijderen</button>` : ""}
+  `, `<button class="knop breed primair" id="vs-sport-ok">Opslaan</button>`);
+  $$("[data-vssoort]").forEach(b => b.onclick = () => { $$("[data-vssoort]").forEach(x => x.setAttribute("aria-pressed", "false")); b.setAttribute("aria-pressed", "true"); });
+  const herhSoort = $("#vs-herhaal-soort");
+  herhSoort.onchange = () => $("#vs-herhaal-dagen").style.display = herhSoort.value === "week" ? "" : "none";
+  $$("[data-vsdag]").forEach(b => b.onclick = () => b.setAttribute("aria-pressed", b.getAttribute("aria-pressed") === "true" ? "false" : "true"));
+  $$("[data-vseind]").forEach(b => b.onclick = () => {
+    $$("[data-vseind]").forEach(x => x.setAttribute("aria-pressed", "false")); b.setAttribute("aria-pressed", "true");
+    $("#vs-einddatumveld").style.display = b.dataset.vseind === "op" ? "" : "none";
+  });
+  $("#vs-sport-ok").onclick = async () => {
+    const titel = $("#vs-titel").value.trim();
+    if (!titel) { toast("Vul een titel in"); return; }
+    const soort = ($("[data-vssoort][aria-pressed=\"true\"]") || {}).dataset ? $("[data-vssoort][aria-pressed=\"true\"]").dataset.vssoort : "algemeen";
+    const hs = herhSoort.value;
+    const herhaal = hs ? { soort: hs, elke: 1, dagen: hs === "week" ? $$("[data-vsdag]").filter(x => x.getAttribute("aria-pressed") === "true").map(x => +x.dataset.vsdag).sort() : [] } : null;
+    const eindigt = ($("[data-vseind][aria-pressed=\"true\"]") || {}).dataset ? $("[data-vseind][aria-pressed=\"true\"]").dataset.vseind : "nooit";
+    const obj = Object.assign({}, h, {
+      id: s ? s.id : uid(), titel, soort,
+      datum: $("#vs-datum").value || vandaagISO(), tijd: $("#vs-tijd").value || "", duurMin: +$("#vs-duur").value || 60,
+      herhaal, eindigt: eindigt === "op" ? "op" : null, eindDatum: eindigt === "op" ? $("#vs-einddatum").value : "",
+      herinnerMin: +$("#vs-herinner").value || 0, pauzeVan: $("#vs-pauzevan").value || "", pauzeTot: $("#vs-pauzetot").value || "",
+      gemaakt: h.gemaakt || new Date().toISOString()
+    });
+    await bewaar("vs_sport", obj);
+    bladSluit(); teken(); toast(bestaat ? "Sportafspraak bewaard" : "Sportafspraak toegevoegd");
+  };
+}
+
+/* ---------- Klik-afhandeling ---------- */
+document.addEventListener("click", async e => {
+  const el = e.target.closest("[data-act]");
+  if (!el) return;
+  const act = el.dataset.act;
+  if (act === "vs") {
+    V.vsModus = el.dataset.m; teken();
+  } else if (act === "vs-planmodus") {
+    V.vsPlanModus = el.dataset.m; teken();
+  } else if (act === "vs-log") {
+    V.vsLogMoment = el.dataset.moment;
+    bladOpen("Kies een product", `
+      <div class="veld"><input class="invoer" id="vs-snelzoek" type="text" placeholder="Zoek een product…" enterkeyhint="search"></div>
+      <div class="klein" style="margin:4px 2px 2px"><b>Recent</b></div>
+      <div class="card" id="vs-snelresultaat">${vsRecent(8).map(vsZoekrij).join("")}</div>
+      <button class="knop breed rand" style="margin-top:12px" data-act="vs-nieuw-product">${ico("plus")} Eigen product toevoegen</button>`,
+      "");
+    const veld = $("#vs-snelzoek");
+    veld.oninput = () => { $("#vs-snelresultaat").innerHTML = vsZoekProducten(veld.value).map(vsZoekrij).join("") || leeg("🥗", "Niets gevonden", ""); };
+    setTimeout(() => veld.focus(), 250);
+  } else if (act === "vs-kies-product") {
+    const p = vsProduct(el.dataset.id);
+    if (p) vsLogBlad(p, V.vsLogMoment || "tussendoor");
+  } else if (act === "vs-nieuw-product") {
+    vsNieuwProductBlad();
+  } else if (act === "vs-log-weg") {
+    tril(6);
+    await verwijder("vs_logs", el.dataset.id); teken();
+  } else if (act === "vs-water") {
+    tril(6);
+    await vsWaterToevoegen(vandaagISO(), +el.dataset.ml); teken(); toast("+" + el.dataset.ml + " ml water");
+  } else if (act === "vs-gewicht") {
+    vsGewichtBlad();
+  } else if (act === "vs-doelen-bewerk") {
+    vsDoelenBlad();
+  } else if (act === "vs-sport-nieuw") {
+    vsSportBlad(null);
+  } else if (act === "vs-sport-open") {
+    vsSportBlad(el.dataset.id);
+  } else if (act === "vs-sport-weg") {
+    const id = el.dataset.id;
+    bevestigVerwijderen(async () => {
+      await verwijder("vs_sport", id);
+      S.vs_sportlog.filter(l => l.sportId === id).forEach(l => verwijder("vs_sportlog", l.id));
+      bladSluit(); teken(); toast("Sportafspraak verwijderd");
+    });
+  } else if (act === "vs-sport-vink") {
+    tril(8);
+    await vsSportAfvinken(el.dataset.id, el.dataset.datum, "gedaan"); teken(); toast("Training afgevinkt 💪");
+  } else if (act === "vs-sport-export") {
+    vsExporteerSportagenda();
+  }
+});
+
+/* ---------- Sport meedraaien op de gewone tijdlijn ---------- */
+TL_SOORTEN.sport = ["Sport", "var(--gezond)"];
+const _tijdlijnItems18 = tijdlijnItems;
+tijdlijnItems = (van, tot) => {
+  const uit = _tijdlijnItems18(van, tot);
+  if (tlAan("sport")) {
+    vsSportOccurrences(van, tot).forEach(o => {
+      (uit[o.datum] = uit[o.datum] || []).push({
+        soort: "sport", tijd: o.tijd || "", gepland: true,
+        tekst: "Sporten: " + o.titel + (vsSportStatus(o.sportId, o.datum) === "gedaan" ? " ✓" : ""),
+        ref: o.sportId, refSoort: "sport", kleur: "var(--gezond)"
+      });
+    });
+    for (const d in uit) uit[d].sort((a, b) => (a.tijd || "99:99") < (b.tijd || "99:99") ? -1 : 1);
+  }
+  return uit;
+};
+document.addEventListener("click", e => {
+  const el = e.target.closest('[data-act="tl-open"][data-soort="sport"]');
+  if (!el || !el.dataset.id) return;
+  ga("gezondheid"); V.vsModus = "planning"; teken();
+});
+</script>
+
+<script>
+"use strict";
+/* ==========================================================================
+   41. Inbox — belangrijke berichten, meldingen en herinneringen, bovenin
+   ========================================================================== */
+const MELD_SOORTEN = { systeem: "Systeem", herinnering: "Herinnering", rapport: "Overzicht" };
+
+async function meldingMaak(v) {
+  const m = Object.assign({ id: uid(), soort: "systeem", titel: "", tekst: "", onderwerp: "", gelezen: false, ts: new Date().toISOString(), datum: vandaagISO(), actieView: null, actieParam: null }, v);
+  await bewaar("meldingen", m);
+  return m;
+}
+async function meldingenSeedInit() {
+  if (S.meldingen.length || inst("meldSeedGedaan", false)) return;
+  await zetInst("meldSeedGedaan", true);
+  await meldingMaak({
+    soort: "systeem", titel: "Welkom in je inbox",
+    tekst: "Hier komen belangrijke berichten en herinneringen samen — ingedeeld op soort en onderwerp. Vanaf de 1e van de maand komt hier automatisch een maandoverzicht, en op de 17e een financieel overzicht.",
+    onderwerp: "FutureMe"
+  });
+  if (V.view === "meldingen") teken();
+}
+/** Dingen die geen opgeslagen melding zijn, maar wel aandacht verdienen — live berekend. */
+function meldingenSignalen() {
+  const v = vandaagISO();
+  const uit = [];
+  const laatTaken = openTaken().filter(t => t.datum && t.datum < v).length;
+  const laatAfspr = S.afspraken.filter(a => typeof afspraakLaat === "function" && afspraakLaat(a)).length;
+  if (laatTaken + laatAfspr) uit.push({
+    soort: "herinnering", onderwerp: "Vandaag", kleur: "rood",
+    titel: (laatTaken + laatAfspr) + (laatTaken + laatAfspr === 1 ? " ding is" : " dingen zijn") + " over tijd",
+    tekst: "Bekijk ze op je tijdlijn.", actieView: "vandaag"
+  });
+  if (typeof vsSportVandaag === "function") {
+    const open = vsSportVandaag().filter(o => vsSportStatus(o.sportId, v) !== "gedaan");
+    if (open.length) uit.push({
+      soort: "herinnering", onderwerp: "Gezondheid", kleur: "blauw",
+      titel: "Vandaag staat er training gepland", tekst: open.map(o => o.titel + (o.tijd ? " · " + o.tijd : "")).join(", "),
+      actieView: "gezondheid"
+    });
+  }
+  const laatste = inst("laatsteBackup", null);
+  const dagen = laatste ? Math.floor((Date.now() - new Date(laatste)) / 86400000) : null;
+  if ((S.taken.length + S.afspraken.length) >= 5 && (dagen === null || dagen >= 14))
+    uit.push({ soort: "systeem", onderwerp: "FutureMe", kleur: "", titel: "Tijd voor een back-up", tekst: "Je hebt al even geen back-up gemaakt.", actieView: "backup" });
+  return uit;
+}
+function meldingenOngelezenAantal() {
+  return S.meldingen.filter(m => !m.gelezen).length + meldingenSignalen().length;
+}
+function meldingenOnderschrift() {
+  const n = meldingenOngelezenAantal();
+  return n ? n + (n === 1 ? " nieuw bericht" : " nieuwe berichten") : "Alles gelezen";
+}
+function meldingenBadgeBijwerken() {
+  const dot = $("#inboxdot");
+  if (dot) dot.classList.toggle("verborgen", meldingenOngelezenAantal() === 0);
+}
+async function meldingLezen(id) {
+  const m = S.meldingen.find(x => x.id === id);
+  if (m && !m.gelezen) { m.gelezen = true; await bewaar("meldingen", m); }
+}
+async function meldingenAllesGelezen() {
+  for (const m of S.meldingen.filter(x => !x.gelezen)) { m.gelezen = true; await bewaar("meldingen", m); }
+}
+
+function vwMeldingen() {
+  meldingenSeedInit();
+  const signalen = meldingenSignalen();
+  const soortF = V.meldSoort || "alles";
+  const berichten = S.meldingen.slice().sort((a, b) => b.ts < a.ts ? -1 : 1).filter(m => soortF === "alles" || m.soort === soortF);
+  const onderwerpen = Array.from(new Set(S.meldingen.map(m => m.onderwerp).filter(Boolean)));
+
+  let h = "";
+  if (signalen.length) {
+    h += sectie("Herinneringen", signalen.length);
+    h += `<div class="card">${signalen.map(s => `<button class="banner ${s.kleur || ""}" style="width:100%;text-align:left;border-radius:0;box-shadow:none${signalen.indexOf(s) ? ";border-top:1px solid var(--line)" : ""}" data-act="ga" data-view="${s.actieView}">
+      ${ico("bel")}<span style="flex:1"><b>${esc(s.titel)}</b>${esc(s.tekst)}</span>${ico("pijlr")}</button>`).join("")}</div>`;
+  }
+
+  h += sectie("Berichten", S.meldingen.length, S.meldingen.some(m => !m.gelezen) ? `<button class="actie" data-act="meld-alles-gelezen">Alles gelezen</button>` : "");
+  h += `<div class="segment" style="margin-bottom:10px">
+    ${[["alles", "Alles"]].concat(Object.entries(MELD_SOORTEN)).map(([k, l]) =>
+      `<button data-act="meld-filter" data-m="${k}" aria-pressed="${soortF === k}">${l}</button>`).join("")}
+  </div>`;
+  if (onderwerpen.length > 1) h += `<div class="keuzerij" style="margin-bottom:10px">
+    ${onderwerpen.map(o => `<span class="chip">${esc(o)}</span>`).join("")}</div>`;
+
+  h += berichten.length ? `<div class="card">${berichten.map(m => `
+    <button class="rijknop" data-act="meld-open" data-id="${m.id}" style="align-items:flex-start">
+      ${!m.gelezen ? `<span class="tab-dot" style="position:relative;transform:none;margin-top:5px;flex:0 0 auto"></span>` : `<span style="width:8px;flex:0 0 auto"></span>`}
+      <span class="nm">
+        <b>${esc(m.titel)}</b>
+        <span class="klein" style="display:block;margin-top:2px">${esc(m.tekst)}</span>
+        <span class="klein" style="display:block;margin-top:3px;color:var(--faint)">${esc(m.onderwerp || MELD_SOORTEN[m.soort] || "")} · ${datumLabel((m.ts || "").slice(0, 10))}</span>
+      </span>
+      <button class="icon-btn" style="min-width:32px;min-height:32px" data-act="meld-weg" data-id="${m.id}">${ico("x", "width:15px;height:15px")}</button>
+    </button>`).join("")}</div>`
+    : `<div class="card">${leeg("📬", "Geen berichten", "Hier verschijnen belangrijke meldingen en, vanaf de 1e en de 17e van de maand, je automatische overzichten.")}</div>`;
+
+  return h;
+}
+
+document.addEventListener("click", async e => {
+  const el = e.target.closest("[data-act]");
+  if (!el) return;
+  const act = el.dataset.act;
+  if (act === "meld-filter") { V.meldSoort = el.dataset.m; teken(); }
+  else if (act === "meld-open") {
+    const m = S.meldingen.find(x => x.id === el.dataset.id);
+    if (!m) return;
+    await meldingLezen(m.id);
+    if (m.actieView) ga(m.actieView, m.actieParam); else teken();
+  } else if (act === "meld-weg") {
+    const id = el.dataset.id;
+    bevestigVerwijderen(async () => { await verwijder("meldingen", id); teken(); });
+  } else if (act === "meld-alles-gelezen") {
+    await meldingenAllesGelezen(); teken(); toast("Alles gelezen");
+  }
+});
+
+const _naTekenen18 = naTekenen;
+naTekenen = function () {
+  _naTekenen18(); meldingenBadgeBijwerken();
+  const vz = $("#vs-zoekveld");
+  if (vz) {
+    vz.oninput = () => {
+      V.vsZoek = vz.value; clearTimeout(vz._t);
+      vz._t = setTimeout(() => {
+        const p = vz.selectionStart; teken();
+        const n = $("#vs-zoekveld");
+        if (n) { n.focus(); try { n.setSelectionRange(p, p); } catch (e) {} }
+      }, 320);
+    };
+  }
+};
+</script>
+
 <script>
 "use strict";
 /* Alles is geladen — de app kan starten. */
