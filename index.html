@@ -1099,6 +1099,39 @@ html[data-thema="donker"]{--gezond:#4ade80;--gezond-zacht:#123322}
 .mijl.af b{color:var(--green)}
 .mijl.af small{color:var(--green);opacity:.85}
 
+/* ==================== Dagoverzicht (beginscherm) ==================== */
+.wk{max-width:520px;margin:6px auto 0;padding-bottom:8px}
+.wk-top{display:flex;align-items:center;gap:20px;padding:14px 16px;background:var(--card);border-radius:22px;box-shadow:var(--shadow)}
+.wk-ring{width:124px;height:124px;flex:0 0 auto}
+.wk-ring-getal{font-size:30px;font-weight:800;fill:var(--text);letter-spacing:-.02em}
+.wk-ring-lbl{font-size:11px;fill:var(--muted);font-weight:600}
+.wk-legenda{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px}
+.wk-leg{display:flex;align-items:center;gap:9px;font-size:calc(14.5px * var(--t));color:var(--muted);font-weight:600}
+.wk-leg i{width:10px;height:10px;border-radius:50%;flex:0 0 auto;opacity:.88}
+.wk-leg b{margin-left:auto;color:var(--text);font-size:calc(17px * var(--t));font-variant-numeric:tabular-nums}
+.wk-filter{font-size:calc(11.5px * var(--t));color:var(--amber);background:var(--amber-soft);border-radius:999px;padding:3px 9px;align-self:flex-start}
+.wk-zinnen{margin:22px 4px 6px;display:flex;flex-direction:column;gap:11px}
+.wk-zin{margin:0;display:flex;gap:11px;align-items:baseline;font-size:calc(16.5px * var(--t));line-height:1.55;color:var(--text)}
+.wk-zin i{width:8px;height:8px;border-radius:50%;flex:0 0 auto;transform:translateY(-2px);opacity:.88}
+.wk-zin:first-child{font-size:calc(19px * var(--t));font-weight:700;line-height:1.4;letter-spacing:-.01em}
+.wk-zin.slot{color:var(--muted);font-style:italic}
+.wk-strook{margin:18px 0 0;padding:12px 16px 10px;background:var(--card);border-radius:18px;box-shadow:var(--shadow)}
+.wk-strook svg{width:100%;height:58px;display:block;overflow:visible}
+.wk-strook-uur{font-size:9.5px;fill:var(--faint);font-weight:600}
+.wk-strook-onder{font-size:calc(12px * var(--t));color:var(--muted);margin-top:4px}
+.wk-tegels{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.wk-tegel{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:1px;padding:12px 11px 12px;min-height:128px;
+  background:var(--card);border-radius:18px;box-shadow:var(--shadow);text-align:left;overflow:hidden}
+.wk-tegel::before{content:"";position:absolute;inset:0;background:var(--wk);opacity:.07}
+.wk-tegel:active{transform:scale(.98)}
+.wk-ill{width:62px;height:50px;color:var(--wk);margin:0 0 6px -4px;position:relative}
+.wk-tegel-getal{font-size:calc(24px * var(--t));font-weight:800;line-height:1;color:var(--text);position:relative}
+.wk-tegel-naam{font-size:calc(12.5px * var(--t));font-weight:700;color:var(--wk);position:relative}
+.wk-tegel-sub{font-size:calc(11px * var(--t));color:var(--muted);position:relative;overflow:hidden;text-overflow:ellipsis;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;margin-top:3px;line-height:1.3}
+.wk-knop{margin-top:20px}
+.wk-link{display:block;margin:10px auto 0;padding:8px 12px;color:var(--muted);font-size:calc(14px * var(--t));font-weight:600}
+
 /* ==================== Mindmap ==================== */
 :root{--mm-dot:rgba(16,18,22,.10);--mm-canvas:#f7f7fa}
 @media (prefers-color-scheme: dark){ html:not([data-thema="licht"]){--mm-dot:rgba(255,255,255,.07);--mm-canvas:#0d0f13} }
@@ -2340,7 +2373,7 @@ function sorteerTaken(a, b) {
    9. Weergave-status & navigatie
    ========================================================================== */
 const V = { view: "start", param: null, tab: "start", stapel: [], zoek: "", logFilter: "alles", afsprFilter: "alles", kalDatum: vandaagISO(), planMin: null };
-const TABS = ["start", "vandaag", "komend", "afspraken", "mindmap", "meer"];
+const TABS = ["welkom", "start", "vandaag", "komend", "afspraken", "mindmap", "meer"];
 
 function ga(view, param, terugStap) {
   if (!terugStap && V.view !== view) V.stapel.push({ view: V.view, param: V.param });
@@ -2432,7 +2465,8 @@ function teken() {
     persoonlijk: (typeof vwPersoonlijk === "function" ? vwPersoonlijk : vwStart),
     gezondheid: (typeof vwGezondheid === "function" ? vwGezondheid : vwStart),
     meldingen: (typeof vwMeldingen === "function" ? vwMeldingen : vwStart),
-    mindmap: (typeof vwMindmap === "function" ? vwMindmap : vwStart)
+    mindmap: (typeof vwMindmap === "function" ? vwMindmap : vwStart),
+    welkom: (typeof vwWelkom === "function" ? vwWelkom : vwStart)
   }[V.view] || vwVandaag;
   $("#scherm").innerHTML = fn();
   naTekenen();
@@ -2652,6 +2686,7 @@ function vwLogboek() {
 function vwMeer() {
   const M = [
     ["foto", "camera", "Foto of bestand", "Bewaren bij een taak", { act: "start-knop", soort: "foto" }],
+    ["welkom", "vandaag", "Dagoverzicht", "Je dag in een paar zinnen"],
     ["financieel", "portemonnee", "Financieel", "Dagbudget, uitgaven, vaste lasten"],
     ["werk", "koffer", "Werk", "Meetings, plannen, reflectie"],
     ["overzicht", "grafiek", "Overzicht", "Week, maand en vooruitblik"],
@@ -4179,7 +4214,7 @@ function vwInstellingen() {
       ${schakelaar("trillen", "Trilling bij acties", "Kort trilsignaal als er iets gelukt is.", inst("trillen", true))}
       <div class="hr"></div>
       <div class="veld"><span class="labeltekst">De app opent op</span>
-        ${segment("startscherm", [["start", "Vastleggen"], ["vandaag", "Vandaag"]], inst("startscherm", "start"))}</div>
+        ${segment("startscherm", [["welkom", "Dagoverzicht"], ["start", "Vastleggen"], ["vandaag", "Vandaag"]], inst("startscherm", "welkom"))}</div>
       <div class="veld"><span class="labeltekst">Standaardtijd bij een nieuwe herinnering</span>
         <input class="invoer" type="time" data-instveld="standaardtijd" value="${esc(inst("standaardtijd", "09:00"))}"></div>
     </div>
@@ -5189,7 +5224,7 @@ async function start() {
   startPWA();
   pasInstellingenToe();
   await eersteKeer();
-  V.view = V.tab = inst("startscherm", "start");
+  V.view = V.tab = inst("startscherm", "welkom");
   teken();
   if (inst("pincode", null)) slotToon();
   herstelTimer();
@@ -11725,6 +11760,201 @@ vwZoeken = () => {
   if (lijst.length) { h += sectie("Mindmaps", lijst.length); h += mmNodeRijen(lijst); }
   return h;
 };
+</script>
+<script>
+"use strict";
+/* ==========================================================================
+   45. Dagoverzicht — het rustige beginscherm als de app opent
+   Hooguit 5 zinnen en 5 beelden: ring, dagstrook en drie tegels.
+   ========================================================================== */
+const WK_CAT = {
+  persoonlijk: { naam: "Persoonlijk", kleur: "#2f6fed", ill: "persoonlijk", view: "persoonlijk" },
+  werk:        { naam: "Werk",        kleur: "var(--werk)", ill: "werk", view: "werk" },
+  sociaal:     { naam: "Sociaal",     kleur: "#7a4fd6", ill: "gesprek", view: "afspraken" }
+};
+const WK_VOLGORDE = ["persoonlijk", "werk", "sociaal"];
+
+/** Alles wat vandaag op de planning staat, ingedeeld in persoonlijk, werk en sociaal.
+    Werk = gemarkeerd als werk; sociaal = privé en mét andere mensen; de rest is persoonlijk. */
+function wkItems(v) {
+  const uit = [];
+  const cat = x => x.werk ? "werk" : ((x.personen || []).length ? "sociaal" : "persoonlijk");
+  S.taken.filter(t => !t.af && t.datum === v).forEach(t =>
+    uit.push({ cat: cat(t), titel: t.titel || "Taak", tijd: t.tijd || "", duur: t.duur || 0, personen: t.personen || [], soort: "taak", id: t.id }));
+  S.afspraken.filter(a => (a.datum === v || (a.datum && a.totDatum && a.datum <= v && v <= a.totDatum) || (a.deadline === v && !a.uitkomst)))
+    .forEach(a => uit.push({ cat: cat(a), titel: a.titel || "Afspraak", tijd: a.datum === v ? a.tijd || "" : "", eind: a.datum === v ? a.eindTijd || "" : "",
+      personen: a.personen || [], soort: "afspraak", id: a.id, deadline: a.deadline === v && a.datum !== v }));
+  S.werkdocs.filter(d => d.soort === "meeting" && d.datum === v && d.status !== "archief").forEach(d =>
+    uit.push({ cat: "werk", titel: d.titel || "Meeting", tijd: d.tijd || "", personen: d.personen || [], soort: "werkdoc", id: d.id }));
+  gewoontesVoor(v).filter(g => !gewoonteAf(g.id, v)).forEach(g =>
+    uit.push({ cat: "persoonlijk", titel: g.naam || "Gewoonte", tijd: "", personen: [], soort: "gewoonte", id: g.id }));
+  if (typeof vsSportVandaag === "function") vsSportVandaag().filter(o => vsSportStatus(o.sportId, v) !== "gedaan").forEach(o =>
+    uit.push({ cat: "persoonlijk", titel: "Sporten: " + o.titel, tijd: o.tijd || "", duur: o.duurMin || 60, personen: [], soort: "sport", id: o.sportId }));
+  const stand = typeof werkStand === "function" ? werkStand() : "alles";
+  return uit.filter(x => stand === "alles" || (stand === "alleen" ? x.cat === "werk" : x.cat !== "werk"))
+    .sort((a, b) => (a.tijd || "99:99") < (b.tijd || "99:99") ? -1 : (a.tijd || "99:99") > (b.tijd || "99:99") ? 1 : 0);
+}
+
+/* ---------- Taal ---------- */
+const wkN = (n, een, meer) => n + " " + (n === 1 ? een : meer);
+function wkOpsomming(delen) {
+  if (delen.length <= 1) return delen.join("");
+  return delen.slice(0, -1).join(", ") + " en " + delen[delen.length - 1];
+}
+function wkItemTekst(x) {
+  let t = `“${x.titel}”`;
+  const namen = (x.personen || []).filter(p => !x.titel.toLowerCase().includes(p.toLowerCase()));
+  if (x.cat === "sociaal" && namen.length) t += " met " + wkOpsomming(namen);
+  if (x.deadline) t = "de deadline van " + t;
+  if (x.tijd) t += " om " + x.tijd;
+  return t;
+}
+/** Eén zin per categorie: hoogstens twee dingen bij naam, de rest als aantal. */
+function wkCatZin(cat, lijst) {
+  if (!lijst.length) return null;
+  const gew = lijst.filter(x => x.soort === "gewoonte").length;
+  const dingen = lijst.filter(x => x.soort !== "gewoonte");
+  const delen = dingen.slice(0, 2).map(wkItemTekst);
+  const over = dingen.length - delen.length;
+  if (over > 0) delen.push("nog " + wkN(over, "ding", "dingen"));
+  if (gew) delen.push(wkN(gew, "gewoonte", "gewoontes"));
+  const meer = delen.length > 1 || over > 0;
+  const lijstTekst = wkOpsomming(delen);
+  if (cat === "werk") return `Voor werk heb je ${lijstTekst}.`;
+  if (cat === "sociaal") return `Sociaal ${meer ? "staan" : "staat"} ${lijstTekst} gepland.`;
+  return `Persoonlijk ${meer ? "staan" : "staat"} ${lijstTekst} op je lijstje.`;
+}
+const wkMin = t => { const [u, m] = String(t).split(":").map(Number); return u * 60 + (m || 0); };
+const wkTijd = m => pad(Math.floor(m / 60)) + ":" + pad(m % 60);
+function wkEindMin(x) {
+  if (x.eind) return wkMin(x.eind);
+  return wkMin(x.tijd) + (x.duur || (x.soort === "afspraak" || x.soort === "werkdoc" ? 60 : 30));
+}
+/** De afsluitende zin: eerst wat blijft liggen, dan wat eraan komt, anders de ruimte die je hebt. */
+function wkSlotZin(items, v) {
+  const laat = openTaken().filter(t => t.datum && t.datum < v).length + S.afspraken.filter(afspraakLaat).length;
+  if (laat) return `Er ${laat === 1 ? "staat" : "staan"} nog ${wkN(laat, "ding", "dingen")} van eerder open — pak ${laat === 1 ? "dat" : "die"} rustig mee.`;
+  const nu = wkMin(nuTijd());
+  const getimed = items.filter(x => x.tijd);
+  const volgende = getimed.find(x => wkMin(x.tijd) >= nu);
+  if (volgende && wkMin(volgende.tijd) - nu <= 120) return `Als eerste: ${wkItemTekst(volgende)}.`;
+  // grootste vrije blok tussen nu (of 08:00) en 22:00
+  let van = Math.max(nu, 8 * 60), beste = null;
+  const blokken = getimed.map(x => [wkMin(x.tijd), wkEindMin(x)]).filter(b => b[1] > van).sort((a, b) => a[0] - b[0]);
+  for (const [s, e] of blokken.concat([[22 * 60, 22 * 60]])) {
+    if (s - van >= 120 && (!beste || s - van > beste[1] - beste[0])) beste = [van, s];
+    van = Math.max(van, e);
+  }
+  if (beste && beste[1] <= 22 * 60) {
+    const s = Math.ceil(beste[0] / 30) * 30, e = Math.floor(beste[1] / 30) * 30;
+    if (e - s >= 120) return `Tussen ${wkTijd(s)} en ${wkTijd(e)} staat niets gepland — ruimte voor jezelf.`;
+  }
+  return items.length ? "Neem af en toe een pauze; de rest komt wel." : "Tijd voor iets wat je zelf leuk vindt.";
+}
+/** Hooguit 5 zinnen: overzicht, per categorie één zin, en een rustige afsluiter. */
+function wkZinnen(items, v) {
+  const tel = c => items.filter(x => x.cat === c).length;
+  const n = { persoonlijk: tel("persoonlijk"), werk: tel("werk"), sociaal: tel("sociaal") };
+  const zinnen = [];
+  if (!items.length) zinnen.push({ cat: null, tekst: "Je planning voor vandaag is nog leeg — een rustige dag." });
+  else {
+    const delen = [];
+    if (n.persoonlijk) delen.push(n.persoonlijk + " persoonlijk");
+    if (n.werk) delen.push(n.werk + " voor werk");
+    if (n.sociaal) delen.push(n.sociaal + " sociaal");
+    const enige = WK_VOLGORDE.find(c => n[c] === items.length);
+    const staart = !enige ? ": " + wkOpsomming(delen)
+      : items.length === 1 ? ", " + { persoonlijk: "iets persoonlijks", werk: "iets voor werk", sociaal: "iets sociaals" }[enige]
+      : ", " + { persoonlijk: "allemaal persoonlijk", werk: "allemaal voor werk", sociaal: "allemaal sociaal" }[enige];
+    zinnen.push({ cat: null, tekst: `Vandaag ${items.length === 1 ? "staat er één ding" : "staan er " + items.length + " dingen"} op je planning${staart}.` });
+  }
+  WK_VOLGORDE.forEach(c => { const z = wkCatZin(c, items.filter(x => x.cat === c)); if (z) zinnen.push({ cat: c, tekst: z }); });
+  zinnen.push({ cat: null, tekst: wkSlotZin(items, v), slot: true });
+  return zinnen.slice(0, 5);
+}
+
+/* ---------- Beeld 1: de ring ---------- */
+function wkRing(items) {
+  const tot = items.length, r = 44, omtrek = 2 * Math.PI * r;
+  let begin = 0;
+  const bogen = tot ? WK_VOLGORDE.map(c => {
+    const n = items.filter(x => x.cat === c).length; if (!n) return "";
+    const lengte = omtrek * n / tot, gat = tot > 1 && n < tot ? 3 : 0;
+    const boog = `<circle cx="60" cy="60" r="${r}" fill="none" style="stroke:${WK_CAT[c].kleur}" stroke-width="13" stroke-linecap="butt"
+      stroke-dasharray="${Math.max(0, lengte - gat)} ${omtrek}" stroke-dashoffset="${-begin}" transform="rotate(-90 60 60)" opacity=".88"/>`;
+    begin += lengte; return boog;
+  }).join("") : "";
+  return `<svg class="wk-ring" viewBox="0 0 120 120" role="img" aria-label="${tot} dingen vandaag">
+    <circle cx="60" cy="60" r="${r}" fill="none" style="stroke:var(--line)" stroke-width="13"/>${bogen}
+    <text x="60" y="58" text-anchor="middle" class="wk-ring-getal">${tot}</text>
+    <text x="60" y="76" text-anchor="middle" class="wk-ring-lbl">vandaag</text></svg>`;
+}
+
+/* ---------- Beeld 2: de dagstrook ---------- */
+function wkStrook(items) {
+  const getimed = items.filter(x => x.tijd);
+  let van = 7 * 60, tot = 22 * 60;
+  getimed.forEach(x => { van = Math.min(van, Math.floor(wkMin(x.tijd) / 60) * 60); tot = Math.max(tot, Math.ceil(wkEindMin(x) / 60) * 60); });
+  tot = Math.min(tot, 24 * 60);
+  const B = 300, pos = m => Math.max(0, Math.min(B, (m - van) / (tot - van) * B));
+  let h = "";
+  for (let u = Math.ceil(van / 60); u * 60 <= tot; u++) {
+    const x = pos(u * 60), label = u % 3 === 0;
+    h += `<line x1="${x}" x2="${x}" y1="${label ? 30 : 33}" y2="36" style="stroke:var(--line2)" stroke-width="1"/>`;
+    if (label) h += `<text x="${x}" y="48" text-anchor="middle" class="wk-strook-uur">${pad(u % 24)}</text>`;
+  }
+  const banen = [[], [], []];
+  getimed.forEach(x => {
+    const s = pos(wkMin(x.tijd)), e = Math.max(s + 5, pos(wkEindMin(x)));
+    const baan = banen.findIndex(b => !b.some(([a, z]) => s < z + 2 && e > a - 2));
+    const i = baan < 0 ? 2 : baan; banen[i].push([s, e]);
+    h += `<rect x="${s}" y="${26 - i * 9}" width="${e - s}" height="7" rx="3.5" style="fill:${WK_CAT[x.cat].kleur}" opacity=".85"><title>${esc(x.titel + " · " + x.tijd)}</title></rect>`;
+  });
+  const nu = wkMin(nuTijd());
+  if (nu >= van && nu <= tot) h += `<line x1="${pos(nu)}" x2="${pos(nu)}" y1="2" y2="38" style="stroke:var(--red)" stroke-width="1.6" stroke-dasharray="2 2"/>
+    <circle cx="${pos(nu)}" cy="2.5" r="2.5" style="fill:var(--red)"/>`;
+  const zonder = items.length - getimed.length;
+  return `<div class="wk-strook">
+    <svg viewBox="-6 0 312 52" preserveAspectRatio="none" role="img" aria-label="Je dag van ${wkTijd(van)} tot ${wkTijd(tot)}">
+      <line x1="0" x2="${B}" y1="36" y2="36" style="stroke:var(--line2)" stroke-width="1.4"/>${h}</svg>
+    <div class="wk-strook-onder">${getimed.length ? wkN(getimed.length, "ding", "dingen") + " met een tijd" : "Nog niets met een vaste tijd"}${zonder ? " · " + zonder + " zonder vaste tijd" : ""}</div>
+  </div>`;
+}
+
+/* ---------- Beelden 3–5: de drie tegels ---------- */
+function wkTegel(c, items) {
+  const cat = WK_CAT[c], lijst = items.filter(x => x.cat === c);
+  const eerst = lijst.find(x => x.tijd && wkMin(x.tijd) >= wkMin(nuTijd())) || lijst.find(x => x.tijd) || lijst[0];
+  const onder = !lijst.length ? "Niets gepland" : eerst.tijd ? eerst.tijd + " · " + eerst.titel : eerst.titel;
+  return `<button class="wk-tegel" style="--wk:${cat.kleur}" data-act="ga" data-view="${cat.view}" aria-label="${esc(cat.naam)}: ${lijst.length}">
+    <svg class="wk-ill" viewBox="0 0 100 80" aria-hidden="true"><use href="#ill-${cat.ill}"/></svg>
+    <span class="wk-tegel-getal">${lijst.length}</span>
+    <span class="wk-tegel-naam">${cat.naam}</span>
+    <span class="wk-tegel-sub">${esc(onder)}</span>
+  </button>`;
+}
+
+/* ---------- Het scherm ---------- */
+function vwWelkom() {
+  const v = vandaagISO(), items = wkItems(v), zinnen = wkZinnen(items, v);
+  const stand = typeof werkStand === "function" ? werkStand() : "alles";
+  return `<div class="wk">
+    <div class="wk-top">
+      ${wkRing(items)}
+      <div class="wk-legenda">${WK_VOLGORDE.map(c => `<div class="wk-leg"><i style="background:${WK_CAT[c].kleur}"></i>${WK_CAT[c].naam}<b>${items.filter(x => x.cat === c).length}</b></div>`).join("")}
+        ${stand !== "alles" ? `<div class="wk-filter">${stand === "uit" ? "Werk staat uit" : "Alleen werk"}</div>` : ""}</div>
+    </div>
+    <div class="wk-zinnen">${zinnen.map(z => `<p class="wk-zin${z.slot ? " slot" : ""}">${z.cat ? `<i style="background:${WK_CAT[z.cat].kleur}"></i>` : ""}${esc(z.tekst)}</p>`).join("")}</div>
+    ${wkStrook(items)}
+    <div class="wk-tegels">${WK_VOLGORDE.map(c => wkTegel(c, items)).join("")}</div>
+    <button class="knop breed primair wk-knop" data-act="ga" data-view="vandaag">Bekijk je dag</button>
+    <button class="wk-link" data-act="ga" data-view="start">Of leg meteen iets vast</button>
+  </div>`;
+}
+Object.defineProperty(KOPPEN, "welkom", {
+  get: () => [typeof groet === "function" ? groet() : "Welkom", () => { const s = langDatumLabel(vandaagISO()); return s[0].toUpperCase() + s.slice(1); }],
+  configurable: true, enumerable: true
+});
 </script>
 <script>
 "use strict";
