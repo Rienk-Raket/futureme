@@ -1274,6 +1274,10 @@ path.mm-voorbeeldlijn{fill:none;stroke:var(--amber);stroke-width:2.5;stroke-dash
 .mm-kiesrij.aan{background:var(--accent-soft);color:var(--accent);font-weight:700}
 .mm-kiesrij .nm{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
 .mm-kiesrij .rt{font-size:12px;color:var(--muted);flex:0 0 auto}
+.mm-kiesrij.mm-nietopslaan{background:var(--red-soft);color:var(--red);font-weight:700;padding:12px 12px;margin-top:2px}
+.mm-kiesrij.mm-nietopslaan .nm{white-space:normal}
+.mm-kiesrij.mm-nietopslaan small{display:block;font-weight:500;font-size:calc(12px * var(--t));color:var(--muted);margin-top:3px;line-height:1.4}
+.mm-kiesrij.mm-nietopslaan .rt{color:var(--red);font-size:18px}
 .mm-voorbeeld{background:var(--card2);border-radius:12px;padding:10px 12px;font-size:calc(13px * var(--t))}
 .mm-voorbeeld .r{display:flex;gap:8px;padding:3px 0;border-bottom:1px dashed var(--line)}
 .mm-voorbeeld .r:last-child{border-bottom:0}
@@ -11393,6 +11397,10 @@ function mmOpslaanNieuwBlad() {
       <input class="invoer" id="mmo-nieuw" type="text" placeholder="Mag ook later — dan vraag ik het bij het opslaan" enterkeyhint="done"></div>
     ${S.mm_clusters.length ? `<div class="veld"><label for="mmo-map">In map</label><select class="invoer" id="mmo-map">
       <option value="">— geen map —</option>${S.mm_clusters.map(c => `<option value="${c.id}"${c.id === mm.clusterId ? " selected" : ""}>${esc(c.naam)}</option>`).join("")}</select></div>` : ""}
+    ${benoemd ? "" : `<div class="hr"></div>
+      <button class="mm-kiesrij mm-nietopslaan" id="mmo-niet">
+        <span class="nm">🗑 Niet opslaan — verder met een nieuwe<small>Deze mindmap (${mm.nodes.length} ${mm.nodes.length === 1 ? "node" : "nodes"}) wordt dan niet bewaard. Direct daarna kun je het nog ongedaan maken.</small></span>
+        <span class="rt">›</span></button>`}
   `, `<div class="knoprij"><button class="knop rand" id="mmo-alleen">${benoemd ? "Annuleren" : "Alleen opslaan"}</button>
       <button class="knop primair" id="mmo-ok">${benoemd ? "Nieuwe maken" : "Opslaan en nieuwe maken"}</button></div>`);
   const slaHuidigeOp = () => {
@@ -11416,6 +11424,30 @@ function mmOpslaanNieuwBlad() {
     bladSluit();
     ga("mindmap", nieuw.id);
     toast(`“${oudeNaam}” opgeslagen — ${naam ? `“${naam}”` : "nieuwe mindmap"} staat klaar`, "Terug", () => ga("mindmap", E.mmId));
+  };
+  if ($("#mmo-niet")) $("#mmo-niet").onclick = async () => {
+    E.spoel();
+    const weg = JSON.parse(JSON.stringify(E.mm));
+    // wie linkte er naar deze mindmap? Dan kan ongedaan maken dat ook herstellen.
+    const links = [];
+    S.mm_mindmaps.forEach(m => m.id !== weg.id && m.nodes.forEach(n => { if ((n.portals || []).includes(weg.id)) links.push({ mm: m.id, node: n.id }); }));
+    const naam = $("#mmo-nieuw").value.replace(/\s+/g, " ").trim();
+    const map = $("#mmo-map") ? $("#mmo-map").value || null : null;
+    if (MM.hoofd) { MM.hoofd.vernietig(); MM.hoofd = null; }
+    await mmVerwijder(weg.id);
+    const nieuw = await mmNieuw(naam || "Naamloze mindmap", map, !!naam);
+    bladSluit();
+    ga("mindmap", nieuw.id);
+    V.stapel = V.stapel.filter(x => !(x.view === "mindmap" && x.param === weg.id));
+    toast("Vorige mindmap niet bewaard", "Ongedaan maken", async () => {
+      if (!mmVind(weg.id)) await bewaar("mm_mindmaps", weg);
+      for (const l of links) {
+        const m = mmVind(l.mm), n = m && m.nodes.find(x => x.id === l.node);
+        if (n && !n.portals.includes(weg.id)) { n.portals.push(weg.id); await bewaar("mm_mindmaps", m); }
+      }
+      ga("mindmap", weg.id);
+      toast("Teruggezet");
+    }, 7000);
   };
   setTimeout(() => { const v = $(benoemd ? "#mmo-nieuw" : "#mmo-huidig"); if (v) v.focus(); }, 260);
 }
