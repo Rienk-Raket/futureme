@@ -507,7 +507,11 @@ select.invoer{background-image:linear-gradient(45deg,transparent 50%,var(--muted
 .bijlage .x{position:absolute;top:2px;right:2px;width:24px;height:24px;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;display:flex;align-items:center;justify-content:center;font-size:calc(14px * var(--t))}
 .bijlage .bestandsnaam{font-size:calc(9.5px * var(--t));padding:4px;text-align:center;word-break:break-all;color:var(--muted);line-height:1.2}
 .subtaak{display:flex;align-items:center;gap:7px;padding:3px 0;min-height:44px}
-.subtaak input[type="text"]{flex:1;border:0;background:none;outline:none;font-size:calc(15px * var(--t));min-height:36px}
+.subtaak .sub-haak{color:var(--faint);font-size:13px;margin-right:-3px;flex:0 0 auto}
+.sub-knop{flex:0 0 auto;min-width:30px;min-height:34px;border-radius:8px;color:var(--muted);font-size:15px}
+.sub-knop:disabled{opacity:.25}
+.sub-knop:not(:disabled):active{background:var(--card2)}
+.subtaak input[type="text"]{flex:1;min-width:0;border:0;background:none;outline:none;font-size:calc(15px * var(--t));min-height:36px}
 .subtaak.af input[type="text"]{text-decoration:line-through;color:var(--faint)}
 .mini-vink{width:44px;height:44px;margin-left:-10px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 auto;position:relative}
 .mini-vink::before{content:"";position:absolute;width:24px;height:24px;border-radius:50%;border:2px solid var(--line2);box-sizing:border-box}
@@ -1095,6 +1099,188 @@ html[data-thema="donker"]{--gezond:#4ade80;--gezond-zacht:#123322}
 .mijl.af b{color:var(--green)}
 .mijl.af small{color:var(--green);opacity:.85}
 
+/* ==================== Mindmap ==================== */
+:root{--mm-dot:rgba(16,18,22,.10);--mm-canvas:#f7f7fa}
+@media (prefers-color-scheme: dark){ html:not([data-thema="licht"]){--mm-dot:rgba(255,255,255,.07);--mm-canvas:#0d0f13} }
+html[data-thema="donker"]{--mm-dot:rgba(255,255,255,.07);--mm-canvas:#0d0f13}
+.mm-scherm{margin:0 -14px}
+.mm-kopbalk{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:2px 14px 8px}
+.mm-nieuwknop{display:flex;align-items:center;gap:6px;min-height:40px;padding:0 15px;border-radius:12px;
+  background:var(--accent);color:var(--accent-text);font-size:calc(14px * var(--t));font-weight:750;white-space:nowrap;
+  box-shadow:0 3px 0 0 color-mix(in srgb,var(--accent) 60%,#000),0 6px 14px -4px color-mix(in srgb,var(--accent) 55%,transparent)}
+.mm-nieuwknop:active{transform:translateY(2px);box-shadow:0 1px 0 0 color-mix(in srgb,var(--accent) 60%,#000)}
+.mm-status{font-size:calc(12px * var(--t));font-weight:650;color:var(--green);padding:6px 10px;border-radius:999px;background:var(--green-soft);white-space:nowrap}
+.mm-status.open{color:var(--amber);background:var(--amber-soft)}
+.mm-nietopgeslagen{font-size:10.5px;font-weight:700;color:var(--amber);background:var(--amber-soft);border-radius:999px;padding:1px 6px;margin-left:4px}
+.mm-toolbar{display:flex;gap:6px;overflow-x:auto;padding:2px 14px 10px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.mm-toolbar::-webkit-scrollbar{display:none}
+.mm-tb{flex:0 0 auto;display:flex;align-items:center;gap:5px;background:var(--card);border:1px solid var(--line);
+  color:var(--text);padding:0 11px;min-height:36px;border-radius:10px;font-size:calc(12.5px * var(--t));font-weight:650;white-space:nowrap}
+.mm-tb:active{background:var(--card2)}
+.mm-tb.primair{background:var(--accent);border-color:var(--accent);color:var(--accent-text)}
+.mm-tb.aan{background:var(--amber-soft);border-color:var(--amber);color:var(--amber)}
+.mm-tb.accent{background:var(--purple-soft);border-color:var(--purple);color:var(--purple)}
+.mm-tbsep{flex:0 0 auto;width:1px;align-self:stretch;background:var(--line);margin:5px 2px}
+.mm-zoom{flex:0 0 auto;font-size:calc(11.5px * var(--t));color:var(--muted);align-self:center;min-width:38px;text-align:center;font-variant-numeric:tabular-nums}
+.mm-canvasvak{position:relative}
+.mm-canvaswrap{position:relative;width:100%;height:calc(100dvh - 312px - var(--safe-t) - var(--safe-b));min-height:250px;
+  background-color:var(--mm-canvas);border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden}
+.mm-scherm.lade-open .mm-canvaswrap{height:calc(100dvh - 562px - var(--safe-t) - var(--safe-b));min-height:190px}
+.mm-pip .mm-canvaswrap{height:100%;min-height:0;border:0}
+.mm-viewport{position:absolute;inset:0;overflow:hidden;cursor:grab;touch-action:none;
+  background-image:radial-gradient(var(--mm-dot) 1px, transparent 1px);background-size:24px 24px;-webkit-user-select:none;user-select:none}
+.mm-viewport.mm-pannen{cursor:grabbing}
+.mm-viewport.mm-verbindmodus{cursor:crosshair}
+.mm-wereld{position:absolute;left:0;top:0;width:0;height:0;transform-origin:0 0}
+.mm-links{position:absolute;left:0;top:0;width:1px;height:1px;overflow:visible;pointer-events:none}
+.mm-nodes{position:absolute;left:0;top:0;width:1px;height:1px}
+path.mm-lijn{fill:none;stroke-width:2.4;opacity:.55}
+path.mm-reflijn{fill:none;stroke-width:2.2;stroke-dasharray:6 5;opacity:.6;stroke:var(--amber);pointer-events:stroke}
+path.mm-reflijn-raak{fill:none;stroke:transparent;stroke-width:18;pointer-events:stroke;cursor:pointer}
+path.mm-reflijn.mm-actief{opacity:1;stroke-width:3.2}
+path.mm-voorbeeldlijn{fill:none;stroke:var(--amber);stroke-width:2.5;stroke-dasharray:5 5;opacity:.85}
+.mm-node{position:absolute;transform:translate(-50%,-50%);padding:9px 14px 9px 15px;border-radius:13px;
+  background:var(--card);border:1.5px solid var(--line2);color:var(--text);font-size:calc(13.5px * var(--t));
+  box-shadow:0 2px 6px rgba(16,18,22,.08),0 6px 18px rgba(16,18,22,.07);width:max-content;min-width:44px;max-width:230px;
+  white-space:normal;line-height:1.3;display:flex;flex-direction:column;gap:5px;align-items:flex-start;cursor:grab;touch-action:none}
+.mm-node.mm-root{font-weight:800;font-size:calc(15.5px * var(--t));padding:12px 18px 12px 19px;border-radius:17px}
+.mm-node.mm-voorbeeld{opacity:.55;font-style:italic}
+.mm-node.mm-geselecteerd{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft),0 8px 24px rgba(16,18,22,.14)}
+.mm-node.mm-wachtend{border-color:var(--amber);box-shadow:0 0 0 3px var(--amber-soft);animation:mmpuls 1s ease-in-out infinite}
+@keyframes mmpuls{0%,100%{filter:brightness(1)}50%{filter:brightness(1.18)}}
+.mm-node.mm-slepen{cursor:grabbing;z-index:20}
+.mm-node .mm-balk{position:absolute;left:-1.5px;top:8px;bottom:8px;width:4px;border-radius:3px}
+.mm-node .mm-tekst{word-break:break-word;outline:none}
+.mm-node .mm-tekst[contenteditable="true"]{cursor:text;-webkit-user-select:text;user-select:text;background:var(--accent-soft);border-radius:5px;padding:0 3px;margin:0 -3px}
+.mm-vouw{position:absolute;left:50%;bottom:-12px;transform:translateX(-50%);min-width:24px;height:20px;border-radius:10px;
+  padding:0 6px;background:var(--card);border:1.5px solid var(--line2);display:flex;align-items:center;justify-content:center;
+  font-size:11px;color:var(--muted);cursor:pointer}
+.mm-vouw.mm-dicht{color:var(--amber);border-color:var(--amber)}
+.mm-plus{position:absolute;top:-10px;right:-10px;width:24px;height:24px;border-radius:50%;background:var(--accent);color:var(--accent-text);
+  display:none;align-items:center;justify-content:center;font-size:15px;font-weight:700;box-shadow:0 3px 10px rgba(47,111,237,.45);cursor:pointer}
+.mm-node:hover .mm-plus,.mm-node.mm-geselecteerd .mm-plus{display:flex}
+.mm-herverbind{position:absolute;top:-10px;left:-10px;width:24px;height:24px;border-radius:50%;background:var(--amber);color:#20140a;
+  display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;border:2px dashed rgba(255,255,255,.7);cursor:grab;touch-action:none}
+.mm-spook{position:absolute;transform:translate(-50%,-50%);padding:3px 9px;border-radius:999px;background:var(--card);
+  border:1px solid var(--gc,var(--line2));color:var(--muted);font-size:calc(10.5px * var(--t));font-weight:600;white-space:nowrap;max-width:140px;
+  overflow:hidden;text-overflow:ellipsis;opacity:.78;cursor:pointer}
+.mm-spook.mm-meer{font-style:italic;opacity:.55}
+.mm-meta{display:flex;flex-wrap:wrap;gap:4px;max-width:210px}
+.mm-badge{font-size:calc(10px * var(--t));border-radius:7px;padding:2px 7px;white-space:nowrap;line-height:1.35;font-weight:600;font-style:normal}
+.mm-badge.datum{color:var(--amber);background:var(--amber-soft)}
+.mm-badge.persoon{color:var(--accent);background:var(--accent-soft)}
+.mm-badge.project{color:#fff}
+.mm-badge.link{color:var(--green);background:var(--green-soft);cursor:pointer}
+.mm-badge.notitie{color:var(--muted);background:var(--card2)}
+.mm-portal{display:inline-flex;align-items:center;gap:3px;background:var(--purple-soft);color:var(--purple);
+  font-size:calc(10.5px * var(--t));font-weight:650;padding:3px 8px;border-radius:999px;white-space:nowrap;cursor:pointer}
+.mm-stappenknop{font-size:calc(10.5px * var(--t));padding:3px 9px;border-radius:999px;background:var(--green-soft);color:var(--green);font-weight:650;cursor:pointer;font-style:normal}
+.mm-stappen{display:flex;flex-direction:column;gap:5px;width:100%;min-width:170px;background:var(--card2);border-radius:10px;padding:8px 9px;cursor:default;font-style:normal}
+.mm-stap{display:flex;align-items:flex-start;gap:6px;font-size:calc(12px * var(--t))}
+.mm-stap input[type=checkbox]{-webkit-appearance:checkbox;appearance:auto;accent-color:var(--green);width:16px;height:16px;flex:0 0 auto;margin:1px 0 0}
+.mm-stap .mm-staptekst{flex:1;overflow-wrap:anywhere}
+.mm-stap.af .mm-staptekst{text-decoration:line-through;opacity:.5}
+.mm-stap .mm-stapweg{color:var(--faint);font-size:15px;line-height:1;padding:0 3px}
+.mm-stappen input.mm-stapnieuw,.mm-stappen input.mm-stapbewerk{width:100%;background:var(--card);border:1px solid var(--line2);border-radius:7px;padding:5px 7px;font-size:13px}
+.mm-actiebalk{position:absolute;left:8px;right:8px;bottom:8px;z-index:6;display:flex;gap:6px;align-items:center;padding:7px;
+  background:color-mix(in srgb,var(--card) 94%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow-x:auto;scrollbar-width:none}
+.mm-actiebalk::-webkit-scrollbar{display:none}
+.mm-actiebalk.verborgen{display:none}
+.mm-actiebalk .mm-hint{font-size:calc(12px * var(--t));color:var(--muted);padding:2px 6px;white-space:nowrap}
+.mm-ab{flex:0 0 auto;display:flex;align-items:center;justify-content:center;gap:4px;min-width:38px;min-height:36px;padding:0 9px;
+  border-radius:9px;background:var(--card2);font-size:calc(12.5px * var(--t));font-weight:650;white-space:nowrap;color:var(--text)}
+.mm-ab.gevaar{color:var(--red);background:var(--red-soft)}
+.mm-ab.aan{color:var(--amber);background:var(--amber-soft)}
+.mm-absep{flex:0 0 auto;width:1px;height:24px;background:var(--line)}
+.mm-kleurbol{flex:0 0 auto;width:24px;height:24px;border-radius:50%;border:2px solid var(--card);box-shadow:0 0 0 1px var(--line2)}
+.mm-kleurbol[aria-pressed="true"]{box-shadow:0 0 0 2px var(--text)}
+.mm-outline{position:absolute;left:0;top:0;bottom:0;z-index:7;width:min(82%,300px);display:flex;flex-direction:column;
+  background:color-mix(in srgb,var(--card) 96%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-right:1px solid var(--line);box-shadow:var(--shadow);transform:translateX(-102%);transition:transform .2s ease}
+.mm-outline.open{transform:none}
+.mm-outline-kop{padding:10px 10px 6px;display:flex;gap:6px;align-items:center}
+.mm-outline-kop input{flex:1;min-width:0;background:var(--card2);border:1px solid var(--line);border-radius:9px;padding:7px 10px;font-size:14px}
+.mm-outline-lijst{flex:1;overflow-y:auto;padding:0 6px 14px;-webkit-overflow-scrolling:touch}
+.mm-orij{display:flex;align-items:center;gap:6px;padding:7px 6px;border-radius:8px;font-size:calc(13px * var(--t));white-space:nowrap;overflow:hidden;border:1px solid transparent;cursor:pointer}
+.mm-orij:active{background:var(--card2)}
+.mm-orij.actief{background:var(--accent-soft);border-color:var(--accent)}
+.mm-orij.drop-voor{box-shadow:inset 0 2px 0 var(--accent)}
+.mm-orij.drop-na{box-shadow:inset 0 -2px 0 var(--accent)}
+.mm-orij.drop-op{background:var(--green-soft);border-color:var(--green)}
+.mm-orij.sleept{opacity:.35}
+.mm-ochev{width:16px;flex:0 0 auto;text-align:center;color:var(--muted);font-size:10px}
+.mm-ostip{width:8px;height:8px;border-radius:50%;flex:0 0 auto}
+.mm-olabel{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.mm-obadge{font-size:10px;color:var(--green);background:var(--green-soft);border-radius:999px;padding:1px 6px;flex:0 0 auto}
+.mm-osectie{margin:12px 6px 4px;font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:800}
+.mm-ladebalk{display:flex;align-items:center;gap:9px;padding:0 14px;min-height:36px;width:100%;background:var(--card);border-bottom:1px solid var(--line);
+  font-size:calc(12.5px * var(--t));font-weight:700;color:var(--text)}
+.mm-ladebalk .ch{color:var(--muted);font-size:10px}
+.mm-ladebalk .tel{color:var(--muted);font-weight:500}
+.mm-lade{height:250px;display:flex;flex-direction:column;background:var(--card);border-bottom:1px solid var(--line)}
+.mm-ladekop{display:flex;align-items:center;gap:8px;padding:8px 14px 6px}
+.mm-ladekop .segment{flex:1}
+.mm-ladekop .segment button{min-height:32px;font-size:12.5px}
+.mm-ladeknop{flex:0 0 auto;min-width:32px;min-height:32px;border-radius:8px;background:var(--card2);font-size:12px;font-weight:700;padding:0 8px}
+.mm-tlbaan{flex:1;overflow:auto;padding:2px 14px 12px;position:relative;-webkit-overflow-scrolling:touch}
+.mm-tlas{position:sticky;top:0;display:flex;height:20px;border-bottom:1px solid var(--line);background:var(--card);z-index:2}
+.mm-tltik{flex:0 0 auto;font-size:9px;color:var(--muted);text-align:center;border-left:1px solid var(--line);padding-top:3px}
+.mm-tltik.vandaag{color:var(--accent);font-weight:800}
+.mm-tlrijen{position:relative;padding-top:6px}
+.mm-tlrij{position:relative;height:26px}
+.mm-tlbalk{position:absolute;top:0;height:19px;border-radius:6px;display:flex;align-items:center;padding:0 7px;font-size:10.5px;
+  color:#fff;font-weight:700;white-space:nowrap;overflow:hidden;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,.15)}
+.mm-tlbalk.punt{width:19px !important;padding:0;border-radius:50%;text-indent:-9999px}
+.mm-tlleeg{padding:30px 10px;text-align:center;color:var(--muted);font-size:13px}
+.mm-bord{flex:1;overflow-y:auto;padding:0 12px 12px}
+.mm-bordmaand{font-size:12.5px;font-weight:800;text-align:center;margin-bottom:6px}
+.mm-bordweek,.mm-borddagen{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.mm-bordweek span{font-size:9px;color:var(--muted);text-align:center;text-transform:uppercase;font-weight:700}
+.mm-borddag{min-height:46px;border-radius:7px;background:var(--card2);padding:3px;font-size:9.5px;display:flex;flex-direction:column;gap:2px;overflow:hidden}
+.mm-borddag.vandaag{box-shadow:inset 0 0 0 1.5px var(--accent)}
+.mm-borddag.buiten{opacity:.35}
+.mm-borddag .nr{font-weight:800;font-size:10px}
+.mm-bordchip{border-radius:4px;padding:1px 3px;font-size:8.5px;color:#fff;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}
+.mm-pip{position:fixed;z-index:50;display:flex;flex-direction:column;background:var(--card);border:1px solid var(--purple);
+  border-radius:15px;box-shadow:0 18px 50px rgba(0,0,0,.35);overflow:hidden;min-width:240px;min-height:200px}
+.mm-pipkop{display:flex;align-items:center;gap:6px;padding:6px 6px 6px 11px;background:var(--purple-soft);border-bottom:1px solid var(--line);cursor:move;touch-action:none}
+.mm-piptitel{flex:1;min-width:0;font-size:calc(12.5px * var(--t));font-weight:750;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mm-pipknop{flex:0 0 auto;width:30px;height:30px;border-radius:8px;background:var(--card);font-size:13px;display:flex;align-items:center;justify-content:center}
+.mm-pipknop.aan{background:var(--amber-soft);color:var(--amber)}
+.mm-piplijf{flex:1;position:relative;min-height:0}
+.mm-pipgreep{position:absolute;right:0;bottom:0;width:26px;height:26px;z-index:8;cursor:nwse-resize;touch-action:none;
+  background:linear-gradient(135deg,transparent 55%,var(--line2) 55%,var(--line2) 62%,transparent 62%,transparent 72%,var(--line2) 72%,var(--line2) 79%,transparent 79%)}
+.mm-mmkaart{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--card);
+  border:1px solid var(--line);border-radius:12px;padding:10px 11px;margin-bottom:7px}
+.mm-mmkaart.huidig{border-color:var(--accent);background:var(--accent-soft)}
+.mm-mmkaart .info{min-width:0;flex:1}
+.mm-mmkaart .nm{font-size:calc(14px * var(--t));font-weight:750;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mm-mmkaart .meta{font-size:calc(11.5px * var(--t));color:var(--muted);margin-top:2px}
+.mm-mmkaart .acties{display:flex;gap:4px;flex:0 0 auto;flex-wrap:wrap;justify-content:flex-end;max-width:170px}
+.mm-mmkaart .acties button{background:var(--card2);width:32px;height:32px;border-radius:8px;font-size:13px}
+.mm-mmkaart .acties select{background:var(--card2);border:1px solid var(--line);border-radius:8px;font-size:12px;padding:5px 6px;max-width:96px;min-height:32px}
+.mm-clusterkop{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:14px 2px 6px;
+  font-size:calc(11.5px * var(--t));text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:800}
+.mm-clusterkop .lbl{display:flex;align-items:center;gap:6px;min-width:0;cursor:pointer}
+.mm-clusterkop button{font-size:13px;padding:2px 6px;border-radius:6px}
+.mm-huidig-badge{font-size:9.5px;background:var(--accent);color:var(--accent-text);padding:1px 7px;border-radius:999px;margin-left:6px;font-weight:800;vertical-align:1px}
+.mm-bladstap{display:flex;align-items:center;gap:8px;padding:5px 0}
+.mm-bladstap input[type=checkbox]{-webkit-appearance:checkbox;appearance:auto;width:20px;height:20px;accent-color:var(--green);flex:0 0 auto}
+.mm-bladstap .invoer{min-height:38px;padding:6px 10px}
+.mm-bladstap button{flex:0 0 auto;width:34px;height:34px;border-radius:8px;color:var(--faint);font-size:18px}
+.mm-kiesrij{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 6px;border-radius:10px;font-size:calc(14px * var(--t));cursor:pointer;width:100%;text-align:left}
+.mm-kiesrij:active{background:var(--card2)}
+.mm-kiesrij.aan{background:var(--accent-soft);color:var(--accent);font-weight:700}
+.mm-kiesrij .nm{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.mm-kiesrij .rt{font-size:12px;color:var(--muted);flex:0 0 auto}
+.mm-voorbeeld{background:var(--card2);border-radius:12px;padding:10px 12px;font-size:calc(13px * var(--t))}
+.mm-voorbeeld .r{display:flex;gap:8px;padding:3px 0;border-bottom:1px dashed var(--line)}
+.mm-voorbeeld .r:last-child{border-bottom:0}
+.mm-voorbeeld .s{color:var(--muted);flex:0 0 auto;font-size:12px;min-width:66px}
+.mm-help .r{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:calc(13.5px * var(--t))}
+.mm-help .r b{text-align:right}
+
 @media (min-width:640px){
   #app{max-width:720px;margin:0 auto;box-shadow:0 0 0 1px var(--line)}
   nav#tabs{max-width:720px;margin:0 auto}
@@ -1267,6 +1453,7 @@ html[data-thema="donker"]{--gezond:#4ade80;--gezond-zacht:#123322}
 </g></symbol>
 <symbol id="i-euro" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6.5a7.5 7.5 0 0 0-11.6 3.2M6.4 14.3A7.5 7.5 0 0 0 18 17.5"/><path d="M3.5 10.2h9M3.5 13.8h9"/></symbol>
 <symbol id="i-portemonnee" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5A2.5 2.5 0 0 1 6 5h11.5v2.5"/><rect x="3.5" y="7.5" width="17" height="12.5" rx="2.6"/><path d="M20.5 12h-4a2 2 0 0 0 0 4h4"/></symbol>
+<symbol id="i-mindmap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5.3" r="2.6"/><circle cx="5.3" cy="18.2" r="2.6"/><circle cx="18.7" cy="18.2" r="2.6"/><path d="M12 7.9v3.3M12 11.2L6.7 16M12 11.2l5.3 4.8"/></symbol>
 <symbol id="i-kringloop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 12a8.5 8.5 0 1 1-2.5-6"/><path d="M20.5 4v5h-5"/><path d="M12 8v4.4l3 1.8"/></symbol>
 
 <symbol id="ill-financieel" viewBox="0 0 100 80"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
@@ -1290,6 +1477,14 @@ html[data-thema="donker"]{--gezond:#4ade80;--gezond-zacht:#123322}
         fill="currentColor" fill-opacity=".2" stroke-opacity=".85"/>
   <path d="M12 44h12l5-9 6 15 5-11 4 5h14" stroke-width="2.8" stroke-opacity=".9"/>
   <circle cx="80" cy="20" r="6" fill="currentColor" fill-opacity=".3" stroke-opacity=".7"/>
+</g></symbol>
+<symbol id="ill-mindmap" viewBox="0 0 100 80"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M36 20L18 42M36 20L54 34M36 20L44 54" stroke-opacity=".85"/>
+  <path d="M54 34L76 22M54 34L82 44" stroke-opacity=".7"/>
+  <circle cx="36" cy="20" r="9" fill="currentColor" fill-opacity=".22" stroke-opacity=".9"/>
+  <circle cx="18" cy="42" r="6" fill="currentColor" fill-opacity=".28" stroke-opacity=".8"/>
+  <circle cx="54" cy="34" r="6" fill="currentColor" fill-opacity=".28" stroke-opacity=".8"/>
+  <circle cx="44" cy="54" r="6" fill="currentColor" fill-opacity=".28" stroke-opacity=".8"/>
 </g></symbol>
 <symbol id="ill-rook" viewBox="0 0 100 80"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
   <path d="M18 66c-3.5-16 2.5-34 20-42 10-4.6 21-4.4 28-3 1.6 7.6 1.2 18-4 27.6C53.5 64.8 34 69.5 18 66z"
@@ -1340,7 +1535,7 @@ html[data-thema="donker"]{--gezond:#4ade80;--gezond-zacht:#123322}
     <button data-tab="komend"><svg><use href="#i-komend"/></svg><span>Komend</span></button>
     <button class="tab-plus" data-tab="start" aria-current="true" aria-label="Nieuw"><svg><use href="#i-plus"/></svg></button>
     <button data-tab="afspraken"><svg><use href="#i-groep"/></svg><span>Afspraken</span></button>
-    <button data-tab="financieel"><svg><use href="#i-portemonnee"/></svg><span>Financieel</span></button>
+    <button data-tab="mindmap"><svg><use href="#i-mindmap"/></svg><span>Mindmap</span></button>
     <button data-tab="meer"><svg><use href="#i-meer"/></svg><span>Meer</span></button>
   </nav>
 </div>
@@ -1462,14 +1657,14 @@ function secTekst(sec) {
 /* ==========================================================================
    3. Opslag — IndexedDB
    ========================================================================== */
-const DB_NAAM = "futureme", DB_VERSIE = 5;
+const DB_NAAM = "futureme", DB_VERSIE = 6;
 const WINKELS = {
   taken: "id", projecten: "id", labels: "id", afspraken: "id", checklists: "id",
   gewoontes: "id", gewoontelog: "id", dagboek: "id", tijdlog: "id",
   personen: "id", bijlagen: "id", filters: "id", gebeurtenissen: "id",
   werkdocs: "id", uitgaven: "id", incassos: "id", potjes: "id", instellingen: "sleutel",
   vs_producten: "id", vs_logs: "id", vs_gewicht: "id", vs_sport: "id", vs_sportlog: "id",
-  meldingen: "id"
+  meldingen: "id", mm_mindmaps: "id", mm_clusters: "id"
 };
 let db = null;
 
@@ -1523,7 +1718,7 @@ const S = {
   personen: [], bijlagen: [], filters: [], gebeurtenissen: [], werkdocs: [],
   uitgaven: [], incassos: [], potjes: [], instellingen: {},
   vs_producten: [], vs_logs: [], vs_gewicht: [], vs_sport: [], vs_sportlog: [],
-  meldingen: []
+  meldingen: [], mm_mindmaps: [], mm_clusters: []
 };
 const vind = (lijst, id) => S[lijst].find(x => x.id === id);
 
@@ -2141,7 +2336,7 @@ function sorteerTaken(a, b) {
    9. Weergave-status & navigatie
    ========================================================================== */
 const V = { view: "start", param: null, tab: "start", stapel: [], zoek: "", logFilter: "alles", afsprFilter: "alles", kalDatum: vandaagISO(), planMin: null };
-const TABS = ["start", "vandaag", "komend", "afspraken", "financieel", "meer"];
+const TABS = ["start", "vandaag", "komend", "afspraken", "mindmap", "meer"];
 
 function ga(view, param, terugStap) {
   if (!terugStap && V.view !== view) V.stapel.push({ view: V.view, param: V.param });
@@ -2176,6 +2371,7 @@ const KOPPEN = {
   persoonlijk: ["Persoonlijk", () => "Taken, afspraken en alles er tussenin"],
   gezondheid: ["Gezondheid", () => (typeof vsOnderschrift === "function" ? vsOnderschrift() : "Eten, sport, water en gewicht")],
   meldingen: ["Inbox", () => (typeof meldingenOnderschrift === "function" ? meldingenOnderschrift() : "Berichten en herinneringen")],
+  mindmap: ["Mindmap", () => (typeof mmOnderschrift === "function" ? mmOnderschrift() : "Breinkaarten en ideeën")],
   logboek: ["Logboek", () => "Alles wat je deed"],
   meer: ["Meer", () => "Alle onderdelen"],
   projecten: ["Projecten", () => S.projecten.length + " projecten"],
@@ -2212,6 +2408,10 @@ function teken() {
     onder = d ? (DOCSOORTEN[d.soort] || {}).naam + " · " + d.status : "";
   }
   if (V.view === "afspraak") { const a = vind("afspraken", V.param); titel = a ? a.titel : "Afspraak"; onder = a ? afspraakWanneer(a) : ""; }
+  if (V.view === "mindmap" && typeof mmHuidige === "function") {
+    const mm = mmHuidige();
+    if (mm) { titel = mm.naam; onder = mm.nodes.length + (mm.nodes.length === 1 ? " node" : " nodes"); }
+  }
   $("#titel").textContent = titel;
   $("#ondertitel").textContent = onder;
   $("#ondertitel").style.display = onder ? "" : "none";
@@ -2227,7 +2427,8 @@ function teken() {
     stats: vwStats, backup: vwBackup, help: vwHelp, tijd: vwTijd,
     persoonlijk: (typeof vwPersoonlijk === "function" ? vwPersoonlijk : vwStart),
     gezondheid: (typeof vwGezondheid === "function" ? vwGezondheid : vwStart),
-    meldingen: (typeof vwMeldingen === "function" ? vwMeldingen : vwStart)
+    meldingen: (typeof vwMeldingen === "function" ? vwMeldingen : vwStart),
+    mindmap: (typeof vwMindmap === "function" ? vwMindmap : vwStart)
   }[V.view] || vwVandaag;
   $("#scherm").innerHTML = fn();
   naTekenen();
@@ -2447,6 +2648,7 @@ function vwLogboek() {
 function vwMeer() {
   const M = [
     ["foto", "camera", "Foto of bestand", "Bewaren bij een taak", { act: "start-knop", soort: "foto" }],
+    ["financieel", "portemonnee", "Financieel", "Dagbudget, uitgaven, vaste lasten"],
     ["werk", "koffer", "Werk", "Meetings, plannen, reflectie"],
     ["overzicht", "grafiek", "Overzicht", "Week, maand en vooruitblik"],
     ["projecten", "map", "Projecten", "Indelen en overzicht"],
@@ -3217,7 +3419,7 @@ function openTaakBlad(id, voorinvulling) {
         <input class="invoer" id="f-klaarals" type="text" value="${esc(t.klaarAls || "")}" placeholder="Waaraan zie je dat het af is?"></div>
     </details>
     <div class="veld"><span class="labeltekst">Subtaken</span>
-      <div id="subtaken">${(t.subtaken || []).map((s, i) => subtaakHTML(s, i)).join("")}</div>
+      <div id="subtaken">${(t.subtaken || []).map((s, i, l) => subtaakHTML(s, i, l)).join("")}</div>
       <button class="knop klein rand" id="sub-toevoegen" style="margin-top:6px">${ico("plus")} Subtaak</button></div>
     <div class="veld"><span class="labeltekst">Bijlagen</span>
       <div class="bijlagen" id="bijlagen"></div>
@@ -3242,10 +3444,43 @@ function openTaakBlad(id, voorinvulling) {
   const werk = JSON.parse(JSON.stringify(t));
   bladTaakBinden(werk, !bestaat);
 }
-function subtaakHTML(s, i) {
-  return `<div class="subtaak${s.af ? " af" : ""}" data-sub="${i}">
+/* ---------- Subtaken: een platte lijst waarin elk item een niveau heeft (0 = subtaak, 1 = sub-subtaak, …) ---------- */
+const subNiveau = s => Math.max(0, parseInt((s && s.niveau) || 0, 10) || 0);
+function subNaam(nv) { const t = "sub-".repeat(nv) + "subtaak"; return t[0].toUpperCase() + t.slice(1); }
+/** Elk item hoogstens één niveau dieper dan het item erboven. */
+function normaliseerSubtaken(lijst) {
+  let vorig = -1;
+  (lijst || []).forEach(x => { const nv = Math.min(subNiveau(x), vorig + 1); if (nv) x.niveau = nv; else delete x.niveau; vorig = nv; });
+  return lijst;
+}
+/** Een item plus alles wat eronder hangt (de volgende items met een hoger niveau). */
+function subBlok(lijst, i) {
+  const nv = subNiveau(lijst[i]); let j = i + 1;
+  while (j < lijst.length && subNiveau(lijst[j]) > nv) j++;
+  return [i, j];
+}
+/** Afvinken geldt ook voor alles wat eronder hangt. */
+function subVink(lijst, i) {
+  const af = !lijst[i].af, [a, z] = subBlok(lijst, i);
+  for (let k = a; k < z; k++) lijst[k].af = af;
+  return af;
+}
+function subVerschuif(lijst, i, delta) {
+  const nv = subNiveau(lijst[i]) + delta, max = i ? subNiveau(lijst[i - 1]) + 1 : 0;
+  if (nv < 0 || nv > max) return false;
+  const [a, z] = subBlok(lijst, i);
+  for (let k = a; k < z; k++) { const n = subNiveau(lijst[k]) + delta; if (n) lijst[k].niveau = n; else delete lijst[k].niveau; }
+  return true;
+}
+const subInspring = nv => nv ? `padding-left:${nv * 22}px` : "";
+function subtaakHTML(s, i, lijst) {
+  const nv = subNiveau(s), vorig = i && lijst ? subNiveau(lijst[i - 1]) : -1;
+  return `<div class="subtaak${s.af ? " af" : ""}${nv ? " dieper" : ""}" data-sub="${i}" style="${subInspring(nv)}">
+    ${nv ? `<span class="sub-haak" aria-hidden="true">└</span>` : ""}
     <button class="mini-vink" data-subvink="${i}">${ico("check")}</button>
-    <input type="text" value="${esc(s.tekst)}" data-subtekst="${i}" placeholder="Subtaak">
+    <input type="text" value="${esc(s.tekst)}" data-subtekst="${i}" placeholder="${subNaam(nv)}">
+    <button class="sub-knop" data-subuit="${i}" aria-label="Minder diep"${nv ? "" : " disabled"}>⇤</button>
+    <button class="sub-knop" data-subin="${i}" aria-label="Dieper (sub-subtaak)"${lijst && i && nv <= vorig ? "" : " disabled"}>⇥</button>
     <button class="icon-btn" style="min-width:34px;min-height:34px" data-subweg="${i}">${ico("x", "width:15px;height:15px")}</button>
   </div>`;
 }
@@ -3292,16 +3527,18 @@ function bladTaakBinden(t, isNieuw) {
       return;
     }
     const sv = e.target.closest("[data-subvink]");
-    if (sv) { const i = +sv.dataset.subvink; t.subtaken[i].af = !t.subtaken[i].af; tekenSub(); return; }
+    if (sv) { leesSub(); subVink(t.subtaken, +sv.dataset.subvink); tekenSub(); return; }
     const sw = e.target.closest("[data-subweg]");
-    if (sw) { leesSub(); t.subtaken.splice(+sw.dataset.subweg, 1); tekenSub(); return; }
+    if (sw) { leesSub(); const [a, z] = subBlok(t.subtaken, +sw.dataset.subweg); t.subtaken.splice(a, z - a); tekenSub(); return; }
+    const si = e.target.closest("[data-subin],[data-subuit]");
+    if (si && !si.disabled) { leesSub(); subVerschuif(t.subtaken, +(si.dataset.subin || si.dataset.subuit), si.dataset.subin ? 1 : -1); tekenSub(); return; }
     const bw = e.target.closest("[data-bijlageweg]");
     if (bw) { t.bijlagen = t.bijlagen.filter(x => x !== bw.dataset.bijlageweg); tekenBijlagen(); return; }
     const ta = e.target.closest("[data-taakactie]");
     if (ta) { taakActie(ta.dataset.taakactie, ta.dataset.id, t); return; }
   });
   const leesSub = () => { $$("[data-subtekst]", b).forEach(inp => { const i = +inp.dataset.subtekst; if (t.subtaken[i]) t.subtaken[i].tekst = inp.value; }); };
-  const tekenSub = () => { $("#subtaken").innerHTML = t.subtaken.map((s, i) => subtaakHTML(s, i)).join(""); };
+  const tekenSub = () => { $("#subtaken").innerHTML = t.subtaken.map((s, i, l) => subtaakHTML(s, i, l)).join(""); };
   $("#sub-toevoegen").onclick = () => {
     leesSub(); t.subtaken.push({ tekst: "", af: false }); tekenSub();
     const laatste = $$("[data-subtekst]", b).pop(); laatste && laatste.focus();
@@ -3353,7 +3590,7 @@ function bladTaakBinden(t, isNieuw) {
     t.notitie = $("#f-notitie").value.trim();
     t.waarom = ($("#f-waarom") || { value: "" }).value.trim();
     t.klaarAls = ($("#f-klaarals") || { value: "" }).value.trim();
-    t.subtaken = t.subtaken.filter(s => s.tekst.trim());
+    t.subtaken = normaliseerSubtaken(t.subtaken.filter(s => s.tekst.trim()));
     const ha = $("#f-hangtaf").value;
     t.hangtAf = ha ? [ha] : [];
     await bewaar("taken", t);
@@ -3734,10 +3971,11 @@ function vwStart() {
   let h = typeof dagPaneel === "function" ? dagPaneel() : "";
 
   h += `<div class="startgrid">
-    ${knop3d({ soort: "snel", naam: "Snel typen", uitleg: "“morgen 15:00 tandarts #zorg”", kleur: "#2f6fed", breed: true })}
+    ${knop3d({ soort: "snel", naam: "Snel typen", uitleg: "“morgen 15:00 tandarts #zorg”", kleur: "#ea580c", breed: true })}
     ${catKnop({ view: "persoonlijk", ill: "persoonlijk", naam: "Persoonlijk", uitleg: "Taken, afspraken en alles er tussenin", kleur: "#2f6fed" })}
     ${catKnop({ view: "werk", ill: "werk", naam: "Werk", uitleg: "Meetings, plannen, strategie en reflectie", kleur: "#c0202f", telling: (typeof werkTelling === "function" ? werkTelling() : "") })}
     ${catKnop({ view: "gezondheid", ill: "gezondheid", naam: "Gezondheid", uitleg: "Eten, sport, water en gewicht", kleur: "#16a34a", telling: (typeof vsTelling === "function" ? vsTelling() : "") })}
+    ${catKnop({ view: "mindmap", ill: "mindmap", naam: "Mindmap", uitleg: "Ideeën, doelen en plannen uittekenen", kleur: "#7a4fd6" })}
   </div>`;
 
   const vast = S.filters.filter(f => f.vast);
@@ -3888,7 +4126,7 @@ function vwFocus() {
       ${t.klaarAls ? `<div class="waarom" style="margin-top:6px"><b>Klaar als:</b> ${esc(t.klaarAls)}</div>` : ""}
       ${t.notitie ? `<div class="waarom" style="margin-top:8px">${esc(t.notitie)}</div>` : ""}
       ${(t.subtaken || []).length ? `<div class="uitklap" style="text-align:left;margin-top:14px">
-        ${t.subtaken.map((s, n) => `<div class="sub-regel${s.af ? " af" : ""}" data-act="focus-sub" data-i="${n}">
+        ${t.subtaken.map((s, n) => `<div class="sub-regel${s.af ? " af" : ""}" data-act="focus-sub" data-i="${n}" style="${subInspring(subNiveau(s))}">
           <span class="mini-vink${s.af ? "" : ""}" style="width:26px;height:26px;margin:0">${s.af ? ico("check", "opacity:1;color:var(--green)") : ""}</span>${esc(s.tekst)}</div>`).join("")}
       </div>` : ""}
     </div>
@@ -3994,7 +4232,7 @@ taakHTML = function (t, opt) {
       ${taakMeta(t)}
       ${t.notitie && opt.notitie !== false ? `<div class="taak-notitie">${esc(t.notitie)}</div>` : ""}
       ${sub.length && open ? `<div class="uitklap">${sub.map((s, i) =>
-        `<div class="sub-regel${s.af ? " af" : ""}" data-act="sub-vink" data-id="${t.id}" data-i="${i}">
+        `<div class="sub-regel${s.af ? " af" : ""}" data-act="sub-vink" data-id="${t.id}" data-i="${i}" style="${subInspring(subNiveau(s))}">
           <span class="mini-vink" style="width:26px;height:26px;margin:0">${s.af ? ico("check", "opacity:1;color:var(--green)") : ""}</span>${esc(s.tekst)}</div>`).join("")}</div>` : ""}
     </div>
     ${sub.length ? `<button class="icon-btn" style="min-width:36px;min-height:36px;margin:-4px -2px -4px 0"
@@ -4190,7 +4428,7 @@ document.addEventListener("click", async e => {
       }
       case "sub-vink": {
         const t = vind("taken", id);
-        t.subtaken[+el.dataset.i].af = !t.subtaken[+el.dataset.i].af;
+        subVink(t.subtaken, +el.dataset.i);
         await bewaar("taken", t); tril(6); teken();
         break;
       }
@@ -4225,7 +4463,7 @@ document.addEventListener("click", async e => {
         const lijst = focusKandidaten();
         const t = lijst[clamp(inst("focusIndex", 0), 0, lijst.length - 1)];
         if (!t) break;
-        t.subtaken[+el.dataset.i].af = !t.subtaken[+el.dataset.i].af;
+        subVink(t.subtaken, +el.dataset.i);
         await bewaar("taken", t); tril(6); teken();
         break;
       }
@@ -7538,10 +7776,17 @@ function csvJaNee(s, terug) {
   if (!t) return terug;
   return ["ja", "j", "yes", "y", "true", "waar", "1", "actief"].includes(t);
 }
+/** Zoek, tussen wat al in de app staat (of al eerder in dit bestand is geïmporteerd), de OUDSTE
+    dubbeling die aan `gelijk` voldoet — id's beginnen met Date.now() in base36, dus alfabetisch
+    sorteren op id geeft ook meteen de oudste eerst. Wordt gebruikt zodat een CSV-import nooit een
+    2e versie van dezelfde incasso/uitgave aanmaakt: de oudste bestaande wordt overschreven. */
+function csvOudsteDubbeling(lijst, gelijk) {
+  return lijst.filter(gelijk).sort((a, b) => a.id < b.id ? -1 : a.id > b.id ? 1 : 0)[0] || null;
+}
 
 async function importUitgavenCSV(bestand) {
   const rijen = csvNaarRijen(await bestand.text());
-  let aantal = 0; const potjesNietGevonden = new Set();
+  let nieuw = 0, overschreven = 0; const potjesNietGevonden = new Set();
   for (const r of rijen) {
     const bedrag = csvGetal(r.bedrag);
     if (!bedrag) continue;
@@ -7554,18 +7799,26 @@ async function importUitgavenCSV(bestand) {
       const p = S.potjes.find(x => x.naam.toLowerCase() === potjeNaam.toLowerCase());
       if (p) potjeId = p.id; else potjesNietGevonden.add(potjeNaam);
     }
-    await bewaar("uitgaven", { id: uid(), datum, bedrag, categorie, omschrijving, potjeId, ts: new Date().toISOString() });
-    aantal++;
+    const dubbel = csvOudsteDubbeling(S.uitgaven, u =>
+      u.datum === datum && Math.abs(u.bedrag - bedrag) < 0.005 && (u.omschrijving || "").trim().toLowerCase() === omschrijving.toLowerCase());
+    await bewaar("uitgaven", {
+      id: dubbel ? dubbel.id : uid(), datum, bedrag, categorie, omschrijving, potjeId,
+      ts: dubbel ? dubbel.ts : new Date().toISOString()
+    });
+    dubbel ? overschreven++ : nieuw++;
   }
   teken();
-  toast(`${aantal} uitgave${aantal === 1 ? "" : "n"} geïmporteerd` +
+  const stukjes = [];
+  if (nieuw) stukjes.push(`${nieuw} nieuwe uitgave${nieuw === 1 ? "" : "n"}`);
+  if (overschreven) stukjes.push(`${overschreven} dubbele bijgewerkt`);
+  toast((stukjes.join(", ") || "Niets geïmporteerd") +
     (potjesNietGevonden.size ? ` — potje niet gevonden: ${[...potjesNietGevonden].join(", ")}` : ""), null, null, 6000);
 }
 
 const HERINNER_LIJST = [[7, "week ervoor"], [3, "3 dagen"], [1, "dag ervoor"], [0, "op de dag zelf"]];
 async function importIncassosCSV(bestand) {
   const rijen = csvNaarRijen(await bestand.text());
-  let aantal = 0;
+  let nieuw = 0, overschreven = 0;
   for (const r of rijen) {
     const naam = (r.naam || "").trim();
     if (!naam) continue;
@@ -7580,11 +7833,20 @@ async function importIncassosCSV(bestand) {
     }).filter(x => x !== null).sort((a, b) => b - a);
     const intensiteit = csvSleutel(r.nadruk || r.nadrukkelijkheid, Object.entries(INTENSITEIT).map(([k, x]) => [k, x.naam]), "zacht");
     const actief = csvJaNee(r.actief, true);
-    await bewaar("incassos", { id: uid(), naam, bedrag, freq, start, cat, herinner, intensiteit, actief, agenda: false });
-    aantal++;
+    // Dubbeling = zelfde naam (ongeacht hoofdletters) — overschrijf de oudste in plaats van
+    // er een 2e versie van dezelfde incasso bij te maken.
+    const dubbel = csvOudsteDubbeling(S.incassos, i => (i.naam || "").trim().toLowerCase() === naam.toLowerCase());
+    await bewaar("incassos", {
+      id: dubbel ? dubbel.id : uid(), naam, bedrag, freq, start, cat, herinner, intensiteit, actief,
+      agenda: dubbel ? dubbel.agenda : false
+    });
+    dubbel ? overschreven++ : nieuw++;
   }
   teken();
-  toast(`${aantal} post${aantal === 1 ? "" : "en"} geïmporteerd`, null, null, 5000);
+  const stukjes = [];
+  if (nieuw) stukjes.push(`${nieuw} nieuwe post${nieuw === 1 ? "" : "en"}`);
+  if (overschreven) stukjes.push(`${overschreven} dubbele bijgewerkt (oudste overschreven)`);
+  toast(stukjes.join(", ") || "Niets geïmporteerd", null, null, 5000);
 }
 
 async function importDagbudgetCSV(bestand) {
@@ -9069,6 +9331,2369 @@ naTekenen = function () {
 };
 </script>
 
+<script>
+"use strict";
+/* ==========================================================================
+   42. Mindmap — ideeën, doelen en plannen uittekenen
+   Opslag in IndexedDB (winkels mm_mindmaps en mm_clusters), net als de rest.
+   ========================================================================== */
+const MM_KLEUREN = ["#7c9bff", "#f5b942", "#a78bfa", "#22d3ee", "#34d399", "#ff6b81"];
+const MM = { hoofd: null, actief: null, pips: [], historie: {}, pipZ: 50, focus: null };
+
+/* ---------- Datamodel ---------- */
+function mmNode(o) {
+  return Object.assign({
+    id: uid(), parentId: null, tekst: "Nieuwe node", x: 0, y: 0, kleur: MM_KLEUREN[0],
+    ingeklapt: false, voorbeeld: false, portals: [], checklist: [], checklistOpen: false,
+    startDatum: null, eindDatum: null, deadline: null,
+    projectId: null, personen: [], notitie: "", koppeling: null
+  }, o || {});
+}
+function mmSeed(naam) {
+  const root = mmNode({ tekst: naam || "Mijn mindmap", kleur: "" });
+  const a = mmNode({ parentId: root.id, tekst: "💡 Ideeën", x: -170, y: -150, kleur: "#f5b942" });
+  const b = mmNode({ parentId: root.id, tekst: "🎯 Doelen", x: 170, y: -150, kleur: "#a78bfa" });
+  const c = mmNode({ parentId: root.id, tekst: "🗺️ Plannen", x: 0, y: 190, kleur: "#22d3ee" });
+  return { rootId: root.id, nodes: [root, a, b, c,
+    mmNode({ parentId: a.id, tekst: "bv. een weekendproject", x: -230, y: -290, kleur: a.kleur, voorbeeld: true }),
+    mmNode({ parentId: b.id, tekst: "bv. een marathon lopen", x: 230, y: -290, kleur: b.kleur, voorbeeld: true }),
+    mmNode({ parentId: c.id, tekst: "bv. planning Q4", x: 0, y: 320, kleur: c.kleur, voorbeeld: true })] };
+}
+/** benoemd = de gebruiker heeft de mindmap een naam gegeven (= "opgeslagen"). */
+function mmRecord(naam, clusterId, seed, benoemd) {
+  if (!seed) { const r = mmNode({ tekst: naam, kleur: "" }); seed = { rootId: r.id, nodes: [r] }; }
+  return {
+    id: uid(), naam: naam || "Naamloze mindmap", clusterId: clusterId || null,
+    rootId: seed.rootId, nodes: seed.nodes, connections: [], pan: { x: 0, y: 0 }, schaal: 1,
+    nieuw: true, opTijdlijn: true, benoemd: benoemd !== false, gemaakt: new Date().toISOString(), updatedAt: Date.now()
+  };
+}
+const MM_STANDAARDNAMEN = ["Mijn mindmap", "Naamloze mindmap", "Nieuwe mindmap"];
+const mmIsBenoemd = mm => !!mm && mm.benoemd !== false;
+
+/* Zet oude (Engelstalige, localStorage) of geïmporteerde nodes om naar het FutureMe-formaat. */
+function mmNormNode(n) {
+  const kleur = n.kleur !== undefined ? n.kleur : n.color;
+  return mmNode({
+    id: n.id || uid(), parentId: n.parentId || null,
+    tekst: String(n.tekst != null ? n.tekst : n.text != null ? n.text : ""),
+    x: +n.x || 0, y: +n.y || 0,
+    kleur: kleur === "#e8e8f2" ? "" : (kleur == null ? MM_KLEUREN[0] : kleur),
+    ingeklapt: !!(n.ingeklapt != null ? n.ingeklapt : n.collapsed),
+    voorbeeld: !!(n.voorbeeld != null ? n.voorbeeld : n.example),
+    portals: Array.isArray(n.portals) ? n.portals.slice() : [],
+    checklist: (n.checklist || []).map(c => ({ id: c.id || uid(), tekst: String(c.tekst != null ? c.tekst : c.text || ""), af: !!(c.af != null ? c.af : c.done) })),
+    checklistOpen: !!n.checklistOpen,
+    startDatum: n.startDatum || n.startDate || null, eindDatum: n.eindDatum || n.endDate || null, deadline: n.deadline || null,
+    projectId: n.projectId || null, personen: Array.isArray(n.personen) ? n.personen.slice() : [],
+    notitie: n.notitie || "", koppeling: n.koppeling || null,
+    subDiep: n.subDiep != null ? !!n.subDiep : undefined
+  });
+}
+function mmNormMindmap(m) {
+  const nodes = (m.nodes || []).map(mmNormNode);
+  let rootId = m.rootId && nodes.some(n => n.id === m.rootId) ? m.rootId : null;
+  if (!rootId) { const r = nodes.find(n => !n.parentId) || nodes[0]; rootId = r ? r.id : null; }
+  if (!rootId) { const r = mmNode({ tekst: m.naam || m.name || "Mindmap", kleur: "" }); nodes.push(r); rootId = r.id; }
+  const ids = new Set(nodes.map(n => n.id));
+  return {
+    id: m.id || uid(), naam: m.naam || m.name || "Mindmap", clusterId: m.clusterId || null,
+    rootId, nodes,
+    connections: (m.connections || []).filter(c => ids.has(c.a) && ids.has(c.b)).map(c => ({ id: c.id || uid(), a: c.a, b: c.b })),
+    pan: { x: 0, y: 0 }, schaal: 1, nieuw: true, opTijdlijn: m.opTijdlijn !== false, benoemd: m.benoemd !== false,
+    gemaakt: m.gemaakt || new Date().toISOString(), updatedAt: m.updatedAt || Date.now()
+  };
+}
+
+/* ---------- Opslag ---------- */
+const mmVind = id => id ? vind("mm_mindmaps", id) : null;
+function mmNieuwste() { return S.mm_mindmaps.slice().sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0))[0] || null; }
+
+/** Eenmalig: stond er nog een bibliotheek van de losse mindmap-tool in localStorage (zelfde domein)?
+    Dan verhuist die naar IndexedDB. De oude gegevens blijven staan, er wordt niets gewist. */
+function mmMigreerLocalStorage() {
+  if (S.mm_mindmaps.length || inst("mmMigratieKlaar", false)) return false;
+  let data = null;
+  try { const raw = localStorage.getItem("mindmap_library_v2"); if (raw) data = JSON.parse(raw); } catch (e) {}
+  if (!data) {
+    try {
+      const oud = JSON.parse(localStorage.getItem("mindmap_v1_data") || "null");
+      if (oud && oud.nodes && oud.nodes.length) data = { clusters: [], mindmaps: [{ name: "Mijn mindmap", nodes: oud.nodes, connections: [] }] };
+    } catch (e) {}
+  }
+  if (!data || !Array.isArray(data.mindmaps) || !data.mindmaps.length) return false;
+  (data.clusters || []).forEach(c => bewaar("mm_clusters", { id: c.id || uid(), naam: c.naam || c.name || "Map", ingeklapt: !!(c.ingeklapt || c.collapsed) }));
+  data.mindmaps.forEach(m => bewaar("mm_mindmaps", mmNormMindmap(m)));
+  zetInst("mmMigratieKlaar", true);
+  if (data.activeId) zetInst("mmActief", data.activeId);
+  return true;
+}
+function mmZorgVoorEen() {
+  if (S.mm_mindmaps.length) return;
+  if (mmMigreerLocalStorage() && S.mm_mindmaps.length) return;
+  const mm = mmRecord("Mijn mindmap", null, mmSeed("Mijn mindmap"), false);
+  bewaar("mm_mindmaps", mm);
+  zetInst("mmMigratieKlaar", true);
+}
+/** De mindmap die nu in beeld hoort: expliciet (V.param), anders de laatst gebruikte, anders de nieuwste. */
+function mmHuidige() {
+  if (!S.mm_mindmaps.length) return null;
+  return (V.view === "mindmap" && mmVind(V.param)) || mmVind(inst("mmActief", null)) || mmNieuwste();
+}
+function mmOnderschrift() {
+  const mm = mmHuidige();
+  return mm ? mm.nodes.length + (mm.nodes.length === 1 ? " node" : " nodes") : "Ideeën, doelen en plannen";
+}
+function mmKopBijwerken() {
+  if (V.view !== "mindmap") return;
+  const mm = mmHuidige(); if (!mm) return;
+  $("#titel").textContent = mm.naam;
+  $("#ondertitel").textContent = mmOnderschrift();
+  $("#ondertitel").style.display = "";
+}
+
+async function mmNieuw(naam, clusterId, benoemd) {
+  const mm = mmRecord(naam, clusterId, null, benoemd);
+  await bewaar("mm_mindmaps", mm);
+  return mm;
+}
+async function mmHernoem(id, naam) {
+  const mm = mmVind(id); if (!mm || !naam) return;
+  mm.naam = naam; mm.benoemd = true; mm.updatedAt = Date.now();
+  await bewaar("mm_mindmaps", mm);
+}
+async function mmVerwijder(id) {
+  mmPipSluit(id);
+  await verwijder("mm_mindmaps", id);
+  for (const m of S.mm_mindmaps) {
+    let veranderd = false;
+    m.nodes.forEach(n => { if ((n.portals || []).includes(id)) { n.portals = n.portals.filter(p => p !== id); veranderd = true; } });
+    if (veranderd) await bewaar("mm_mindmaps", m);
+  }
+  if (inst("mmActief", null) === id) await zetInst("mmActief", null);
+  delete MM.historie[id];
+}
+async function mmZetCluster(id, clusterId) {
+  const mm = mmVind(id); if (!mm) return;
+  mm.clusterId = clusterId || null;
+  await bewaar("mm_mindmaps", mm);
+}
+async function mmNieuwCluster(naam) {
+  const c = { id: uid(), naam: naam || "Nieuwe map", ingeklapt: false };
+  await bewaar("mm_clusters", c);
+  return c;
+}
+async function mmVerwijderCluster(id) {
+  await verwijder("mm_clusters", id);
+  for (const m of S.mm_mindmaps) if (m.clusterId === id) { m.clusterId = null; await bewaar("mm_mindmaps", m); }
+}
+/** Kopie van een hele boom met nieuwe id's (voor "kopieer in huidige mindmap"). */
+function mmKloonBoom(id) {
+  const mm = mmVind(id);
+  const map = new Map(); mm.nodes.forEach(n => map.set(n.id, uid()));
+  const nodes = mm.nodes.map(n => Object.assign(mmNormNode(JSON.parse(JSON.stringify(n))), {
+    id: map.get(n.id), parentId: n.parentId ? (map.get(n.parentId) || null) : null
+  }));
+  const connections = (mm.connections || []).filter(c => map.has(c.a) && map.has(c.b)).map(c => ({ id: uid(), a: map.get(c.a), b: map.get(c.b) }));
+  return { nodes, rootId: map.get(mm.rootId) || null, connections };
+}
+
+/* ---------- Boomhulpjes (werken op een Map van nodes) ---------- */
+const mmKinderen = (nodes, id) => { const u = []; for (const n of nodes.values()) if (n.parentId === id) u.push(n); return u; };
+function mmIsAfstammeling(nodes, voorouderId, nodeId) {
+  if (voorouderId === nodeId) return true;
+  return mmKinderen(nodes, voorouderId).some(k => mmIsAfstammeling(nodes, k.id, nodeId));
+}
+function mmLayoutTak(nodes, node, hoek, afstand) {
+  const kids = mmKinderen(nodes, node.id);
+  if (!kids.length) return;
+  const spreiding = Math.PI / 2.4, start = hoek - spreiding / 2;
+  kids.forEach((k, i) => {
+    const a = kids.length > 1 ? start + spreiding * i / (kids.length - 1) : hoek;
+    const r = Math.max(afstand || 190, kids.length * 40);
+    k.x = node.x + Math.cos(a) * r; k.y = node.y + Math.sin(a) * r;
+    mmLayoutTak(nodes, k, a, afstand);
+  });
+}
+function mmSchuifTak(nodes, id, dx, dy) {
+  const n = nodes.get(id); if (!n) return;
+  n.x += dx; n.y += dy;
+  mmKinderen(nodes, id).forEach(c => mmSchuifTak(nodes, c.id, dx, dy));
+}
+/** Automatisch schikken — waaier van de hoofdtakken, losse draden in een rij eronder. */
+function mmAutoSchik(nodes, rootId) {
+  const root = nodes.get(rootId); if (!root) return;
+  root.x = 0; root.y = 0;
+  const top = mmKinderen(nodes, rootId);
+  const spreiding = Math.PI * 0.62, start = -Math.PI / 2 - spreiding / 2;
+  top.forEach((t, i) => {
+    const a = top.length > 1 ? start + spreiding * i / (top.length - 1) : -Math.PI / 2;
+    const r = Math.max(320, top.length * 70);
+    t.x = Math.cos(a) * r; t.y = Math.sin(a) * r;
+    mmLayoutTak(nodes, t, a);
+  });
+  const hoofd = new Set();
+  const verzamel = id => { hoofd.add(id); mmKinderen(nodes, id).forEach(c => verzamel(c.id)); };
+  verzamel(rootId);
+  const los = Array.from(nodes.values()).filter(n => !n.parentId && n.id !== rootId);
+  if (los.length) {
+    const hoofdNodes = Array.from(nodes.values()).filter(n => hoofd.has(n.id));
+    const maxY = hoofdNodes.length ? Math.max(...hoofdNodes.map(n => n.y)) : 0;
+    let x = -((los.length - 1) * 220) / 2;
+    los.forEach(f => { mmSchuifTak(nodes, f.id, x - f.x, (maxY + 220) - f.y); x += 220; });
+  }
+}
+
+/* ---------- Datums ---------- */
+function mmKortDatum(iso) { if (!iso) return ""; const d = parseISO(iso); return d.getDate() + " " + MAANDKORT[d.getMonth()]; }
+function mmDatumTekst(n) {
+  const p = [];
+  if (n.startDatum && n.eindDatum) p.push(mmKortDatum(n.startDatum) + " – " + mmKortDatum(n.eindDatum));
+  else if (n.startDatum) p.push("vanaf " + mmKortDatum(n.startDatum));
+  else if (n.eindDatum) p.push("tot " + mmKortDatum(n.eindDatum));
+  if (n.deadline) p.push("⏰ " + mmKortDatum(n.deadline));
+  return p.join(" · ");
+}
+const mmHeeftDatum = n => !!(n.startDatum || n.eindDatum || n.deadline);
+function mmDatumBereik(n) {
+  const heeftBereik = !!(n.startDatum && n.eindDatum);
+  const s = n.startDatum || n.deadline || n.eindDatum;
+  const e = heeftBereik ? n.eindDatum : s;
+  return { s, e, heeftBereik };
+}
+
+/* ---------- Koppelingen met de rest van de app ---------- */
+const MM_BRONNAAM = { taak: "Taak", afspraak: "Afspraak", notitie: "Notitie", dagboek: "Dagboek", werkdoc: "Werkdocument" };
+function mmKoppelItem(k) {
+  if (!k || !k.id) return null;
+  if (k.soort === "taak") return vind("taken", k.id);
+  if (k.soort === "afspraak") return vind("afspraken", k.id);
+  if (k.soort === "notitie") return vind("gebeurtenissen", k.id);
+  if (k.soort === "dagboek") return vind("dagboek", k.id);
+  if (k.soort === "werkdoc") return vind("werkdocs", k.id);
+  return null;
+}
+function mmKoppelLabel(k) {
+  const it = mmKoppelItem(k);
+  if (!it) return null;
+  if (k.soort === "taak") return (it.af ? "✓ " : "📋 ") + "Taak";
+  if (k.soort === "afspraak") return "📅 " + (afspraakSoort(it) === "toezegging" ? "Toezegging" : "Afspraak");
+  return "↩ " + MM_BRONNAAM[k.soort];
+}
+function mmOpenKoppeling(k) {
+  const it = mmKoppelItem(k);
+  if (!it) { toast("Dat item bestaat niet meer"); return; }
+  bladSluit();
+  if (k.soort === "taak") setTimeout(() => openTaakBlad(it.id), 280);
+  else if (k.soort === "afspraak") ga("afspraak", it.id);
+  else if (k.soort === "dagboek") setTimeout(() => openDagboekBlad(it.datum), 280);
+  else if (k.soort === "werkdoc") ga("werkdoc", it.id);
+  else if (k.soort === "notitie") ga("logboek");
+}
+/** Alle bekende namen, uit personen, afspraken, taken, werkdocumenten én mindmaps. */
+function mmAlleNamen() {
+  const s = new Set();
+  S.personen.forEach(p => p.naam && s.add(p.naam));
+  S.afspraken.forEach(a => (a.personen || []).forEach(n => s.add(n)));
+  S.taken.forEach(t => (t.personen || []).forEach(n => s.add(n)));
+  S.werkdocs.forEach(d => (d.personen || []).forEach(n => s.add(n)));
+  S.mm_mindmaps.forEach(m => m.nodes.forEach(n => (n.personen || []).forEach(x => s.add(x))));
+  return [...s].filter(Boolean).sort((a, b) => a.localeCompare(b, "nl"));
+}
+/** Alle nodes (over alle mindmaps) die aan iets voldoen — voor project-, personen- en zoekpagina's. */
+function mmNodesWaar(test) {
+  const uit = [];
+  S.mm_mindmaps.forEach(m => m.nodes.forEach(n => { if (test(n)) uit.push({ mm: m, n }); }));
+  return uit;
+}
+function mmNodeRijen(lijst) {
+  return `<div class="card">${lijst.slice(0, 40).map(({ mm, n }) => `<button class="rijknop" data-act="mm-naar-node" data-mm="${mm.id}" data-node="${n.id}">
+    ${ico("mindmap", "width:20px;height:20px;color:" + (n.kleur || "var(--purple)"))}
+    <span class="nm">${esc(n.tekst)}<span class="klein" style="display:block">${esc(mm.naam)}${mmHeeftDatum(n) ? " · " + esc(mmDatumTekst(n)) : ""}${n.personen && n.personen.length ? " · " + esc(n.personen.join(", ")) : ""}</span></span>
+    ${ico("pijlr", "width:16px;height:16px;color:var(--line2)")}</button>`).join("")}</div>`;
+}
+</script>
+<script>
+"use strict";
+/* ==========================================================================
+   43. Mindmap — het canvas (één engine per zichtbare mindmap: hoofd of beeld-in-beeld)
+   ========================================================================== */
+const MM_NS = "http://www.w3.org/2000/svg";
+const mmPad = (a, b) => { const dx = (b.x - a.x) * 0.5; return `M ${a.x} ${a.y} C ${a.x + dx} ${a.y}, ${b.x - dx} ${b.y}, ${b.x} ${b.y}`; };
+
+class MmEngine {
+  constructor(container, mmId, opties) {
+    opties = opties || {};
+    this.container = container; this.mmId = mmId;
+    this.pip = !!opties.pip; this.actiebalkEl = opties.actiebalk || null;
+    this.pointers = new Map();
+    this.bouwDom(); this.laad(); this.bindEvents(); this.transform(); this.render();
+    const mm = mmVind(mmId);
+    if (mm && mm.nieuw) { this.passend(); mm.nieuw = false; this.opslaan(true); }
+    else if (this.pip) this.centreerRoot();
+    MM.actief = this;
+  }
+
+  /* ---------- Opbouw & gegevens ---------- */
+  bouwDom() {
+    this.container.innerHTML = "";
+    this.vp = document.createElement("div"); this.vp.className = "mm-viewport";
+    this.wereld = document.createElement("div"); this.wereld.className = "mm-wereld";
+    this.svg = document.createElementNS(MM_NS, "svg"); this.svg.setAttribute("class", "mm-links");
+    this.laag = document.createElement("div"); this.laag.className = "mm-nodes";
+    this.wereld.append(this.svg, this.laag); this.vp.appendChild(this.wereld); this.container.appendChild(this.vp);
+  }
+  laad() {
+    const mm = mmVind(this.mmId);
+    this.nodes = new Map(mm.nodes.map(n => [n.id, mmNormNode(n)]));
+    this.connections = (mm.connections || []).map(c => Object.assign({}, c));
+    this.rootId = this.nodes.has(mm.rootId) ? mm.rootId : ((Array.from(this.nodes.values()).find(n => !n.parentId) || {}).id);
+    this.panX = (mm.pan && mm.pan.x) || 0; this.panY = (mm.pan && mm.pan.y) || 0; this.schaal = mm.schaal || 1;
+    this.sel = null; this.selVerbinding = null; this.bewerkId = null;
+    this.verbindModus = false; this.verbindVan = null;
+    this.sleep = null; this.pan = null; this.knijp = null; this.herverbind = null;
+    this.hist = MM.historie[this.mmId] || (MM.historie[this.mmId] = { verleden: [], toekomst: [] });
+    this.zichtbareIds = new Set();
+  }
+  get mm() { return mmVind(this.mmId); }
+  _schrijf() {
+    this._t = null;
+    const mm = mmVind(this.mmId); if (!mm) return;
+    mm.nodes = Array.from(this.nodes.values());
+    mm.connections = this.connections; mm.rootId = this.rootId;
+    mm.pan = { x: this.panX, y: this.panY }; mm.schaal = this.schaal; mm.updatedAt = Date.now();
+    bewaar("mm_mindmaps", mm);
+  }
+  /** Direct opslaan bij echte wijzigingen; bij pannen/zoomen/slepen even wachten. */
+  opslaan(direct) {
+    clearTimeout(this._t);
+    if (direct) this._schrijf(); else this._t = setTimeout(() => this._schrijf(), 280);
+  }
+  spoel() { if (this._t) { clearTimeout(this._t); this._schrijf(); } }
+
+  kinderen(id) { return mmKinderen(this.nodes, id); }
+  diepte(id) {
+    let d = 0, cur = this.nodes.get(id), g = 0;
+    while (cur && cur.parentId && g++ < 1000) { const p = this.nodes.get(cur.parentId); if (!p) break; d++; cur = p; }
+    return d;
+  }
+  zichtbaar(n) {
+    let cur = n, g = 0;
+    while (cur.parentId && g++ < 1000) { const p = this.nodes.get(cur.parentId); if (!p) break; if (p.ingeklapt) return false; cur = p; }
+    return true;
+  }
+  transform() {
+    this.wereld.style.transform = `translate(${this.panX}px, ${this.panY}px) scale(${this.schaal})`;
+    if (this === MM.hoofd) { const z = $("#mmZoom"); if (z) z.textContent = Math.round(this.schaal * 100) + "%"; }
+  }
+
+  /* ---------- Ongedaan maken ---------- */
+  momentopname() { return JSON.stringify({ nodes: Array.from(this.nodes.values()), connections: this.connections, rootId: this.rootId }); }
+  geschiedenis() {
+    this.hist.verleden.push(this.momentopname());
+    if (this.hist.verleden.length > 60) this.hist.verleden.shift();
+    this.hist.toekomst = [];
+  }
+  ongedaan() {
+    if (!this.hist.verleden.length) { toast("Niets om ongedaan te maken"); return; }
+    this.hist.toekomst.push(this.momentopname());
+    this.herstel(JSON.parse(this.hist.verleden.pop()));
+  }
+  opnieuw() {
+    if (!this.hist.toekomst.length) { toast("Niets om opnieuw te doen"); return; }
+    this.hist.verleden.push(this.momentopname());
+    this.herstel(JSON.parse(this.hist.toekomst.pop()));
+  }
+  herstel(st) {
+    this.nodes = new Map(st.nodes.map(n => [n.id, n]));
+    this.connections = st.connections || [];
+    if (st.rootId && this.nodes.has(st.rootId)) this.rootId = st.rootId;
+    if (this.sel && !this.nodes.has(this.sel)) this.sel = null;
+    this.render(); this.opslaan(true);
+  }
+
+  /* ---------- Tekenen ---------- */
+  render() {
+    this.laag.innerHTML = "";
+    const zichtbaar = Array.from(this.nodes.values()).filter(n => this.zichtbaar(n));
+    this.zichtbareIds = new Set(zichtbaar.map(n => n.id));
+    const frag = document.createDocumentFragment();
+    zichtbaar.forEach(n => {
+      frag.appendChild(this.nodeEl(n));
+      if (n.ingeklapt) { const k = this.kinderen(n.id); if (k.length) this.spoken(frag, n, k); }
+    });
+    this.laag.appendChild(frag);
+    this.tekenLijnen();
+    this.werkActiebalkBij();
+    if (this === MM.hoofd) { mmTekenOutline(); mmTekenLade(); mmKopBijwerken(); }
+  }
+  tekenLijnen() {
+    const svg = this.svg; svg.innerHTML = "";
+    for (const n of this.nodes.values()) {
+      if (!n.parentId || !this.zichtbareIds.has(n.id)) continue;
+      const p = this.nodes.get(n.parentId); if (!p) continue;
+      const el = document.createElementNS(MM_NS, "path");
+      el.setAttribute("d", mmPad(p, n)); el.setAttribute("class", "mm-lijn");
+      el.style.stroke = n.kleur || "var(--accent)";
+      svg.appendChild(el);
+    }
+    this.connections.forEach(c => {
+      const a = this.nodes.get(c.a), b = this.nodes.get(c.b);
+      if (!a || !b || !this.zichtbareIds.has(a.id) || !this.zichtbareIds.has(b.id)) return;
+      const d = mmPad(a, b);
+      const zicht = document.createElementNS(MM_NS, "path");
+      zicht.setAttribute("d", d); zicht.setAttribute("class", "mm-reflijn" + (c.id === this.selVerbinding ? " mm-actief" : ""));
+      const raak = document.createElementNS(MM_NS, "path");
+      raak.setAttribute("d", d); raak.setAttribute("class", "mm-reflijn-raak"); raak.setAttribute("data-verbinding", c.id);
+      svg.append(zicht, raak);
+    });
+    if (this.herverbind && this.herverbind.lijn) svg.appendChild(this.herverbind.lijn);
+  }
+  nodeEl(n) {
+    const el = document.createElement("div");
+    const diepte = this.diepte(n.id);
+    el.className = "mm-node" + (n.id === this.rootId ? " mm-root" : "") + (n.voorbeeld ? " mm-voorbeeld" : "")
+      + (n.id === this.sel ? " mm-geselecteerd" : "") + (n.id === this.verbindVan ? " mm-wachtend" : "");
+    el.style.left = n.x + "px"; el.style.top = n.y + "px";
+    el.dataset.id = n.id;
+    let h = `<div class="mm-balk" style="background:${n.kleur || "var(--text)"}"></div><div class="mm-tekst">${esc(n.tekst)}</div>`;
+    const meta = [];
+    if (mmHeeftDatum(n)) meta.push(`<span class="mm-badge datum">📅 ${esc(mmDatumTekst(n))}</span>`);
+    const p = n.projectId ? vind("projecten", n.projectId) : null;
+    if (p) meta.push(`<span class="mm-badge project" style="background:${p.kleur}">#${esc(p.naam)}</span>`);
+    (n.personen || []).forEach(x => meta.push(`<span class="mm-badge persoon">👤 ${esc(x)}</span>`));
+    const kl = mmKoppelLabel(n.koppeling);
+    if (kl) meta.push(`<span class="mm-badge link" data-mmstop data-mmdo="koppeling">${esc(kl)}</span>`);
+    if (n.notitie) meta.push(`<span class="mm-badge notitie" title="Heeft een notitie">📝</span>`);
+    if (meta.length) h += `<div class="mm-meta">${meta.join("")}</div>`;
+    const portals = (n.portals || []).filter(id => mmVind(id));
+    if (portals.length) h += `<div class="mm-meta">${portals.map(id =>
+      `<span class="mm-portal" data-mmstop data-mmdo="portal" data-doel="${id}">🔗 ${esc(mmVind(id).naam)}</span>`).join("")}</div>`;
+    if (diepte >= 2) {
+      const tot = n.checklist.length, af = n.checklist.filter(c => c.af).length;
+      if (tot || n.checklistOpen) h += `<span class="mm-stappenknop" data-mmstop data-mmdo="stappen">${tot
+        ? `☑ ${af}/${tot} stappen ${n.checklistOpen ? "▾" : "▸"}` : "☑ Stappen toevoegen"}</span>`;
+      if (n.checklistOpen) h += `<div class="mm-stappen" data-mmstop>${n.checklist.map(c =>
+        `<div class="mm-stap${c.af ? " af" : ""}" data-stap="${c.id}">
+          <input type="checkbox"${c.af ? " checked" : ""} data-mmdo="stapvink" aria-label="Afvinken">
+          <span class="mm-staptekst" data-mmdo="staptekst">${esc(c.tekst)}</span>
+          <button class="mm-stapweg" data-mmdo="stapweg" aria-label="Stap verwijderen">×</button></div>`).join("")}
+        <input class="mm-stapnieuw" type="text" placeholder="+ Stap toevoegen…" enterkeyhint="done"></div>`;
+    }
+    const kids = this.kinderen(n.id);
+    if (kids.length) h += `<div class="mm-vouw${n.ingeklapt ? " mm-dicht" : ""}" data-mmstop data-mmdo="vouw"
+      title="${n.ingeklapt ? "Tak uitklappen" : "Tak inklappen"}">${n.ingeklapt ? "▸ " + kids.length : "▾"}</div>`;
+    h += `<div class="mm-plus" data-mmstop data-mmdo="plus" title="Kind toevoegen">+</div>`;
+    if (!n.parentId && n.id !== this.rootId)
+      h += `<div class="mm-herverbind" data-mmstop data-mmdo="herverbind" title="Losse draad — sleep naar een andere node om vast te maken">+</div>`;
+    el.innerHTML = h;
+    return el;
+  }
+  spoken(frag, n, kids) {
+    const max = 6, toon = kids.slice(0, max), extra = kids.length - toon.length, r = 82;
+    const spr = toon.length > 1 ? Math.min(Math.PI * .92, .5 + .35 * toon.length) : 0;
+    const start = Math.PI / 2 - spr / 2;
+    toon.forEach((k, i) => {
+      const a = toon.length > 1 ? start + spr * i / (toon.length - 1) : Math.PI / 2;
+      const g = document.createElement("div");
+      g.className = "mm-spook"; g.dataset.mmstop = ""; g.dataset.mmdo = "spook"; g.dataset.ouder = n.id; g.dataset.kind = k.id;
+      g.style.left = (n.x + Math.cos(a) * r) + "px"; g.style.top = (n.y + Math.sin(a) * r) + "px";
+      g.style.setProperty("--gc", k.kleur || n.kleur || "var(--accent)");
+      g.textContent = k.tekst.length > 22 ? k.tekst.slice(0, 20) + "…" : k.tekst;
+      g.title = `Verborgen onder "${n.tekst}" — tik om uit te klappen`;
+      frag.appendChild(g);
+    });
+    if (extra > 0) {
+      const g = document.createElement("div");
+      g.className = "mm-spook mm-meer"; g.dataset.mmstop = ""; g.dataset.mmdo = "spook"; g.dataset.ouder = n.id;
+      g.style.left = n.x + "px"; g.style.top = (n.y + r * 1.3) + "px"; g.textContent = "+" + extra + " meer…";
+      frag.appendChild(g);
+    }
+  }
+  markeerSelectie() {
+    this.laag.querySelectorAll(".mm-node").forEach(el => {
+      el.classList.toggle("mm-geselecteerd", el.dataset.id === this.sel);
+      el.classList.toggle("mm-wachtend", el.dataset.id === this.verbindVan);
+    });
+    this.werkActiebalkBij();
+    if (this === MM.hoofd) mmTekenOutline();
+  }
+  werkActiebalkBij() {
+    const b = this.actiebalkEl; if (!b) return;
+    const n = this.sel ? this.nodes.get(this.sel) : null;
+    let h = "";
+    if (this.verbindModus) {
+      h = `<span class="mm-hint">${this.verbindVan ? "🔗 Tik nu op de node om mee te verbinden" : "🔗 Tik op de eerste node"}</span>
+        <button class="mm-ab aan" data-mma="verbindstop">Stoppen</button>`;
+    } else if (this.selVerbinding) {
+      h = `<span class="mm-hint">Verbinding geselecteerd</span>
+        <button class="mm-ab gevaar" data-mma="verbindingweg">🗑 Verbreken</button><button class="mm-ab" data-mma="sluit">✕</button>`;
+    } else if (n) {
+      const isRoot = n.id === this.rootId, los = !n.parentId && !isRoot;
+      const p = n.projectId ? vind("projecten", n.projectId) : null;
+      const kleuren = MM_KLEUREN.concat(p && !MM_KLEUREN.includes(p.kleur) ? [p.kleur] : []);
+      h = `<button class="mm-ab" data-mma="kind" title="Kind toevoegen (Tab)">↳＋</button>
+        <button class="mm-ab" data-mma="naaste" title="Naaste toevoegen (Enter)">↔＋</button>
+        <button class="mm-ab" data-mma="naam" title="Naam wijzigen (F2)">✎</button>
+        <span class="mm-absep"></span>
+        ${kleuren.map(k => `<button class="mm-kleurbol" style="background:${k}" data-mma="kleur" data-kleur="${k}" aria-pressed="${n.kleur === k}" aria-label="Kleur"></button>`).join("")}
+        <span class="mm-absep"></span>
+        ${this.diepte(n.id) >= 2 ? `<button class="mm-ab" data-mma="stappen" title="Afvinkbare stappen">☑</button>` : ""}
+        <button class="mm-ab" data-mma="datums" title="Plannen: start, einde, deadline">📅</button>
+        <button class="mm-ab" data-mma="details" title="Personen, project, notitie…">👤 Details</button>
+        <button class="mm-ab" data-mma="planning" title="Zet in je planning of agenda">📌 Planning</button>
+        ${isRoot ? "" : los ? `<button class="mm-ab" data-mma="vastmaken" title="Weer vastmaken aan een node">🧷</button>`
+          : `<button class="mm-ab" data-mma="losmaken" title="Losmaken van de draad">✂</button>`}
+        <button class="mm-ab" data-mma="mindmaplink" title="Koppelen aan een andere mindmap">🔗</button>
+        ${isRoot ? "" : `<button class="mm-ab gevaar" data-mma="weg" title="Verwijderen (Del)">🗑</button>`}`;
+    } else if (!this.pip) {
+      h = `<span class="mm-hint">Tik op een node om te bewerken · dubbeltik op een leeg vlak voor een nieuwe</span>`;
+    }
+    b.innerHTML = h;
+    b.classList.toggle("verborgen", !h);
+  }
+
+  /* ---------- Invoer: aanwijzen, slepen, pannen, knijpen ---------- */
+  bindEvents() {
+    this._down = e => this.onDown(e);
+    this._move = e => this.onMove(e);
+    this._up = e => this.onUp(e);
+    this._wiel = e => this.onWiel(e);
+    this._klik = e => this.onKlik(e);
+    this._toets = e => this.onVeldToets(e);
+    this.vp.addEventListener("pointerdown", this._down);
+    this.vp.addEventListener("wheel", this._wiel, { passive: false });
+    this.vp.addEventListener("click", this._klik);
+    this.vp.addEventListener("keydown", this._toets);
+    window.addEventListener("pointermove", this._move);
+    window.addEventListener("pointerup", this._up);
+    window.addEventListener("pointercancel", this._up);
+    if (this.actiebalkEl) {
+      this.actiebalkEl.addEventListener("pointerdown", e => e.stopPropagation());
+      this.actiebalkEl.onclick = e => { const k = e.target.closest("[data-mma]"); if (k) this.actie(k.dataset.mma, k); };
+    }
+    if (this.pip && typeof ResizeObserver !== "undefined") {
+      this._ro = new ResizeObserver(() => this.centreerRoot());
+      this._ro.observe(this.container);
+    }
+  }
+  vernietig() {
+    this.spoel();
+    this.vp.removeEventListener("pointerdown", this._down);
+    window.removeEventListener("pointermove", this._move);
+    window.removeEventListener("pointerup", this._up);
+    window.removeEventListener("pointercancel", this._up);
+    if (this._ro) this._ro.disconnect();
+    if (MM.actief === this) MM.actief = null;
+  }
+  wereldPunt(cx, cy) {
+    const r = this.vp.getBoundingClientRect();
+    return { x: (cx - r.left - this.panX) / this.schaal, y: (cy - r.top - this.panY) / this.schaal };
+  }
+  onDown(e) {
+    MM.actief = this;
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    if (e.target.closest("[data-mmstop]")) {
+      if (e.target.closest('[data-mmdo="herverbind"]')) {
+        e.preventDefault();
+        this.startHerverbind(e.target.closest(".mm-node").dataset.id, e.clientX, e.clientY);
+      }
+      return;
+    }
+    this.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (this.pointers.size === 2) { this.startKnijp(); return; }
+    if (this.pointers.size > 2) return;
+    const verb = e.target.getAttribute && e.target.getAttribute("data-verbinding");
+    if (verb) { this.selecteerVerbinding(verb); return; }
+    const nodeEl = e.target.closest(".mm-node");
+    if (nodeEl) {
+      const id = nodeEl.dataset.id;
+      if (this.bewerkId === id) return;
+      if (this.bewerkId) this.bevestigBewerking();
+      if (this.verbindModus) { this.verbindKlik(id); return; }
+      const nu = Date.now();
+      if (this._tik && this._tik.id === id && nu - this._tik.t < 400) { this._tik = null; this.startBewerken(id); return; }
+      this._tik = { id, t: nu };
+      this.selecteer(id);
+      const n = this.nodes.get(id);
+      this.sleep = { id, sx: e.clientX, sy: e.clientY, ox: n.x, oy: n.y, bewogen: false, el: this.laag.querySelector(`.mm-node[data-id="${id}"]`) };
+      return;
+    }
+    if (this.bewerkId) this.bevestigBewerking();
+    if (this.verbindModus) { this.zetVerbindModus(false); return; }
+    const nu = Date.now();
+    if (this._tikLeeg && nu - this._tikLeeg.t < 400 && Math.hypot(e.clientX - this._tikLeeg.x, e.clientY - this._tikLeeg.y) < 30) {
+      this._tikLeeg = null; this.nieuwOpPlek(e.clientX, e.clientY); return;
+    }
+    this._tikLeeg = { t: nu, x: e.clientX, y: e.clientY };
+    this.pan = { sx: e.clientX, sy: e.clientY, ox: this.panX, oy: this.panY };
+    this.vp.classList.add("mm-pannen");
+    if (this.sel || this.selVerbinding) this.deselecteer();
+  }
+  onMove(e) {
+    if (this.pointers.has(e.pointerId)) this.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (this.knijp) { if (this.pointers.size >= 2) this.werkKnijpBij(); return; }
+    if (this.sleep) {
+      if (!this.sleep.bewogen && Math.hypot(e.clientX - this.sleep.sx, e.clientY - this.sleep.sy) < 4) return;
+      if (!this.sleep.bewogen) { this.sleep.bewogen = true; this._tik = null; this.geschiedenis(); if (this.sleep.el) this.sleep.el.classList.add("mm-slepen"); }
+      const n = this.nodes.get(this.sleep.id); if (!n) return;
+      n.x = this.sleep.ox + (e.clientX - this.sleep.sx) / this.schaal;
+      n.y = this.sleep.oy + (e.clientY - this.sleep.sy) / this.schaal;
+      if (this.sleep.el) { this.sleep.el.style.left = n.x + "px"; this.sleep.el.style.top = n.y + "px"; }
+      this.tekenLijnen();
+    } else if (this.pan) {
+      this.panX = this.pan.ox + e.clientX - this.pan.sx; this.panY = this.pan.oy + e.clientY - this.pan.sy;
+      if (Math.hypot(e.clientX - this.pan.sx, e.clientY - this.pan.sy) > 6) this._tikLeeg = null;
+      this.transform();
+    } else if (this.herverbind) this.werkHerverbindBij(e.clientX, e.clientY);
+  }
+  onUp(e) {
+    this.pointers.delete(e.pointerId);
+    if (this.knijp) { if (this.pointers.size < 2) { this.knijp = null; this.opslaan(); } return; }
+    if (this.sleep) { const s = this.sleep; this.sleep = null; if (s.bewogen) { this.render(); this.opslaan(true); } }
+    if (this.pan) { this.pan = null; this.vp.classList.remove("mm-pannen"); this.opslaan(); }
+    if (this.herverbind) this.eindHerverbind(e.clientX, e.clientY);
+  }
+  startKnijp() {
+    const [a, b] = [...this.pointers.values()];
+    const r = this.vp.getBoundingClientRect();
+    const mx = (a.x + b.x) / 2 - r.left, my = (a.y + b.y) / 2 - r.top;
+    if (this.sleep && this.sleep.bewogen) this.render();
+    this.sleep = null; this.pan = null; this.vp.classList.remove("mm-pannen");
+    this.knijp = { d0: Math.hypot(a.x - b.x, a.y - b.y) || 1, s0: this.schaal, wx: (mx - this.panX) / this.schaal, wy: (my - this.panY) / this.schaal };
+  }
+  werkKnijpBij() {
+    const [a, b] = [...this.pointers.values()];
+    const r = this.vp.getBoundingClientRect();
+    const mx = (a.x + b.x) / 2 - r.left, my = (a.y + b.y) / 2 - r.top;
+    const s = clamp(this.knijp.s0 * Math.hypot(a.x - b.x, a.y - b.y) / this.knijp.d0, 0.25, 2.5);
+    this.schaal = s; this.panX = mx - this.knijp.wx * s; this.panY = my - this.knijp.wy * s;
+    this.transform();
+  }
+  onWiel(e) {
+    e.preventDefault();
+    const r = this.vp.getBoundingClientRect();
+    const cx = e.clientX - r.left, cy = e.clientY - r.top;
+    const wx = (cx - this.panX) / this.schaal, wy = (cy - this.panY) / this.schaal;
+    const s = clamp(this.schaal * (1 - e.deltaY * 0.0015), 0.25, 2.5);
+    this.panX = cx - wx * s; this.panY = cy - wy * s; this.schaal = s;
+    this.transform(); this.opslaan();
+  }
+  onKlik(e) {
+    const doel = e.target.closest("[data-mmdo]"); if (!doel) return;
+    const wat = doel.dataset.mmdo;
+    if (wat === "spook") {
+      const n = this.nodes.get(doel.dataset.ouder); if (!n) return;
+      n.ingeklapt = false; this.render(); this.opslaan(true);
+      if (doel.dataset.kind) this.selecteer(doel.dataset.kind);
+      return;
+    }
+    const nodeEl = doel.closest(".mm-node"); const n = nodeEl ? this.nodes.get(nodeEl.dataset.id) : null;
+    if (!n) return;
+    const stap = doel.closest("[data-stap]") ? n.checklist.find(c => c.id === doel.closest("[data-stap]").dataset.stap) : null;
+    switch (wat) {
+      case "vouw": n.ingeklapt = !n.ingeklapt; this.render(); this.opslaan(true); break;
+      case "plus": this.voegKindToe(n.id); break;
+      case "portal": mmPipOpen(doel.dataset.doel, doel.getBoundingClientRect()); break;
+      case "koppeling": mmOpenKoppeling(n.koppeling); break;
+      case "stappen": n.checklistOpen = !n.checklistOpen; this.render(); this.opslaan(true); break;
+      case "stapvink": if (stap) { this.geschiedenis(); stap.af = doel.checked; this.render(); this.opslaan(true); } break;
+      case "stapweg": if (stap) { this.geschiedenis(); n.checklist = n.checklist.filter(c => c !== stap); this.render(); this.opslaan(true); } break;
+      case "staptekst": if (stap) this.bewerkStap(n, stap, doel); break;
+    }
+  }
+  onVeldToets(e) {
+    const veld = e.target;
+    if (!veld.classList || !veld.classList.contains("mm-stapnieuw")) return;
+    e.stopPropagation();
+    if (e.key !== "Enter" || !veld.value.trim()) return;
+    const n = this.nodes.get(veld.closest(".mm-node").dataset.id); if (!n) return;
+    this.geschiedenis();
+    n.checklist.push({ id: uid(), tekst: veld.value.trim(), af: false });
+    this.render(); this.opslaan(true);
+    const nieuw = this.laag.querySelector(`.mm-node[data-id="${n.id}"] .mm-stapnieuw`);
+    if (nieuw) nieuw.focus();
+  }
+  bewerkStap(n, stap, spanEl) {
+    const inp = document.createElement("input");
+    inp.type = "text"; inp.className = "mm-stapbewerk"; inp.value = stap.tekst;
+    let klaar = false;
+    const bevestig = () => {
+      if (klaar) return; klaar = true;
+      const w = inp.value.trim();
+      if (w && w !== stap.tekst) { this.geschiedenis(); stap.tekst = w; this.opslaan(true); }
+      this.render();
+    };
+    inp.addEventListener("keydown", ev => {
+      ev.stopPropagation();
+      if (ev.key === "Enter") { ev.preventDefault(); bevestig(); }
+      else if (ev.key === "Escape") { ev.preventDefault(); klaar = true; this.render(); }
+    });
+    inp.addEventListener("blur", bevestig);
+    spanEl.replaceWith(inp); inp.focus(); inp.select();
+  }
+
+  /* ---------- Selectie ---------- */
+  selecteer(id) {
+    const hadVerb = !!this.selVerbinding;
+    this.sel = id; this.selVerbinding = null;
+    if (hadVerb) this.tekenLijnen();
+    this.markeerSelectie();
+  }
+  deselecteer() {
+    if (this.bewerkId) this.bevestigBewerking();
+    const hadVerb = !!this.selVerbinding;
+    this.sel = null; this.selVerbinding = null;
+    if (hadVerb) this.tekenLijnen();
+    this.markeerSelectie();
+  }
+  selecteerVerbinding(id) {
+    this.selVerbinding = id; this.sel = null;
+    this.tekenLijnen(); this.markeerSelectie();
+  }
+  centreerOp(id) {
+    const n = this.nodes.get(id); if (!n) return;
+    let cur = n, g = 0, open = false;
+    while (cur.parentId && g++ < 1000) { const p = this.nodes.get(cur.parentId); if (!p) break; if (p.ingeklapt) { p.ingeklapt = false; open = true; } cur = p; }
+    if (open) { this.render(); this.opslaan(true); }
+    const r = this.vp.getBoundingClientRect();
+    this.panX = r.width / 2 - n.x * this.schaal; this.panY = r.height / 2 - n.y * this.schaal;
+    this.transform(); this.selecteer(id); this.opslaan();
+  }
+  centreerRoot() {
+    const root = this.nodes.get(this.rootId); if (!root) return;
+    const r = this.vp.getBoundingClientRect(); if (!r.width && !r.height) return;
+    this.panX = r.width / 2 - root.x * this.schaal; this.panY = r.height / 2 - root.y * this.schaal;
+    this.transform();
+  }
+  passend() {
+    const alle = Array.from(this.nodes.values()).filter(n => this.zichtbaar(n)); if (!alle.length) return;
+    const xs = alle.map(n => n.x), ys = alle.map(n => n.y);
+    const minX = Math.min(...xs) - 120, maxX = Math.max(...xs) + 120, minY = Math.min(...ys) - 80, maxY = Math.max(...ys) + 80;
+    const w = maxX - minX, h = maxY - minY;
+    const r = this.vp.getBoundingClientRect(); if (!r.width || !r.height) return;
+    this.schaal = clamp(Math.min(r.width / w, r.height / h, 1.4), 0.25, 2.5);
+    this.panX = r.width / 2 - (minX + w / 2) * this.schaal; this.panY = r.height / 2 - (minY + h / 2) * this.schaal;
+    this.transform(); this.opslaan();
+  }
+  zoom(stap) {
+    const r = this.vp.getBoundingClientRect();
+    const cx = r.width / 2, cy = r.height / 2;
+    const wx = (cx - this.panX) / this.schaal, wy = (cy - this.panY) / this.schaal;
+    this.schaal = clamp(Math.round((this.schaal + stap) * 100) / 100, 0.25, 2.5);
+    this.panX = cx - wx * this.schaal; this.panY = cy - wy * this.schaal;
+    this.transform(); this.opslaan();
+  }
+
+  /* ---------- Tekst bewerken (inline) ---------- */
+  startBewerken(id) {
+    if (this.bewerkId && this.bewerkId !== id) this.bevestigBewerking();
+    this.sel = id; this.markeerSelectie();
+    const el = this.laag.querySelector(`.mm-node[data-id="${id}"] .mm-tekst`); if (!el) return;
+    this.bewerkId = id;
+    el.contentEditable = "true"; el.spellcheck = true;
+    el.focus();
+    try { const r = document.createRange(); r.selectNodeContents(el); const s = window.getSelection(); s.removeAllRanges(); s.addRange(r); } catch (e) {}
+    el.onkeydown = ev => {
+      ev.stopPropagation();
+      if (ev.key === "Enter") { ev.preventDefault(); this.bevestigBewerking(); }
+      else if (ev.key === "Escape") { ev.preventDefault(); el.textContent = this.nodes.get(id).tekst; this.bevestigBewerking(); }
+    };
+    el.onblur = () => this.bevestigBewerking();
+  }
+  bevestigBewerking() {
+    const id = this.bewerkId; if (!id) return;
+    this.bewerkId = null;
+    const el = this.laag.querySelector(`.mm-node[data-id="${id}"] .mm-tekst`);
+    const n = this.nodes.get(id);
+    if (el && n) {
+      el.onblur = null; el.onkeydown = null;
+      const w = el.textContent.replace(/\s+/g, " ").trim() || "Naamloos";
+      if (w !== n.tekst) { this.geschiedenis(); n.tekst = w; n.voorbeeld = false; this.opslaan(true); }
+      el.contentEditable = "false";
+    }
+    this.render();
+  }
+
+  /* ---------- Wijzigen ---------- */
+  voegKindToe(ouderId) {
+    ouderId = ouderId && this.nodes.has(ouderId) ? ouderId : this.rootId;
+    if (this.bewerkId) this.bevestigBewerking();
+    this.geschiedenis();
+    const ouder = this.nodes.get(ouderId), kids = this.kinderen(ouderId), k = kids.length;
+    let hoek;
+    const opa = ouder.parentId ? this.nodes.get(ouder.parentId) : null;
+    if (!opa) hoek = -Math.PI / 2 + k * 1.15;
+    else hoek = Math.atan2(ouder.y - opa.y, ouder.x - opa.x) + (k % 2 ? 1 : -1) * 0.42 * Math.ceil(k / 2);
+    const afst = opa ? 175 : 210;
+    const kleur = ouder.kleur || MM_KLEUREN[k % MM_KLEUREN.length];
+    const n = mmNode({ parentId: ouderId, tekst: "Nieuwe node", x: ouder.x + Math.cos(hoek) * afst, y: ouder.y + Math.sin(hoek) * afst, kleur,
+      projectId: ouder.projectId || null });
+    this.nodes.set(n.id, n);
+    ouder.ingeklapt = false;
+    this.render(); this.opslaan(true);
+    this.startBewerken(n.id);
+    return n;
+  }
+  voegNaasteToe(id) {
+    const n = this.nodes.get(id);
+    return this.voegKindToe(n && n.parentId ? n.parentId : this.rootId);
+  }
+  nieuwOpPlek(cx, cy) {
+    const w = this.wereldPunt(cx, cy);
+    this.geschiedenis();
+    const n = mmNode({ parentId: this.rootId, tekst: "Nieuw idee", x: w.x, y: w.y, kleur: MM_KLEUREN[0] });
+    this.nodes.set(n.id, n);
+    this.render(); this.opslaan(true);
+    this.startBewerken(n.id);
+  }
+  verwijderNode(id) {
+    const n = this.nodes.get(id); if (!n) return;
+    if (id === this.rootId) { toast("De middelste node kan niet weg — verwijder de mindmap via Mindmappen"); return; }
+    const weg = () => {
+      this.geschiedenis();
+      const lijst = [id];
+      const verzamel = pid => this.kinderen(pid).forEach(c => { lijst.push(c.id); verzamel(c.id); });
+      verzamel(id);
+      lijst.forEach(x => this.nodes.delete(x));
+      this.connections = this.connections.filter(c => !lijst.includes(c.a) && !lijst.includes(c.b));
+      if (lijst.includes(this.sel)) this.sel = null;
+      this.render(); this.opslaan(true);
+      toast(lijst.length > 1 ? `${lijst.length} nodes verwijderd` : "Node verwijderd", "Ongedaan maken", () => this.ongedaan());
+    };
+    if (this.kinderen(id).length) bevestigVerwijderen(weg); else weg();
+  }
+  zetKleur(id, kleur) {
+    const n = this.nodes.get(id); if (!n) return;
+    this.geschiedenis(); n.kleur = kleur; this.render(); this.opslaan(true);
+  }
+  maakLos(id) {
+    const n = this.nodes.get(id); if (!n) return;
+    if (id === this.rootId) { toast("De middelste node kan niet los"); return; }
+    if (!n.parentId) { toast("Al los — sleep het oranje + naar een andere node"); return; }
+    this.geschiedenis(); n.parentId = null; this.render(); this.opslaan(true);
+    toast("Draad losgemaakt — sleep het oranje + naar een node om vast te maken");
+  }
+  hangOnder(id, ouderId) {
+    const n = this.nodes.get(id); if (!n || id === this.rootId) return false;
+    if (ouderId && mmIsAfstammeling(this.nodes, id, ouderId)) { toast("Een node kan niet onder zijn eigen tak hangen"); return false; }
+    this.geschiedenis(); n.parentId = ouderId || null;
+    const o = ouderId ? this.nodes.get(ouderId) : null; if (o) o.ingeklapt = false;
+    this.render(); this.opslaan(true);
+    return true;
+  }
+  /** Via de nodelijst: voor, na of onder een andere node hangen (ook de volgorde telt). */
+  verplaatsRelatief(id, doelId, positie) {
+    if (id === doelId) return;
+    if (id === this.rootId) { toast("De middelste node kan niet verplaatst worden"); return; }
+    if (mmIsAfstammeling(this.nodes, id, doelId)) { toast("Een node kan niet in zijn eigen tak"); return; }
+    const n = this.nodes.get(id), t = this.nodes.get(doelId); if (!n || !t) return;
+    this.geschiedenis();
+    if (positie === "op") { n.parentId = t.id; t.ingeklapt = false; } else n.parentId = t.parentId;
+    const arr = Array.from(this.nodes.values()).filter(x => x.id !== id);
+    let i = arr.findIndex(x => x.id === doelId);
+    if (i < 0) i = arr.length; else if (positie !== "voor") i++;
+    arr.splice(i, 0, n);
+    this.nodes = new Map(arr.map(x => [x.id, x]));
+    this.render(); this.opslaan(true);
+    toast("Verplaatst");
+  }
+
+  /* ---------- Losse draad weer vastmaken door te slepen ---------- */
+  startHerverbind(id, cx, cy) {
+    const lijn = document.createElementNS(MM_NS, "path");
+    lijn.setAttribute("class", "mm-voorbeeldlijn");
+    this.herverbind = { id, lijn };
+    this.svg.appendChild(lijn);
+    this.werkHerverbindBij(cx, cy);
+  }
+  werkHerverbindBij(cx, cy) {
+    const n = this.nodes.get(this.herverbind.id); if (!n) return;
+    const w = this.wereldPunt(cx, cy);
+    this.herverbind.lijn.setAttribute("d", `M ${n.x} ${n.y} L ${w.x} ${w.y}`);
+  }
+  eindHerverbind(cx, cy) {
+    const id = this.herverbind.id;
+    this.herverbind.lijn.remove(); this.herverbind = null;
+    const el = document.elementFromPoint(cx, cy);
+    const doelEl = el && el.closest ? el.closest(".mm-node") : null;
+    const doelId = doelEl && this.laag.contains(doelEl) ? doelEl.dataset.id : null;
+    if (!doelId || doelId === id) { this.render(); return; }
+    if (this.hangOnder(id, doelId)) toast("Draad weer vastgemaakt");
+  }
+
+  /* ---------- Verbinden (dwarsverbanden) ---------- */
+  zetVerbindModus(aan) {
+    this.verbindModus = aan === undefined ? !this.verbindModus : !!aan;
+    this.verbindVan = null;
+    this.vp.classList.toggle("mm-verbindmodus", this.verbindModus);
+    if (this === MM.hoofd) { const k = $("#mmVerbindKnop"); if (k) k.classList.toggle("aan", this.verbindModus); }
+    if (this.pipKnop) this.pipKnop.classList.toggle("aan", this.verbindModus);
+    if (this.verbindModus) { this.sel = null; this.selVerbinding = null; }
+    this.markeerSelectie();
+  }
+  verbindKlik(id) {
+    if (!this.verbindVan) { this.verbindVan = id; this.markeerSelectie(); return; }
+    if (this.verbindVan === id) { this.zetVerbindModus(false); toast("Geannuleerd"); return; }
+    const a = this.verbindVan;
+    this.zetVerbindModus(false);
+    this.maakVerbinding(a, id);
+  }
+  maakVerbinding(a, b) {
+    if (this.connections.some(c => (c.a === a && c.b === b) || (c.a === b && c.b === a))) { toast("Deze nodes zijn al verbonden"); return; }
+    this.geschiedenis();
+    this.connections.push({ id: uid(), a, b });
+    this.render(); this.opslaan(true); toast("Nodes verbonden");
+  }
+  verwijderVerbinding(id) {
+    this.geschiedenis();
+    this.connections = this.connections.filter(c => c.id !== id);
+    this.selVerbinding = null; this.render(); this.opslaan(true);
+  }
+
+  /* ---------- Koppelen aan andere mindmaps ---------- */
+  wisselPortal(nodeId, doelId) {
+    const n = this.nodes.get(nodeId); if (!n) return;
+    if (doelId === this.mmId) { toast("Een node kan niet naar zijn eigen mindmap linken"); return; }
+    this.geschiedenis();
+    n.portals = n.portals.includes(doelId) ? n.portals.filter(p => p !== doelId) : n.portals.concat(doelId);
+    this.render(); this.opslaan(true);
+  }
+
+  /* ---------- Schikken ---------- */
+  schik() {
+    this.geschiedenis();
+    mmAutoSchik(this.nodes, this.rootId);
+    this.render(); this.opslaan(true); this.passend();
+  }
+
+  /* ---------- Acties uit de actiebalk ---------- */
+  actie(wat, knop) {
+    const id = this.sel;
+    switch (wat) {
+      case "kind": this.voegKindToe(id); break;
+      case "naaste": this.voegNaasteToe(id); break;
+      case "naam": this.startBewerken(id); break;
+      case "kleur": this.zetKleur(id, knop.dataset.kleur); break;
+      case "stappen": {
+        const n = this.nodes.get(id); if (!n) return;
+        n.checklistOpen = true; this.render(); this.opslaan(true);
+        const inp = this.laag.querySelector(`.mm-node[data-id="${id}"] .mm-stapnieuw`); if (inp) inp.focus();
+        break;
+      }
+      case "datums": mmNodeBlad(this, id, "datums"); break;
+      case "details": mmNodeBlad(this, id); break;
+      case "planning": mmNodeBlad(this, id, "planning"); break;
+      case "losmaken": this.maakLos(id); break;
+      case "vastmaken": mmNodeBlad(this, id, "plaats"); break;
+      case "mindmaplink": mmPortalBlad(this, id); break;
+      case "weg": this.verwijderNode(id); break;
+      case "verbindingweg": if (this.selVerbinding) this.verwijderVerbinding(this.selVerbinding); break;
+      case "verbindstop": this.zetVerbindModus(false); break;
+      case "sluit": this.deselecteer(); break;
+    }
+  }
+
+  /* ---------- Toetsenbord ---------- */
+  toets(e) {
+    if (this.bewerkId) return;
+    const k = e.key.toLowerCase(), mod = e.ctrlKey || e.metaKey;
+    if (mod && k === "z" && e.shiftKey) { e.preventDefault(); this.opnieuw(); return; }
+    if (mod && k === "z") { e.preventDefault(); this.ongedaan(); return; }
+    if (mod && k === "y") { e.preventDefault(); this.opnieuw(); return; }
+    if (mod && k === "s") { e.preventDefault(); mmExportJSON(this); return; }
+    if (mod && e.key === "0") { e.preventDefault(); this.passend(); return; }
+    if (e.key === "Escape") {
+      if (this.herverbind) { this.herverbind.lijn.remove(); this.herverbind = null; this.render(); }
+      else if (this.verbindModus) this.zetVerbindModus(false);
+      else this.deselecteer();
+      return;
+    }
+    if (this.selVerbinding && (e.key === "Delete" || e.key === "Backspace")) { e.preventDefault(); this.verwijderVerbinding(this.selVerbinding); return; }
+    if (!this.sel) return;
+    if (e.key === "Tab") { e.preventDefault(); this.voegKindToe(this.sel); }
+    else if (e.key === "Enter") { e.preventDefault(); this.voegNaasteToe(this.sel); }
+    else if (e.key === "Delete" || e.key === "Backspace") { e.preventDefault(); this.verwijderNode(this.sel); }
+    else if (e.key === "F2") { e.preventDefault(); this.startBewerken(this.sel); }
+  }
+}
+
+/* ---------- Beeld-in-beeld: een tweede mindmap in een zwevend venster ---------- */
+function mmPipVoor(rec) {
+  MM.pipZ += 1; rec.el.style.zIndex = Math.min(MM.pipZ, 58);
+  MM.pips.forEach(p => { if (p !== rec) p.el.style.zIndex = 50; });
+  if (rec.engine) MM.actief = rec.engine;
+}
+function mmPipOpen(mmId, vanRect) {
+  if (MM.hoofd && MM.hoofd.mmId === mmId) { toast("Die mindmap staat al open als hoofdweergave"); return; }
+  const bestaand = MM.pips.find(p => p.mmId === mmId);
+  if (bestaand) { mmPipVoor(bestaand); return; }
+  const mm = mmVind(mmId); if (!mm) { toast("Die mindmap bestaat niet meer"); return; }
+  const b = Math.min(window.innerWidth - 16, 460), h = Math.min(Math.round(window.innerHeight * 0.52), 400);
+  let x = Math.max(8, (window.innerWidth - b) / 2 + MM.pips.length * 16), y = 90 + MM.pips.length * 22;
+  if (vanRect) { x = clamp(vanRect.left, 8, Math.max(8, window.innerWidth - b - 8)); y = clamp(vanRect.bottom + 10, 70, Math.max(70, window.innerHeight - h - 80)); }
+  const el = document.createElement("div");
+  el.className = "mm-pip";
+  el.style.cssText = `left:${x}px;top:${y}px;width:${b}px;height:${h}px`;
+  el.innerHTML = `<div class="mm-pipkop"><span class="mm-piptitel">🪟 ${esc(mm.naam)}</span>
+      <button class="mm-pipknop" data-pip="verbind" title="Verbinden" aria-label="Verbinden">🔗</button>
+      <button class="mm-pipknop" data-pip="passend" title="Passend maken" aria-label="Passend maken">⤢</button>
+      <button class="mm-pipknop" data-pip="hoofd" title="Openen als hoofdmindmap" aria-label="Openen als hoofdmindmap">↗</button>
+      <button class="mm-pipknop" data-pip="sluit" title="Sluiten" aria-label="Sluiten">✕</button></div>
+    <div class="mm-piplijf"><div class="mm-canvaswrap"></div><div class="mm-actiebalk verborgen"></div></div>
+    <div class="mm-pipgreep" aria-hidden="true"></div>`;
+  document.body.appendChild(el);
+  const rec = { mmId, el };
+  MM.pips.push(rec);
+  rec.engine = new MmEngine(el.querySelector(".mm-canvaswrap"), mmId, { pip: true, actiebalk: el.querySelector(".mm-actiebalk") });
+  rec.engine.pipKnop = el.querySelector('[data-pip="verbind"]');
+  mmPipVoor(rec);
+  let sleep = null;
+  const kop = el.querySelector(".mm-pipkop"), greep = el.querySelector(".mm-pipgreep");
+  kop.addEventListener("pointerdown", e => {
+    if (e.target.closest(".mm-pipknop")) return;
+    mmPipVoor(rec); e.preventDefault();
+    sleep = { soort: "plek", sx: e.clientX, sy: e.clientY, ox: el.offsetLeft, oy: el.offsetTop };
+  });
+  greep.addEventListener("pointerdown", e => {
+    mmPipVoor(rec); e.preventDefault(); e.stopPropagation();
+    sleep = { soort: "maat", sx: e.clientX, sy: e.clientY, ow: el.offsetWidth, oh: el.offsetHeight };
+  });
+  rec.beweeg = e => {
+    if (!sleep) return;
+    if (sleep.soort === "plek") {
+      el.style.left = clamp(sleep.ox + e.clientX - sleep.sx, 0, window.innerWidth - 60) + "px";
+      el.style.top = clamp(sleep.oy + e.clientY - sleep.sy, 0, window.innerHeight - 50) + "px";
+    } else {
+      el.style.width = clamp(sleep.ow + e.clientX - sleep.sx, 240, window.innerWidth) + "px";
+      el.style.height = clamp(sleep.oh + e.clientY - sleep.sy, 200, window.innerHeight) + "px";
+    }
+  };
+  rec.los = () => { sleep = null; };
+  window.addEventListener("pointermove", rec.beweeg);
+  window.addEventListener("pointerup", rec.los);
+  el.addEventListener("pointerdown", () => mmPipVoor(rec));
+  el.querySelector(".mm-pipkop").addEventListener("click", e => {
+    const k = e.target.closest("[data-pip]"); if (!k) return;
+    const w = k.dataset.pip;
+    if (w === "sluit") mmPipSluit(mmId);
+    else if (w === "passend") rec.engine.passend();
+    else if (w === "verbind") rec.engine.zetVerbindModus();
+    else if (w === "hoofd") { mmPipSluit(mmId); ga("mindmap", mmId); }
+  });
+}
+function mmPipSluit(mmId) {
+  const i = MM.pips.findIndex(p => p.mmId === mmId); if (i < 0) return;
+  const [rec] = MM.pips.splice(i, 1);
+  window.removeEventListener("pointermove", rec.beweeg);
+  window.removeEventListener("pointerup", rec.los);
+  rec.engine.vernietig(); rec.el.remove();
+}
+function mmPipAllesSluiten() { [...MM.pips].forEach(p => mmPipSluit(p.mmId)); }
+</script>
+<script>
+"use strict";
+/* ==========================================================================
+   44. Mindmap — scherm, nodelijst, tijdlijn & planbord, bladen, koppelingen
+   ========================================================================== */
+V.mmOutline = false; V.mmOutlineZoek = ""; V.mmLade = false; V.mmLadeTab = "tijdlijn"; V.mmMaand = 0;
+
+function mmTekstKleur(kleur) {
+  const m = /^#([0-9a-f]{6})$/i.exec(kleur || "");
+  if (!m) return "#fff";
+  const v = parseInt(m[1], 16), r = v >> 16 & 255, g = v >> 8 & 255, b = v & 255;
+  return (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? "#10131a" : "#fff";
+}
+const mmBalkKleur = n => n.kleur || MM_KLEUREN[0];
+const mmBestandsnaam = s => String(s || "mindmap").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "mindmap";
+function mmZoektekst(n) {
+  const p = n.projectId ? vind("projecten", n.projectId) : null;
+  return [n.tekst, n.notitie, (n.personen || []).join(" "), p ? p.naam : "", n.checklist.map(c => c.tekst).join(" ")].join(" ").toLowerCase();
+}
+
+/* ---------- Het scherm ---------- */
+function vwMindmap() {
+  mmZorgVoorEen();
+  const mm = mmHuidige();
+  if (!mm) return `<div class="card">${leeg("🧠", "Nog geen mindmap", "")}</div>`;
+  if (inst("mmActief", null) !== mm.id) zetInst("mmActief", mm.id);
+  V.param = mm.id;
+  const gepland = mm.nodes.filter(mmHeeftDatum).length;
+  const tb = (act, tekst, titel, extra) => `<button class="mm-tb${extra ? " " + extra : ""}" data-mmtb="${act}" title="${esc(titel)}"${act === "verbind" ? ' id="mmVerbindKnop"' : act === "outline" ? ' id="mmOutlineKnop"' : ""}>${tekst}</button>`;
+  const benoemd = mmIsBenoemd(mm);
+  return `<div class="mm-scherm${V.mmLade ? " lade-open" : ""}">
+    <div class="mm-kopbalk">
+      <button class="mm-nieuwknop" data-mmtb="opslaan-nieuw" id="mmNieuwKnop">＋ Nieuwe mindmap</button>
+      <button class="mm-status${benoemd ? "" : " open"}" data-mmtb="opslaan-nieuw" id="mmStatus">${benoemd ? "✓ Opgeslagen" : "● Nog niet opgeslagen"}</button>
+    </div>
+    <div class="mm-toolbar" role="toolbar" aria-label="Mindmap">
+      ${tb("kind", "＋ Node", "Node toevoegen (Tab)", "primair")}
+      ${tb("verbind", "🔗 Verbinden", "Twee nodes met elkaar verbinden")}
+      ${tb("schik", "⟲ Schikken", "Automatisch schikken")}
+      ${tb("ongedaan", "↶", "Ongedaan maken (Ctrl+Z)")}
+      ${tb("opnieuw", "↷", "Opnieuw (Ctrl+Shift+Z)")}
+      <span class="mm-tbsep"></span>
+      ${tb("uit", "－", "Uitzoomen")}<span class="mm-zoom" id="mmZoom">100%</span>${tb("in", "＋", "Inzoomen")}
+      ${tb("passend", "⤢ Passend", "Alles in beeld (Ctrl+0)")}
+      <span class="mm-tbsep"></span>
+      ${tb("outline", "🗂 Nodes", "Nodelijst tonen of verbergen", V.mmOutline ? "aan" : "")}
+      ${tb("bibliotheek", "📚 Mindmappen", "Al je mindmappen en mappen")}
+      <span class="mm-tbsep"></span>
+      ${tb("agenda", "📅 Agenda &amp; planning", "In je planning, tijdlijn of agenda-app zetten", "accent")}
+      ${tb("import", "📥 Importeren", "Taken, afspraken en notities als mindmap binnenhalen", "accent")}
+      ${tb("json", "⬇ JSON", "Exporteren als JSON (Ctrl+S)")}
+      ${tb("outline-md", "⬇ Outline", "Exporteren als tekstoverzicht")}
+      ${tb("laden", "⬆ JSON laden", "Mindmap uit een JSON-bestand laden")}
+      ${tb("help", "?", "Gebaren en sneltoetsen")}
+    </div>
+    <div class="mm-canvasvak">
+      <div class="mm-canvaswrap" id="mmCanvas"></div>
+      <div class="mm-outline${V.mmOutline ? " open" : ""}" id="mmOutline" aria-label="Nodelijst">
+        <div class="mm-outline-kop"><input type="search" id="mmOutlineZoek" placeholder="Zoek nodes…" value="${esc(V.mmOutlineZoek)}">
+          <button class="mm-ladeknop" data-mmtb="outline" aria-label="Nodelijst sluiten">‹</button></div>
+        <div class="mm-outline-lijst" id="mmOutlineLijst"></div>
+      </div>
+      <div class="mm-actiebalk" id="mmActiebalk"></div>
+    </div>
+    <button class="mm-ladebalk" data-mmtb="lade"><span class="ch">${V.mmLade ? "▼" : "▲"}</span> Tijdlijn, planbord &amp; mindmappen
+      <span class="tel" id="mmLadeTel">${mmLadeTelling(gepland)}</span></button>
+    ${V.mmLade ? `<div class="mm-lade" id="mmLade"></div>` : ""}
+    <input type="file" id="mmBestand" accept=".json,application/json" style="display:none">
+  </div>`;
+}
+
+/* ---------- Nodelijst (links) ---------- */
+function mmTekenOutline() {
+  const lijst = $("#mmOutlineLijst"), E = MM.hoofd;
+  if (!lijst || !E) return;
+  if (!V.mmOutline) { lijst.innerHTML = ""; return; }
+  const f = (V.mmOutlineZoek || "").trim().toLowerCase();
+  const past = n => !f || mmZoektekst(n).includes(f) || E.kinderen(n.id).some(past);
+  let h = "";
+  const rij = (n, d) => {
+    if (!past(n)) return;
+    const kids = E.kinderen(n.id);
+    const af = n.checklist.filter(c => c.af).length;
+    h += `<div class="mm-orij${n.id === E.sel ? " actief" : ""}" draggable="true" data-orij="${n.id}" style="padding-left:${6 + d * 14}px">
+      ${kids.length ? `<span class="mm-ochev" data-ochev="${n.id}">${n.ingeklapt && !f ? "▸" : "▾"}</span>` : `<span class="mm-ochev" style="visibility:hidden">•</span>`}
+      <span class="mm-ostip" style="background:${n.kleur || "var(--text)"}"></span>
+      <span class="mm-olabel">${esc(n.tekst)}</span>
+      ${n.checklist.length ? `<span class="mm-obadge">${af}/${n.checklist.length}</span>` : ""}
+      ${mmHeeftDatum(n) ? "📅" : ""}${n.personen.length ? "👤" : ""}${n.portals.length ? "🔗" : ""}</div>`;
+    if (f || !n.ingeklapt) kids.forEach(k => rij(k, d + 1));
+  };
+  const root = E.nodes.get(E.rootId); if (root) rij(root, 0);
+  const los = Array.from(E.nodes.values()).filter(n => !n.parentId && n.id !== E.rootId && past(n));
+  if (los.length) { h += `<div class="mm-osectie">Losse draden</div>`; los.forEach(n => rij(n, 0)); }
+  lijst.innerHTML = h || `<div class="klein" style="padding:16px;text-align:center">Geen nodes gevonden.</div>`;
+}
+function mmBindOutline() {
+  const lijst = $("#mmOutlineLijst"); if (!lijst) return;
+  lijst.onclick = e => {
+    const E = MM.hoofd; if (!E) return;
+    const ch = e.target.closest("[data-ochev]");
+    if (ch) { const n = E.nodes.get(ch.dataset.ochev); if (n) { n.ingeklapt = !n.ingeklapt; E.render(); E.opslaan(true); } return; }
+    const r = e.target.closest("[data-orij]"); if (!r) return;
+    E.centreerOp(r.dataset.orij);
+    if (window.innerWidth < 640) mmZetOutline(false);
+  };
+  let sleepId = null;
+  lijst.addEventListener("dragstart", e => {
+    const r = e.target.closest("[data-orij]"); if (!r) return;
+    sleepId = r.dataset.orij; e.dataTransfer.setData("text/plain", sleepId); e.dataTransfer.effectAllowed = "move";
+    r.classList.add("sleept");
+  });
+  lijst.addEventListener("dragend", () => { sleepId = null; $$(".mm-orij", lijst).forEach(x => x.classList.remove("sleept", "drop-voor", "drop-na", "drop-op")); });
+  lijst.addEventListener("dragover", e => {
+    const r = e.target.closest("[data-orij]"); if (!r || !sleepId) return;
+    e.preventDefault();
+    const b = r.getBoundingClientRect(), f = b.height ? (e.clientY - b.top) / b.height : .5;
+    r.classList.remove("drop-voor", "drop-na", "drop-op");
+    r.classList.add(f < .25 ? "drop-voor" : f > .75 ? "drop-na" : "drop-op");
+  });
+  lijst.addEventListener("dragleave", e => { const r = e.target.closest("[data-orij]"); if (r) r.classList.remove("drop-voor", "drop-na", "drop-op"); });
+  lijst.addEventListener("drop", e => {
+    const r = e.target.closest("[data-orij]"); if (!r) return;
+    e.preventDefault();
+    const pos = r.classList.contains("drop-voor") ? "voor" : r.classList.contains("drop-na") ? "na" : "op";
+    r.classList.remove("drop-voor", "drop-na", "drop-op");
+    const id = e.dataTransfer.getData("text/plain") || sleepId;
+    if (id && id !== r.dataset.orij && MM.hoofd) MM.hoofd.verplaatsRelatief(id, r.dataset.orij, pos);
+  });
+  const z = $("#mmOutlineZoek");
+  if (z) z.oninput = () => { V.mmOutlineZoek = z.value; mmTekenOutline(); };
+}
+function mmZetOutline(aan) {
+  V.mmOutline = aan;
+  const o = $("#mmOutline"); if (o) o.classList.toggle("open", aan);
+  const k = $("#mmOutlineKnop"); if (k) k.classList.toggle("aan", aan);
+  mmTekenOutline();
+}
+
+/* ---------- Tijdlijn & planbord (lade onder het canvas) ---------- */
+function mmTekenLade() {
+  const E = MM.hoofd;
+  const tel = $("#mmLadeTel");
+  if (tel && E) tel.textContent = mmLadeTelling(Array.from(E.nodes.values()).filter(mmHeeftDatum).length);
+  const el = $("#mmLade"); if (!el || !E) return;
+  const tab = V.mmLadeTab || "tijdlijn";
+  el.innerHTML = `<div class="mm-ladekop">
+      <div class="segment"><button data-mmlade="tab" data-tab="tijdlijn" aria-pressed="${tab === "tijdlijn"}">Tijdlijn</button>
+        <button data-mmlade="tab" data-tab="planbord" aria-pressed="${tab === "planbord"}">Planbord</button>
+        <button data-mmlade="tab" data-tab="mindmappen" aria-pressed="${tab === "mindmappen"}">Mindmappen</button></div>
+      ${tab === "planbord" ? `<button class="mm-ladeknop" data-mmlade="vorige" aria-label="Vorige maand">‹</button>
+        <button class="mm-ladeknop" data-mmlade="volgende" aria-label="Volgende maand">›</button>` : ""}
+      ${tab === "mindmappen" ? `<button class="mm-ladeknop" data-mmtb="bibliotheek">📚 Beheren</button>`
+        : `<button class="mm-ladeknop" data-mmlade="plan">＋ Plan node</button>`}</div>`
+    + (tab === "tijdlijn" ? mmTijdlijnHTML(E) : tab === "planbord" ? mmPlanbordHTML(E) : mmLadeMindmappenHTML(E));
+}
+function mmLadeTelling(gepland) {
+  const n = S.mm_mindmaps.length;
+  return [gepland ? gepland + " gepland" : "", n + (n === 1 ? " mindmap" : " mindmaps")].filter(Boolean).join(" · ");
+}
+function mmLadeMindmappenHTML(E) {
+  const alle = S.mm_mindmaps.slice().sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+  const groepen = [{ id: null, naam: "Zonder map" }].concat(S.mm_clusters.slice().sort((a, b) => a.naam.localeCompare(b.naam, "nl")));
+  const rij = m => {
+    const is = m.id === E.mmId;
+    return `<button class="mm-kiesrij${is ? " aan" : ""}" data-mmlademm="${m.id}">
+      <span class="nm">${is ? "● " : ""}${esc(m.naam)}${mmIsBenoemd(m) ? "" : ` <span class="mm-nietopgeslagen">niet opgeslagen</span>`}</span>
+      <span class="rt">${m.nodes.length} ${m.nodes.length === 1 ? "node" : "nodes"} · ${esc(datumLabel(dISO(new Date(m.updatedAt || Date.now()))))}</span></button>`;
+  };
+  const h = groepen.map(g => {
+    const items = g.id ? alle.filter(m => m.clusterId === g.id) : alle.filter(m => !m.clusterId || !vind("mm_clusters", m.clusterId));
+    if (!items.length) return "";
+    return (S.mm_clusters.length ? `<div class="mm-osectie">${g.id ? "📁 " : ""}${esc(g.naam)}</div>` : "") + items.map(rij).join("");
+  }).join("");
+  return `<div class="mm-bord" id="mmLadeLijst">${h}
+    <button class="knop klein rand breed" data-mmtb="opslaan-nieuw" style="margin-top:8px">＋ Nieuwe mindmap</button></div>`;
+}
+function mmTijdlijnHTML(E) {
+  const gedateerd = Array.from(E.nodes.values()).filter(mmHeeftDatum);
+  if (!gedateerd.length) return `<div class="mm-tlbaan"><div class="mm-tlleeg">Nog geen nodes met een datum.<br>Selecteer een node en tik op 📅 om hem te plannen.</div></div>`;
+  let min = null, max = null;
+  gedateerd.forEach(n => { const b = mmDatumBereik(n); [b.s, b.e].forEach(d => { if (!d) return; if (!min || d < min) min = d; if (!max || d > max) max = d; }); });
+  const start = plusDagen(min, -1), eind = plusDagen(max, 1);
+  const dagen = Math.max(1, dagVerschil(eind, start) + 1), B = 34, v = vandaagISO();
+  let as = "";
+  for (let i = 0; i < dagen; i++) {
+    const d = plusDagen(start, i), dt = parseISO(d);
+    as += `<div class="mm-tltik${d === v ? " vandaag" : ""}" style="width:${B}px">${i === 0 || dt.getDate() === 1 ? mmKortDatum(d) : dt.getDate()}</div>`;
+  }
+  const rijen = gedateerd.sort((a, b) => mmDatumBereik(a).s < mmDatumBereik(b).s ? -1 : 1).map(n => {
+    const b = mmDatumBereik(n), off = dagVerschil(b.s, start), span = Math.max(1, dagVerschil(b.e, b.s) + 1);
+    const kl = mmBalkKleur(n);
+    const tip = n.tekst + (b.heeftBereik ? ` (${mmKortDatum(b.s)} – ${mmKortDatum(b.e)})` : n.deadline ? ` — deadline ${mmKortDatum(n.deadline)}` : ` (${mmKortDatum(b.s)})`);
+    return `<div class="mm-tlrij"><div class="mm-tlbalk${b.heeftBereik ? "" : " punt"}" data-mmfocus="${n.id}" title="${esc(tip)}"
+      style="left:${off * B}px;width:${span * B - 4}px;background:${kl};color:${mmTekstKleur(kl)}">${esc(n.tekst)}</div></div>`;
+  }).join("");
+  return `<div class="mm-tlbaan"><div class="mm-tlas" style="width:${dagen * B}px">${as}</div>
+    <div class="mm-tlrijen" style="width:${dagen * B}px">${rijen}</div></div>`;
+}
+function mmPlanbordHTML(E) {
+  const nu = new Date(), zicht = new Date(nu.getFullYear(), nu.getMonth() + (V.mmMaand || 0), 1);
+  const jaar = zicht.getFullYear(), maand = zicht.getMonth();
+  const eerste = dISO(new Date(jaar, maand, 1)), wd = (new Date(jaar, maand, 1).getDay() + 6) % 7;
+  const start = plusDagen(eerste, -wd), v = vandaagISO();
+  const gedateerd = Array.from(E.nodes.values()).filter(mmHeeftDatum);
+  let cellen = "";
+  for (let i = 0; i < 42; i++) {
+    const d = plusDagen(start, i), dt = parseISO(d);
+    const chips = gedateerd.filter(n => { const b = mmDatumBereik(n); return b.s && d >= b.s && d <= b.e; }).map(n => {
+      const kl = mmBalkKleur(n);
+      return `<div class="mm-bordchip" data-mmfocus="${n.id}" style="background:${kl};color:${mmTekstKleur(kl)}" title="${esc(n.tekst + (n.deadline ? " (deadline " + mmKortDatum(n.deadline) + ")" : ""))}">${esc(n.tekst)}</div>`;
+    }).join("");
+    cellen += `<div class="mm-borddag${dt.getMonth() !== maand ? " buiten" : ""}${d === v ? " vandaag" : ""}"><span class="nr">${dt.getDate()}</span>${chips}</div>`;
+  }
+  return `<div class="mm-bord"><div class="mm-bordmaand">${MAANDNAMEN[maand][0].toUpperCase() + MAANDNAMEN[maand].slice(1)} ${jaar}</div>
+    <div class="mm-bordweek">${["ma", "di", "wo", "do", "vr", "za", "zo"].map(x => `<span>${x}</span>`).join("")}</div>
+    <div class="mm-borddagen">${cellen}</div></div>`;
+}
+
+/* ---------- Blad: node bewerken (tekst, notitie, kleur, project, personen, datums, stappen, planning, plaats) ---------- */
+function mmBoomVolgorde(E) {
+  const uit = [], gezien = new Set();
+  const loop = (n, d) => { if (gezien.has(n.id)) return; gezien.add(n.id); uit.push({ n, d }); E.kinderen(n.id).forEach(k => loop(k, d + 1)); };
+  const root = E.nodes.get(E.rootId); if (root) loop(root, 0);
+  Array.from(E.nodes.values()).filter(n => !n.parentId && n.id !== E.rootId).forEach(n => loop(n, 0));
+  return uit;
+}
+function mmDiepKeuzeHTML(n, E) {
+  const aan = n.subDiep != null ? !!n.subDiep : inst("mmSubDiep", false);
+  const diepere = E ? mmHeeftDiepereNodes(n, Array.from(E.nodes.values())) : true;
+  return `<div class="schakel" style="min-height:0;padding:4px 0 10px"><span class="tekst klein">Ook diepere nodes meenemen, als sub-subtaken
+      <small>${diepere ? "Uit: alleen de nodes direct eronder. Aan: de hele tak, niveau voor niveau." : "Deze node heeft (nog) geen nodes twee niveaus lager."}</small></span>
+    <button class="toggle" id="mmn-diep" aria-pressed="${aan}" aria-label="Ook diepere nodes meenemen als sub-subtaken"></button></div>`;
+}
+function mmPlanningHTML(n, E) {
+  const k = n.koppeling, it = mmKoppelItem(k);
+  if (it && (k.soort === "taak" || k.soort === "afspraak")) {
+    const wat = k.soort === "taak" ? (it.af ? "afgeronde taak" : "taak") : (afspraakSoort(it) === "toezegging" ? "toezegging" : "afspraak");
+    return `<div class="klein" style="margin-bottom:9px">Gekoppeld aan ${wat} <b>“${esc(it.titel)}”</b>${it.datum ? " · " + esc(datumLabel(it.datum)) : ""}.
+      Bijwerken zet de tekst, datums, personen${k.soort === "taak" ? ", project, stappen en onderliggende nodes (als subtaken)" : ""} van deze node door.</div>
+      ${k.soort === "taak" ? mmDiepKeuzeHTML(n, E) : ""}
+      <div class="knoprij"><button class="knop klein rand" data-mmplan="open">Openen</button>
+        <button class="knop klein primair" data-mmplan="${k.soort}">Bijwerken</button>
+        <button class="knop klein rand" data-mmplan="los">Ontkoppelen</button></div>`;
+  }
+  let h = "";
+  if (it) h += `<div class="klein" style="margin-bottom:9px">Komt uit: <b>${esc(MM_BRONNAAM[k.soort])}</b>${it.datum ? " van " + esc(datumLabel(it.datum, true)) : ""}.
+    <button class="chip groot" data-mmplan="open" style="margin-left:4px">Openen</button></div>`;
+  return h + `<div class="klein" style="margin-bottom:9px">Maak van deze node een taak of afspraak. Datum, personen, project en notitie gaan mee;
+      bij een taak worden de nodes die eronder hangen (en de stappen) subtaken —
+      nog een keer tikken werkt hetzelfde item bij in plaats van een dubbele te maken.</div>
+    ${mmDiepKeuzeHTML(n, E)}
+    <div class="knoprij"><button class="knop klein rand" data-mmplan="taak">📋 Maak taak</button>
+      <button class="knop klein rand" data-mmplan="afspraak">📅 Maak afspraak</button></div>`;
+}
+function mmNodeBlad(E, id, sectie) {
+  const n = E.nodes.get(id); if (!n) return;
+  if (E.bewerkId) E.bevestigBewerking();
+  const isRoot = id === E.rootId, diepte = E.diepte(id);
+  const w = { checklist: n.checklist.map(c => Object.assign({}, c)), kleur: n.kleur };
+  const namen = mmAlleNamen();
+  const kand = mmBoomVolgorde(E).filter(({ n: x }) => x.id !== id && !mmIsAfstammeling(E.nodes, id, x.id));
+  const p = n.projectId ? vind("projecten", n.projectId) : null;
+  const kleuren = MM_KLEUREN.concat(p && !MM_KLEUREN.includes(p.kleur) ? [p.kleur] : []);
+  bladOpen(isRoot ? "Middelpunt bewerken" : "Node bewerken", `
+    <div class="veld"><label for="mmn-tekst">Tekst</label>
+      <input class="invoer" id="mmn-tekst" type="text" value="${esc(n.tekst)}"></div>
+    <div class="veld"><span class="labeltekst">Kleur</span>
+      <div class="chiprij">${kleuren.map(k => `<button class="mm-kleurbol" style="background:${k};width:32px;height:32px" data-mmkleur="${k}" aria-pressed="${w.kleur === k}" aria-label="Kleur ${k}"></button>`).join("")}
+        ${isRoot ? `<button class="mm-kleurbol" style="background:var(--text);width:32px;height:32px" data-mmkleur="" aria-pressed="${!w.kleur}" aria-label="Standaard"></button>` : ""}</div></div>
+    <div class="rij2">
+      <div class="veld"><label for="mmn-project">Project / onderwerp</label>
+        <select class="invoer" id="mmn-project">${projectOpties(n.projectId).replace("— geen project (inbox) —", "— geen project —")}</select>
+        <input class="invoer" id="mmn-projectnieuw" type="text" placeholder="Naam van het nieuwe project" style="display:none;margin-top:8px"></div>
+      <div class="veld"><label for="mmn-personen">Personen</label>
+        <input class="invoer" id="mmn-personen" type="text" value="${esc(n.personen.join(", "))}" placeholder="Namen, met komma's"></div>
+    </div>
+    ${namen.length ? `<div class="chiprij" style="margin:-6px 0 12px">${namen.slice(0, 16).map(x => `<button class="chip groot" data-mmpersoon="${esc(x)}">+ ${esc(x)}</button>`).join("")}</div>` : ""}
+    <div class="veld"><label for="mmn-notitie">Notitie</label>
+      <textarea class="invoer" id="mmn-notitie" placeholder="Toelichting, links, gedachten…">${esc(n.notitie || "")}</textarea></div>
+    <div id="mmn-datums" class="veld"><span class="labeltekst">Plannen in de mindmap</span>
+      <div class="rij2">
+        <div><label class="labeltekst" style="font-size:11px" for="mmn-start">Startdatum</label><input class="invoer" type="date" id="mmn-start" value="${n.startDatum || ""}"></div>
+        <div><label class="labeltekst" style="font-size:11px" for="mmn-eind">Einddatum</label><input class="invoer" type="date" id="mmn-eind" value="${n.eindDatum || ""}"></div>
+      </div>
+      <div style="margin-top:9px"><label class="labeltekst" style="font-size:11px" for="mmn-deadline">Deadline</label>
+        <input class="invoer" type="date" id="mmn-deadline" value="${n.deadline || ""}"></div>
+      <div class="chiprij" style="margin-top:9px">
+        <button class="chip groot" data-mmdat="0">Vandaag</button><button class="chip groot" data-mmdat="1">Morgen</button>
+        <button class="chip groot" data-mmdat="7">Over een week</button><button class="chip groot" data-mmdat="30">Over een maand</button>
+        <button class="chip groot" data-mmdat="wis">Datums wissen</button></div>
+      <div class="klein" style="margin-top:6px">De snelknoppen vullen het datumveld dat je het laatst aantikte (standaard: start).</div></div>
+    ${diepte >= 2 ? `<div class="veld" id="mmn-stappenvak"><span class="labeltekst">Stappen</span><div id="mmn-stappen"></div>
+      <div style="display:flex;gap:8px;margin-top:6px"><input class="invoer" id="mmn-stapnieuw" type="text" placeholder="Nieuwe stap" enterkeyhint="done">
+        <button class="knop klein rand" id="mmn-stapplus" aria-label="Stap toevoegen">＋</button></div></div>` : ""}
+    <div class="hr"></div>
+    <div id="mmn-planning" class="veld"><span class="labeltekst">In je planning &amp; agenda</span><div id="mmn-planvak">${mmPlanningHTML(n, E)}</div></div>
+    ${isRoot ? "" : `<div id="mmn-plaats" class="veld"><label for="mmn-ouder">Hangt onder</label>
+      <select class="invoer" id="mmn-ouder"><option value="">— los (eigen draad) —</option>
+        ${kand.map(({ n: x, d }) => `<option value="${x.id}"${x.id === n.parentId ? " selected" : ""}>${"· ".repeat(d)}${esc(x.tekst.slice(0, 48))}</option>`).join("")}</select>
+      <div class="klein" style="margin-top:6px">Zo verplaats je een node — of maak je een losse draad weer vast — zonder te slepen.</div></div>
+      <div class="hr"></div><button class="knop breed gevaar" id="mmn-weg">${ico("prullenbak")} Node verwijderen</button>`}
+  `, `<button class="knop breed primair" id="mmn-ok">Opslaan</button>`);
+
+  let laatsteDatum = "mmn-start";
+  ["mmn-start", "mmn-eind", "mmn-deadline"].forEach(x => { $("#" + x).addEventListener("focus", () => { laatsteDatum = x; }); });
+  const tekenStappen = () => {
+    const vak = $("#mmn-stappen"); if (!vak) return;
+    vak.innerHTML = w.checklist.length ? w.checklist.map((c, i) => `<div class="mm-bladstap">
+      <input type="checkbox" data-mmstapvink="${i}"${c.af ? " checked" : ""} aria-label="Afgevinkt">
+      <input class="invoer" type="text" value="${esc(c.tekst)}" data-mmstaptekst="${i}">
+      <button data-mmstapweg="${i}" aria-label="Stap verwijderen">×</button></div>`).join("")
+      : `<div class="klein">Nog geen stappen.</div>`;
+  };
+  tekenStappen();
+  const voegStapToe = () => {
+    const v = $("#mmn-stapnieuw"); if (!v || !v.value.trim()) return;
+    w.checklist.push({ id: uid(), tekst: v.value.trim(), af: false }); v.value = ""; tekenStappen(); v.focus();
+  };
+  if ($("#mmn-stapplus")) {
+    $("#mmn-stapplus").onclick = voegStapToe;
+    $("#mmn-stapnieuw").onkeydown = e => { if (e.key === "Enter") { e.preventDefault(); voegStapToe(); } };
+  }
+  $("#mmn-project").onchange = () => {
+    const nw = $("#mmn-project").value === "__nieuw";
+    $("#mmn-projectnieuw").style.display = nw ? "" : "none";
+    if (nw) $("#mmn-projectnieuw").focus();
+  };
+  const inhoud = $("#bladinhoud");
+  inhoud.addEventListener("input", e => {
+    const t = e.target.closest("[data-mmstaptekst]"); if (t) w.checklist[+t.dataset.mmstaptekst].tekst = t.value;
+  });
+  inhoud.addEventListener("change", e => {
+    const t = e.target.closest("[data-mmstapvink]"); if (t) w.checklist[+t.dataset.mmstapvink].af = t.checked;
+  });
+  inhoud.addEventListener("click", async e => {
+    const kb = e.target.closest("[data-mmkleur]");
+    if (kb) { w.kleur = kb.dataset.mmkleur; $$("[data-mmkleur]").forEach(x => x.setAttribute("aria-pressed", x === kb)); return; }
+    const pc = e.target.closest("[data-mmpersoon]");
+    if (pc) {
+      const veld = $("#mmn-personen"), nu = veld.value.split(",").map(x => x.trim()).filter(Boolean);
+      if (!nu.some(x => x.toLowerCase() === pc.dataset.mmpersoon.toLowerCase())) nu.push(pc.dataset.mmpersoon);
+      veld.value = nu.join(", "); return;
+    }
+    const sw = e.target.closest("[data-mmstapweg]");
+    if (sw) { w.checklist.splice(+sw.dataset.mmstapweg, 1); tekenStappen(); return; }
+    const dk = e.target.closest("[data-mmdat]");
+    if (dk) {
+      if (dk.dataset.mmdat === "wis") ["mmn-start", "mmn-eind", "mmn-deadline"].forEach(x => { $("#" + x).value = ""; });
+      else $("#" + laatsteDatum).value = plusDagen(vandaagISO(), +dk.dataset.mmdat);
+      return;
+    }
+    const dp = e.target.closest("#mmn-diep");
+    if (dp) {
+      const aan = dp.getAttribute("aria-pressed") !== "true";
+      dp.setAttribute("aria-pressed", aan);
+      n.subDiep = aan; zetInst("mmSubDiep", aan); E.opslaan(true);
+      return;
+    }
+    const pl = e.target.closest("[data-mmplan]");
+    if (pl) {
+      const wat = pl.dataset.mmplan;
+      if (wat === "open") { if (await pasToe()) mmOpenKoppeling(n.koppeling); return; }
+      if (wat === "los") { E.geschiedenis(); n.koppeling = null; E.render(); E.opslaan(true); $("#mmn-planvak").innerHTML = mmPlanningHTML(n, E); toast("Ontkoppeld — het item zelf blijft bestaan"); return; }
+      if (!(await pasToe())) return;
+      const bestond = !!mmKoppelItem(n.koppeling) && n.koppeling.soort === wat;
+      await mmNaarPlanning(E.mm, n, wat, { nodes: E.nodes });
+      E.render(); E.opslaan(true);
+      $("#mmn-planvak").innerHTML = mmPlanningHTML(n, E);
+      toast(bestond ? "Bijgewerkt in je planning" : (wat === "taak" ? "Taak gemaakt" : "Afspraak gemaakt"), "Openen", () => mmOpenKoppeling(n.koppeling));
+    }
+  });
+  let toegepast = false;
+  async function pasToe() {
+    let projectId = $("#mmn-project").value || null;
+    if (projectId === "__nieuw") {
+      const naam = $("#mmn-projectnieuw").value.trim();
+      if (!naam) { toast("Geef het nieuwe project een naam"); $("#mmn-projectnieuw").focus(); return false; }
+      projectId = (await maakProject(naam)).id;
+      $("#mmn-project").innerHTML = projectOpties(projectId); $("#mmn-projectnieuw").style.display = "none";
+    }
+    const start = $("#mmn-start").value || null, eind = $("#mmn-eind").value || null;
+    if (start && eind && eind < start) { toast("De einddatum ligt vóór de startdatum"); return false; }
+    if (!toegepast) { E.geschiedenis(); toegepast = true; }
+    n.tekst = $("#mmn-tekst").value.replace(/\s+/g, " ").trim() || "Naamloos";
+    n.voorbeeld = false;
+    n.notitie = $("#mmn-notitie").value.trim();
+    n.kleur = w.kleur;
+    n.projectId = projectId;
+    const gezien = new Set();
+    n.personen = $("#mmn-personen").value.split(",").map(x => x.trim()).filter(x => x && !gezien.has(x.toLowerCase()) && gezien.add(x.toLowerCase()));
+    n.startDatum = start; n.eindDatum = eind; n.deadline = $("#mmn-deadline").value || null;
+    n.checklist = w.checklist.filter(c => c.tekst.trim()).map(c => ({ id: c.id, tekst: c.tekst.trim(), af: !!c.af }));
+    const ouder = $("#mmn-ouder");
+    if (ouder && (ouder.value || null) !== (n.parentId || null)) {
+      const nieuw = ouder.value || null;
+      if (nieuw && mmIsAfstammeling(E.nodes, id, nieuw)) { toast("Een node kan niet onder zijn eigen tak hangen"); return false; }
+      n.parentId = nieuw;
+      if (nieuw) E.nodes.get(nieuw).ingeklapt = false;
+    }
+    E.render(); E.opslaan(true);
+    return true;
+  }
+  $("#mmn-ok").onclick = async () => { if (await pasToe()) { bladSluit(); toast("Opgeslagen"); } };
+  if ($("#mmn-weg")) $("#mmn-weg").onclick = () => { bladSluit(); setTimeout(() => E.verwijderNode(id), 280); };
+  if (sectie) setTimeout(() => {
+    const doel = $("#mmn-" + sectie); if (doel) doel.scrollIntoView({ block: "start", behavior: "smooth" });
+    if (sectie === "datums") $("#mmn-start").focus({ preventScroll: true });
+    if (sectie === "plaats" && $("#mmn-ouder")) $("#mmn-ouder").focus({ preventScroll: true });
+  }, 260);
+}
+
+/* ---------- Van mindmap naar planning ---------- */
+const mmZonderVink = t => String(t || "").replace(/^✓\s*/, "");
+/** Subtaken van een node: de nodes die eronder hangen, en daarna zijn eigen stappen.
+    diep = uit → alleen nodes één niveau lager; diep = aan → ook dieper, als sub-subtaken (sub-sub-subtaken, …).
+    Vinkjes uit de taak blijven staan, net als subtaken die je in de taak zelf toevoegde (op hun plek).
+    Wat uit de mindmap verdween, verdwijnt ook uit de taak. */
+function mmSubtakenVoor(n, alle, bestaand, diep) {
+  const oud = (bestaand || []).map(x => Object.assign({}, x));
+  const sleutel = x => x.mmNode ? "n:" + x.mmNode : x.mmStap ? "s:" + x.mmStap : null;
+  // eigen subtaken onthouden met het mindmap-item dat er direct boven stond
+  const eigen = []; let anker = null;
+  oud.forEach(x => { const k = sleutel(x); if (k) anker = k; else if (String(x.tekst || "").trim()) eigen.push({ x, anker }); });
+  const vrijeOud = oud.filter(x => !sleutel(x));
+  const pakVrij = tekst => { const i = vrijeOud.findIndex(x => String(x.tekst || "").trim().toLowerCase() === tekst.toLowerCase()); if (i < 0) return null;
+    const x = vrijeOud.splice(i, 1)[0]; const e = eigen.findIndex(y => y.x === x); if (e >= 0) eigen.splice(e, 1); return x; };
+  const oudVan = k => oud.find(x => sleutel(x) === k);
+  const uit = [];
+  const stappen = (node, nv) => (node.checklist || []).forEach(c => {
+    const o = oudVan("s:" + c.id) || pakVrij(c.tekst.trim());
+    uit.push(Object.assign({ tekst: c.tekst, af: !!c.af || !!(o && o.af), mmStap: c.id }, nv ? { niveau: nv } : {}));
+  });
+  const loop = (ouder, nv) => alle.filter(k => k.parentId === ouder.id && !k.voorbeeld).forEach(k => {
+    const tekst = mmZonderVink(k.tekst).trim(); if (!tekst) return;
+    const o = oudVan("n:" + k.id) || pakVrij(tekst);
+    const gek = k.koppeling && k.koppeling.soort === "taak" ? vind("taken", k.koppeling.id) : null;
+    uit.push(Object.assign({ tekst, af: !!(o && o.af) || /^✓/.test(k.tekst) || !!(gek && gek.af), mmNode: k.id }, nv ? { niveau: nv } : {}));
+    if (diep) { loop(k, nv + 1); stappen(k, nv + 1); }
+  });
+  loop(n, 0);
+  stappen(n, 0);
+  // eigen subtaken terug op hun plek: direct na het blok van hun anker (of bovenaan / onderaan)
+  eigen.forEach(({ x, anker }) => {
+    if (anker === null) { uit.unshift(x); return; }
+    const i = uit.findIndex(y => sleutel(y) === anker);
+    if (i < 0) { uit.push(x); return; }
+    // hing hij ónder het anker → direct erna; op hetzelfde niveau of hoger → na de hele tak van het anker
+    let j = subNiveau(x) > subNiveau(uit[i]) ? i + 1 : subBlok(uit, i)[1];
+    while (j < uit.length && !sleutel(uit[j]) && subNiveau(uit[j]) >= subNiveau(x)) j++;
+    uit.splice(j, 0, x);
+  });
+  return normaliseerSubtaken(uit);
+}
+const mmHeeftDiepereNodes = (n, alle) => alle.some(k => k.parentId === n.id && alle.some(g => g.parentId === k.id && !g.voorbeeld));
+async function mmNaarPlanning(mm, n, soort, opties) {
+  opties = opties || {};
+  const k = n.koppeling, merk = "Uit mindmap: " + (mm ? mm.naam : "");
+  if (soort === "taak") {
+    let t = k && k.soort === "taak" ? vind("taken", k.id) : null;
+    const nieuw = !t;
+    if (!t) t = { id: uid(), titel: "", notitie: "", datum: null, tijd: null, herhaal: null, prioriteit: 4, projectId: null,
+      labels: [], personen: [], subtaken: [], bijlagen: [], hangtAf: [], duur: null, energie: null, af: false,
+      gemaakt: new Date().toISOString(), volgorde: Date.now() };
+    t.titel = n.tekst;
+    t.datum = n.deadline || n.startDatum || n.eindDatum || null;
+    t.projectId = opties.projectId || n.projectId || t.projectId || null;
+    t.personen = [...new Set([...(t.personen || []), ...(n.personen || [])])];
+    const alle = opties.nodes ? Array.from(opties.nodes.values ? opties.nodes.values() : opties.nodes) : (mm ? mm.nodes : []);
+    const diep = opties.diep != null ? !!opties.diep : (n.subDiep != null ? !!n.subDiep : inst("mmSubDiep", false));
+    t.subtaken = mmSubtakenVoor(n, alle, t.subtaken, diep);
+    if (nieuw) t.notitie = [n.notitie, merk].filter(Boolean).join("\n\n");
+    else if (n.notitie && !(t.notitie || "").includes(n.notitie)) t.notitie = [n.notitie, t.notitie].filter(Boolean).join("\n\n");
+    await bewaar("taken", t);
+    n.koppeling = { soort: "taak", id: t.id };
+    return { item: t, nieuw };
+  }
+  let a = k && k.soort === "afspraak" ? vind("afspraken", k.id) : null;
+  const nieuw = !a;
+  if (!a) a = { id: uid(), soort: "gesprek", titel: "", datum: "", totDatum: "", tijd: "", eindTijd: "", deadline: "", plek: "",
+    personen: [], voorbereiding: "", notities: "", uitkomst: "", gemaakt: new Date().toISOString() };
+  a.soort = n.startDatum ? "gesprek" : "toezegging";
+  a.titel = n.tekst;
+  a.datum = n.startDatum || "";
+  a.totDatum = n.eindDatum && n.eindDatum !== n.startDatum && n.startDatum ? n.eindDatum : "";
+  a.deadline = n.deadline || (!n.startDatum && n.eindDatum ? n.eindDatum : "");
+  a.personen = [...new Set([...(a.personen || []), ...(n.personen || [])])];
+  if (nieuw) a.voorbereiding = [n.notitie, merk].filter(Boolean).join("\n\n");
+  await bewaar("afspraken", a);
+  n.koppeling = { soort: "afspraak", id: a.id };
+  return { item: a, nieuw };
+}
+function mmBulkKandidaten(E, bereik) {
+  const alle = Array.from(E.nodes.values()).filter(n => n.id !== E.rootId && !n.voorbeeld);
+  if (bereik === "datum") return alle.filter(mmHeeftDatum);
+  if (bereik === "tak") {
+    if (!E.sel) return [];
+    const ids = new Set(); const loop = id => { ids.add(id); E.kinderen(id).forEach(k => loop(k.id)); }; loop(E.sel);
+    return alle.filter(n => ids.has(n.id));
+  }
+  return alle;
+}
+function mmIcsVoor(mm, nodes) {
+  const ev = [];
+  nodes.forEach(n => {
+    const notitie = [n.notitie, "Mindmap: " + mm.naam, n.personen.length ? "Met: " + n.personen.join(", ") : ""].filter(Boolean).join("\n");
+    if (n.startDatum || n.eindDatum) {
+      const s = n.startDatum || n.eindDatum;
+      ev.push(icsEvenement({ uid: "mm-" + n.id, titel: n.tekst, datum: s, eindDatum: n.eindDatum && n.eindDatum > s ? n.eindDatum : null, notitie }));
+    }
+    if (n.deadline) ev.push(icsEvenement({ uid: "mm-dl-" + n.id, titel: "⏰ Deadline: " + n.tekst, datum: n.deadline, notitie }));
+  });
+  return ev;
+}
+
+/* ---------- Blad: Agenda & planning (vervangt de oude PNG-export) ---------- */
+function mmAgendaBlad() {
+  const E = MM.hoofd; if (!E) return;
+  E.spoel();
+  const mm = E.mm;
+  const st = { bereik: "datum", soort: "taak", project: "" };
+  const tel = b => mmBulkKandidaten(E, b).length;
+  const gedateerd = Array.from(E.nodes.values()).filter(n => mmHeeftDatum(n) && !n.voorbeeld);
+  const opTl = gedateerd.filter(n => !n.koppeling).length;
+  bladOpen("Agenda & planning", `
+    <p class="klein" style="margin-top:2px">Laat <b>${esc(mm.naam)}</b> meedoen met de rest van FutureMe — of haal juist dingen uit FutureMe binnen.</p>
+    <div class="schakel"><span class="tekst"><b style="font-size:calc(15px * var(--t));font-weight:600">Op je tijdlijn tonen</b>
+      <small>Nodes met een datum verschijnen op Vandaag en in de tijdlijn (nu ${opTl}). Tik erop om hier terug te komen.</small></span>
+      <button class="toggle" id="mma-tijdlijn" aria-pressed="${mm.opTijdlijn !== false}" aria-label="Op je tijdlijn tonen"></button></div>
+    <div class="hr"></div>
+    <div class="veld"><span class="labeltekst">Zet in je planning</span>
+      <div class="segment" id="mma-bereik">
+        <button data-mmab="datum" aria-pressed="true">Met datum (${tel("datum")})</button>
+        <button data-mmab="tak" aria-pressed="false"${E.sel ? "" : " disabled"}>Deze tak (${tel("tak")})</button>
+        <button data-mmab="alles" aria-pressed="false">Alles (${tel("alles")})</button></div></div>
+    <div class="veld"><span class="labeltekst">Maak er</span>
+      <div class="segment" id="mma-soort"><button data-mmas="taak" aria-pressed="true">📋 Taken</button><button data-mmas="afspraak" aria-pressed="false">📅 Afspraken</button></div></div>
+    <div class="schakel" id="mma-diepvak" style="min-height:0;padding:0 0 6px"><span class="tekst klein">Diepere nodes als sub-subtaken
+      <small>Uit: alleen de nodes direct onder een taak worden subtaken.</small></span>
+      <button class="toggle" id="mma-diep" aria-pressed="${inst("mmSubDiep", false)}" aria-label="Diepere nodes als sub-subtaken"></button></div>
+    <div class="veld" id="mma-projectvak"><label for="mma-project">Project voor de taken</label>
+      <select class="invoer" id="mma-project"><option value="">— zoals per node ingesteld —</option>
+        ${S.projecten.map(p => `<option value="${p.id}">${esc(p.naam)}</option>`).join("")}
+        <option value="__mm">+ nieuw project “${esc(mm.naam)}”</option></select></div>
+    <p class="klein" id="mma-uitleg"></p>
+    <button class="knop breed primair" id="mma-go"></button>
+    <div class="hr"></div>
+    <div class="veld"><span class="labeltekst">Naar je agenda-app</span>
+      <p class="klein">Exporteer de datums als .ics — te openen in Apple Agenda, Google Agenda of Outlook.</p>
+      <button class="knop breed rand" id="mma-ics">📆 Exporteer ${gedateerd.length} ${gedateerd.length === 1 ? "node" : "nodes"} naar Agenda</button></div>
+    <div class="hr"></div>
+    <div class="veld"><span class="labeltekst">Andersom</span>
+      <p class="klein">Maak een mindmap van je notities, afspraken en taken — per periode, per dag van de week of per persoon.</p>
+      <button class="knop breed rand" id="mma-import">📥 Importeren als mindmap</button></div>`);
+  const werkBij = () => {
+    const n = mmBulkKandidaten(E, st.bereik);
+    const bestaand = n.filter(x => x.koppeling && x.koppeling.soort === st.soort && mmKoppelItem(x.koppeling)).length;
+    $("#mma-projectvak").style.display = st.soort === "taak" ? "" : "none";
+    $("#mma-diepvak").style.display = st.soort === "taak" ? "" : "none";
+    $("#mma-uitleg").textContent = !n.length ? (st.bereik === "tak" ? "Selecteer eerst een node op het canvas." : "Geen nodes in deze keuze.")
+      : `${n.length - bestaand} nieuw${bestaand ? `, ${bestaand} al gekoppeld (worden bijgewerkt, niet dubbel gemaakt)` : ""}.`;
+    const go = $("#mma-go");
+    go.disabled = !n.length;
+    go.textContent = n.length ? `${n.length} ${st.soort === "taak" ? (n.length === 1 ? "taak" : "taken") : (n.length === 1 ? "afspraak" : "afspraken")} in planning zetten` : "Niets te doen";
+  };
+  werkBij();
+  $("#bladinhoud").addEventListener("click", async e => {
+    const b = e.target.closest("[data-mmab]");
+    if (b && !b.disabled) { st.bereik = b.dataset.mmab; $$("[data-mmab]").forEach(x => x.setAttribute("aria-pressed", x === b)); werkBij(); return; }
+    const s = e.target.closest("[data-mmas]");
+    if (s) { st.soort = s.dataset.mmas; $$("[data-mmas]").forEach(x => x.setAttribute("aria-pressed", x === s)); werkBij(); return; }
+  });
+  $("#mma-diep").onclick = () => { const aan = $("#mma-diep").getAttribute("aria-pressed") !== "true"; $("#mma-diep").setAttribute("aria-pressed", aan); zetInst("mmSubDiep", aan); };
+  $("#mma-tijdlijn").onclick = async () => {
+    const aan = $("#mma-tijdlijn").getAttribute("aria-pressed") !== "true";
+    $("#mma-tijdlijn").setAttribute("aria-pressed", aan);
+    E.spoel(); mm.opTijdlijn = aan; await bewaar("mm_mindmaps", mm);
+    toast(aan ? "Staat op je tijdlijn" : "Niet meer op je tijdlijn");
+  };
+  $("#mma-go").onclick = async () => {
+    const lijst = mmBulkKandidaten(E, st.bereik); if (!lijst.length) return;
+    let projectId = $("#mma-project").value || null;
+    if (st.soort === "taak" && projectId === "__mm") projectId = (await maakProject(mm.naam)).id;
+    E.geschiedenis();
+    let nieuw = 0, bij = 0;
+    for (const n of lijst) { const diep = $("#mma-diep").getAttribute("aria-pressed") === "true";
+      if (st.soort === "taak") n.subDiep = diep;
+      const r = await mmNaarPlanning(mm, n, st.soort, { projectId: st.soort === "taak" ? projectId : null, nodes: E.nodes, diep }); r.nieuw ? nieuw++ : bij++; }
+    E.render(); E.opslaan(true); bladSluit();
+    toast(`${nieuw} nieuw${bij ? `, ${bij} bijgewerkt` : ""} in je planning`, st.soort === "taak" ? "Bekijk" : "Bekijk",
+      () => ga(st.soort === "taak" ? (projectId ? "project" : "komend") : "afspraken", projectId || undefined), 6000);
+  };
+  $("#mma-ics").onclick = async () => {
+    const ev = mmIcsVoor(mm, gedateerd);
+    if (!ev.length) { toast("Nog geen nodes met een datum"); return; }
+    await deelOfDownload(`mindmap-${mmBestandsnaam(mm.naam)}.ics`, icsBestand(ev), "text/calendar");
+  };
+  $("#mma-import").onclick = () => mmImportBlad();
+}
+
+/* ---------- Van FutureMe naar mindmap: importeren ---------- */
+const MM_SOORTLABEL = { taak: "📋 Taken", afspraak: "📅 Afspraken", notitie: "📝 Notities", dagboek: "📔 Dagboek", werkdoc: "💼 Werkdocumenten" };
+const MM_SOORTVOLG = { taak: 1, afspraak: 2, notitie: 3, dagboek: 4, werkdoc: 5 };
+function mmEersteRegel(t) { const r = String(t || "").split("\n")[0].trim(); return r.length > 70 ? r.slice(0, 68) + "…" : (r || "Notitie"); }
+function mmNamenIn(tekst) {
+  const t = " " + String(tekst || "").toLowerCase() + " ";
+  return mmAlleNamen().filter(n => n.length > 1 && new RegExp("[^\\p{L}]" + n.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "[^\\p{L}]", "u").test(t));
+}
+function mmDagLabel(d) { const s = langDatumLabel(d).replace(/ \d{4}$/, ""); return s[0].toUpperCase() + s.slice(1); }
+function mmImportKandidaten(f) {
+  const uit = [];
+  const inBereik = d => { if (!f.van && !f.tot) return true; if (!d) return false; return (!f.van || d >= f.van) && (!f.tot || d <= f.tot); };
+  const dagOk = d => f.dagen.size === 7 || (!!d && f.dagen.has(weekdagVan(d)));
+  const namen = [...f.personen].map(x => x.toLowerCase());
+  const persOk = (lijst, tekst) => !namen.length || (lijst || []).some(p => namen.includes(String(p).toLowerCase()))
+    || (!!tekst && namen.some(x => String(tekst).toLowerCase().includes(x)));
+  const projOk = pid => !f.project || (f.project === "__geen" ? !pid : pid === f.project);
+  const ok = (d, pers, tekst, pid) => inBereik(d) && dagOk(d) && persOk(pers, tekst) && projOk(pid);
+  if (f.bronnen.has("taak")) S.taken.forEach(t => {
+    if (t.af && !f.metAf) return;
+    if (ok(t.datum, t.personen, null, t.projectId || null)) uit.push({ soort: "taak", id: t.id, titel: t.titel || "Taak", datum: t.datum || null,
+      personen: t.personen || [], projectId: t.projectId || null, notitie: t.notitie || "", checklist: [],
+      kinderen: normaliseerSubtaken((t.subtaken || []).filter(s => String(s.tekst || "").trim()).map(s => Object.assign({}, s)))
+        .map(s => ({ tekst: (s.af ? "✓ " : "") + String(s.tekst).trim(), niveau: subNiveau(s) })) });
+  });
+  if (f.bronnen.has("afspraak")) S.afspraken.forEach(a => {
+    const d = a.datum || a.deadline || null;
+    if (ok(d, a.personen, null, null)) uit.push({ soort: "afspraak", id: a.id, titel: a.titel || "Afspraak", datum: a.datum || null,
+      eindDatum: a.totDatum || null, deadline: a.deadline || null, personen: a.personen || [], projectId: null,
+      notitie: [a.voorbereiding, a.notities, a.uitkomst ? "Uitkomst: " + a.uitkomst : ""].filter(Boolean).join("\n\n"), checklist: [] });
+  });
+  if (f.bronnen.has("notitie")) S.gebeurtenissen.filter(g => g.soort === "notitie").forEach(g => {
+    const d = g.datum || (g.ts || "").slice(0, 10) || null;
+    if (ok(d, g.personen, g.tekst, null)) uit.push({ soort: "notitie", id: g.id, titel: mmEersteRegel(g.tekst), datum: d,
+      personen: mmNamenIn(g.tekst), projectId: null, notitie: String(g.tekst || "").includes("\n") || String(g.tekst || "").length > 70 ? g.tekst : "", checklist: [] });
+  });
+  if (f.bronnen.has("dagboek")) S.dagboek.forEach(d => {
+    const tekst = [d.tekst, d.dankbaar ? "Dankbaar: " + d.dankbaar : ""].filter(Boolean).join("\n\n");
+    if (!tekst) return;
+    if (ok(d.datum, null, tekst, null)) uit.push({ soort: "dagboek", id: d.id, titel: "Dagboek · " + mmEersteRegel(d.tekst || d.dankbaar).slice(0, 50),
+      datum: d.datum, personen: mmNamenIn(tekst), projectId: null, notitie: tekst, checklist: [] });
+  });
+  if (f.bronnen.has("werkdoc")) S.werkdocs.filter(d => d.status !== "archief").forEach(d => {
+    const dt = d.datum || d.periodeVan || (d.gemaakt || "").slice(0, 10) || null;
+    if (ok(dt, d.personen, null, null)) uit.push({ soort: "werkdoc", id: d.id, titel: d.titel || (DOCSOORTEN[d.soort] || {}).naam || "Document",
+      datum: dt, eindDatum: d.periodeTot || null, personen: d.personen || [], projectId: null,
+      notitie: Object.values(d.secties || {}).filter(x => typeof x === "string" && x.trim()).join("\n\n") || d.notitie || "",
+      checklist: (d.mijlpalen || []).filter(m => m.tekst).map(m => ({ id: uid(), tekst: m.tekst + (m.datum ? " (" + mmKortDatum(m.datum) + ")" : ""), af: !!m.af })) });
+  });
+  return uit.sort((a, b) => (a.datum || "9999") < (b.datum || "9999") ? -1 : (a.datum || "9999") > (b.datum || "9999") ? 1 : 0);
+}
+function mmGroepVan(k, groep, filterNamen) {
+  if (groep === "datum") return k.datum ? { key: k.datum, label: mmDagLabel(k.datum), sort: k.datum } : { key: "~", label: "Zonder datum", sort: "~" };
+  if (groep === "persoon") {
+    const naam = filterNamen.find(x => k.personen.some(p => p.toLowerCase() === x.toLowerCase())) || k.personen[0];
+    return naam ? { key: "p:" + naam.toLowerCase(), label: "👤 " + naam, sort: naam.toLowerCase(), persoon: naam } : { key: "~", label: "Zonder persoon", sort: "~" };
+  }
+  if (groep === "project") {
+    const p = k.projectId ? vind("projecten", k.projectId) : null;
+    return p ? { key: p.id, label: "#" + p.naam, sort: p.naam.toLowerCase(), projectId: p.id } : { key: "~", label: "Zonder project", sort: "~" };
+  }
+  if (groep === "soort") return { key: k.soort, label: MM_SOORTLABEL[k.soort], sort: String(MM_SOORTVOLG[k.soort]) };
+  if (groep === "weekdag") {
+    if (!k.datum) return { key: "~", label: "Zonder datum", sort: "~" };
+    const w = weekdagVan(k.datum);
+    return { key: "w" + w, label: DAGNAMEN[w][0].toUpperCase() + DAGNAMEN[w].slice(1), sort: String((w + 6) % 7) };
+  }
+  return null;
+}
+function mmPeriodeTekst(f) {
+  if (!f.van && !f.tot) return "alles";
+  if (f.van && f.tot) return f.van === f.tot ? mmKortDatum(f.van) : mmKortDatum(f.van) + " – " + mmKortDatum(f.tot);
+  return f.van ? "vanaf " + mmKortDatum(f.van) : "tot " + mmKortDatum(f.tot);
+}
+/** Maakt nodes van de gevonden items. Nieuwe mindmap of onder de geselecteerde node van de huidige. */
+async function mmVoerImportUit(f, kandidaten) {
+  const periode = mmPeriodeTekst(f) + (f.personen.size ? " · " + [...f.personen].join(", ") : "");
+  let nodes, basisId, mm = null, E = null, imp = null;
+  if (f.doel === "nieuw") {
+    mm = mmRecord(f.naam || ("Import " + periode), null);
+    nodes = new Map(mm.nodes.map(n => [n.id, n]));
+    basisId = mm.rootId;
+  } else {
+    E = MM.hoofd; if (!E) return null;
+    nodes = E.nodes; E.geschiedenis();
+    const ouder = (E.sel && E.nodes.get(E.sel)) || E.nodes.get(E.rootId);
+    const opa = ouder.parentId ? E.nodes.get(ouder.parentId) : null;
+    const hoek = opa ? Math.atan2(ouder.y - opa.y, ouder.x - opa.x) : 0;
+    imp = mmNode({ parentId: ouder.id, tekst: "📥 Import " + periode, x: ouder.x + Math.cos(hoek) * 260, y: ouder.y + Math.sin(hoek) * 260 + 40, kleur: MM_KLEUREN[3] });
+    nodes.set(imp.id, imp); basisId = imp.id; ouder.ingeklapt = false;
+  }
+  const aanwezig = new Set();
+  if (E) for (const n of nodes.values()) if (n.koppeling) aanwezig.add(n.koppeling.soort + ":" + n.koppeling.id);
+  let lijst = kandidaten.filter(k => !aanwezig.has(k.soort + ":" + k.id));
+  const overgeslagen = kandidaten.length - lijst.length;
+  const filterNamen = [...f.personen];
+  if (f.groep !== "geen") lijst = lijst.map(k => ({ k, g: mmGroepVan(k, f.groep, filterNamen) }))
+    .sort((a, b) => a.g.sort < b.g.sort ? -1 : a.g.sort > b.g.sort ? 1 : ((a.k.datum || "9") < (b.k.datum || "9") ? -1 : 1));
+  else lijst = lijst.map(k => ({ k, g: null }));
+  const groepen = new Map();
+  lijst.forEach(({ k, g }, i) => {
+    let ouderId = basisId;
+    if (g) {
+      if (!groepen.has(g.key)) {
+        const gn = mmNode({ parentId: basisId, tekst: g.label, kleur: MM_KLEUREN[(groepen.size + (f.doel === "nieuw" ? 0 : 1)) % MM_KLEUREN.length],
+          personen: g.persoon ? [g.persoon] : [], projectId: g.projectId || null });
+        nodes.set(gn.id, gn); groepen.set(g.key, gn);
+      }
+      ouderId = groepen.get(g.key).id;
+    }
+    const ouder = nodes.get(ouderId);
+    const n = mmNode({ parentId: ouderId, tekst: k.titel, kleur: ouder.kleur || MM_KLEUREN[i % MM_KLEUREN.length],
+      startDatum: k.datum || null, eindDatum: k.eindDatum && k.eindDatum !== k.datum ? k.eindDatum : null, deadline: k.deadline || null,
+      personen: (k.personen || []).slice(), projectId: k.projectId || null, notitie: k.notitie || "", checklist: k.checklist || [],
+      koppeling: { soort: k.soort, id: k.id } });
+    nodes.set(n.id, n);
+    const ouders = [n];
+    (k.kinderen || []).forEach(sub => {
+      const o = ouders[Math.min(sub.niveau, ouders.length - 1)];
+      const c = mmNode({ parentId: o.id, tekst: sub.tekst, kleur: n.kleur });
+      nodes.set(c.id, c); ouders.length = Math.min(sub.niveau, ouders.length - 1) + 1; ouders.push(c);
+    });
+    if ((k.kinderen || []).some(x => x.niveau > 0)) n.subDiep = true;
+  });
+  if (mm) {
+    mmAutoSchik(nodes, mm.rootId);
+    mm.nodes = Array.from(nodes.values());
+    await bewaar("mm_mindmaps", mm);
+    return { mm, aantal: lijst.length, overgeslagen };
+  }
+  mmLayoutTak(nodes, imp, Math.atan2(imp.y - nodes.get(imp.parentId).y, imp.x - nodes.get(imp.parentId).x));
+  E.render(); E.opslaan(true); E.selecteer(imp.id); E.passend();
+  return { mm: E.mm, aantal: lijst.length, overgeslagen };
+}
+function mmImportBlad(voor) {
+  voor = voor || {};
+  const v = vandaagISO(), ws = weekStart(v);
+  const E = V.view === "mindmap" ? MM.hoofd : null;
+  const f = {
+    bronnen: new Set(voor.bronnen || ["taak", "afspraak", "notitie"]),
+    van: voor.van !== undefined ? voor.van : ws, tot: voor.tot !== undefined ? voor.tot : plusDagen(ws, 6),
+    dagen: new Set([0, 1, 2, 3, 4, 5, 6]), personen: new Set(voor.personen || []), project: voor.project || "",
+    metAf: false, groep: voor.groep || "datum", doel: E && !voor.nieuw ? "huidig" : "nieuw", naam: ""
+  };
+  const namen = [...new Set(mmAlleNamen().concat([...f.personen]))];
+  const knop = (attr, w, label, aan) => `<button class="keuze" ${attr}="${w}" aria-pressed="${!!aan}">${label}</button>`;
+  bladOpen("Importeren als mindmap", `
+    <p class="klein" style="margin-top:2px">Kies wat je wilt zien — de mindmap ordent het vanzelf. Elke node blijft gekoppeld aan het origineel.</p>
+    <div class="veld"><span class="labeltekst">Wat</span><div class="keuzerij">
+      ${Object.keys(MM_SOORTLABEL).map(s => knop("data-mmib", s, MM_SOORTLABEL[s], f.bronnen.has(s))).join("")}</div>
+      <div class="schakel" style="min-height:0;padding:10px 0 0"><span class="tekst klein">Ook afgeronde taken meenemen</span>
+        <button class="toggle" id="mmi-af" aria-pressed="false" aria-label="Ook afgeronde taken meenemen"></button></div></div>
+    <div class="veld"><span class="labeltekst">Periode</span>
+      <div class="rij2"><div><label class="labeltekst" style="font-size:11px" for="mmi-van">Van</label><input class="invoer" type="date" id="mmi-van" value="${f.van || ""}"></div>
+        <div><label class="labeltekst" style="font-size:11px" for="mmi-tot">Tot en met</label><input class="invoer" type="date" id="mmi-tot" value="${f.tot || ""}"></div></div>
+      <div class="chiprij" style="margin-top:9px">
+        ${[["vorige", "Vorige week"], ["week", "Deze week"], ["volgende", "Volgende week"], ["maand", "Deze maand"], ["30", "Komende 30 dagen"], ["terug30", "Afgelopen 30 dagen"], ["alles", "Alles"]]
+          .map(([w, l]) => `<button class="chip groot" data-mmiper="${w}">${l}</button>`).join("")}</div></div>
+    <div class="veld"><span class="labeltekst">Welke dagen</span><div class="keuzerij">
+      ${[1, 2, 3, 4, 5, 6, 0].map(d => `<button class="keuze dag" data-mmidag="${d}" aria-pressed="true">${DAGKORT[d]}</button>`).join("")}</div>
+      <div class="chiprij" style="margin-top:8px"><button class="chip groot" data-mmidagen="werk">Werkdagen</button>
+        <button class="chip groot" data-mmidagen="weekend">Weekend</button><button class="chip groot" data-mmidagen="alle">Alle dagen</button></div></div>
+    <div class="veld"><span class="labeltekst">Personen</span>
+      ${namen.length ? `<div class="keuzerij">${namen.slice(0, 24).map(n => knop("data-mmipers", esc(n), "👤 " + esc(n), f.personen.has(n))).join("")}</div>`
+        : `<p class="klein">Nog geen personen bekend.</p>`}
+      <div class="klein" style="margin-top:6px">Niets gekozen = iedereen. Bij notities en dagboek telt ook een naam die in de tekst staat.</div></div>
+    <div class="veld"><label for="mmi-project">Project</label><select class="invoer" id="mmi-project">
+      <option value="">— alle —</option><option value="__geen"${f.project === "__geen" ? " selected" : ""}>Zonder project</option>
+      ${S.projecten.map(p => `<option value="${p.id}"${p.id === f.project ? " selected" : ""}>${esc(p.naam)}</option>`).join("")}</select></div>
+    <div class="veld"><span class="labeltekst">Indelen per</span><div class="keuzerij">
+      ${[["datum", "Datum"], ["weekdag", "Dag van de week"], ["persoon", "Persoon"], ["project", "Project"], ["soort", "Soort"], ["geen", "Niet indelen"]]
+        .map(([w, l]) => knop("data-mmigroep", w, l, f.groep === w)).join("")}</div></div>
+    <div class="veld"><span class="labeltekst">Waar naartoe</span><div class="segment">
+      <button data-mmidoel="nieuw" aria-pressed="${f.doel === "nieuw"}">Nieuwe mindmap</button>
+      <button data-mmidoel="huidig" aria-pressed="${f.doel === "huidig"}"${E ? "" : " disabled"}>In deze mindmap</button></div>
+      <input class="invoer" id="mmi-naam" type="text" placeholder="Naam (optioneel)" style="margin-top:9px;${f.doel === "nieuw" ? "" : "display:none"}">
+      <div class="klein" id="mmi-waar" style="margin-top:6px"></div></div>
+    <div class="mm-voorbeeld" id="mmi-voorbeeld"></div>
+  `, `<button class="knop breed primair" id="mmi-go">Importeren</button>`);
+
+  let kand = [];
+  const werkBij = () => {
+    kand = mmImportKandidaten(f);
+    const vb = $("#mmi-voorbeeld");
+    vb.innerHTML = kand.length ? `<b>${kand.length} ${kand.length === 1 ? "item" : "items"} gevonden</b>` + kand.slice(0, 7).map(k =>
+      `<div class="r"><span class="s">${k.datum ? esc(datumLabel(k.datum)) : "—"}</span><span>${MM_SOORTLABEL[k.soort].split(" ")[0]} ${esc(k.titel)}</span></div>`).join("")
+      + (kand.length > 7 ? `<div class="r"><span class="s"></span><span class="klein">en nog ${kand.length - 7}…</span></div>` : "")
+      : `<span class="klein">Niets gevonden met deze keuzes. Probeer een ruimere periode of andere bronnen.</span>`;
+    const go = $("#mmi-go");
+    go.disabled = !kand.length;
+    go.textContent = kand.length ? `${kand.length} ${kand.length === 1 ? "item" : "items"} importeren` : "Niets om te importeren";
+    const waar = $("#mmi-waar");
+    if (f.doel === "huidig" && E) { const o = (E.sel && E.nodes.get(E.sel)) || E.nodes.get(E.rootId); waar.textContent = `Komt onder “${o.tekst.slice(0, 40)}”${E.sel ? "" : " (selecteer eerst een node om het ergens anders te hangen)"}. Wat er al in staat wordt overgeslagen.`; }
+    else waar.textContent = "";
+  };
+  const zetPeriode = (van, tot) => { f.van = van; f.tot = tot; $("#mmi-van").value = van || ""; $("#mmi-tot").value = tot || ""; werkBij(); };
+  $("#mmi-van").onchange = () => { f.van = $("#mmi-van").value || ""; werkBij(); };
+  $("#mmi-tot").onchange = () => { f.tot = $("#mmi-tot").value || ""; werkBij(); };
+  $("#mmi-project").onchange = () => { f.project = $("#mmi-project").value; werkBij(); };
+  $("#mmi-naam").oninput = () => { f.naam = $("#mmi-naam").value.trim(); };
+  $("#mmi-af").onclick = () => { f.metAf = !f.metAf; $("#mmi-af").setAttribute("aria-pressed", f.metAf); werkBij(); };
+  $("#bladinhoud").addEventListener("click", e => {
+    const b = e.target.closest("[data-mmib]");
+    if (b) { const s = b.dataset.mmib; f.bronnen.has(s) ? f.bronnen.delete(s) : f.bronnen.add(s); b.setAttribute("aria-pressed", f.bronnen.has(s)); werkBij(); return; }
+    const p = e.target.closest("[data-mmiper]");
+    if (p) {
+      const w = p.dataset.mmiper, d = new Date();
+      if (w === "week") zetPeriode(ws, plusDagen(ws, 6));
+      else if (w === "vorige") zetPeriode(plusDagen(ws, -7), plusDagen(ws, -1));
+      else if (w === "volgende") zetPeriode(plusDagen(ws, 7), plusDagen(ws, 13));
+      else if (w === "maand") zetPeriode(dISO(new Date(d.getFullYear(), d.getMonth(), 1)), dISO(new Date(d.getFullYear(), d.getMonth() + 1, 0)));
+      else if (w === "30") zetPeriode(v, plusDagen(v, 30));
+      else if (w === "terug30") zetPeriode(plusDagen(v, -30), v);
+      else zetPeriode("", "");
+      return;
+    }
+    const dg = e.target.closest("[data-mmidag]");
+    if (dg) { const d = +dg.dataset.mmidag; f.dagen.has(d) ? f.dagen.delete(d) : f.dagen.add(d); dg.setAttribute("aria-pressed", f.dagen.has(d)); werkBij(); return; }
+    const dgs = e.target.closest("[data-mmidagen]");
+    if (dgs) {
+      const w = dgs.dataset.mmidagen;
+      f.dagen = new Set(w === "werk" ? [1, 2, 3, 4, 5] : w === "weekend" ? [0, 6] : [0, 1, 2, 3, 4, 5, 6]);
+      $$("[data-mmidag]").forEach(x => x.setAttribute("aria-pressed", f.dagen.has(+x.dataset.mmidag))); werkBij(); return;
+    }
+    const pe = e.target.closest("[data-mmipers]");
+    if (pe) { const n = pe.dataset.mmipers; f.personen.has(n) ? f.personen.delete(n) : f.personen.add(n); pe.setAttribute("aria-pressed", f.personen.has(n)); werkBij(); return; }
+    const g = e.target.closest("[data-mmigroep]");
+    if (g) { f.groep = g.dataset.mmigroep; $$("[data-mmigroep]").forEach(x => x.setAttribute("aria-pressed", x === g)); return; }
+    const dl = e.target.closest("[data-mmidoel]");
+    if (dl && !dl.disabled) {
+      f.doel = dl.dataset.mmidoel; $$("[data-mmidoel]").forEach(x => x.setAttribute("aria-pressed", x === dl));
+      $("#mmi-naam").style.display = f.doel === "nieuw" ? "" : "none"; werkBij();
+    }
+  });
+  $("#mmi-go").onclick = async () => {
+    if (!kand.length) return;
+    const r = await mmVoerImportUit(f, kand);
+    bladSluit();
+    if (!r) return;
+    const tekst = `${r.aantal} ${r.aantal === 1 ? "item" : "items"} geïmporteerd${r.overgeslagen ? ` · ${r.overgeslagen} stond er al in` : ""}`;
+    if (f.doel === "nieuw") { ga("mindmap", r.mm.id); toast(tekst); } else toast(tekst, "Ongedaan maken", () => MM.hoofd && MM.hoofd.ongedaan());
+  };
+  werkBij();
+}
+
+/* ---------- Blad: koppelen aan een andere mindmap ---------- */
+function mmPortalBlad(E, id) {
+  const n = E.nodes.get(id); if (!n) return;
+  bladOpen(`Koppel aan een mindmap`, `
+    <p class="klein" style="margin-top:2px">“${esc(n.tekst.slice(0, 60))}” krijgt een link; tik er later op om die mindmap in een zwevend venster te openen.</p>
+    <div class="veld"><input class="invoer" id="mmp-zoek" type="search" placeholder="Zoek mindmaps…"></div>
+    <div id="mmp-lijst"></div>
+    <button class="knop breed rand" id="mmp-nieuw" style="margin-top:10px">＋ Nieuwe mindmap maken en koppelen</button>`,
+    `<button class="knop breed primair" id="mmp-klaar">Klaar</button>`);
+  const tekenLijst = () => {
+    const q = ($("#mmp-zoek").value || "").toLowerCase();
+    const anderen = S.mm_mindmaps.filter(m => m.id !== E.mmId);
+    const lijst = anderen.filter(m => m.naam.toLowerCase().includes(q));
+    $("#mmp-lijst").innerHTML = lijst.length ? `<div class="card" style="padding:4px">${lijst.map(m => {
+      const aan = n.portals.includes(m.id), c = m.clusterId ? vind("mm_clusters", m.clusterId) : null;
+      return `<button class="mm-kiesrij${aan ? " aan" : ""}" data-mmportal="${m.id}"><span class="nm">${aan ? "✓ " : ""}${esc(m.naam)}</span><span class="rt">${c ? esc(c.naam) : ""}</span></button>`;
+    }).join("")}</div>` : `<div class="klein" style="padding:10px 2px">${anderen.length ? "Geen treffers" : "Maak eerst nog een mindmap — dan kun je ernaar linken."}</div>`;
+  };
+  tekenLijst();
+  $("#mmp-zoek").oninput = tekenLijst;
+  $("#mmp-lijst").onclick = e => { const r = e.target.closest("[data-mmportal]"); if (r) { E.wisselPortal(id, r.dataset.mmportal); tekenLijst(); } };
+  $("#mmp-klaar").onclick = bladSluit;
+  $("#mmp-nieuw").onclick = () => bladVraag("Nieuwe mindmap", n.tekst, "Naam", async naam => {
+    if (!naam) return;
+    const m = await mmNieuw(naam, E.mm && E.mm.clusterId);
+    E.wisselPortal(id, m.id);
+    toast(`Gekoppeld aan “${naam}”`, "Openen", () => mmPipOpen(m.id));
+  });
+}
+
+/* ---------- Blad: datums plannen vanuit het planbord ---------- */
+function mmPlanBlad() {
+  const E = MM.hoofd; if (!E) return;
+  let actief = E.sel || null;
+  bladOpen("Nodes plannen", `
+    <div class="veld" style="margin-top:4px"><input class="invoer" id="mmpl-zoek" type="search" placeholder="Zoek nodes…"></div>
+    <div class="card" style="padding:4px;max-height:34vh;overflow-y:auto" id="mmpl-lijst"></div>
+    <div id="mmpl-velden"></div>`, `<button class="knop breed primair" id="mmpl-klaar">Klaar</button>`);
+  const samenvatting = n => n.startDatum && n.eindDatum ? mmKortDatum(n.startDatum) + " – " + mmKortDatum(n.eindDatum)
+    : n.deadline ? "⏰ " + mmKortDatum(n.deadline) : n.startDatum ? "vanaf " + mmKortDatum(n.startDatum) : n.eindDatum ? "tot " + mmKortDatum(n.eindDatum) : "Niet gepland";
+  const lijst = () => {
+    const q = ($("#mmpl-zoek").value || "").toLowerCase();
+    const nodes = Array.from(E.nodes.values()).filter(n => n.tekst.toLowerCase().includes(q));
+    $("#mmpl-lijst").innerHTML = nodes.length ? nodes.map(n => `<button class="mm-kiesrij${n.id === actief ? " aan" : ""}" data-mmpl="${n.id}">
+      <span class="nm">${esc(n.tekst)}</span><span class="rt">${esc(samenvatting(n))}</span></button>`).join("") : `<div class="klein" style="padding:12px">Geen nodes gevonden</div>`;
+  };
+  const velden = () => {
+    const n = actief && E.nodes.get(actief), vak = $("#mmpl-velden");
+    if (!n) { vak.innerHTML = `<p class="klein" style="margin-top:12px">Kies een node om datums te geven.</p>`; return; }
+    vak.innerHTML = `<div class="veld"><span class="labeltekst">Datums voor “${esc(n.tekst.slice(0, 44))}”</span>
+      <div class="rij2"><div><label class="labeltekst" style="font-size:11px" for="mmpl-start">Start</label><input class="invoer" type="date" id="mmpl-start" value="${n.startDatum || ""}"></div>
+      <div><label class="labeltekst" style="font-size:11px" for="mmpl-eind">Einde</label><input class="invoer" type="date" id="mmpl-eind" value="${n.eindDatum || ""}"></div></div>
+      <div style="margin-top:9px"><label class="labeltekst" style="font-size:11px" for="mmpl-deadline">Deadline</label><input class="invoer" type="date" id="mmpl-deadline" value="${n.deadline || ""}"></div>
+      <button class="knop klein rand" id="mmpl-wis" style="margin-top:10px">Datums van deze node wissen</button></div>`;
+    const zet = (veld, waarde) => { E.geschiedenis(); n[veld] = waarde || null; E.render(); E.opslaan(true); lijst(); };
+    $("#mmpl-start").onchange = e => zet("startDatum", e.target.value);
+    $("#mmpl-eind").onchange = e => zet("eindDatum", e.target.value);
+    $("#mmpl-deadline").onchange = e => zet("deadline", e.target.value);
+    $("#mmpl-wis").onclick = () => { E.geschiedenis(); n.startDatum = n.eindDatum = n.deadline = null; E.render(); E.opslaan(true); lijst(); velden(); };
+  };
+  lijst(); velden();
+  $("#mmpl-zoek").oninput = lijst;
+  $("#mmpl-lijst").onclick = e => { const r = e.target.closest("[data-mmpl]"); if (r) { actief = r.dataset.mmpl; lijst(); velden(); } };
+  $("#mmpl-klaar").onclick = bladSluit;
+}
+
+/* ---------- Blad: al je mindmappen (bibliotheek met mappen) ---------- */
+function mmBibliotheekBlad(zoek) {
+  bladOpen("Mindmappen", `
+    <div class="veld" style="margin-top:4px"><input class="invoer" type="search" id="mmb-zoek" placeholder="Zoek mindmaps…" value="${esc(zoek || "")}"></div>
+    <div class="knoprij"><button class="knop klein primair" data-mmb="nieuw">✚ Nieuwe mindmap</button>
+      <button class="knop klein rand" data-mmb="map">＋ Map</button></div>
+    <div id="mmb-lijst"></div>`);
+  const tekenLijst = () => {
+    const q = ($("#mmb-zoek").value || "").toLowerCase();
+    const alle = S.mm_mindmaps.filter(m => m.naam.toLowerCase().includes(q)).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+    if (!alle.length) { $("#mmb-lijst").innerHTML = leeg("🧠", "Geen mindmaps gevonden"); return; }
+    const huidig = MM.hoofd ? MM.hoofd.mmId : null;
+    const groepen = [{ id: null, naam: "Zonder map" }].concat(S.mm_clusters.slice().sort((a, b) => a.naam.localeCompare(b.naam, "nl")));
+    $("#mmb-lijst").innerHTML = groepen.map(g => {
+      const items = g.id ? alle.filter(m => m.clusterId === g.id) : alle.filter(m => !m.clusterId || !vind("mm_clusters", m.clusterId));
+      if (!items.length && !g.id) return "";
+      let h = `<div class="mm-clusterkop"><span class="lbl"${g.id ? ` data-mmb="klap" data-cid="${g.id}"` : ""}>${g.id ? (g.ingeklapt ? "▸" : "▾") + " 📁 " : ""}${esc(g.naam)} · ${items.length}</span>
+        ${g.id ? `<span><button data-mmb="hernoemmap" data-cid="${g.id}" aria-label="Map hernoemen">✎</button><button data-mmb="wegmap" data-cid="${g.id}" aria-label="Map verwijderen">🗑</button></span>` : ""}</div>`;
+      if (g.id && g.ingeklapt) return h;
+      return h + items.map(m => {
+        const is = m.id === huidig;
+        return `<div class="mm-mmkaart${is ? " huidig" : ""}"><div class="info"><div class="nm">${esc(m.naam)}${is ? `<span class="mm-huidig-badge">HUIDIG</span>` : ""}</div>
+          <div class="meta">${m.nodes.length} ${m.nodes.length === 1 ? "node" : "nodes"}${mmIsBenoemd(m) ? "" : " · niet opgeslagen"} · bijgewerkt ${esc(datumLabel(dISO(new Date(m.updatedAt || Date.now()))))}</div></div>
+          <div class="acties">
+            <button data-mmb="open" data-id="${m.id}" title="Openen" aria-label="Openen"${is ? " disabled" : ""}>📂</button>
+            <button data-mmb="pip" data-id="${m.id}" title="Openen in zwevend venster" aria-label="Beeld in beeld">🪟</button>
+            <button data-mmb="invoeg" data-id="${m.id}" title="Kopie invoegen in de huidige mindmap" aria-label="Invoegen"${is || !huidig ? " disabled" : ""}>📋</button>
+            <button data-mmb="hernoem" data-id="${m.id}" title="Hernoemen" aria-label="Hernoemen">✎</button>
+            <button data-mmb="weg" data-id="${m.id}" title="Verwijderen" aria-label="Verwijderen">🗑</button>
+            <select data-mmbmap="${m.id}" aria-label="Naar map"><option value="">Geen map</option>
+              ${S.mm_clusters.map(c => `<option value="${c.id}"${m.clusterId === c.id ? " selected" : ""}>${esc(c.naam)}</option>`).join("")}</select>
+          </div></div>`;
+      }).join("");
+    }).join("");
+  };
+  tekenLijst();
+  $("#mmb-zoek").oninput = tekenLijst;
+  const opnieuw = () => mmBibliotheekBlad($("#mmb-zoek") ? $("#mmb-zoek").value : zoek);
+  $("#bladinhoud").addEventListener("change", async e => {
+    const s = e.target.closest("[data-mmbmap]"); if (!s) return;
+    await mmZetCluster(s.dataset.mmbmap, s.value || null); tekenLijst();
+  });
+  $("#bladinhoud").addEventListener("click", async e => {
+    const k = e.target.closest("[data-mmb]"); if (!k || k.disabled) return;
+    const id = k.dataset.id, cid = k.dataset.cid, mm = mmVind(id), c = cid ? vind("mm_clusters", cid) : null;
+    switch (k.dataset.mmb) {
+      case "nieuw": mmNieuweMindmapVraag(); break;
+      case "map": bladVraag("Nieuwe map", "", "Bv. Werk, Privé, Ideeën", async w => { if (w) await mmNieuwCluster(w); opnieuw(); }); break;
+      case "klap": if (c) { c.ingeklapt = !c.ingeklapt; await bewaar("mm_clusters", c); tekenLijst(); } break;
+      case "hernoemmap": if (c) bladVraag("Map hernoemen", c.naam, "", async w => { if (w) { c.naam = w; await bewaar("mm_clusters", c); } opnieuw(); }); break;
+      case "wegmap": if (c) bevestigVerwijderen(async () => { await mmVerwijderCluster(cid); toast("Map verwijderd — de mindmaps zelf blijven bestaan"); opnieuw(); }); break;
+      case "open": bladSluit(); ga("mindmap", id); break;
+      case "pip": bladSluit(); if (V.view !== "mindmap") ga("mindmap"); mmPipOpen(id); break;
+      case "invoeg": bladSluit(); mmInvoegen(id); break;
+      case "hernoem": if (mm) bladVraag("Mindmap hernoemen", mm.naam, "", async w => {
+        if (w) { await mmHernoem(id, w); const p = MM.pips.find(x => x.mmId === id); if (p) p.el.querySelector(".mm-piptitel").textContent = "🪟 " + w; if (V.view === "mindmap") { MM.hoofd && MM.hoofd.spoel(); teken(); } }
+        opnieuw();
+      }); break;
+      case "weg": if (mm) bevestigVerwijderen(async () => {
+        const wasHoofd = MM.hoofd && MM.hoofd.mmId === id;
+        if (wasHoofd) { MM.hoofd.vernietig(); MM.hoofd = null; }
+        await mmVerwijder(id);
+        if (wasHoofd || V.view === "mindmap") { V.param = null; teken(); }
+        toast("Mindmap verwijderd"); opnieuw();
+      }); break;
+    }
+  });
+}
+/** Mindmap "opslaan": alles staat al in IndexedDB, maar pas met een eigen naam telt hij als opgeslagen. */
+function mmBenoem(E, naam) {
+  const mm = E.mm; if (!mm || !naam) return;
+  const root = E.nodes.get(E.rootId);
+  if (root && (MM_STANDAARDNAMEN.includes(root.tekst) || root.tekst === mm.naam)) root.tekst = naam;
+  mm.naam = naam; mm.benoemd = true;
+  E.render(); E.opslaan(true);
+}
+function mmOpslaanNieuwBlad() {
+  const E = MM.hoofd; if (!E) { mmNieuweMindmapVraag(); return; }
+  E.spoel();
+  const mm = E.mm, benoemd = mmIsBenoemd(mm);
+  const root = E.nodes.get(E.rootId);
+  const voorstel = root && !MM_STANDAARDNAMEN.includes(root.tekst) ? root.tekst : "";
+  bladOpen("Nieuwe mindmap", `
+    ${benoemd
+      ? `<div class="card card-pad klein" style="margin-top:4px">✓ <b>${esc(mm.naam)}</b> is opgeslagen. Je vindt hem terug onder 📚 Mindmappen en in de balk onderin.</div>`
+      : `<div class="veld"><label for="mmo-huidig">Deze mindmap is nog niet opgeslagen — hoe moet hij heten?</label>
+          <input class="invoer" id="mmo-huidig" type="text" value="${esc(voorstel)}" placeholder="Bv. Verbouwing, Plannen 2027" enterkeyhint="next"></div>`}
+    <div class="veld"><label for="mmo-nieuw">Naam van de nieuwe mindmap</label>
+      <input class="invoer" id="mmo-nieuw" type="text" placeholder="Mag ook later — dan vraag ik het bij het opslaan" enterkeyhint="done"></div>
+    ${S.mm_clusters.length ? `<div class="veld"><label for="mmo-map">In map</label><select class="invoer" id="mmo-map">
+      <option value="">— geen map —</option>${S.mm_clusters.map(c => `<option value="${c.id}"${c.id === mm.clusterId ? " selected" : ""}>${esc(c.naam)}</option>`).join("")}</select></div>` : ""}
+  `, `<div class="knoprij"><button class="knop rand" id="mmo-alleen">${benoemd ? "Annuleren" : "Alleen opslaan"}</button>
+      <button class="knop primair" id="mmo-ok">${benoemd ? "Nieuwe maken" : "Opslaan en nieuwe maken"}</button></div>`);
+  const slaHuidigeOp = () => {
+    if (benoemd) return true;
+    const naam = $("#mmo-huidig").value.replace(/\s+/g, " ").trim();
+    if (!naam) { toast("Geef deze mindmap eerst een naam"); $("#mmo-huidig").focus(); return false; }
+    mmBenoem(E, naam);
+    return true;
+  };
+  $("#mmo-alleen").onclick = () => {
+    if (benoemd) { bladSluit(); return; }
+    if (!slaHuidigeOp()) return;
+    bladSluit(); teken(); toast(`“${E.mm.naam}” opgeslagen`);
+  };
+  $("#mmo-ok").onclick = async () => {
+    if (!slaHuidigeOp()) return;
+    const oudeNaam = E.mm.naam;
+    const naam = $("#mmo-nieuw").value.replace(/\s+/g, " ").trim();
+    const map = $("#mmo-map") ? $("#mmo-map").value || null : null;
+    const nieuw = await mmNieuw(naam || "Naamloze mindmap", map, !!naam);
+    bladSluit();
+    ga("mindmap", nieuw.id);
+    toast(`“${oudeNaam}” opgeslagen — ${naam ? `“${naam}”` : "nieuwe mindmap"} staat klaar`, "Terug", () => ga("mindmap", E.mmId));
+  };
+  setTimeout(() => { const v = $(benoemd ? "#mmo-nieuw" : "#mmo-huidig"); if (v) v.focus(); }, 260);
+}
+function mmNieuweMindmapVraag() {
+  bladVraag("Nieuwe mindmap", "", "Waar gaat hij over?", async naam => {
+    if (!naam) return;
+    const mm = await mmNieuw(naam, null);
+    ga("mindmap", mm.id);
+    toast(`“${naam}” gemaakt`);
+  });
+}
+function mmInvoegen(bronId) {
+  const E = MM.hoofd; if (!E) return;
+  if (bronId === E.mmId) { toast("Een mindmap kan niet in zichzelf"); return; }
+  const k = mmKloonBoom(bronId); if (!k.rootId) { toast("Niets om in te voegen"); return; }
+  E.geschiedenis();
+  const ouderId = E.sel || E.rootId, ouder = E.nodes.get(ouderId);
+  const r = k.nodes.find(n => n.id === k.rootId);
+  const dx = (ouder.x + 260) - r.x, dy = (ouder.y + 40 + Math.random() * 140) - r.y;
+  k.nodes.forEach(n => { n.x += dx; n.y += dy; });
+  r.parentId = ouderId; ouder.ingeklapt = false;
+  k.nodes.forEach(n => E.nodes.set(n.id, n));
+  k.connections.forEach(c => E.connections.push(c));
+  E.render(); E.opslaan(true);
+  toast(`“${mmVind(bronId).naam}” ingevoegd`, "Ongedaan maken", () => E.ongedaan());
+}
+
+/* ---------- Exporteren & laden ---------- */
+async function mmExportJSON(E) {
+  E.spoel();
+  const mm = E.mm;
+  const data = { formaat: "futureme-mindmap", versie: 1, naam: mm.naam, rootId: E.rootId, nodes: Array.from(E.nodes.values()), connections: E.connections };
+  await deelOfDownload(`mindmap-${mmBestandsnaam(mm.naam)}-${vandaagISO()}.json`, JSON.stringify(data, null, 2), "application/json");
+  toast("JSON geëxporteerd");
+}
+async function mmExportOutline(E) {
+  const r = [], gezien = new Set();
+  const extra = n => {
+    const p = n.projectId ? vind("projecten", n.projectId) : null, x = [];
+    if (mmHeeftDatum(n)) x.push("📅 " + mmDatumTekst(n));
+    if (p) x.push("#" + p.naam);
+    if (n.personen.length) x.push("met " + n.personen.join(", "));
+    return x.length ? " (" + x.join(" · ") + ")" : "";
+  };
+  const loop = (id, d) => {
+    const n = E.nodes.get(id); if (!n || gezien.has(id)) return; gezien.add(id);
+    r.push(`${"  ".repeat(d)}- ${n.tekst}${extra(n)}`);
+    if (n.notitie) r.push(`${"  ".repeat(d + 1)}> ${n.notitie.replace(/\n/g, " ")}`);
+    n.checklist.forEach(c => r.push(`${"  ".repeat(d + 1)}- [${c.af ? "x" : " "}] ${c.tekst}`));
+    E.kinderen(id).forEach(c => loop(c.id, d + 1));
+  };
+  loop(E.rootId, 0);
+  const los = Array.from(E.nodes.values()).filter(n => !n.parentId && n.id !== E.rootId);
+  if (los.length) { r.push("", "_Losse draden (nog niet vastgemaakt):_"); los.forEach(f => loop(f.id, 0)); }
+  await deelOfDownload(`mindmap-${mmBestandsnaam(E.mm.naam)}-${vandaagISO()}.md`, r.join("\n"), "text/markdown");
+  toast("Tekstoverzicht geëxporteerd");
+}
+function mmLaadJSON(bestand, E) {
+  const lezer = new FileReader();
+  lezer.onload = async () => {
+    try {
+      const p = JSON.parse(lezer.result);
+      if (p && Array.isArray(p.mindmaps)) {
+        (p.clusters || []).forEach(c => { if (!vind("mm_clusters", c.id)) bewaar("mm_clusters", { id: c.id || uid(), naam: c.naam || c.name || "Map", ingeklapt: false }); });
+        for (const m of p.mindmaps) { const r = mmNormMindmap(m); if (vind("mm_mindmaps", r.id)) r.id = uid(); await bewaar("mm_mindmaps", r); }
+        toast(`${p.mindmaps.length} mindmaps binnengehaald`, "Bekijk", () => mmBibliotheekBlad());
+        return;
+      }
+      let arr = null, rootId = null, conns = [];
+      if (Array.isArray(p)) arr = p;
+      else if (p && Array.isArray(p.nodes)) { arr = p.nodes; rootId = p.rootId; conns = p.connections || []; }
+      if (!arr || !arr.length) throw new Error("leeg");
+      const nodes = arr.map(mmNormNode);
+      if (!rootId || !nodes.some(n => n.id === rootId)) rootId = (nodes.find(n => !n.parentId) || nodes[0]).id;
+      const ids = new Set(nodes.map(n => n.id));
+      E.geschiedenis();
+      E.nodes = new Map(nodes.map(n => [n.id, n])); E.rootId = rootId;
+      E.connections = conns.filter(c => ids.has(c.a) && ids.has(c.b)).map(c => ({ id: c.id || uid(), a: c.a, b: c.b }));
+      E.sel = null; E.render(); E.opslaan(true); E.passend();
+      toast("Mindmap geladen", "Ongedaan maken", () => E.ongedaan());
+    } catch (e) { toast("Laden mislukt — dit is geen geldig mindmap-bestand"); }
+  };
+  lezer.readAsText(bestand);
+}
+
+/* ---------- Blad: uitleg ---------- */
+function mmHelpBlad() {
+  const r = (a, b) => `<div class="r"><span>${a}</span><b>${b}</b></div>`;
+  bladOpen("Mindmap — zo werkt het", `<div class="mm-help">
+    ${r("Node kiezen", "tik erop")}
+    ${r("Tekst wijzigen", "dubbeltik op de node · ✎ · F2")}
+    ${r("Kind toevoegen", "＋ op de node · ↳＋ · Tab")}
+    ${r("Naaste toevoegen", "↔＋ · Enter")}
+    ${r("Nieuwe losse node", "dubbeltik op een leeg vlak")}
+    ${r("Node verplaatsen", "sleep hem")}
+    ${r("Schuiven over het canvas", "sleep over een leeg vlak")}
+    ${r("In- en uitzoomen", "knijp met twee vingers · scroll · － ＋")}
+    ${r("Alles in beeld", "⤢ Passend · Ctrl+0")}
+    ${r("Tak in- of uitklappen", "▾ / ▸ onder de node")}
+    ${r("Afvinkbare stappen (niveau 3+)", "☑ in de actiebalk")}
+    ${r("Datums plannen", "📅 · of ＋ Plan node in het planbord")}
+    ${r("Personen, project, notitie", "👤 Details")}
+    ${r("Taak of afspraak van een node maken", "📌 Planning")}
+    ${r("Hele mindmap in planning of agenda", "📅 Agenda &amp; planning")}
+    ${r("Notities, afspraken en taken als mindmap", "📥 Importeren")}
+    ${r("Twee nodes verbinden", "🔗 Verbinden, tik A en dan B")}
+    ${r("Verbinding weghalen", "tik op de stippellijn · 🗑")}
+    ${r("Losmaken van de draad", "✂ in de actiebalk")}
+    ${r("Losse draad weer vastmaken", "sleep het oranje + · of 👤 Details → Hangt onder")}
+    ${r("Linken naar een andere mindmap", "🔗 in de actiebalk")}
+    ${r("Gelinkte mindmap openen", "tik op het paarse label (zwevend venster)")}
+    ${r("Venster verplaatsen / groter maken", "sleep de kop / het hoekje")}
+    ${r("Nodes zoeken en ordenen", "🗂 Nodes (op een computer: slepen)")}
+    ${r("Opslaan en een nieuwe maken", "＋ Nieuwe mindmap (linksboven)")}
+    ${r("Snel wisselen tussen mindmappen", "balk onderin → Mindmappen")}
+    ${r("Mindmappen en mappen beheren", "📚 Mindmappen")}
+    ${r("Ongedaan maken / opnieuw", "↶ ↷ · Ctrl+Z / Ctrl+Shift+Z")}
+    </div>
+    <p class="klein" style="margin-top:14px">Alles wordt bewaard in de opslag van FutureMe (IndexedDB) en gaat mee in je back-up.</p>`,
+    `<button class="knop breed primair" id="mmh-ok">Begrepen</button>`);
+  $("#mmh-ok").onclick = bladSluit;
+}
+
+/* ---------- Kliks: werkbalk, lade, en navigatie naar een node ---------- */
+function mmNaarNode(mmId, nodeId) {
+  if (!mmVind(mmId)) { toast("Die mindmap bestaat niet meer"); return; }
+  MM.focus = { mm: mmId, node: nodeId };
+  ga("mindmap", mmId);
+}
+document.addEventListener("click", e => {
+  const tb = e.target.closest("[data-mmtb]");
+  if (tb) {
+    const E = MM.hoofd;
+    switch (tb.dataset.mmtb) {
+      case "kind": if (E) E.voegKindToe(E.sel); break;
+      case "verbind": if (E) E.zetVerbindModus(); break;
+      case "schik": if (E) E.schik(); break;
+      case "ongedaan": if (E) E.ongedaan(); break;
+      case "opnieuw": if (E) E.opnieuw(); break;
+      case "uit": if (E) E.zoom(-0.1); break;
+      case "in": if (E) E.zoom(0.1); break;
+      case "passend": if (E) E.passend(); break;
+      case "outline": mmZetOutline(!V.mmOutline); break;
+      case "bibliotheek": mmBibliotheekBlad(); break;
+      case "nieuw": mmNieuweMindmapVraag(); break;
+      case "opslaan-nieuw": mmOpslaanNieuwBlad(); break;
+      case "agenda": mmAgendaBlad(); break;
+      case "import": mmImportBlad(); break;
+      case "json": if (E) mmExportJSON(E); break;
+      case "outline-md": if (E) mmExportOutline(E); break;
+      case "laden": { const b = $("#mmBestand"); if (b) b.click(); break; }
+      case "help": mmHelpBlad(); break;
+      case "lade": {
+        V.mmLade = !V.mmLade;
+        const sch = $(".mm-scherm"); if (sch) sch.classList.toggle("lade-open", V.mmLade);
+        const oud = $("#mmLade");
+        if (V.mmLade && !oud) tb.insertAdjacentHTML("afterend", `<div class="mm-lade" id="mmLade"></div>`);
+        else if (!V.mmLade && oud) oud.remove();
+        tb.querySelector(".ch").textContent = V.mmLade ? "▼" : "▲";
+        mmTekenLade();
+        break;
+      }
+    }
+    return;
+  }
+  const ld = e.target.closest("[data-mmlade]");
+  if (ld) {
+    const w = ld.dataset.mmlade;
+    if (w === "tab") V.mmLadeTab = ld.dataset.tab;
+    else if (w === "vorige") V.mmMaand = (V.mmMaand || 0) - 1;
+    else if (w === "volgende") V.mmMaand = (V.mmMaand || 0) + 1;
+    else if (w === "plan") { mmPlanBlad(); return; }
+    mmTekenLade(); return;
+  }
+  const lm = e.target.closest("[data-mmlademm]");
+  if (lm) { const id = lm.dataset.mmlademm; if (!MM.hoofd || MM.hoofd.mmId !== id) ga("mindmap", id); return; }
+  const fc = e.target.closest("[data-mmfocus]");
+  if (fc && MM.hoofd) { MM.hoofd.centreerOp(fc.dataset.mmfocus); return; }
+  const nn = e.target.closest('[data-act="mm-naar-node"]');
+  if (nn) { mmNaarNode(nn.dataset.mm, nn.dataset.node); return; }
+  const mi = e.target.closest('[data-act="mm-import-voor"]');
+  if (mi) { mmImportBlad(JSON.parse(mi.dataset.voor || "{}")); return; }
+  const tl = e.target.closest('[data-act="tl-open"][data-soort="mindmap"]');
+  if (tl && tl.dataset.id) { const [m, n] = tl.dataset.id.split("|"); mmNaarNode(m, n); }
+});
+
+/* ---------- Na elke tekening: engine (her)monteren ---------- */
+const _naTekenen19 = naTekenen;
+naTekenen = function () {
+  _naTekenen19();
+  if (MM.hoofd) { MM.hoofd.vernietig(); MM.hoofd = null; }
+  if (V.view !== "mindmap") { mmPipAllesSluiten(); return; }
+  const mount = $("#mmCanvas"), mm = mmHuidige();
+  if (!mount || !mm) return;
+  mmPipSluit(mm.id);
+  MM.hoofd = new MmEngine(mount, mm.id, { actiebalk: $("#mmActiebalk") });
+  MM.hoofd.transform();
+  mmBindOutline(); mmTekenOutline(); mmTekenLade(); mmKopBijwerken();
+  const b = $("#mmBestand");
+  if (b) b.onchange = () => { const f = b.files && b.files[0]; b.value = ""; if (f && MM.hoofd) mmLaadJSON(f, MM.hoofd); };
+  if (MM.focus && MM.focus.mm === mm.id) { const id = MM.focus.node; MM.focus = null; requestAnimationFrame(() => MM.hoofd && MM.hoofd.centreerOp(id)); }
+  else MM.focus = null;
+};
+document.addEventListener("keydown", e => {
+  if (V.view !== "mindmap" || !MM.actief) return;
+  if ($("#blad").classList.contains("open")) return;
+  const t = e.target;
+  if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.tagName === "SELECT" || t.isContentEditable)) return;
+  if (t && t.tagName === "BUTTON" && (e.key === "Enter" || e.key === " ")) return;
+  MM.actief.toets(e);
+});
+const mmSpoelAlles = () => { if (MM.hoofd) MM.hoofd.spoel(); MM.pips.forEach(p => p.engine.spoel()); };
+window.addEventListener("pagehide", mmSpoelAlles);
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") mmSpoelAlles(); });
+
+/* ---------- De mindmap op je tijdlijn (Vandaag) ---------- */
+TL_SOORTEN.mindmap = ["Mindmap", "var(--purple)"];
+const _tijdlijnItems19 = tijdlijnItems;
+tijdlijnItems = (van, tot) => {
+  const uit = _tijdlijnItems19(van, tot);
+  if (!tlAan("mindmap")) return uit;
+  let erbij = false;
+  const zet = (d, it) => { if (!d || d < van || d > tot) return; (uit[d] = uit[d] || []).push(it); erbij = true; };
+  S.mm_mindmaps.forEach(mm => {
+    if (mm.opTijdlijn === false) return;
+    mm.nodes.forEach(n => {
+      if (n.koppeling || n.voorbeeld || !mmHeeftDatum(n)) return;
+      const basis = { soort: "mindmap", tijd: "", gepland: true, ref: mm.id + "|" + n.id, refSoort: "mindmap", kleur: "var(--purple)" };
+      const t = n.tekst + " · " + mm.naam;
+      const bereik = n.eindDatum && n.startDatum && n.eindDatum !== n.startDatum;
+      if (n.startDatum) zet(n.startDatum, Object.assign({}, basis, { tekst: "🧠 " + (bereik ? "Start: " : "") + t }));
+      if (n.eindDatum && n.eindDatum !== n.startDatum) zet(n.eindDatum, Object.assign({}, basis, { tekst: "🧠 " + (n.startDatum ? "Einde: " : "") + t }));
+      if (n.deadline) zet(n.deadline, Object.assign({}, basis, { tekst: "🧠 Deadline: " + t, kleur: "var(--red)" }));
+    });
+  });
+  if (erbij) for (const d in uit) uit[d].sort((a, b) => (a.tijd || "99:99") < (b.tijd || "99:99") ? -1 : 1);
+  return uit;
+};
+
+/* ---------- Project-, personen- en zoekpagina: ook de mindmap-nodes ---------- */
+const _vwProject19 = vwProject;
+vwProject = () => {
+  let h = _vwProject19();
+  const p = vind("projecten", V.param); if (!p) return h;
+  const lijst = mmNodesWaar(n => n.projectId === p.id);
+  h += sectie("In mindmaps", lijst.length || null,
+    `<button class="actie" data-act="mm-import-voor" data-voor='${esc(JSON.stringify({ project: p.id, van: "", tot: "", groep: "soort", bronnen: ["taak"], nieuw: true }))}'>Maak mindmap</button>`);
+  h += lijst.length ? mmNodeRijen(lijst) : `<div class="card">${leeg("🧠", "Nog in geen enkele mindmap", "Koppel een node aan dit project via 👤 Details.")}</div>`;
+  return h;
+};
+const _vwPersonen19 = vwPersonen;
+vwPersonen = () => {
+  let h = _vwPersonen19();
+  const tel = {};
+  S.mm_mindmaps.forEach(m => m.nodes.forEach(n => (n.personen || []).forEach(x => { tel[x] = (tel[x] || 0) + 1; })));
+  const namen = Object.keys(tel).sort((a, b) => tel[b] - tel[a]);
+  if (!namen.length) return h;
+  h += sectie("In je mindmaps", namen.length);
+  h += `<div class="card">${namen.map(x => `<button class="rijknop" data-act="mm-persoon" data-naam="${esc(x)}">
+    ${ico("mindmap", "width:20px;height:20px;color:var(--purple)")}<span class="nm">${esc(x)}</span>
+    <span class="rechts">${tel[x]} ${tel[x] === 1 ? "node" : "nodes"}</span></button>`).join("")}</div>`;
+  return h;
+};
+document.addEventListener("click", e => {
+  const k = e.target.closest('[data-act="mm-persoon"]'); if (!k) return;
+  const naam = k.dataset.naam, lijst = mmNodesWaar(n => (n.personen || []).some(x => x.toLowerCase() === naam.toLowerCase()));
+  bladOpen("👤 " + naam + " in je mindmaps", mmNodeRijen(lijst) +
+    `<button class="knop breed rand" style="margin-top:12px" data-act="mm-import-voor" data-voor='${esc(JSON.stringify({ personen: [naam], van: "", tot: "", groep: "soort", bronnen: ["taak", "afspraak", "notitie", "dagboek", "werkdoc"], nieuw: true }))}'>📥 Maak een mindmap van alles met ${esc(naam)}</button>`);
+});
+const _vwZoeken19 = vwZoeken;
+vwZoeken = () => {
+  let h = _vwZoeken19();
+  const q = (V.zoek || "").trim().toLowerCase(); if (!q) return h;
+  const lijst = mmNodesWaar(n => mmZoektekst(n).includes(q));
+  if (lijst.length) { h += sectie("Mindmaps", lijst.length); h += mmNodeRijen(lijst); }
+  return h;
+};
+</script>
 <script>
 "use strict";
 /* Alles is geladen — de app kan starten. */
