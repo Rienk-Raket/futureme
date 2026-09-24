@@ -1164,6 +1164,10 @@ html[data-thema="donker"]{--mm-dot:rgba(255,255,255,.07);--mm-canvas:#0d0f13}
   background-image:radial-gradient(var(--mm-dot) 1px, transparent 1px);background-size:24px 24px;-webkit-user-select:none;user-select:none}
 .mm-viewport.mm-pannen{cursor:grabbing}
 .mm-viewport.mm-verbindmodus{cursor:crosshair}
+.mm-viewport{overscroll-behavior:contain;-webkit-touch-callout:none}
+.mm-viewport.mm-verplaatsmodus{cursor:copy;box-shadow:inset 0 0 0 3px var(--accent-soft)}
+main#scherm.mm-scrollslot{overflow:hidden;touch-action:none}
+.mm-node.mm-verplaatsen{border-color:var(--accent);border-style:dashed;box-shadow:0 0 0 4px var(--accent-soft);animation:mmpuls 1s ease-in-out infinite}
 .mm-wereld{position:absolute;left:0;top:0;width:0;height:0;transform-origin:0 0}
 .mm-links{position:absolute;left:0;top:0;width:1px;height:1px;overflow:visible;pointer-events:none}
 .mm-nodes{position:absolute;left:0;top:0;width:1px;height:1px}
@@ -9853,6 +9857,7 @@ class MmEngine {
     this.laag.querySelectorAll(".mm-node").forEach(el => {
       el.classList.toggle("mm-geselecteerd", el.dataset.id === this.sel);
       el.classList.toggle("mm-wachtend", el.dataset.id === this.verbindVan);
+      el.classList.toggle("mm-verplaatsen", el.dataset.id === this.verplaatsId);
     });
     this.werkActiebalkBij();
     if (this === MM.hoofd) mmTekenOutline();
@@ -9861,7 +9866,10 @@ class MmEngine {
     const b = this.actiebalkEl; if (!b) return;
     const n = this.sel ? this.nodes.get(this.sel) : null;
     let h = "";
-    if (this.verbindModus) {
+    if (this.verplaatsId && this.nodes.get(this.verplaatsId)) {
+      h = `<span class="mm-hint">✥ Tik op de plek waar “${esc(this.nodes.get(this.verplaatsId).tekst.slice(0, 28))}” heen moet</span>
+        <button class="mm-ab aan" data-mma="verplaatsstop">Annuleren</button>`;
+    } else if (this.verbindModus) {
       h = `<span class="mm-hint">${this.verbindVan ? "🔗 Tik nu op de node om mee te verbinden" : "🔗 Tik op de eerste node"}</span>
         <button class="mm-ab aan" data-mma="verbindstop">Stoppen</button>`;
     } else if (this.selVerbinding) {
@@ -9874,6 +9882,7 @@ class MmEngine {
       h = `<button class="mm-ab" data-mma="kind" title="Kind toevoegen (Tab)">↳＋</button>
         <button class="mm-ab" data-mma="naaste" title="Naaste toevoegen (Enter)">↔＋</button>
         <button class="mm-ab" data-mma="naam" title="Naam wijzigen (F2)">✎</button>
+        <button class="mm-ab" data-mma="verplaats" title="Verplaatsen: tik daarna op de nieuwe plek">✥ Verplaats</button>
         <span class="mm-absep"></span>
         ${kleuren.map(k => `<button class="mm-kleurbol" style="background:${k}" data-mma="kleur" data-kleur="${k}" aria-pressed="${n.kleur === k}" aria-label="Kleur"></button>`).join("")}
         <span class="mm-absep"></span>
@@ -9901,6 +9910,17 @@ class MmEngine {
     this._klik = e => this.onKlik(e);
     this._toets = e => this.onVeldToets(e);
     this.vp.addEventListener("pointerdown", this._down);
+    // Oplossing 1: een veeg die op het canvas begint, is nooit scrollen van de pagina.
+    // iOS negeert touch-action soms binnen een scrollende ouder; daarom blokkeren we de
+    // native touchmove zelf (niet-passief) — de pointer-events voor slepen/pannen/knijpen blijven werken.
+    this._geenScroll = e => { if (e.cancelable) e.preventDefault(); };
+    this._touchStart = e => { mmScrollSlot(true); if (e.touches && e.touches.length > 1 && e.cancelable) e.preventDefault(); };
+    this._touchEind = e => { if (!e.touches || !e.touches.length) mmScrollSlot(false); };
+    this.vp.addEventListener("touchmove", this._geenScroll, { passive: false });
+    this.vp.addEventListener("touchstart", this._touchStart, { passive: false });
+    // loslaten op window: het aangeraakte element kan intussen opnieuw getekend zijn (en dan bubbelt touchend niet meer)
+    window.addEventListener("touchend", this._touchEind);
+    window.addEventListener("touchcancel", this._touchEind);
     this.vp.addEventListener("wheel", this._wiel, { passive: false });
     this.vp.addEventListener("click", this._klik);
     this.vp.addEventListener("keydown", this._toets);
@@ -9918,6 +9938,9 @@ class MmEngine {
   }
   vernietig() {
     this.spoel();
+    mmScrollSlot(false);
+    window.removeEventListener("touchend", this._touchEind);
+    window.removeEventListener("touchcancel", this._touchEind);
     this.vp.removeEventListener("pointerdown", this._down);
     window.removeEventListener("pointermove", this._move);
     window.removeEventListener("pointerup", this._up);
@@ -9942,6 +9965,7 @@ class MmEngine {
     this.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
     if (this.pointers.size === 2) { this.startKnijp(); return; }
     if (this.pointers.size > 2) return;
+    if (this.verplaatsId) { this.verplaatsNaar(e.clientX, e.clientY); return; }
     const verb = e.target.getAttribute && e.target.getAttribute("data-verbinding");
     if (verb) { this.selecteerVerbinding(verb); return; }
     const nodeEl = e.target.closest(".mm-node");
@@ -9988,6 +10012,7 @@ class MmEngine {
   }
   onUp(e) {
     this.pointers.delete(e.pointerId);
+    if (!this.pointers.size && e.pointerType !== "mouse") setTimeout(() => { if (!this.pointers.size) mmScrollSlot(false); }, 0);
     if (this.knijp) { if (this.pointers.size < 2) { this.knijp = null; this.opslaan(); } return; }
     if (this.sleep) { const s = this.sleep; this.sleep = null; if (s.bewogen) { this.render(); this.opslaan(true); } }
     if (this.pan) { this.pan = null; this.vp.classList.remove("mm-pannen"); this.opslaan(); }
@@ -10238,6 +10263,32 @@ class MmEngine {
     toast("Verplaatst");
   }
 
+  /* ---------- Verplaatsen zonder slepen: tik op de node, tik op de plek ---------- */
+  startVerplaatsen(id) {
+    if (!this.nodes.has(id)) return;
+    if (this.bewerkId) this.bevestigBewerking();
+    this.verplaatsId = id; this.sel = id;
+    this.vp.classList.add("mm-verplaatsmodus");
+    this.markeerSelectie();
+  }
+  stopVerplaatsen() {
+    this.verplaatsId = null;
+    this.vp.classList.remove("mm-verplaatsmodus");
+    this.markeerSelectie();
+  }
+  /** De node gaat met alles wat eronder hangt naar de aangetikte plek. */
+  verplaatsNaar(cx, cy) {
+    const id = this.verplaatsId, n = this.nodes.get(id);
+    this.verplaatsId = null; this.vp.classList.remove("mm-verplaatsmodus");
+    if (!n) { this.markeerSelectie(); return; }
+    const w = this.wereldPunt(cx, cy);
+    this.geschiedenis();
+    mmSchuifTak(this.nodes, id, w.x - n.x, w.y - n.y);
+    this._tik = null; this._tikLeeg = null;
+    this.render(); this.opslaan(true); this.selecteer(id);
+    toast("Verplaatst", "Ongedaan maken", () => this.ongedaan());
+  }
+
   /* ---------- Losse draad weer vastmaken door te slepen ---------- */
   startHerverbind(id, cx, cy) {
     const lijn = document.createElementNS(MM_NS, "path");
@@ -10313,6 +10364,8 @@ class MmEngine {
       case "kind": this.voegKindToe(id); break;
       case "naaste": this.voegNaasteToe(id); break;
       case "naam": this.startBewerken(id); break;
+      case "verplaats": this.startVerplaatsen(id); break;
+      case "verplaatsstop": this.stopVerplaatsen(); break;
       case "kleur": this.zetKleur(id, knop.dataset.kleur); break;
       case "stappen": {
         const n = this.nodes.get(id); if (!n) return;
@@ -10343,6 +10396,7 @@ class MmEngine {
     if (mod && k === "s") { e.preventDefault(); mmExportJSON(this); return; }
     if (mod && e.key === "0") { e.preventDefault(); this.passend(); return; }
     if (e.key === "Escape") {
+      if (this.verplaatsId) { this.stopVerplaatsen(); return; }
       if (this.herverbind) { this.herverbind.lijn.remove(); this.herverbind = null; this.render(); }
       else if (this.verbindModus) this.zetVerbindModus(false);
       else this.deselecteer();
@@ -10355,6 +10409,12 @@ class MmEngine {
     else if (e.key === "Delete" || e.key === "Backspace") { e.preventDefault(); this.verwijderNode(this.sel); }
     else if (e.key === "F2") { e.preventDefault(); this.startBewerken(this.sel); }
   }
+}
+
+/** Zolang een vinger op het canvas staat, kan de pagina eromheen niet scrollen. */
+function mmScrollSlot(aan) {
+  const sch = $("#scherm"); if (!sch) return;
+  sch.classList.toggle("mm-scrollslot", !!aan);
 }
 
 /* ---------- Beeld-in-beeld: een tweede mindmap in een zwevend venster ---------- */
@@ -10394,6 +10454,7 @@ function mmPipOpen(mmId, vanRect) {
     mmPipVoor(rec); e.preventDefault();
     sleep = { soort: "plek", sx: e.clientX, sy: e.clientY, ox: el.offsetLeft, oy: el.offsetTop };
   });
+  [kop, greep].forEach(x => x.addEventListener("touchmove", e => { if (e.cancelable) e.preventDefault(); }, { passive: false }));
   greep.addEventListener("pointerdown", e => {
     mmPipVoor(rec); e.preventDefault(); e.stopPropagation();
     sleep = { soort: "maat", sx: e.clientX, sy: e.clientY, ow: el.offsetWidth, oh: el.offsetHeight };
@@ -11577,7 +11638,8 @@ function mmHelpBlad() {
     ${r("Kind toevoegen", "＋ op de node · ↳＋ · Tab")}
     ${r("Naaste toevoegen", "↔＋ · Enter")}
     ${r("Nieuwe losse node", "dubbeltik op een leeg vlak")}
-    ${r("Node verplaatsen", "sleep hem")}
+    ${r("Node verplaatsen", "sleep hem (de pagina scrolt dan niet mee)")}
+    ${r("Verplaatsen zonder slepen", "✥ Verplaats, dan tik op de nieuwe plek (de tak gaat mee)")}
     ${r("Schuiven over het canvas", "sleep over een leeg vlak")}
     ${r("In- en uitzoomen", "knijp met twee vingers · scroll · － ＋")}
     ${r("Alles in beeld", "⤢ Passend · Ctrl+0")}
