@@ -223,3 +223,13 @@ html[data-ruimte="1"] .taak{transition:background-color .25s}
 .verwant .chiprij{gap:8px}
 .verwant .keuze{min-height:38px;padding:0 12px;display:inline-flex;align-items:center;gap:6px}
 .verwant .keuze svg{width:15px;height:15px}
+
+/* ---------- Titel passend in de kop ----------
+   Stap 1: de knoppen rechts worden compacter (Werk alleen als icoon).
+   Stap 2: de titel krimpt tot een minimum (via JS, font-size inline).
+   Stap 3: een heel lange titel mag over twee regels. */
+header#top.krap .top-row{gap:3px}
+header#top.krap .werkpil{padding:0 9px}
+header#top.krap .werkpil span{display:none}
+header#top.krap .top-row>.icon-btn{min-width:38px}
+h1#titel.tweeregels{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.1;overflow-wrap:anywhere}

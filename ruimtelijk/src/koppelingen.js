@@ -208,3 +208,30 @@ function hScrollSleutels(s) {
     bewaard.forEach(([k, x]) => { const el = nu.get(k); if (el) el.scrollLeft = x; });
   };
 }
+
+/* ---------- Titel passend in de kop ---------- */
+function titelPassend() {
+  const t = $("#titel"), kop = $("#top");
+  if (!t || !kop) return;
+  const past = () => t.scrollWidth <= t.clientWidth + 1;
+  t.style.fontSize = ""; t.classList.remove("tweeregels"); kop.classList.remove("krap");
+  if (!t.textContent || past()) return;
+  kop.classList.add("krap");
+  if (past()) return;
+  const basis = parseFloat(getComputedStyle(t).fontSize), min = Math.max(15, basis * .68);
+  for (let px = basis - 1; px >= min; px--) { t.style.fontSize = px + "px"; if (past()) return; }
+  // Twee regels: begin weer wat groter en krimp tot alles zichtbaar is (minimaal 14px).
+  t.classList.add("tweeregels");
+  const pastTwee = () => t.scrollHeight <= t.clientHeight + 2;
+  for (let px = Math.round(basis * .8); px >= 14; px--) { t.style.fontSize = px + "px"; if (pastTwee()) return; }
+}
+{
+  let wacht = 0;
+  const plan = () => { cancelAnimationFrame(wacht); wacht = requestAnimationFrame(titelPassend); };
+  const t = $("#titel");
+  if (t) new MutationObserver(plan).observe(t, { childList: true, characterData: true, subtree: true });
+  const b = $("#terug");
+  if (b) new MutationObserver(plan).observe(b, { attributes: true, attributeFilter: ["class"] });
+  window.addEventListener("resize", plan);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(plan);
+}
