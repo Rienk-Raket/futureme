@@ -1,0 +1,92 @@
+/* ==========================================================================
+   54–57. Side Hustle — Theorie, Modellen, SCRUM, Dashboard
+   ========================================================================== */
+/* Theorie */
+.sh-th-kop{display:flex;align-items:center;gap:13px}
+.sh-th-kop .ring{width:52px;height:52px;font-size:calc(14px * var(--t))}
+.sh-th-kop .ring>span{width:40px;height:40px}
+.sh-th-aanbevolen{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin:8px 0}
+.sh-th-kaart{
+  display:flex;flex-direction:column;align-items:flex-start;gap:5px;text-align:left;padding:14px;border-radius:16px;
+  background:linear-gradient(160deg,color-mix(in srgb,var(--sh) 16%,var(--card)) 0%,var(--card) 70%);
+  box-shadow:var(--shadow),inset 0 0 0 1px color-mix(in srgb,var(--sh) 22%,transparent);
+}
+.sh-th-kaart .em{font-size:26px;line-height:1}
+.sh-th-kaart b{font-size:calc(15.5px * var(--t));line-height:1.25}
+.sh-th-kaart .klein{line-height:1.4}
+.sh-th-meta{margin-top:auto;font-size:calc(11.5px * var(--t));font-weight:700;color:var(--sh)}
+.sh-th-em{font-size:22px;line-height:1;width:30px;text-align:center;flex:0 0 auto}
+.sh-th-rij.gelezen .nm b{color:var(--muted)}
+.sh-th-vink{width:22px;height:22px;border-radius:50%;background:var(--green);color:#fff;display:inline-flex;align-items:center;justify-content:center}
+.sh-les-kop{display:flex;align-items:center;gap:12px;margin:10px 0 4px}
+.sh-les-kop .em{font-size:40px;line-height:1;width:58px;height:58px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:var(--sh-zacht);flex:0 0 auto}
+.sh-les-kort{font-size:calc(16.5px * var(--t));line-height:1.45;font-weight:600;margin:12px 2px}
+.sh-les-tekst{font-size:calc(15.5px * var(--t));line-height:1.6}
+.sh-les-tekst h3,.sh-les-tekst h4{margin:16px 0 6px;font-size:calc(16px * var(--t))}
+.sh-les-tekst p{margin:8px 0}
+.sh-les-tekst ul,.sh-les-tekst ol{padding-left:20px;margin:6px 0}
+.sh-les-tekst li{margin:4px 0}
+.sh-les-punten{border-left:4px solid var(--sh)}
+.sh-les-punten ul{margin:6px 0 0;padding-left:20px}
+.sh-les-punten li{margin:4px 0}
+
+/* Modellen */
+.sh-mod-intro b{display:block;margin-bottom:3px}
+.sh-mod-raster{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin:8px 0}
+.sh-mod-kaart{position:relative;display:flex}
+.sh-mod-hoofd{
+  flex:1;display:flex;flex-direction:column;align-items:flex-start;gap:5px;text-align:left;padding:13px;border-radius:16px;
+  background:var(--card);box-shadow:var(--shadow);min-height:150px;
+}
+.sh-mod-kaart.nu .sh-mod-hoofd{box-shadow:var(--shadow),inset 0 0 0 1.5px color-mix(in srgb,var(--sh) 55%,transparent)}
+.sh-mod-hoofd .em{font-size:24px;line-height:1}
+.sh-mod-hoofd b{font-size:calc(14.5px * var(--t));line-height:1.25}
+.sh-mod-hoofd .klein{font-size:calc(12px * var(--t));line-height:1.35}
+.sh-mod-voet{margin-top:auto;display:flex;align-items:center;gap:6px;font-size:calc(11.5px * var(--t));font-weight:700;color:var(--sh)}
+.sh-mod-voet .sh-miniring{width:18px;height:18px}
+.sh-mod-plus{position:absolute;top:8px;right:8px;width:32px;height:32px;border-radius:50%;background:var(--sh-zacht);color:var(--sh);display:flex;align-items:center;justify-content:center}
+.sh-mod-plus svg{width:16px;height:16px}
+.sh-mod-kop{display:flex;align-items:center;gap:12px;margin:10px 0 2px}
+.sh-mod-kop .em{font-size:30px;line-height:1;width:50px;height:50px;border-radius:14px;background:var(--sh-zacht);display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.sh-mod-kop b{font-size:calc(17px * var(--t))}
+.sh-mod-kop .sh-miniring{width:34px;height:34px}
+.sh-mod-vooraf{margin-left:6px;font-size:calc(10.5px * var(--t));font-weight:700;text-transform:none;letter-spacing:0;color:var(--sh);background:var(--sh-zacht);padding:1px 7px;border-radius:999px}
+.sh-mod-kwal{margin-top:6px}
+.sh-mod-tabel{display:grid;grid-template-columns:repeat(var(--kol),minmax(0,1fr));gap:5px}
+.sh-mod-tabel .kop{font-size:calc(11px * var(--t));font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;padding:0 4px}
+.sh-mod-tabel .invoer{min-height:38px;padding:6px 8px;font-size:calc(13.5px * var(--t))}
+.sh-mod-aanname{padding:8px 0 10px;border-bottom:1px solid var(--line)}
+.sh-mod-schaal{display:flex;align-items:center;gap:5px;margin-top:6px}
+.sh-mod-schaal .klein{width:52px}
+.sh-mod-schaal button{flex:1;min-height:32px;border-radius:9px;background:var(--card2);font-size:calc(12.5px * var(--t));font-weight:650;border:1.5px solid transparent}
+.sh-mod-schaal button[aria-pressed="true"]{border-color:var(--sh);color:var(--sh);background:var(--sh-zacht)}
+.sh-mod-grafiek{width:100%;max-width:420px;height:auto;display:block;margin:10px auto 0}
+.sh-mod-reken{margin:14px 0}
+.sh-mod-uitkomst{background:linear-gradient(160deg,color-mix(in srgb,var(--sh) 88%,#fff),var(--sh));color:#fff;border-radius:16px;padding:14px 16px;box-shadow:0 10px 24px -12px var(--sh)}
+.sh-mod-uitkomst .klein{color:rgba(255,255,255,.85);display:block}
+.sh-mod-uitkomst b{font-size:calc(28px * var(--t));font-weight:800;letter-spacing:-.02em}
+.sh-mod-som{display:grid;grid-template-columns:1fr auto;gap:6px 12px;margin:12px 4px 0;font-size:calc(14px * var(--t))}
+.sh-mod-som span{color:var(--muted)}
+.sh-mod-pitch{font-size:calc(16px * var(--t));line-height:1.55;border-left:4px solid var(--sh)}
+.sh-mod-canvas{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:8px 0}
+.sh-mod-vak{display:flex;flex-direction:column;gap:4px;text-align:left;padding:10px;border-radius:12px;background:var(--card);box-shadow:var(--shadow);min-height:96px;font-size:calc(12.5px * var(--t));line-height:1.4}
+.sh-mod-vak b{font-size:calc(11px * var(--t));text-transform:uppercase;letter-spacing:.04em;color:var(--sh)}
+.sh-mod-vak p{margin:2px 0}.sh-mod-vak ul{margin:2px 0;padding-left:16px}
+@media (min-width:560px){
+  .sh-mod-canvas.sj-lean,.sh-mod-canvas.sj-bmc{grid-template-columns:repeat(5,1fr)}
+  .sh-mod-canvas.sj-vpc{grid-template-columns:repeat(3,1fr)}
+}
+
+/* Afdrukken */
+#sh-print{display:none}
+@media print{
+  html.sh-printen body>*:not(#sh-print){display:none !important}
+  html.sh-printen #sh-print{display:block;color:#000;background:#fff;font:12pt/1.5 -apple-system,"Segoe UI",Roboto,sans-serif}
+  html.sh-printen body{background:#fff !important}
+  #sh-print section{page-break-after:always}
+  #sh-print h1{font-size:20pt;margin:0 0 4pt}
+  #sh-print .meta{color:#555;margin:0 0 14pt}
+  #sh-print h3{font-size:12pt;margin:12pt 0 3pt;text-transform:uppercase;letter-spacing:.03em;color:#333}
+  #sh-print table{border-collapse:collapse;width:100%}
+  #sh-print th,#sh-print td{border:1px solid #ccc;padding:4pt 6pt;text-align:left}
+}
