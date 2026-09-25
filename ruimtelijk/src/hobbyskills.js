@@ -61,7 +61,7 @@ function hsNieuw(soort) {
   return {
     id: uid(), soort: soort === "skill" ? "skill" : "hobby", naam: "", emoji: soort === "skill" ? "🧠" : "🎨",
     kleur: HS_KLEUREN[S.hs_items.length % HS_KLEUREN.length], status: "bezig", niveau: 1, doelMin: 60, dagen: [],
-    waarom: "", mijlpalen: [], sessies: [], bronnen: [], gemaakt: nu, bijgewerkt: nu, volgorde: Date.now()
+    waarom: "", cat: null, checklist: [], mijlpalen: [], sessies: [], bronnen: [], gemaakt: nu, bijgewerkt: nu, volgorde: Date.now()
   };
 }
 function hsNiveauDots(x) {
@@ -116,7 +116,7 @@ function hsKaart(x, ws) {
     <div class="mid"><b>${esc(x.naam)}</b>
       <div class="hs-badges"><span class="hs-badge ${x.soort}">${x.soort}</span>${x.soort === "skill" ? hsNiveauDots(x) : ""}${x.status !== "bezig" ? `<span class="hs-badge ${x.status}">${HS_STATUS[x.status]}</span>` : ""}</div>
       <div class="hs-balk${doel && min > doel ? " over" : ""}"><i style="width:${pct}%"></i></div>
-      <div class="sub">${doel ? `${hsDuur(min)} van ${hsDuur(doel)} deze week` : (min ? hsDuur(min) + " deze week" : "Nog geen sessie deze week")}${laatste ? " · laatst " + esc(datumLabel(laatste.datum)) : ""}</div>
+      <div class="sub">${doel ? `${hsDuur(min)} van ${hsDuur(doel)} deze week` : (min ? hsDuur(min) + " deze week" : "Nog geen sessie deze week")}${laatste ? " · laatst " + esc(datumLabel(laatste.datum)) : ""}${(x.checklist || []).length ? ` · ☑ ${x.checklist.filter(p => p.af).length}/${x.checklist.length}` : ""}</div>
     </div>
     <button class="hs-plus" data-act="hs-sessie" data-id="${x.id}" aria-label="Sessie loggen voor ${esc(x.naam)}">${ico("plus")}</button>
   </div>`;
@@ -197,7 +197,8 @@ function vwHobbySkill() {
     </div></div>`;
   h += `<div class="knoprij" style="margin:12px 0 4px">
       <button class="knop primair" data-act="hs-sessie" data-id="${x.id}">${ico("plus")} Sessie loggen</button>
-      <button class="knop rand" data-act="hs-plan" data-id="${x.id}">${ico("komend")} Plan oefenmoment</button></div>`;
+      <button class="knop rand" data-act="hs-plan" data-id="${x.id}">${ico("komend")} Plan oefenmoment</button>
+      <button class="knop rand" data-act="mm-van" data-soort="hobbyskill" data-id="${x.id}">${ico("mindmap")} Als mindmap</button></div>`;
   h += `<div class="card card-pad hs-status" style="--hk:${x.kleur}">
       <div class="hs-week"><div class="ring" style="--p:${pct};--rc:${x.kleur}"><span>${pct}%</span></div>
         <div class="tekst"><b>${hsDuur(min)} deze week</b><div class="klein">${doel ? "doel " + hsDuur(doel) + " per week" : "geen weekdoel — stel er een in via bewerken"}</div>
@@ -211,6 +212,7 @@ function vwHobbySkill() {
     </div>`;
   h += sectie("Laatste 12 weken", hsDuur(hsMinuten(sessies.filter(s => s.datum >= plusDagen(ws, -77)))));
   h += `<div class="card card-pad" style="--hk:${x.kleur}">${hsGrafiek(x)}</div>`;
+  if (typeof hsChecklistHTML === "function") h += hsChecklistHTML(x);
   h += sectie("Mijlpalen", mp.length ? `${mpAf}/${mp.length}` : null);
   h += `<div class="card" style="--hk:${x.kleur}">` + (mp.length ? mp.map(m => `<div class="hs-mijlpaal${m.af ? " af" : ""}">
       <button class="hs-check" data-act="hs-mijlpaal-vink" data-id="${x.id}" data-m="${m.id}" aria-pressed="${!!m.af}" aria-label="Afvinken">${ico("check")}</button>
@@ -248,6 +250,10 @@ function hsItemBlad(id, soort) {
     <div class="veld"><label for="hs-naam">Naam</label>
       <input class="invoer" id="hs-naam" type="text" value="${esc(f.naam)}" placeholder="${f.soort === "skill" ? "Bv. Spaans, gitaar, Excel…" : "Bv. Fotografie, hardlopen, koken…"}" enterkeyhint="done"></div>
     <div class="veld"><span class="labeltekst">Soort</span>${seg("soort", [["hobby", "Hobby — doe ik (graag)"], ["skill", "Skill — wil ik leren"]], f.soort)}</div>
+    <div class="veld"><span class="labeltekst">Soort hobby of skill</span>
+      <div class="hs-cats klein-cats">${HS_CATS.map(c => `<button data-hs-catkeuze="${c.id}" aria-pressed="${c.id === (f.cat || hsRaadCat(f.naam, f.emoji))}"><span class="em">${c.emoji}</span><span>${esc(c.naam)}</span></button>`).join("")}</div>
+      ${bestaand ? "" : `<div class="schakel" style="min-height:0;padding:10px 0 0"><span class="tekst klein">Checklist uit sjabloon klaarzetten</span>
+        <button class="toggle" id="hs-metsjabloon" aria-pressed="true" aria-label="Checklist uit sjabloon klaarzetten"></button></div>`}</div>
     <div class="veld"><span class="labeltekst">Icoon</span><div class="hs-emojis">${HS_EMOJI.map(e => `<button data-hs-emoji="${e}" aria-pressed="${e === f.emoji}" aria-label="${e}">${e}</button>`).join("")}</div></div>
     <div class="veld"><span class="labeltekst">Kleur</span><div class="hs-kleuren">${HS_KLEUREN.map(k => `<button data-hs-kleur="${k}" style="background:${k}" aria-pressed="${k === f.kleur}" aria-label="Kleur"></button>`).join("")}</div></div>
     <div class="veld"><span class="labeltekst">Status</span>${seg("status", Object.entries(HS_STATUS), f.status)}</div>
@@ -264,6 +270,9 @@ function hsItemBlad(id, soort) {
     `<button class="knop breed primair" id="hs-ok">${bestaand ? "Opslaan" : "Toevoegen"}</button>`);
   const inh = $("#bladinhoud");
   inh.addEventListener("click", e => {
+    if (e.target.closest("#hs-metsjabloon")) { const tg = $("#hs-metsjabloon"); tg.setAttribute("aria-pressed", String(tg.getAttribute("aria-pressed") !== "true")); return; }
+    const ck = e.target.closest("[data-hs-catkeuze]");
+    if (ck) { f.cat = ck.dataset.hsCatkeuze; f._catGekozen = true; inh.querySelectorAll("[data-hs-catkeuze]").forEach(b => b.setAttribute("aria-pressed", String(b === ck))); return; }
     const t = e.target.closest("[data-hs-veld],[data-hs-emoji],[data-hs-kleur],[data-hs-niveau],[data-hs-dag]");
     if (!t) return;
     const zet = (sel, attr, w) => inh.querySelectorAll(sel).forEach(b => b.setAttribute("aria-pressed", String(b.dataset[attr] === w)));
@@ -271,7 +280,7 @@ function hsItemBlad(id, soort) {
       f[t.dataset.hsVeld] = t.dataset.w;
       zet(`[data-hs-veld="${t.dataset.hsVeld}"]`, "w", t.dataset.w);
       if (t.dataset.hsVeld === "soort") $("#hs-niveauveld").style.display = t.dataset.w === "skill" ? "" : "none";
-    } else if (t.dataset.hsEmoji) { f.emoji = t.dataset.hsEmoji; zet("[data-hs-emoji]", "hsEmoji", f.emoji); }
+    } else if (t.dataset.hsEmoji) { f.emoji = t.dataset.hsEmoji; f._emojiGekozen = true; zet("[data-hs-emoji]", "hsEmoji", f.emoji); }
     else if (t.dataset.hsKleur) { f.kleur = t.dataset.hsKleur; zet("[data-hs-kleur]", "hsKleur", f.kleur); inh.querySelectorAll(".hs-niveaus,.hs-dagen").forEach(n => n.style.setProperty("--hk", f.kleur)); }
     else if (t.dataset.hsNiveau) {
       f.niveau = +t.dataset.hsNiveau;
@@ -283,18 +292,36 @@ function hsItemBlad(id, soort) {
     }
   });
   $("#hs-naam").onkeydown = e => { if (e.key === "Enter") { e.preventDefault(); $("#hs-ok").click(); } };
+  const raad = () => {
+    if (f._catGekozen || bestaand) return;
+    const c = hsRaadCat($("#hs-naam").value, f.emoji);
+    inh.querySelectorAll("[data-hs-catkeuze]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.hsCatkeuze === c)));
+  };
+  $("#hs-naam").addEventListener("input", raad);
+  inh.addEventListener("click", e => { if (e.target.closest("[data-hs-emoji]")) raad(); });
   $("#hs-ok").onclick = async () => {
     const naam = $("#hs-naam").value.trim();
     if (!naam) { toast("Vul een naam in"); const n = $("#hs-naam"); n.classList.add("rt-fout"); n.focus(); setTimeout(() => n.classList.remove("rt-fout"), 600); return; }
     f.naam = naam;
     f.doelMin = Math.max(0, parseInt($("#hs-doel").value, 10) || 0);
     f.waarom = $("#hs-waarom").value.trim();
+    const gekozen = inh.querySelector('[data-hs-catkeuze][aria-pressed="true"]');
+    const oudeCat = bestaand ? bestaand.cat : null;
+    f.cat = gekozen ? gekozen.dataset.hsCatkeuze : hsRaadCat(f.naam, f.emoji);
+    if (!bestaand && !f._emojiGekozen) f.emoji = hsCat(f.cat).emoji;
+    delete f._catGekozen; delete f._emojiGekozen;
+    const metSjabloon = !bestaand && $("#hs-metsjabloon") && $("#hs-metsjabloon").getAttribute("aria-pressed") === "true";
+    if (metSjabloon) hsPasSjabloonToe(f, f.cat);
     bladSluit();
     await hsBewaar(f);
     if (!bestaand) {
       await logGebeurtenis("hobbyskill", `${f.emoji} Nieuw: ${f.naam} (${f.soort})`, f.id);
       tril(10); ga("hobbyskill", f.id); toast("Toegevoegd — log je eerste sessie");
-    } else { teken(); toast("Opgeslagen"); }
+    } else {
+      teken();
+      if (f.cat !== oudeCat) toast("Opgeslagen", "Sjabloon toevoegen", () => { const y = vind("hs_items", f.id); if (y) hsSjabloonBlad(y); });
+      else toast("Opgeslagen");
+    }
   };
   setTimeout(() => { const n = $("#hs-naam"); if (n && !bestaand) n.focus(); }, 300);
 }
@@ -362,6 +389,10 @@ async function hsVoorbeelden() {
     maak({ soort: "skill", naam: "Foto's bewerken", emoji: "📷", kleur: "#7a4fd6", status: "wil", niveau: 1, doelMin: 45, dagen: [0], waarom: "De vakantiefoto's eindelijk mooi maken in plaats van ze te laten liggen.",
       mijlpalen: [{ id: uid(), tekst: "Eén foto van begin tot eind bewerken", af: false }], bronnen: [] }, { dagen: [], sla: 1, min: [30] })
   ];
+  [["muziek", 5], ["taal", 4], ["foto", 0]].forEach(([cat, af], i) => {
+    hsPasSjabloonToe(items[i], cat);
+    items[i].checklist.slice(0, af).forEach(p => { p.af = true; p.afOp = nu; });
+  });
   for (const x of items) await bewaar("hs_items", x);
   await logGebeurtenis("hobbyskill", "🎨 Voorbeelden toegevoegd bij HobbySkills");
   teken(); toast("Drie voorbeelden toegevoegd — pas ze aan of verwijder ze");
@@ -371,7 +402,7 @@ async function hsVoorbeelden() {
 function hsZoek(q) {
   q = (q || "").toLowerCase().trim();
   if (!q) return [];
-  return hsAlle().filter(x => (x.naam + " " + (x.waarom || "") + " " + (x.mijlpalen || []).map(m => m.tekst).join(" ") + " " + (x.sessies || []).map(s => s.notitie).join(" ")).toLowerCase().includes(q));
+  return hsAlle().filter(x => (x.naam + " " + (x.waarom || "") + " " + (x.mijlpalen || []).map(m => m.tekst).join(" ") + " " + (x.checklist || []).map(m => m.tekst).join(" ") + " " + (x.sessies || []).map(s => s.notitie).join(" ")).toLowerCase().includes(q));
 }
 function hsWidget() {
   const alle = hsAlle();

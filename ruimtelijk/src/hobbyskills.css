@@ -161,3 +161,30 @@
 
 /* Startscherm-illustratie en menu */
 .hs-startstrip{--kk:#0ea5a4}
+
+/* Checklist met sjablonen */
+.hs-clkop{display:flex;align-items:center;gap:10px;padding:12px 14px 6px}
+.hs-clkop .hs-balk{flex:1;height:7px}
+.hs-clkop .klein{flex:0 0 auto;white-space:nowrap}
+.hs-cgroep{
+  display:flex;align-items:center;gap:8px;width:100%;min-height:42px;padding:6px 14px;text-align:left;
+  font-size:calc(12.5px * var(--t));font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);
+  border-top:1px solid var(--line);
+}
+.hs-cgroep span:first-child{flex:1;color:var(--hk)}
+.hs-cgroep .klein{font-weight:700;letter-spacing:0;text-transform:none}
+.hs-checklist .hs-mijlpaal{padding-left:10px}
+.hs-cats{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
+.hs-cats button{
+  display:flex;align-items:center;gap:8px;min-height:44px;padding:6px 10px;border-radius:12px;text-align:left;
+  background:var(--card2);border:1.5px solid transparent;font-size:calc(13.5px * var(--t));font-weight:650;line-height:1.25;
+}
+.hs-cats button .em{font-size:19px;line-height:1;flex:0 0 auto}
+.hs-cats button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.hs-cats.klein-cats button{min-height:40px;font-size:calc(12.5px * var(--t))}
+
+/* Hobby, skill of side hustle kiezen in het importblad van de mindmap */
+.mmb-bronnen{margin:6px 0 0}
+.mmb-bronnen .chiprij{margin-top:6px}
+.mmb-bronnen .keuze{white-space:nowrap}
+.mmb-bronnen .keuze .klein{font-size:calc(11px * var(--t));margin-left:2px}

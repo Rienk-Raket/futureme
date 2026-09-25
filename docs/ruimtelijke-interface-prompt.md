@@ -175,3 +175,14 @@ Naast de interface-laag bevat `ruimtelijk/index.html`:
   de Persoonlijk-hub verwijzen naar HobbySkills, Terugblik en Zoeken nemen HobbySkills mee.
 * **Filterbalken blijven staan**: een horizontaal gescrolde balk (tijdlijnfilters, logboek,
   afspraken …) houdt zijn positie als je een filter aan- of uitzet.
+* **Checklist-sjablonen** per soort hobby of skill (muziek, taal, sport, beeldend, foto en
+  video, schrijven, tech, koken, ambacht, tuin, denksport, mindfulness, algemeen), in vier
+  fasen: Starten, Oefenen, Verdiepen, Delen. Een skill krijgt extra punten om voortgang te
+  meten, een hobby punten voor plezier en ritme. De app raadt de soort uit naam en icoon.
+* **Als mindmap**: een hobby, skill of side hustle wordt met één tik een mindmap. De kern
+  linkt terug naar het origineel. Hoofdtakken: checklist (per fase of categorie, als
+  afvinkbare stappen), doelen en mijlpalen, voortgang, bronnen en ideeën; bij een side hustle
+  ook de 5 pijlers, het werkbord, experimenten, klanten en geld en tijd. Afvinken loopt in
+  twee richtingen gelijk met de app. "Bijwerken" voegt later nieuwe punten toe zonder eigen
+  nodes of indeling te wijzigen. Ingangen: HobbySkills-detail, de Side Hustle-werkruimte,
+  het snelmenu van een side hustle en het importblad van de mindmap.

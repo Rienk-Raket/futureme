@@ -1912,6 +1912,33 @@ html[data-ruimte="1"] .taak{transition:background-color .25s}
 /* Startscherm-illustratie en menu */
 .hs-startstrip{--kk:#0ea5a4}
 
+/* Checklist met sjablonen */
+.hs-clkop{display:flex;align-items:center;gap:10px;padding:12px 14px 6px}
+.hs-clkop .hs-balk{flex:1;height:7px}
+.hs-clkop .klein{flex:0 0 auto;white-space:nowrap}
+.hs-cgroep{
+  display:flex;align-items:center;gap:8px;width:100%;min-height:42px;padding:6px 14px;text-align:left;
+  font-size:calc(12.5px * var(--t));font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);
+  border-top:1px solid var(--line);
+}
+.hs-cgroep span:first-child{flex:1;color:var(--hk)}
+.hs-cgroep .klein{font-weight:700;letter-spacing:0;text-transform:none}
+.hs-checklist .hs-mijlpaal{padding-left:10px}
+.hs-cats{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
+.hs-cats button{
+  display:flex;align-items:center;gap:8px;min-height:44px;padding:6px 10px;border-radius:12px;text-align:left;
+  background:var(--card2);border:1.5px solid transparent;font-size:calc(13.5px * var(--t));font-weight:650;line-height:1.25;
+}
+.hs-cats button .em{font-size:19px;line-height:1;flex:0 0 auto}
+.hs-cats button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.hs-cats.klein-cats button{min-height:40px;font-size:calc(12.5px * var(--t))}
+
+/* Hobby, skill of side hustle kiezen in het importblad van de mindmap */
+.mmb-bronnen{margin:6px 0 0}
+.mmb-bronnen .chiprij{margin-top:6px}
+.mmb-bronnen .keuze{white-space:nowrap}
+.mmb-bronnen .keuze .klein{font-size:calc(11px * var(--t));margin-left:2px}
+
 </style>
 </head>
 <body>
@@ -15593,7 +15620,7 @@ function hsNieuw(soort) {
   return {
     id: uid(), soort: soort === "skill" ? "skill" : "hobby", naam: "", emoji: soort === "skill" ? "🧠" : "🎨",
     kleur: HS_KLEUREN[S.hs_items.length % HS_KLEUREN.length], status: "bezig", niveau: 1, doelMin: 60, dagen: [],
-    waarom: "", mijlpalen: [], sessies: [], bronnen: [], gemaakt: nu, bijgewerkt: nu, volgorde: Date.now()
+    waarom: "", cat: null, checklist: [], mijlpalen: [], sessies: [], bronnen: [], gemaakt: nu, bijgewerkt: nu, volgorde: Date.now()
   };
 }
 function hsNiveauDots(x) {
@@ -15648,7 +15675,7 @@ function hsKaart(x, ws) {
     <div class="mid"><b>${esc(x.naam)}</b>
       <div class="hs-badges"><span class="hs-badge ${x.soort}">${x.soort}</span>${x.soort === "skill" ? hsNiveauDots(x) : ""}${x.status !== "bezig" ? `<span class="hs-badge ${x.status}">${HS_STATUS[x.status]}</span>` : ""}</div>
       <div class="hs-balk${doel && min > doel ? " over" : ""}"><i style="width:${pct}%"></i></div>
-      <div class="sub">${doel ? `${hsDuur(min)} van ${hsDuur(doel)} deze week` : (min ? hsDuur(min) + " deze week" : "Nog geen sessie deze week")}${laatste ? " · laatst " + esc(datumLabel(laatste.datum)) : ""}</div>
+      <div class="sub">${doel ? `${hsDuur(min)} van ${hsDuur(doel)} deze week` : (min ? hsDuur(min) + " deze week" : "Nog geen sessie deze week")}${laatste ? " · laatst " + esc(datumLabel(laatste.datum)) : ""}${(x.checklist || []).length ? ` · ☑ ${x.checklist.filter(p => p.af).length}/${x.checklist.length}` : ""}</div>
     </div>
     <button class="hs-plus" data-act="hs-sessie" data-id="${x.id}" aria-label="Sessie loggen voor ${esc(x.naam)}">${ico("plus")}</button>
   </div>`;
@@ -15729,7 +15756,8 @@ function vwHobbySkill() {
     </div></div>`;
   h += `<div class="knoprij" style="margin:12px 0 4px">
       <button class="knop primair" data-act="hs-sessie" data-id="${x.id}">${ico("plus")} Sessie loggen</button>
-      <button class="knop rand" data-act="hs-plan" data-id="${x.id}">${ico("komend")} Plan oefenmoment</button></div>`;
+      <button class="knop rand" data-act="hs-plan" data-id="${x.id}">${ico("komend")} Plan oefenmoment</button>
+      <button class="knop rand" data-act="mm-van" data-soort="hobbyskill" data-id="${x.id}">${ico("mindmap")} Als mindmap</button></div>`;
   h += `<div class="card card-pad hs-status" style="--hk:${x.kleur}">
       <div class="hs-week"><div class="ring" style="--p:${pct};--rc:${x.kleur}"><span>${pct}%</span></div>
         <div class="tekst"><b>${hsDuur(min)} deze week</b><div class="klein">${doel ? "doel " + hsDuur(doel) + " per week" : "geen weekdoel — stel er een in via bewerken"}</div>
@@ -15743,6 +15771,7 @@ function vwHobbySkill() {
     </div>`;
   h += sectie("Laatste 12 weken", hsDuur(hsMinuten(sessies.filter(s => s.datum >= plusDagen(ws, -77)))));
   h += `<div class="card card-pad" style="--hk:${x.kleur}">${hsGrafiek(x)}</div>`;
+  if (typeof hsChecklistHTML === "function") h += hsChecklistHTML(x);
   h += sectie("Mijlpalen", mp.length ? `${mpAf}/${mp.length}` : null);
   h += `<div class="card" style="--hk:${x.kleur}">` + (mp.length ? mp.map(m => `<div class="hs-mijlpaal${m.af ? " af" : ""}">
       <button class="hs-check" data-act="hs-mijlpaal-vink" data-id="${x.id}" data-m="${m.id}" aria-pressed="${!!m.af}" aria-label="Afvinken">${ico("check")}</button>
@@ -15780,6 +15809,10 @@ function hsItemBlad(id, soort) {
     <div class="veld"><label for="hs-naam">Naam</label>
       <input class="invoer" id="hs-naam" type="text" value="${esc(f.naam)}" placeholder="${f.soort === "skill" ? "Bv. Spaans, gitaar, Excel…" : "Bv. Fotografie, hardlopen, koken…"}" enterkeyhint="done"></div>
     <div class="veld"><span class="labeltekst">Soort</span>${seg("soort", [["hobby", "Hobby — doe ik (graag)"], ["skill", "Skill — wil ik leren"]], f.soort)}</div>
+    <div class="veld"><span class="labeltekst">Soort hobby of skill</span>
+      <div class="hs-cats klein-cats">${HS_CATS.map(c => `<button data-hs-catkeuze="${c.id}" aria-pressed="${c.id === (f.cat || hsRaadCat(f.naam, f.emoji))}"><span class="em">${c.emoji}</span><span>${esc(c.naam)}</span></button>`).join("")}</div>
+      ${bestaand ? "" : `<div class="schakel" style="min-height:0;padding:10px 0 0"><span class="tekst klein">Checklist uit sjabloon klaarzetten</span>
+        <button class="toggle" id="hs-metsjabloon" aria-pressed="true" aria-label="Checklist uit sjabloon klaarzetten"></button></div>`}</div>
     <div class="veld"><span class="labeltekst">Icoon</span><div class="hs-emojis">${HS_EMOJI.map(e => `<button data-hs-emoji="${e}" aria-pressed="${e === f.emoji}" aria-label="${e}">${e}</button>`).join("")}</div></div>
     <div class="veld"><span class="labeltekst">Kleur</span><div class="hs-kleuren">${HS_KLEUREN.map(k => `<button data-hs-kleur="${k}" style="background:${k}" aria-pressed="${k === f.kleur}" aria-label="Kleur"></button>`).join("")}</div></div>
     <div class="veld"><span class="labeltekst">Status</span>${seg("status", Object.entries(HS_STATUS), f.status)}</div>
@@ -15796,6 +15829,9 @@ function hsItemBlad(id, soort) {
     `<button class="knop breed primair" id="hs-ok">${bestaand ? "Opslaan" : "Toevoegen"}</button>`);
   const inh = $("#bladinhoud");
   inh.addEventListener("click", e => {
+    if (e.target.closest("#hs-metsjabloon")) { const tg = $("#hs-metsjabloon"); tg.setAttribute("aria-pressed", String(tg.getAttribute("aria-pressed") !== "true")); return; }
+    const ck = e.target.closest("[data-hs-catkeuze]");
+    if (ck) { f.cat = ck.dataset.hsCatkeuze; f._catGekozen = true; inh.querySelectorAll("[data-hs-catkeuze]").forEach(b => b.setAttribute("aria-pressed", String(b === ck))); return; }
     const t = e.target.closest("[data-hs-veld],[data-hs-emoji],[data-hs-kleur],[data-hs-niveau],[data-hs-dag]");
     if (!t) return;
     const zet = (sel, attr, w) => inh.querySelectorAll(sel).forEach(b => b.setAttribute("aria-pressed", String(b.dataset[attr] === w)));
@@ -15803,7 +15839,7 @@ function hsItemBlad(id, soort) {
       f[t.dataset.hsVeld] = t.dataset.w;
       zet(`[data-hs-veld="${t.dataset.hsVeld}"]`, "w", t.dataset.w);
       if (t.dataset.hsVeld === "soort") $("#hs-niveauveld").style.display = t.dataset.w === "skill" ? "" : "none";
-    } else if (t.dataset.hsEmoji) { f.emoji = t.dataset.hsEmoji; zet("[data-hs-emoji]", "hsEmoji", f.emoji); }
+    } else if (t.dataset.hsEmoji) { f.emoji = t.dataset.hsEmoji; f._emojiGekozen = true; zet("[data-hs-emoji]", "hsEmoji", f.emoji); }
     else if (t.dataset.hsKleur) { f.kleur = t.dataset.hsKleur; zet("[data-hs-kleur]", "hsKleur", f.kleur); inh.querySelectorAll(".hs-niveaus,.hs-dagen").forEach(n => n.style.setProperty("--hk", f.kleur)); }
     else if (t.dataset.hsNiveau) {
       f.niveau = +t.dataset.hsNiveau;
@@ -15815,18 +15851,36 @@ function hsItemBlad(id, soort) {
     }
   });
   $("#hs-naam").onkeydown = e => { if (e.key === "Enter") { e.preventDefault(); $("#hs-ok").click(); } };
+  const raad = () => {
+    if (f._catGekozen || bestaand) return;
+    const c = hsRaadCat($("#hs-naam").value, f.emoji);
+    inh.querySelectorAll("[data-hs-catkeuze]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.hsCatkeuze === c)));
+  };
+  $("#hs-naam").addEventListener("input", raad);
+  inh.addEventListener("click", e => { if (e.target.closest("[data-hs-emoji]")) raad(); });
   $("#hs-ok").onclick = async () => {
     const naam = $("#hs-naam").value.trim();
     if (!naam) { toast("Vul een naam in"); const n = $("#hs-naam"); n.classList.add("rt-fout"); n.focus(); setTimeout(() => n.classList.remove("rt-fout"), 600); return; }
     f.naam = naam;
     f.doelMin = Math.max(0, parseInt($("#hs-doel").value, 10) || 0);
     f.waarom = $("#hs-waarom").value.trim();
+    const gekozen = inh.querySelector('[data-hs-catkeuze][aria-pressed="true"]');
+    const oudeCat = bestaand ? bestaand.cat : null;
+    f.cat = gekozen ? gekozen.dataset.hsCatkeuze : hsRaadCat(f.naam, f.emoji);
+    if (!bestaand && !f._emojiGekozen) f.emoji = hsCat(f.cat).emoji;
+    delete f._catGekozen; delete f._emojiGekozen;
+    const metSjabloon = !bestaand && $("#hs-metsjabloon") && $("#hs-metsjabloon").getAttribute("aria-pressed") === "true";
+    if (metSjabloon) hsPasSjabloonToe(f, f.cat);
     bladSluit();
     await hsBewaar(f);
     if (!bestaand) {
       await logGebeurtenis("hobbyskill", `${f.emoji} Nieuw: ${f.naam} (${f.soort})`, f.id);
       tril(10); ga("hobbyskill", f.id); toast("Toegevoegd — log je eerste sessie");
-    } else { teken(); toast("Opgeslagen"); }
+    } else {
+      teken();
+      if (f.cat !== oudeCat) toast("Opgeslagen", "Sjabloon toevoegen", () => { const y = vind("hs_items", f.id); if (y) hsSjabloonBlad(y); });
+      else toast("Opgeslagen");
+    }
   };
   setTimeout(() => { const n = $("#hs-naam"); if (n && !bestaand) n.focus(); }, 300);
 }
@@ -15894,6 +15948,10 @@ async function hsVoorbeelden() {
     maak({ soort: "skill", naam: "Foto's bewerken", emoji: "📷", kleur: "#7a4fd6", status: "wil", niveau: 1, doelMin: 45, dagen: [0], waarom: "De vakantiefoto's eindelijk mooi maken in plaats van ze te laten liggen.",
       mijlpalen: [{ id: uid(), tekst: "Eén foto van begin tot eind bewerken", af: false }], bronnen: [] }, { dagen: [], sla: 1, min: [30] })
   ];
+  [["muziek", 5], ["taal", 4], ["foto", 0]].forEach(([cat, af], i) => {
+    hsPasSjabloonToe(items[i], cat);
+    items[i].checklist.slice(0, af).forEach(p => { p.af = true; p.afOp = nu; });
+  });
   for (const x of items) await bewaar("hs_items", x);
   await logGebeurtenis("hobbyskill", "🎨 Voorbeelden toegevoegd bij HobbySkills");
   teken(); toast("Drie voorbeelden toegevoegd — pas ze aan of verwijder ze");
@@ -15903,7 +15961,7 @@ async function hsVoorbeelden() {
 function hsZoek(q) {
   q = (q || "").toLowerCase().trim();
   if (!q) return [];
-  return hsAlle().filter(x => (x.naam + " " + (x.waarom || "") + " " + (x.mijlpalen || []).map(m => m.tekst).join(" ") + " " + (x.sessies || []).map(s => s.notitie).join(" ")).toLowerCase().includes(q));
+  return hsAlle().filter(x => (x.naam + " " + (x.waarom || "") + " " + (x.mijlpalen || []).map(m => m.tekst).join(" ") + " " + (x.checklist || []).map(m => m.tekst).join(" ") + " " + (x.sessies || []).map(s => s.notitie).join(" ")).toLowerCase().includes(q));
 }
 function hsWidget() {
   const alle = hsAlle();
@@ -16035,6 +16093,589 @@ RT_NA.push(() => {
   const veld = $("#hs-mp-nieuw");
   if (veld) veld.onkeydown = e => { if (e.key === "Enter") { e.preventDefault(); hsMijlpaalToevoegen(veld.dataset.id, veld.value); } };
 });
+
+</script>
+<script>
+"use strict";
+/* ==========================================================================
+   51b. HobbySkills — checklist met sjablonen per soort hobby of skill
+   Elk item heeft een categorie (muziek, taal, sport …). Bij aanmaken kies je
+   er een; de app raadt hem uit naam en icoon. Het sjabloon zet een checklist
+   klaar in vier fasen (Starten, Oefenen, Verdiepen, Delen), aangevuld met
+   punten die passen bij een hobby (plezier en ritme) of een skill (leren
+   meten). Een sjabloon later nog eens toepassen voegt alleen ontbrekende
+   punten toe. Eigen punten kunnen er altijd bij.
+   ========================================================================== */
+const HS_FASEN = ["Starten", "Oefenen", "Verdiepen", "Delen"];
+const HS_CATS = [
+  { id: "muziek", naam: "Muziek & instrument", emoji: "🎸", woorden: /gitaar|piano|drum|zing|zang|viool|bas|ukelele|muziek|instrument|dj|produc|🎸|🎹|🎤|🎻|🥁/i, punten: {
+    Starten: ["Instrument kopen, huren of lenen", "Stemapparaat en metronoom-app installeren", "Leermethode of docent kiezen", "Vaste oefenplek inrichten"],
+    Oefenen: ["Elke sessie 10 minuten techniek (toonladders of akkoorden)", "Met een metronoom spelen en het tempo langzaam opvoeren", "Elke week één nummer instuderen", "Jezelf opnemen en terugluisteren"],
+    Verdiepen: ["Basis muziektheorie: noten en akkoorden lezen", "Een melodie op gehoor naspelen", "Improviseren over een simpele akkoordenreeks"],
+    Delen: ["Samenspelen met iemand anders", "Een nummer voor vrienden of familie spelen", "Een open podium of jamsessie bezoeken"] } },
+  { id: "taal", naam: "Taal", emoji: "🗣️", woorden: /spaans|frans|duits|engels|italiaans|japans|chinees|portugees|arabisch|turks|taal|🗣️/i, punten: {
+    Starten: ["Doel en niveau kiezen (A1 tot C2)", "App, cursus of leerboek kiezen", "De 100 meest gebruikte woorden leren"],
+    Oefenen: ["Elke dag 15 minuten woordjes herhalen met flashcards", "Hardop de uitspraak oefenen", "Series of podcasts in de taal met ondertiteling", "Elke week een kort stukje schrijven"],
+    Verdiepen: ["Grammatica: tegenwoordige en verleden tijd", "Een kort boek of artikel lezen", "Een niveautoets doen"],
+    Delen: ["Een taalmaatje of tandempartner zoeken", "Een gesprek van 10 minuten voeren", "Op reis alleen in de taal bestellen en vragen"] } },
+  { id: "sport", naam: "Sport & beweging", emoji: "🏃", woorden: /hardlop|rennen|fiets|zwem|fitness|kracht|voetbal|tennis|padel|klimmen|boulder|yoga|sport|🏃|🚴|🏊|🏋️|🧗/i, punten: {
+    Starten: ["Goede schoenen en uitrusting regelen", "Beginnersschema kiezen", "Nulmeting doen (tijd, afstand of gewicht)", "Warming-up en cooling-down leren"],
+    Oefenen: ["Drie keer per week trainen volgens schema", "Rustdagen inplannen", "Elke training loggen"],
+    Verdiepen: ["Techniek laten beoordelen door een trainer of op video", "Voeding en herstel afstemmen op je training", "Oefeningen om blessures te voorkomen"],
+    Delen: ["Een club of groep zoeken", "Inschrijven voor een wedstrijd of evenement", "Samen met iemand trainen"] } },
+  { id: "beeldend", naam: "Tekenen, schilderen & design", emoji: "🎨", woorden: /teken|schilder|aquarel|illustra|design|kalligraf|schets|🎨/i, punten: {
+    Starten: ["Basismateriaal kopen (schetsboek, potloden of verf)", "Een map met voorbeelden en inspiratie aanleggen", "Beginnerscursus of boek kiezen"],
+    Oefenen: ["Elke dag 10 minuten schetsen", "Vormen, licht en schaduw oefenen", "Naar het echte leven tekenen", "Een werk van een meester namaken als studie"],
+    Verdiepen: ["Perspectief leren", "Kleurtheorie leren", "Een serie van vijf werken in je eigen stijl maken"],
+    Delen: ["Portfolio of account voor je werk starten", "Feedback vragen in een community", "Meedoen aan een challenge (zoals Inktober)"] } },
+  { id: "foto", naam: "Fotografie & video", emoji: "📷", woorden: /foto|video|film|camera|vlog|drone|bewerk|📷|🎥/i, punten: {
+    Starten: ["Handmatige instellingen van je camera of telefoon leren", "Bewerkingsapp kiezen", "Mappen en back-up voor je bestanden opzetten"],
+    Oefenen: ["Elke week een fotografie-opdracht met een thema", "Compositie: derdenregel en lijnen", "Sluitertijd, diafragma en ISO oefenen"],
+    Verdiepen: ["Kleurcorrectie en bewerken", "Licht: gouden uur en kunstlicht", "Een serie of fotoverhaal maken"],
+    Delen: ["Portfolio online zetten", "Feedback vragen op je beste werk", "Een foto afdrukken of exposeren"] } },
+  { id: "schrijven", naam: "Schrijven", emoji: "✍️", woorden: /schrijf|verhaal|roman|poëzie|gedicht|blog|journal|✍️/i, punten: {
+    Starten: ["Vaste schrijfplek en vast moment kiezen", "Genre of vorm kiezen", "Ideeënboekje beginnen"],
+    Oefenen: ["Elke dag 300 woorden schrijven", "Schrijfopdrachten (prompts) gebruiken", "Een oude tekst herschrijven", "Veel lezen in je genre"],
+    Verdiepen: ["Structuur en plot leren", "Dialogen oefenen", "Je eigen werk redigeren"],
+    Delen: ["Proeflezers vragen", "Een schrijfgroep zoeken", "Iets publiceren (blog of wedstrijd)"] } },
+  { id: "tech", naam: "Programmeren & tech", emoji: "💻", woorden: /program|code|coderen|python|javascript|excel|data|web|app bouwen|ai|💻/i, punten: {
+    Starten: ["Taal of tool kiezen", "Ontwikkelomgeving installeren", "Cursus of tutorial kiezen"],
+    Oefenen: ["Elke sessie één kleine opdracht afmaken", "Git leren gebruiken", "Code van anderen lezen"],
+    Verdiepen: ["Een eigen project bouwen", "Testen en debuggen leren", "Officiële documentatie lezen"],
+    Delen: ["Je code online zetten (GitHub)", "Bijdragen aan een open-sourceproject", "Een demo of portfolio maken"] } },
+  { id: "koken", naam: "Koken & bakken", emoji: "🍳", woorden: /kook|koken|bak|brood|taart|recept|🍳|🍰/i, punten: {
+    Starten: ["Basisuitrusting: een goed mes en een paar goede pannen", "Snijtechnieken leren", "Vijf basisrecepten kiezen"],
+    Oefenen: ["Elke week een nieuw recept", "Mise en place: alles klaarzetten voor je begint", "Proeven en op smaak brengen"],
+    Verdiepen: ["Eén keuken verdiepen (bv. Italiaans of Aziatisch)", "Deeg, brood of sauzen van de basis maken", "Koken zonder recept"],
+    Delen: ["Een etentje geven", "Je eigen receptenboekje bijhouden", "Een kookworkshop volgen"] } },
+  { id: "maken", naam: "Ambacht & maken", emoji: "🔧", woorden: /hout|timmer|brei|haak|naai|3d|print|klus|keramiek|pottenbak|ambacht|🔧|🧵/i, punten: {
+    Starten: ["Veilige werkplek en basisgereedschap", "Een beginnersproject kiezen", "Materiaal inkopen"],
+    Oefenen: ["Basistechnieken oefenen", "Kleine projecten echt afmaken", "Noteren wat misging en waarom"],
+    Verdiepen: ["Iets naar eigen ontwerp maken", "Een nieuwe techniek leren", "Afwerking verbeteren"],
+    Delen: ["Iets maken als cadeau", "Een maker-community zoeken", "Werk laten zien of verkopen"] } },
+  { id: "tuin", naam: "Tuinieren & planten", emoji: "🌱", woorden: /tuin|plant|moestuin|groente|bloem|🌱/i, punten: {
+    Starten: ["Plek kiezen en zon en schaduw bekijken", "Grondsoort bekijken en verbeteren", "Een zaai- en plantkalender maken"],
+    Oefenen: ["Vast moment voor water geven en verzorgen", "Bijhouden wat groeit en wat niet", "Snoeien en oogsten leren"],
+    Verdiepen: ["Composteren", "Wisselteelt in de moestuin", "Planten voor bijen en vlinders"],
+    Delen: ["Stekjes of zaden ruilen", "Een volkstuin of tuinclub zoeken", "Je oogst delen"] } },
+  { id: "spel", naam: "Denksport & spel", emoji: "♟️", woorden: /schaak|dammen|bridge|go\b|puzzel|poker|spel|♟️|🧩|🎮/i, punten: {
+    Starten: ["Regels en basisprincipes leren", "Oefenplatform of app kiezen", "Je beginrating of niveau vastleggen"],
+    Oefenen: ["Elke dag een paar puzzels", "Je eigen partijen analyseren", "Vaste patronen en openingen oefenen"],
+    Verdiepen: ["Een strategieboek lezen", "Eindspellen oefenen", "Partijen van betere spelers naspelen"],
+    Delen: ["Lid worden van een club", "Een toernooi spelen", "Iemand anders het spel leren"] } },
+  { id: "mind", naam: "Mindfulness & ontspanning", emoji: "🧘", woorden: /medita|mindful|ademhal|ontspan|yoga|🧘/i, punten: {
+    Starten: ["Vast moment en rustige plek kiezen", "App of les kiezen", "Beginnen met 5 minuten per dag"],
+    Oefenen: ["Elke dag 10 minuten oefenen", "Ademhalingsoefeningen", "Kort bijhouden hoe je je voelt"],
+    Verdiepen: ["Een workshop of retraite volgen", "Langere sessies proberen", "Lezen over de achtergrond"],
+    Delen: ["Een groepsles volgen", "Samen met iemand oefenen"] } },
+  { id: "algemeen", naam: "Algemeen", emoji: "✨", woorden: /.^/, punten: {
+    Starten: ["Concreet doel formuleren", "Benodigdheden regelen", "Een goede leerbron kiezen", "Vaste tijd in je week kiezen"],
+    Oefenen: ["Een vast weekritme volgen", "Elke sessie loggen", "Na elke week kort terugkijken"],
+    Verdiepen: ["Het volgende niveau kiezen", "Feedback vragen van iemand met ervaring"],
+    Delen: ["Een community zoeken", "Laten zien wat je gemaakt of geleerd hebt"] } }
+];
+/** Aanvulling per soort: een skill meet je, een hobby houd je leuk en vol. */
+const HS_SOORT_PUNTEN = {
+  skill: ["Starten|Nulmeting doen: waar sta je nu?", "Starten|Leerdoel concreet maken: wat kun je over 3 maanden?", "Verdiepen|Elke maand een voortgangstoets", "Verdiepen|Feedback vragen van iemand die beter is"],
+  hobby: ["Starten|Vaste tijd in je agenda blokken", "Oefenen|Iets kiezen om naar uit te kijken", "Verdiepen|Na een maand: vind ik het nog leuk, en wat maakt het leuk?"]
+};
+const hsCat = id => HS_CATS.find(c => c.id === id) || HS_CATS[HS_CATS.length - 1];
+function hsRaadCat(naam, emoji) {
+  const t = (naam || "") + " " + (emoji || "");
+  const c = HS_CATS.find(c => c.id !== "algemeen" && c.woorden.test(t));
+  return c ? c.id : "algemeen";
+}
+/** De punten van een sjabloon, met een vaste sleutel zodat opnieuw toepassen niets dubbel maakt. */
+function hsSjabloonPunten(catId, soort) {
+  const c = hsCat(catId), uit = [];
+  HS_FASEN.forEach(f => (c.punten[f] || []).forEach((t, i) => uit.push({ groep: f, tekst: t, sleutel: c.id + "." + f + "." + i })));
+  (HS_SOORT_PUNTEN[soort] || []).forEach((r, i) => { const [f, t] = r.split("|"); uit.push({ groep: f, tekst: t, sleutel: soort + "." + i }); });
+  return uit;
+}
+/** Voegt ontbrekende sjabloonpunten toe; geeft het aantal nieuwe terug. */
+function hsPasSjabloonToe(x, catId) {
+  x.cat = catId || x.cat || hsRaadCat(x.naam, x.emoji);
+  const lijst = x.checklist || (x.checklist = []);
+  const heb = new Set(lijst.map(p => p.sleutel).filter(Boolean));
+  const nieuw = hsSjabloonPunten(x.cat, x.soort).filter(p => !heb.has(p.sleutel))
+    .map((p, i) => ({ id: uid(), tekst: p.tekst, af: false, groep: p.groep, sleutel: p.sleutel, afOp: null, volgorde: Date.now() + i }));
+  lijst.push(...nieuw);
+  return nieuw.length;
+}
+const hsGroepVolgorde = g => { const i = HS_FASEN.indexOf(g); return i < 0 ? 99 : i; };
+function hsChecklistGroepen(x) {
+  const m = new Map();
+  (x.checklist || []).forEach(p => { const g = p.groep || "Eigen"; if (!m.has(g)) m.set(g, []); m.get(g).push(p); });
+  return [...m.entries()].sort((a, b) => hsGroepVolgorde(a[0]) - hsGroepVolgorde(b[0]));
+}
+function hsChecklistHTML(x) {
+  const cl = x.checklist || [], af = cl.filter(p => p.af).length, c = hsCat(x.cat);
+  let h = sectie("Checklist", cl.length ? `${af}/${cl.length}` : null,
+    `<button class="actie" data-act="hs-sjabloon" data-id="${x.id}">${cl.length ? "Sjabloon" : "+ sjabloon"}</button>`);
+  h += `<div class="card hs-checklist" style="--hk:${x.kleur}">`;
+  if (!cl.length) {
+    h += `<div class="klein" style="padding:12px 14px 2px">Nog geen checklist. Kies een sjabloon voor <b>${esc(c.emoji + " " + c.naam)}</b>, of voeg zelf punten toe.</div>
+      <div style="padding:8px 12px 2px"><button class="knop klein primair" data-act="hs-sjabloon-toepassen" data-id="${x.id}" data-cat="${c.id}">${ico("lijst")} Sjabloon ${esc(c.naam)} gebruiken</button></div>`;
+  } else {
+    const pct = Math.round(af / cl.length * 100);
+    h += `<div class="hs-clkop"><div class="hs-balk"><i style="width:${pct}%"></i></div><span class="klein">${esc(c.emoji + " " + c.naam)} · ${pct}%</span></div>`;
+    const open = V.hsClOpen || (V.hsClOpen = {});
+    hsChecklistGroepen(x).forEach(([g, punten]) => {
+      const n = punten.filter(p => p.af).length, dicht = open[x.id + g] === false || (open[x.id + g] === undefined && n === punten.length);
+      h += `<button class="hs-cgroep" data-act="hs-cl-groep" data-id="${x.id}" data-g="${esc(g)}" aria-expanded="${!dicht}">
+          <span>${esc(g)}</span><span class="klein">${n}/${punten.length}</span>${ico("pijlr", `width:14px;height:14px;transform:rotate(${dicht ? 0 : 90}deg);transition:transform .2s`)}</button>`;
+      if (!dicht) h += punten.map(p => `<div class="hs-mijlpaal${p.af ? " af" : ""}">
+          <button class="hs-check" data-act="hs-cl-vink" data-id="${x.id}" data-p="${p.id}" aria-pressed="${!!p.af}" aria-label="Afvinken">${ico("check")}</button>
+          <span class="tekst">${esc(p.tekst)}</span>
+          ${p.af ? "" : `<button class="icon-btn" data-act="hs-cl-taak" data-id="${x.id}" data-p="${p.id}" aria-label="Als taak inplannen">${ico("komend")}</button>`}
+          <button class="icon-btn" data-act="hs-cl-weg" data-id="${x.id}" data-p="${p.id}" aria-label="Verwijderen">${ico("x")}</button></div>`).join("");
+    });
+  }
+  h += `<div class="hs-nieuwveld"><input class="invoer" id="hs-cl-nieuw" type="text" placeholder="Eigen punt toevoegen…" enterkeyhint="done" data-id="${x.id}"><button class="knop klein rand" data-act="hs-cl-toevoegen" data-id="${x.id}">Toevoegen</button></div></div>`;
+  return h;
+}
+function hsSjabloonBlad(x) {
+  const huidig = x.cat || hsRaadCat(x.naam, x.emoji);
+  bladOpen("Checklist-sjabloon", `
+    <p class="klein" style="margin-top:2px">Kies wat het best past bij <b>${esc(x.emoji + " " + x.naam)}</b>. Je krijgt punten in vier fasen, plus punten voor een ${x.soort === "skill" ? "skill (leren meten)" : "hobby (plezier en ritme)"}. Wat je al hebt, wordt niet dubbel toegevoegd.</p>
+    <div class="hs-cats">${HS_CATS.map(c => `<button data-hs-cat="${c.id}" aria-pressed="${c.id === huidig}"><span class="em">${c.emoji}</span><span>${esc(c.naam)}</span></button>`).join("")}</div>
+    <div class="mm-voorbeeld" id="hs-sj-voorbeeld" style="margin-top:12px"></div>`,
+    `<button class="knop breed primair" id="hs-sj-ok">Toevoegen aan checklist</button>`);
+  let keuze = huidig;
+  const toon = () => {
+    const heb = new Set((x.checklist || []).map(p => p.sleutel));
+    const p = hsSjabloonPunten(keuze, x.soort), nieuw = p.filter(q => !heb.has(q.sleutel));
+    $("#hs-sj-voorbeeld").innerHTML = `<b>${nieuw.length} nieuwe punten</b>` + HS_FASEN.map(f => {
+      const r = nieuw.filter(q => q.groep === f); if (!r.length) return "";
+      return `<div class="r"><span class="s">${f}</span><span>${r.map(q => esc(q.tekst)).join("<br>")}</span></div>`;
+    }).join("");
+    $("#hs-sj-ok").disabled = !nieuw.length;
+    $("#hs-sj-ok").textContent = nieuw.length ? `${nieuw.length} punten toevoegen` : "Alles staat er al in";
+  };
+  $("#bladinhoud").addEventListener("click", e => {
+    const b = e.target.closest("[data-hs-cat]"); if (!b) return;
+    keuze = b.dataset.hsCat; $$("[data-hs-cat]").forEach(q => q.setAttribute("aria-pressed", String(q === b))); toon();
+  });
+  $("#hs-sj-ok").onclick = async () => {
+    const n = hsPasSjabloonToe(x, keuze);
+    bladSluit(); await hsBewaar(x); teken();
+    toast(`${n} punten toegevoegd aan je checklist`);
+  };
+  toon();
+}
+
+/* ---------- Acties ---------- */
+document.addEventListener("click", async e => {
+  const el = e.target.closest && e.target.closest("[data-act]");
+  if (!el || !el.dataset.act.startsWith("hs-")) return;
+  const act = el.dataset.act, x = el.dataset.id ? vind("hs_items", el.dataset.id) : null;
+  if (!x) return;
+  const punt = el.dataset.p ? (x.checklist || []).find(p => p.id === el.dataset.p) : null;
+  switch (act) {
+    case "hs-sjabloon": hsSjabloonBlad(x); break;
+    case "hs-sjabloon-toepassen": { const n = hsPasSjabloonToe(x, el.dataset.cat); await hsBewaar(x); teken(); toast(`${n} punten toegevoegd`); break; }
+    case "hs-cl-groep": { const k = x.id + el.dataset.g, o = V.hsClOpen || (V.hsClOpen = {}); o[k] = el.getAttribute("aria-expanded") !== "true"; teken(); break; }
+    case "hs-cl-vink":
+      if (!punt) break;
+      punt.af = !punt.af; punt.afOp = punt.af ? new Date().toISOString() : null;
+      await hsBewaar(x); if (punt.af) tril(10); teken();
+      break;
+    case "hs-cl-taak":
+      if (punt) openTaakBlad(null, { titel: punt.tekst, labels: ["hobbyskills"], notitie: `${x.emoji} ${x.naam} · checklist (${punt.groep || "Eigen"})` });
+      break;
+    case "hs-cl-weg":
+      if (!punt) break;
+      x.checklist = x.checklist.filter(p => p !== punt); await hsBewaar(x); teken();
+      toast("Punt verwijderd", "Ongedaan maken", async () => { x.checklist.push(punt); await hsBewaar(x); teken(); });
+      break;
+    case "hs-cl-toevoegen": { const v = $("#hs-cl-nieuw"); if (v) await hsClToevoegen(x.id, v.value); break; }
+  }
+});
+async function hsClToevoegen(id, tekst) {
+  const x = vind("hs_items", id); tekst = (tekst || "").trim();
+  if (!x || !tekst) return;
+  (x.checklist || (x.checklist = [])).push({ id: uid(), tekst, af: false, groep: "Eigen", sleutel: null, afOp: null, volgorde: Date.now() });
+  await hsBewaar(x); teken();
+  const n = $("#hs-cl-nieuw"); if (n) n.focus();
+}
+RT_NA.push(() => {
+  const v = $("#hs-cl-nieuw");
+  if (v) v.onkeydown = e => { if (e.key === "Enter") { e.preventDefault(); hsClToevoegen(v.dataset.id, v.value); } };
+});
+
+</script>
+<script>
+"use strict";
+/* ==========================================================================
+   53. Hobby's, skills en side hustles als mindmap
+   Eén tik maakt van een hobby, skill of side hustle een mindmap:
+   - de kern in het midden (gekoppeld aan het origineel);
+   - hoofdtakken voor plan, checklist, doelen, voortgang, werk, geld …;
+   - de checklist per fase of categorie als afvinkbare stappen.
+   Afvinken loopt in twee richtingen: vink je een stap af in de mindmap, dan
+   staat hij ook in de app op klaar, en andersom. "Bijwerken" voegt later
+   nieuwe punten toe zonder je eigen indeling of nodes aan te raken.
+   ========================================================================== */
+const MMB = { bezig: false };
+const MMB_TAK = { plan: "#22d3ee", checklist: "#34d399", doelen: "#a78bfa", voortgang: "#7c9bff", bronnen: "#f5b942", ideeen: "#f5b942",
+  werk: "#7c9bff", experimenten: "#ff6b81", klanten: "#a78bfa", geld: "#34d399" };
+const mmbSleutel = b => [b.w, b.hs || "", b.id, b.i == null ? "" : b.i].join(":");
+const mmbKort = (t, n) => { t = String(t || "").replace(/\s+/g, " ").trim(); return t.length > n ? t.slice(0, n - 1) + "…" : t; };
+
+/* ---------- Plan: een boom van beschreven nodes, los van de mindmap ---------- */
+function mmbPlan() {
+  const lijst = [];
+  const node = (sleutel, ouder, tekst, o) => { const n = Object.assign({ sleutel, ouder, tekst, kleur: null, notitie: "", items: [] }, o || {}); lijst.push(n); return n; };
+  return { lijst, node };
+}
+
+/* ---------- Hobby of skill ---------- */
+function mmbPlanHobby(x) {
+  const P = mmbPlan(), ws = weekStart(vandaagISO());
+  const sessies = (x.sessies || []).slice().sort((a, b) => (a.datum + a.ts) < (b.datum + b.ts) ? 1 : -1);
+  const tot = hsMinuten(sessies), c = typeof hsCat === "function" ? hsCat(x.cat) : null;
+  const meta = [x.soort === "skill" ? "Skill · niveau " + HS_NIVEAU[x.niveau || 1] : "Hobby", HS_STATUS[x.status], c ? c.naam : ""].filter(Boolean).join(" · ");
+  P.root = { tekst: `${x.emoji} ${x.naam}`, notitie: [meta, x.waarom ? "Waarom: " + x.waarom : ""].filter(Boolean).join("\n\n"), koppeling: { soort: "hobbyskill", id: x.id } };
+
+  const cl = x.checklist || [];
+  const tCl = P.node("tak:checklist", null, "✅ Checklist", { kleur: MMB_TAK.checklist, notitie: cl.length ? `${cl.filter(p => p.af).length} van ${cl.length} gedaan` : "Kies in HobbySkills een sjabloon voor je checklist." });
+  if (typeof hsChecklistGroepen === "function") hsChecklistGroepen(x).forEach(([g, punten]) => {
+    P.node("cl:" + g, tCl.sleutel, `${{ Starten: "🚀", Oefenen: "🔁", Verdiepen: "🔎", Delen: "🤝" }[g] || "📌"} ${g}`, {
+      items: punten.map(p => ({ tekst: p.tekst, af: !!p.af, bron: { w: "hs_check", hs: x.id, id: p.id } }))
+    });
+  });
+
+  const tDoel = P.node("tak:doelen", null, "🎯 Doelen", { kleur: MMB_TAK.doelen });
+  const mp = x.mijlpalen || [];
+  P.node("doel:mijlpalen", tDoel.sleutel, "🏁 Mijlpalen", { notitie: mp.length ? "" : "Nog geen mijlpalen. Voeg ze toe in HobbySkills of hier als stap.",
+    items: mp.map(m => ({ tekst: m.tekst, af: !!m.af, bron: { w: "hs_mijlpaal", hs: x.id, id: m.id } })) });
+  if (x.doelMin || (x.dagen || []).length) P.node("doel:ritme", tDoel.sleutel,
+    `📅 ${x.doelMin ? hsDuur(x.doelMin) + " per week" : "Vaste dagen"}`, { notitie: (x.dagen || []).length ? "Geplande dagen: " + [1, 2, 3, 4, 5, 6, 0].filter(d => x.dagen.includes(d)).map(d => DAGKORT[d]).join(", ") : "" });
+  if (x.soort === "skill") P.node("doel:niveau", tDoel.sleutel, `📶 ${HS_NIVEAU[x.niveau || 1]}${(x.niveau || 1) < 5 ? " → " + HS_NIVEAU[(x.niveau || 1) + 1] : ""}`,
+    { notitie: "Wat moet je kunnen om het volgende niveau te halen?" });
+
+  const tVg = P.node("tak:voortgang", null, "📈 Voortgang", { kleur: MMB_TAK.voortgang });
+  P.node("vg:totaal", tVg.sleutel, `⏱️ ${hsDuur(tot)} in ${sessies.length} sessie${sessies.length === 1 ? "" : "s"}`, { notitie: "Deze week: " + hsDuur(hsMinuten(hsSessiesWeek(x, ws))) });
+  const st = hsStreak(x);
+  if (st) P.node("vg:streak", tVg.sleutel, `🔥 ${st} dag${st === 1 ? "" : "en"} op rij`);
+  const notities = sessies.filter(s => s.notitie).slice(0, 8);
+  if (notities.length) P.node("vg:notities", tVg.sleutel, "📝 Wat je leerde", { notitie: notities.map(s => `${datumLabel(s.datum)}: ${s.notitie}`).join("\n") });
+
+  const br = x.bronnen || [];
+  if (br.length) {
+    const tBr = P.node("tak:bronnen", null, "📚 Bronnen", { kleur: MMB_TAK.bronnen });
+    br.forEach(b => P.node("bron:" + b.id, tBr.sleutel, mmbKort(b.titel || b.url, 48), { notitie: b.url || "" }));
+  }
+  P.node("tak:ideeen", null, "💡 Ideeën", { kleur: MMB_TAK.ideeen, notitie: "Ruimte voor je eigen ideeën." });
+  return P;
+}
+
+/* ---------- Side hustle ---------- */
+function mmbPlanSideHustle(h) {
+  const P = mmbPlan(), v = vandaagISO();
+  const soorten = (h.soorten || []).map(s => (SH_SOORTEN.find(q => q.id === s) || {}).naam).filter(Boolean);
+  P.root = {
+    tekst: `${h.emoji} ${h.naam}`,
+    notitie: [`Fase: ${shFaseNaam(h.fase)}`, soorten.length ? "Soort: " + soorten.join(", ") : "", `Tijd: ${h.urenPerWeek || 0} uur per week`,
+      h.aanname ? "Riskantste aanname: " + h.aanname : "", h.productdoel ? "Productdoel: " + h.productdoel : ""].filter(Boolean).join("\n"),
+    koppeling: { soort: "sidehustle", id: h.id }
+  };
+
+  const tPlan = P.node("tak:plan", null, "🧭 Plan in 5 pijlers", { kleur: MMB_TAK.plan });
+  SH_PIJLERS.forEach(p => {
+    const w = (h.pijlers || {})[p.nr] || {};
+    P.node("pijler:" + p.nr, tPlan.sleutel, `${p.nr}. ${p.titel}${w.tekst ? "" : " · nog invullen"}`, { notitie: w.tekst || p.vraag });
+  });
+
+  const checks = shVan("sh_checks", h.id).filter(c => !(c.sleutel || "").includes("@"));
+  const tCl = P.node("tak:checklist", null, "✅ Checklist", { kleur: MMB_TAK.checklist,
+    notitie: `${checks.filter(c => c.status === "klaar" || c.status === "nvt").length} van ${checks.length} gedaan` });
+  const prio = c => (SH_PRIO[c.prioriteit] || [0, 0, 0])[2];
+  Object.keys(SH_CATS).forEach(cat => {
+    const r = checks.filter(c => c.categorie === cat).sort((a, b) => prio(b) - prio(a) || (a.volgorde || 0) - (b.volgorde || 0));
+    if (!r.length) return;
+    const open = r.filter(c => c.status === "open" || c.status === "bezig");
+    const dl = open.map(c => c.deadline).filter(Boolean).sort()[0] || null;
+    P.node("cl:" + cat, tCl.sleutel, SH_CATS[cat][0], {
+      kleur: SH_CATS[cat][1], deadline: dl,
+      notitie: open.filter(c => c.prioriteit === "hoog").length ? "Hoge prioriteit open: " + open.filter(c => c.prioriteit === "hoog").length : "",
+      items: r.map(c => ({ tekst: (c.prioriteit === "hoog" ? "❗ " : "") + shCheckTitel(c) + (c.deadline && (c.status === "open" || c.status === "bezig") ? " · ⏰ " + mmKortDatum(c.deadline) : "") + (c.status === "nvt" ? " (n.v.t.)" : ""),
+        af: c.status === "klaar" || c.status === "nvt", bron: { w: "sh_checks", id: c.id } }))
+    });
+  });
+
+  const kolommen = shVan("sh_kolommen", h.id).filter(k => !k.gearchiveerd).sort((a, b) => (a.volgorde || 0) - (b.volgorde || 0));
+  const kaarten = shVan("sh_kaarten", h.id).filter(k => !k.gearchiveerd);
+  if (kaarten.length) {
+    const tWerk = P.node("tak:werk", null, "🏃 Werkbord", { kleur: MMB_TAK.werk });
+    kolommen.forEach(kol => {
+      const r = kaarten.filter(k => k.kolomId === kol.id).sort((a, b) => (a.volgorde || 0) - (b.volgorde || 0));
+      if (!r.length) return;
+      const kn = P.node("kol:" + kol.id, tWerk.sleutel, `${kol.naam} (${r.length})`, { kleur: kol.kleur || null });
+      r.slice(0, 12).forEach(k => P.node("kaart:" + k.id, kn.sleutel, mmbKort(k.titel, 60), {
+        deadline: k.deadline || null, notitie: k.omschrijving || "",
+        items: (k.subtaken || []).map((s, i) => ({ tekst: s.tekst || "Subtaak", af: !!s.af, bron: { w: "sh_kaart_sub", id: k.id, i } }))
+      }));
+      if (r.length > 12) P.node("kol:" + kol.id + ":meer", kn.sleutel, `+ ${r.length - 12} kaarten meer`);
+    });
+  }
+
+  const exps = shVan("sh_experimenten", h.id);
+  if (exps.length) {
+    const tExp = P.node("tak:experimenten", null, "🧪 Experimenten", { kleur: MMB_TAK.experimenten });
+    exps.forEach(x => P.node("exp:" + x.id, tExp.sleutel, `${x.uitkomst === "open" ? "🧪" : x.uitkomst === "bevestigd" ? "✅" : "❌"} ${mmbKort(x.hypothese, 60)}`, {
+      startDatum: x.start || null, eindDatum: x.eind && x.eind !== x.start ? x.eind : null,
+      notitie: [x.test ? "Test: " + x.test : "", x.meting ? "Meting: " + x.meting : "", x.criterium ? "Geslaagd als: " + x.criterium : "", "Uitkomst: " + x.uitkomst].filter(Boolean).join("\n")
+    }));
+  }
+
+  const klanten = shVan("sh_klanten", h.id);
+  if (klanten.length) {
+    const tKl = P.node("tak:klanten", null, `👥 Klanten (${klanten.length})`, { kleur: MMB_TAK.klanten });
+    [["lead", "Leads"], ["gesprek", "In gesprek"], ["offerte", "Offerte"], ["klant", "Klant"], ["terugkerend", "Terugkerend"]].forEach(([f, n]) => {
+      const r = klanten.filter(k => k.fase === f);
+      if (r.length) P.node("klant:" + f, tKl.sleutel, `${n} (${r.length})`, { notitie: r.map(k => `${k.naam}${k.bron ? " · " + k.bron : ""}${k.waarde ? " · " + shEur(k.waarde) : ""}`).join("\n") });
+    });
+  }
+
+  const tGeld = P.node("tak:geld", null, "💶 Geld & tijd", { kleur: MMB_TAK.geld });
+  P.node("geld:omzet", tGeld.sleutel, `Omzet deze maand: ${shEur(shMaandOmzet(h.id))}`);
+  const bv = h.betaalbaarVerlies || {};
+  if (bv.euro || bv.uren) P.node("geld:verlies", tGeld.sleutel, `Betaalbaar verlies: € ${bv.euro || 0} · ${bv.uren || 0} uur`, { notitie: "Zoveel kun je missen voordat je stopt." });
+  P.node("geld:tijd", tGeld.sleutel, `Tijd: ${h.urenPerWeek || 0} uur per week`, { notitie: `Afgelopen 30 dagen gewerkt: ${Math.round(shMinuten(h.id, plusDagen(v, -30)) / 60 * 10) / 10} uur` });
+  if (h.doelWinst) P.node("geld:doel", tGeld.sleutel, `Doel: ${shEur(h.doelWinst)} winst`);
+  return P;
+}
+
+function mmbPlanVoor(soort, id) {
+  if (soort === "hobbyskill") { const x = vind("hs_items", id); return x ? { P: mmbPlanHobby(x), naam: x.naam, emoji: x.emoji } : null; }
+  if (soort === "sidehustle") { const h = shH(id); return h ? { P: mmbPlanSideHustle(h), naam: h.naam, emoji: h.emoji } : null; }
+  return null;
+}
+
+/* ---------- Indeling: klassieke mindmap, takken links en rechts, zonder overlap ---------- */
+function mmbSchik(nodes, rootId) {
+  const root = nodes.get(rootId); if (!root) return;
+  const kids = id => [...nodes.values()].filter(n => n.parentId === id);
+  const RIJ = 74, STAP = 250;
+  const hoogte = new Map();
+  const meet = n => { const k = kids(n.id); const hh = Math.max(RIJ, k.reduce((a, c) => a + meet(c), 0)); hoogte.set(n.id, hh); return hh; };
+  const top = kids(rootId); top.forEach(meet);
+  // Verdeel de takken over rechts en links zodat beide kanten even hoog worden (volgorde blijft).
+  const totaal = top.reduce((a, t) => a + hoogte.get(t.id), 0);
+  let som = 0; const rechts = [], links = [];
+  top.forEach(t => { (som < totaal / 2 ? rechts : links).push(t); som += hoogte.get(t.id); });
+  const plaats = (n, diepte, kant, y0) => {
+    const hh = hoogte.get(n.id);
+    n.x = kant * diepte * STAP; n.y = y0 + hh / 2;
+    let y = y0;
+    kids(n.id).forEach(c => { plaats(c, diepte + 1, kant, y); y += hoogte.get(c.id); });
+  };
+  [[rechts, 1], [links, -1]].forEach(([lijst, kant]) => {
+    let y = -lijst.reduce((a, t) => a + hoogte.get(t.id), 0) / 2;
+    lijst.forEach(t => { plaats(t, 1, kant, y); y += hoogte.get(t.id); });
+  });
+  root.x = 0; root.y = 0;
+}
+
+/* ---------- Plan → mindmap ---------- */
+function mmbMaakNode(pn, ouderNode, i) {
+  return mmNode({
+    parentId: ouderNode.id, tekst: pn.tekst, kleur: pn.kleur || ouderNode.kleur || MM_KLEUREN[i % MM_KLEUREN.length],
+    notitie: pn.notitie || "", deadline: pn.deadline || null, startDatum: pn.startDatum || null, eindDatum: pn.eindDatum || null,
+    checklist: [], checklistOpen: false
+  });
+}
+async function mmbMaakMindmap(soort, id) {
+  const r = mmbPlanVoor(soort, id); if (!r) return null;
+  const mm = mmRecord(`${r.emoji} ${r.naam}`, null);
+  const nodes = new Map(mm.nodes.map(n => [n.id, n])), root = nodes.get(mm.rootId);
+  root.tekst = r.P.root.tekst; root.notitie = r.P.root.notitie; root.koppeling = r.P.root.koppeling;
+  mm.bron = { soort, id }; mm.bronItems = {}; mm.bronSecties = {};
+  const perSleutel = new Map();
+  r.P.lijst.forEach((pn, i) => {
+    const ouder = pn.ouder ? perSleutel.get(pn.ouder) : root;
+    const n = mmbMaakNode(pn, ouder, i);
+    pn.items.forEach(it => { const c = { id: uid(), tekst: it.tekst, af: it.af }; n.checklist.push(c); mm.bronItems[c.id] = it.bron; });
+    nodes.set(n.id, n); perSleutel.set(pn.sleutel, n); mm.bronSecties[pn.sleutel] = n.id;
+  });
+  mmbSchik(nodes, mm.rootId);
+  mm.nodes = Array.from(nodes.values());
+  await bewaar("mm_mindmaps", mm);
+  return mm;
+}
+/** Nieuwe punten en nodes uit het origineel toevoegen; bestaande nodes en je eigen indeling blijven. */
+async function mmbBijwerken(mm) {
+  const r = mmbPlanVoor(mm.bron.soort, mm.bron.id); if (!r) return 0;
+  const nodes = new Map(mm.nodes.map(n => [n.id, n]));
+  const root = nodes.get(mm.rootId);
+  mm.bronItems = mm.bronItems || {}; mm.bronSecties = mm.bronSecties || {};
+  if (root) { root.notitie = r.P.root.notitie; root.koppeling = r.P.root.koppeling; }
+  const heb = new Set(Object.values(mm.bronItems).map(mmbSleutel));
+  let nieuw = 0;
+  r.P.lijst.forEach((pn, i) => {
+    let n = nodes.get(mm.bronSecties[pn.sleutel]);
+    if (!n) {
+      const ouder = (pn.ouder && nodes.get(mm.bronSecties[pn.ouder])) || root; if (!ouder) return;
+      const kant = ouder === root ? 1 : Math.sign(ouder.x - root.x) || 1;
+      const broers = [...nodes.values()].filter(q => q.parentId === ouder.id);
+      n = mmbMaakNode(pn, ouder, i);
+      n.x = ouder.x + kant * 250; n.y = broers.length ? Math.max(...broers.map(q => q.y)) + 74 : ouder.y;
+      nodes.set(n.id, n); mm.bronSecties[pn.sleutel] = n.id; ouder.ingeklapt = false; nieuw++;
+    } else if (pn.notitie && /^(tak|vg|geld|pijler|klant|exp|doel):/.test(pn.sleutel)) n.notitie = pn.notitie;
+    pn.items.forEach(it => {
+      if (heb.has(mmbSleutel(it.bron))) return;
+      const c = { id: uid(), tekst: it.tekst, af: it.af }; n.checklist.push(c); mm.bronItems[c.id] = it.bron; nieuw++;
+    });
+  });
+  mm.nodes = Array.from(nodes.values()); mm.updatedAt = Date.now();
+  mmbSyncVanBron(mm);
+  await bewaar("mm_mindmaps", mm);
+  return nieuw;
+}
+
+/* ---------- Synchroon afvinken ---------- */
+function mmbBronAf(b) {
+  if (b.w === "sh_checks") { const c = vind("sh_checks", b.id); return c ? (c.status === "klaar" || c.status === "nvt") : null; }
+  if (b.w === "hs_check" || b.w === "hs_mijlpaal") {
+    const x = vind("hs_items", b.hs); if (!x) return null;
+    const p = (b.w === "hs_check" ? x.checklist : x.mijlpalen || []).find(q => q.id === b.id);
+    return p ? !!p.af : null;
+  }
+  if (b.w === "sh_kaart_sub") { const k = vind("sh_kaarten", b.id); const s = k && (k.subtaken || [])[b.i]; return s ? !!s.af : null; }
+  return null;
+}
+/** Origineel → mindmap: vinkjes bijwerken voordat de mindmap getekend wordt. */
+function mmbSyncVanBron(mm) {
+  if (!mm || !mm.bronItems) return false;
+  let veranderd = false;
+  mm.nodes.forEach(n => (n.checklist || []).forEach(c => {
+    const b = mm.bronItems[c.id]; if (!b) return;
+    const af = mmbBronAf(b);
+    if (af !== null && af !== !!c.af) { c.af = af; veranderd = true; }
+  }));
+  return veranderd;
+}
+/** Mindmap → origineel: na elke opslag van de mindmap. */
+async function mmbSyncNaarBron(mm) {
+  if (MMB.bezig || !mm || !mm.bronItems) return;
+  MMB.bezig = true;
+  try {
+    const hs = new Set(), kaarten = new Set();
+    let aantal = 0;
+    for (const n of mm.nodes) for (const c of n.checklist || []) {
+      const b = mm.bronItems[c.id]; if (!b) continue;
+      const af = mmbBronAf(b);
+      if (af === null || af === !!c.af) continue;
+      aantal++;
+      if (b.w === "sh_checks") await shCheckZetStatus(vind("sh_checks", b.id), c.af ? "klaar" : "open");
+      else if (b.w === "hs_check" || b.w === "hs_mijlpaal") {
+        const x = vind("hs_items", b.hs), p = (b.w === "hs_check" ? x.checklist : x.mijlpalen).find(q => q.id === b.id);
+        p.af = !!c.af; p.afOp = c.af ? new Date().toISOString() : null; hs.add(x);
+        if (c.af && b.w === "hs_mijlpaal") await logGebeurtenis("hobbyskill", `${x.emoji} Mijlpaal gehaald: ${p.tekst}`, x.id);
+      } else if (b.w === "sh_kaart_sub") { const k = vind("sh_kaarten", b.id); k.subtaken[b.i].af = !!c.af; kaarten.add(k); }
+    }
+    for (const x of hs) await hsBewaar(x);
+    for (const k of kaarten) await bewaar("sh_kaarten", k);
+    if (aantal) MMB.laatsteSync = Date.now();
+  } catch (e) { console.error("mindmap-sync", e); }
+  finally { MMB.bezig = false; }
+}
+{
+  const _bewaar = bewaar;
+  bewaar = async function (winkel, obj) {
+    const r = await _bewaar(winkel, obj);
+    if (winkel === "mm_mindmaps" && obj && obj.bronItems && !MMB.bezig) mmbSyncNaarBron(obj);
+    return r;
+  };
+  const _vwMm = vwMindmap;
+  vwMindmap = function () {
+    const mm = typeof mmHuidige === "function" ? mmHuidige() : null;
+    if (mm && mm.bronItems && mmbSyncVanBron(mm)) idbZet("mm_mindmaps", mm).catch(opslagFout);
+    return _vwMm();
+  };
+}
+
+/* ---------- Koppeling van de kern naar het origineel ---------- */
+{
+  const _item = mmKoppelItem, _label = mmKoppelLabel, _open = mmOpenKoppeling;
+  mmKoppelItem = k => k && k.soort === "hobbyskill" ? vind("hs_items", k.id) || null : k && k.soort === "sidehustle" ? shH(k.id) || null : _item(k);
+  mmKoppelLabel = k => {
+    if (!k || (k.soort !== "hobbyskill" && k.soort !== "sidehustle")) return _label(k);
+    const it = mmKoppelItem(k); if (!it) return null;
+    return k.soort === "sidehustle" ? "↩ Side hustle" : (it.soort === "skill" ? "↩ Skill" : "↩ Hobby");
+  };
+  mmOpenKoppeling = k => {
+    if (!k || (k.soort !== "hobbyskill" && k.soort !== "sidehustle")) return _open(k);
+    if (!mmKoppelItem(k)) { toast("Dat item bestaat niet meer"); return; }
+    bladSluit();
+    ga(k.soort === "sidehustle" ? "sh" : "hobbyskill", k.id);
+  };
+}
+
+/* ---------- Starten: nieuw, openen of bijwerken ---------- */
+const mmbBestaande = (soort, id) => S.mm_mindmaps.filter(m => m.bron && m.bron.soort === soort && m.bron.id === id).sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+async function mmbStart(soort, id) {
+  const r = mmbPlanVoor(soort, id);
+  if (!r) { toast("Dat item bestaat niet meer"); return; }
+  const oud = mmbBestaande(soort, id)[0];
+  if (!oud) {
+    const mm = await mmbMaakMindmap(soort, id);
+    bladSluit(); ga("mindmap", mm.id);
+    toast("Mindmap gemaakt · afvinken loopt gelijk met het origineel");
+    return;
+  }
+  bladOpen("Mindmap van " + r.naam, `
+    <p class="klein" style="margin-top:2px">Er is al een mindmap van <b>${esc(r.emoji + " " + r.naam)}</b> (${esc(oud.naam)}, ${oud.nodes.length} nodes). Vinkjes lopen al gelijk met het origineel.</p>
+    <div class="card">
+      <button class="rijknop" id="mmb-open">${ico("mindmap", "width:20px;height:20px;color:var(--accent)")}<span class="nm">Openen<span class="klein" style="display:block">Zoals hij nu is</span></span></button>
+      <button class="rijknop" id="mmb-bij">${ico("herhaal", "width:20px;height:20px;color:var(--accent)")}<span class="nm">Bijwerken en openen<span class="klein" style="display:block">Nieuwe punten en onderdelen toevoegen; jouw nodes en indeling blijven</span></span></button>
+      <button class="rijknop" id="mmb-nieuw">${ico("plus", "width:20px;height:20px;color:var(--accent)")}<span class="nm">Nieuwe mindmap<span class="klein" style="display:block">Opnieuw beginnen vanuit het origineel</span></span></button>
+    </div>`);
+  $("#mmb-open").onclick = () => { bladSluit(); ga("mindmap", oud.id); };
+  $("#mmb-bij").onclick = async () => { const n = await mmbBijwerken(oud); bladSluit(); ga("mindmap", oud.id); toast(n ? `${n} nieuwe punten toegevoegd` : "Alles was al bijgewerkt"); };
+  $("#mmb-nieuw").onclick = async () => { const mm = await mmbMaakMindmap(soort, id); bladSluit(); ga("mindmap", mm.id); toast("Nieuwe mindmap gemaakt"); };
+}
+document.addEventListener("click", e => {
+  const el = e.target.closest && e.target.closest('[data-act="mm-van"]');
+  if (!el) return;
+  e.stopPropagation();
+  mmbStart(el.dataset.soort, el.dataset.id);
+}, true);
+
+/* ---------- Ingangen: import-blad van de mindmap, side hustle-werkruimte en snelmenu ---------- */
+{
+  const _imp = mmImportBlad;
+  mmImportBlad = function (voor) {
+    _imp(voor);
+    const bronnen = [
+      ...hsAlle().filter(x => x.status !== "klaar").sort(hsSorteer).map(x => ({ soort: "hobbyskill", id: x.id, label: `${x.emoji} ${x.naam}`, sub: x.soort === "skill" ? "skill" : "hobby" })),
+      ...shActief().map(h => ({ soort: "sidehustle", id: h.id, label: `${h.emoji} ${h.naam}`, sub: "side hustle" }))
+    ];
+    if (!bronnen.length) return;
+    const inh = $("#bladinhoud"); if (!inh) return;
+    inh.insertAdjacentHTML("afterbegin", `<div class="mmb-bronnen">
+      <span class="labeltekst">Hobby, skill of side hustle</span>
+      <div class="chiprij scroll">${bronnen.map(b => `<button class="keuze" data-act="mm-van" data-soort="${b.soort}" data-id="${b.id}">${esc(b.label)} <span class="klein">${b.sub}</span></button>`).join("")}</div>
+      <div class="klein" style="margin-top:6px">Wordt een eigen mindmap met plan, checklist en voortgang. Afvinken loopt gelijk met het origineel.</div>
+      <div class="hr" style="margin:14px 0 4px"></div></div>`);
+  };
+  const _vwSh = vwSh;
+  vwSh = function () {
+    const h = shH(V.param), uit = _vwSh();
+    if (!h) return uit;
+    const merk = `<button class="icon-btn" data-sh="instellingen"`;
+    return uit.replace(merk, `<button class="icon-btn" data-act="mm-van" data-soort="sidehustle" data-id="${h.id}" aria-label="Als mindmap bekijken">${ico("mindmap")}</button>${merk}`);
+  };
+  const _km = shKaartMenu;
+  shKaartMenu = function (id) {
+    _km(id);
+    const kaart = $("#bladinhoud .card"); if (!kaart) return;
+    const rij = `<button class="rijknop" data-act="mm-van" data-soort="sidehustle" data-id="${id}">${ico("mindmap", "width:19px;height:19px;color:var(--muted)")}<span class="nm">Als mindmap</span></button>`;
+    const exp = kaart.querySelector('[data-sh="exporteer"]');
+    if (exp) exp.insertAdjacentHTML("beforebegin", rij); else kaart.insertAdjacentHTML("beforeend", rij);
+  };
+}
 
 </script>
 <script>
