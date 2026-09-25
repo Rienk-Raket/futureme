@@ -166,10 +166,12 @@ compacte prompt die je letterlijk aan een model of ontwikkelaar kunt geven.
 
 Naast de interface-laag bevat `ruimtelijk/index.html`:
 
-* **HobbySkills**-tabblad (hobby's die je doet of wilt gaan doen, skills die je wilt
-  ontwikkelen): sessies loggen met minuten en beoordeling, weekdoel, geplande dagen,
+* **HobbySkills** (hobby's die je doet of wilt gaan doen, skills die je wilt
+  ontwikkelen), bereikbaar via Nieuw, Meer, Persoonlijk en het dagoverzicht, niet in de onderbalk: sessies loggen met minuten en beoordeling, weekdoel, geplande dagen,
   niveau (skills), mijlpalen die je als taak kunt inplannen, bronnen, 12-weken-grafiek,
   streaks, dagoverzicht-widget, koppelingen naar Terugblik, Zoeken, Logboek en Persoonlijk.
 * **Logischere koppelingen** tussen schermen: elk scherm eindigt met "Verder naar"
   (2–4 verwante schermen), het Meer-scherm is gegroepeerd in thema's, het startscherm en
   de Persoonlijk-hub verwijzen naar HobbySkills, Terugblik en Zoeken nemen HobbySkills mee.
+* **Filterbalken blijven staan**: een horizontaal gescrolde balk (tijdlijnfilters, logboek,
+  afspraken …) houdt zijn positie als je een filter aan- of uitzet.

@@ -223,11 +223,3 @@ html[data-ruimte="1"] .taak{transition:background-color .25s}
 .verwant .chiprij{gap:8px}
 .verwant .keuze{min-height:38px;padding:0 12px;display:inline-flex;align-items:center;gap:6px}
 .verwant .keuze svg{width:15px;height:15px}
-
-/* ---------- Zeven tabs: korte labels op smalle schermen ---------- */
-nav#tabs button .kort{display:none}
-@media (max-width:420px){
-  nav#tabs button{font-size:calc(9.3px * var(--t));letter-spacing:-.015em;padding:6px 0 4px}
-  nav#tabs button .lang{display:none}
-  nav#tabs button .kort{display:inline}
-}

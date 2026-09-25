@@ -28,10 +28,7 @@ vervang('shles: (typeof vwShLes === "function" ? vwShLes : vwStart)',
         '    hobbyskills: (typeof vwHobbySkills === "function" ? vwHobbySkills : vwStart),\n'
         '    hobbyskill: (typeof vwHobbySkill === "function" ? vwHobbySkill : vwStart)')
 
-# 3. Tabblad in de onderbalk, vóór Mindmap.
-vervang('<button data-tab="mindmap">',
-        '<button data-tab="hobbyskills"><svg><use href="#i-hobby"/></svg><span class="lang">HobbySkills</span><span class="kort">Hobby\'s</span></button>\n'
-        '    <button data-tab="mindmap">')
+# 3. HobbySkills staat niet in de onderbalk; bereikbaar via Nieuw, Meer, Persoonlijk en het dagoverzicht.
 
 # 4. Iconen: tabicoon en illustratie voor de startscherm-tegel.
 ICOON = ('<symbol id="i-hobby" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'

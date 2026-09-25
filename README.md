@@ -8,10 +8,10 @@ een webserver (of open ze lokaal) en voeg de pagina toe aan je beginscherm.
 
 | Pad | Wat |
 |---|---|
-| `index.html` | **De app**: basis plus de ruimtelijke interface, het HobbySkills-tabblad en de logischere koppelingen tussen schermen |
+| `index.html` | **De app**: basis plus de ruimtelijke interface, HobbySkills en de logischere koppelingen tussen schermen |
 | `sw.js` | Service worker: netwerk eerst, anders de opgeslagen kopie |
 | `basis/index.html` | De basis-app zonder de toegevoegde lagen (bron voor het bouwscript) |
-| `ruimtelijk/src/` | De toegevoegde lagen als losse bronbestanden: `ruimte.css/js` (glas, diepte, overgangen), `hobbyskills.css/js` (nieuw tabblad), `koppelingen.js` (Verder naar, gegroepeerd Meer-scherm, widgets) |
+| `ruimtelijk/src/` | De toegevoegde lagen als losse bronbestanden: `ruimte.css/js` (glas, diepte, overgangen), `hobbyskills.css/js` (HobbySkills), `koppelingen.js` (Verder naar, gegroepeerd Meer-scherm, widgets, scrollpositie van filterbalken) |
 | `ruimtelijk/bouw.py` | Bouwt `index.html` uit `basis/index.html` + `src/` |
 | `docs/ruimtelijke-interface-prompt.md` | De aangescherpte ontwerpprompt, toegespitst op FutureMe |
 

@@ -1747,14 +1747,6 @@ html[data-ruimte="1"] .taak{transition:background-color .25s}
 .verwant .keuze{min-height:38px;padding:0 12px;display:inline-flex;align-items:center;gap:6px}
 .verwant .keuze svg{width:15px;height:15px}
 
-/* ---------- Zeven tabs: korte labels op smalle schermen ---------- */
-nav#tabs button .kort{display:none}
-@media (max-width:420px){
-  nav#tabs button{font-size:calc(9.3px * var(--t));letter-spacing:-.015em;padding:6px 0 4px}
-  nav#tabs button .lang{display:none}
-  nav#tabs button .kort{display:inline}
-}
-
 
 /* ==========================================================================
    51. HobbySkills — hobby's en skills bijhouden
@@ -2184,7 +2176,6 @@ nav#tabs button .kort{display:none}
     <button data-tab="komend"><svg><use href="#i-komend"/></svg><span>Komend</span></button>
     <button class="tab-plus" data-tab="start" aria-current="true" aria-label="Nieuw"><svg><use href="#i-plus"/></svg></button>
     <button data-tab="afspraken"><svg><use href="#i-groep"/></svg><span>Afspraken</span></button>
-    <button data-tab="hobbyskills"><svg><use href="#i-hobby"/></svg><span class="lang">HobbySkills</span><span class="kort">Hobby's</span></button>
     <button data-tab="mindmap"><svg><use href="#i-mindmap"/></svg><span>Mindmap</span></button>
     <button data-tab="meer"><svg><use href="#i-meer"/></svg><span>Meer</span></button>
   </nav>
@@ -15550,7 +15541,6 @@ window.addEventListener("resize", () => { RT.spoor = null; rtSpoor(); });
    ========================================================================== */
 WINKELS.hs_items = "id";
 if (!S.hs_items) S.hs_items = [];
-if (!TABS.includes("hobbyskills")) TABS.push("hobbyskills");
 V.hsSoort = "alles"; V.hsStatus = "lopend"; V.hsAlleSessies = false;
 
 const HS_STATUS = { wil: "Wil ik", bezig: "Bezig", pauze: "Gepauzeerd", klaar: "Afgerond" };
@@ -16226,6 +16216,36 @@ if (typeof vwWelkom === "function") {
     const ws = weekStart(vandaagISO());
     h += sectie("Hobby's en skills", res.length) + `<div class="hs-lijst">${res.slice(0, 10).map(x => hsKaart(x, ws)).join("")}</div>`;
     return h;
+  };
+}
+
+/* ---------- Horizontale balken houden hun scrollpositie ----------
+   Een tik op een filterchip tekent het scherm opnieuw; zonder dit sprong een
+   horizontaal gescrolde balk (tijdlijnfilters, logboek, afspraken …) terug
+   naar het begin. Alleen bij hertekenen op hetzelfde scherm. */
+function hScrollSleutels(s) {
+  const tel = {}, uit = [];
+  s.querySelectorAll("*").forEach(el => {
+    if (el.scrollWidth <= el.clientWidth + 1) return;
+    const ov = getComputedStyle(el).overflowX;
+    if (ov !== "auto" && ov !== "scroll") return;
+    const k = el.tagName + "." + [...el.classList].filter(c => !c.startsWith("rt-")).join(".");
+    tel[k] = (tel[k] || 0) + 1;
+    uit.push([k + "#" + tel[k], el]);
+  });
+  return uit;
+}
+{
+  const _t = teken;
+  teken = function () {
+    const s = $("#scherm"), zelfde = s && s.dataset.hsView === V.view + "|" + (V.param || "");
+    const bewaard = zelfde ? hScrollSleutels(s).filter(([, el]) => el.scrollLeft > 0).map(([k, el]) => [k, el.scrollLeft]) : [];
+    _t();
+    if (!s) return;
+    s.dataset.hsView = V.view + "|" + (V.param || "");
+    if (!bewaard.length) return;
+    const nu = new Map(hScrollSleutels(s));
+    bewaard.forEach(([k, x]) => { const el = nu.get(k); if (el) el.scrollLeft = x; });
   };
 }
 

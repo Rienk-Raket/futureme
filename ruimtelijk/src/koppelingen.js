@@ -178,3 +178,33 @@ if (typeof vwWelkom === "function") {
     return h;
   };
 }
+
+/* ---------- Horizontale balken houden hun scrollpositie ----------
+   Een tik op een filterchip tekent het scherm opnieuw; zonder dit sprong een
+   horizontaal gescrolde balk (tijdlijnfilters, logboek, afspraken …) terug
+   naar het begin. Alleen bij hertekenen op hetzelfde scherm. */
+function hScrollSleutels(s) {
+  const tel = {}, uit = [];
+  s.querySelectorAll("*").forEach(el => {
+    if (el.scrollWidth <= el.clientWidth + 1) return;
+    const ov = getComputedStyle(el).overflowX;
+    if (ov !== "auto" && ov !== "scroll") return;
+    const k = el.tagName + "." + [...el.classList].filter(c => !c.startsWith("rt-")).join(".");
+    tel[k] = (tel[k] || 0) + 1;
+    uit.push([k + "#" + tel[k], el]);
+  });
+  return uit;
+}
+{
+  const _t = teken;
+  teken = function () {
+    const s = $("#scherm"), zelfde = s && s.dataset.hsView === V.view + "|" + (V.param || "");
+    const bewaard = zelfde ? hScrollSleutels(s).filter(([, el]) => el.scrollLeft > 0).map(([k, el]) => [k, el.scrollLeft]) : [];
+    _t();
+    if (!s) return;
+    s.dataset.hsView = V.view + "|" + (V.param || "");
+    if (!bewaard.length) return;
+    const nu = new Map(hScrollSleutels(s));
+    bewaard.forEach(([k, x]) => { const el = nu.get(k); if (el) el.scrollLeft = x; });
+  };
+}

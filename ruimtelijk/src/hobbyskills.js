@@ -9,7 +9,6 @@
    ========================================================================== */
 WINKELS.hs_items = "id";
 if (!S.hs_items) S.hs_items = [];
-if (!TABS.includes("hobbyskills")) TABS.push("hobbyskills");
 V.hsSoort = "alles"; V.hsStatus = "lopend"; V.hsAlleSessies = false;
 
 const HS_STATUS = { wil: "Wil ik", bezig: "Bezig", pauze: "Gepauzeerd", klaar: "Afgerond" };
