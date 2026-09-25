@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-"""Bouwt ruimtelijk/index.html: de basis-app (../index.html) plus de ruimtelijke
+"""Bouwt de hoofd-index.html: de basis-app (basis/index.html) plus de ruimtelijke
 laag, HobbySkills en de koppelingen uit src/. Alles blijft één bestand zonder
 externe bronnen. Gebruik: python3 ruimtelijk/bouw.py [pad-naar-basis-index.html]"""
 import pathlib, sys
 
 HIER = pathlib.Path(__file__).resolve().parent
 SRC = HIER / "src"
-BRON = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else HIER.parent / "index.html"
+BRON = pathlib.Path(sys.argv[1]) if len(sys.argv) > 1 else HIER.parent / "basis" / "index.html"
+UIT = HIER.parent / "index.html"
 html = BRON.read_text(encoding="utf-8")
 lees = lambda naam: (SRC / naam).read_text(encoding="utf-8")
 
@@ -58,8 +59,5 @@ j = html.rfind("<script>", 0, i)
 blokken = "".join(f"<script>\n{lees(naam)}\n</script>\n" for naam in ("ruimte.js", "hobbyskills.js", "koppelingen.js"))
 html = html[:j] + blokken + html[j:]
 
-(HIER / "index.html").write_text(html, encoding="utf-8")
-sw = (HIER.parent / "sw.js").read_text(encoding="utf-8").replace("'futureme-v1'", "'futureme-ruimtelijk-v1'")
-assert "futureme-ruimtelijk-v1" in sw
-(HIER / "sw.js").write_text(sw, encoding="utf-8")
-print(f"Gebouwd: {HIER / 'index.html'} ({len(html.encode('utf-8')) // 1024} KB)")
+UIT.write_text(html, encoding="utf-8")
+print(f"Gebouwd: {UIT} ({len(html.encode('utf-8')) // 1024} KB)")
