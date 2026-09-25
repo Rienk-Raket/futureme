@@ -1,0 +1,233 @@
+/* ==========================================================================
+   50. Ruimtelijke laag — glas, diepte en betekenisvolle beweging
+   Actief zolang html[data-ruimte="1"]. Uit bij prikkelarme modus en bij
+   prefers-reduced-motion (de algemene regel in de basisstijl zet dan alle
+   animaties en overgangen uit).
+   ========================================================================== */
+@property --p{syntax:"<number>";inherits:false;initial-value:0}
+
+html[data-ruimte="1"]{
+  --rt-rand:rgba(255,255,255,.62);
+  --rt-glans:rgba(255,255,255,.85);
+  --rt-schaduw:0 1px 2px rgba(16,18,22,.05),0 16px 36px -16px rgba(16,18,22,.24);
+  --rt-gloed:color-mix(in srgb,var(--accent) 38%,transparent);
+  --rt-tik:color-mix(in srgb,var(--accent) 28%,transparent);
+  --rt-blob:.2;
+  --rt-ease:cubic-bezier(.22,1,.36,1);
+  --rt-veer:cubic-bezier(.2,.9,.25,1.25);
+}
+@media (prefers-color-scheme:dark){
+  html[data-ruimte="1"]:not([data-thema="licht"]){
+    --rt-rand:rgba(255,255,255,.08);--rt-glans:rgba(255,255,255,.12);
+    --rt-schaduw:0 1px 2px rgba(0,0,0,.5),0 20px 44px -18px rgba(0,0,0,.75);
+    --rt-tik:rgba(255,255,255,.22);--rt-blob:.3;
+  }
+}
+html[data-ruimte="1"][data-thema="donker"]{
+  --rt-rand:rgba(255,255,255,.08);--rt-glans:rgba(255,255,255,.12);
+  --rt-schaduw:0 1px 2px rgba(0,0,0,.5),0 20px 44px -18px rgba(0,0,0,.75);
+  --rt-tik:rgba(255,255,255,.22);--rt-blob:.3;
+}
+
+/* ---------- Laag 1: drijvende kleurvelden ---------- */
+#rt-achtergrond{
+  position:fixed;inset:-12%;z-index:0;pointer-events:none;overflow:hidden;
+  transform:translate3d(var(--rt-px,0px),calc(var(--rt-py,0px) + var(--rt-scroll,0px)),0);
+  transition:transform .7s var(--rt-ease);
+}
+#rt-achtergrond i{
+  position:absolute;width:74vmax;height:74vmax;border-radius:50%;opacity:var(--rt-blob);
+  background:radial-gradient(circle at 50% 50%,var(--rt-k) 0%,transparent 62%);
+  will-change:transform;animation:rt-drijf var(--rt-dur,46s) ease-in-out infinite alternate;
+}
+#rt-achtergrond i:nth-child(1){--rt-k:var(--accent);left:-22vmax;top:-20vmax;--rt-dur:46s}
+#rt-achtergrond i:nth-child(2){--rt-k:var(--purple);right:-26vmax;top:16%;--rt-dur:58s;animation-delay:-21s}
+#rt-achtergrond i:nth-child(3){--rt-k:var(--green);left:6%;bottom:-32vmax;--rt-dur:52s;animation-delay:-37s}
+@keyframes rt-drijf{
+  0%{transform:translate3d(0,0,0) scale(1)}
+  50%{transform:translate3d(9vmax,-6vmax,0) scale(1.12)}
+  100%{transform:translate3d(-7vmax,8vmax,0) scale(.94)}
+}
+
+/* ---------- Laag 2: de app zelf ---------- */
+html[data-ruimte="1"] #app{
+  position:relative;z-index:1;
+  transition:transform .36s var(--rt-ease),filter .36s var(--rt-ease),opacity .36s var(--rt-ease);
+}
+html[data-ruimte="1"][data-blad="1"] #app{transform:scale(.965) translateY(-3px);filter:blur(5px) saturate(.85);opacity:.8}
+
+html[data-ruimte="1"] header#top{
+  background:color-mix(in srgb,var(--bg) 70%,transparent);
+  backdrop-filter:blur(22px) saturate(180%);-webkit-backdrop-filter:blur(22px) saturate(180%);
+  box-shadow:inset 0 -1px 0 transparent;transition:box-shadow .3s;
+}
+html[data-ruimte="1"] header#top.scrolled{border-bottom-color:transparent;box-shadow:inset 0 -1px 0 var(--line),0 12px 32px -20px rgba(0,0,0,.35)}
+html[data-ruimte="1"] nav#tabs{
+  background:color-mix(in srgb,var(--bg) 68%,transparent);
+  backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);
+  border-top:1px solid color-mix(in srgb,var(--line) 70%,transparent);
+  box-shadow:inset 0 1px 0 var(--rt-glans),0 -14px 34px -22px rgba(0,0,0,.35);
+}
+html[data-ruimte="1"] #timerbalk,html[data-ruimte="1"] #bulkbalk{
+  backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
+}
+
+/* Glazen panelen — via :where() zodat gekleurde varianten (.card.rood e.d.) blijven winnen. */
+html[data-ruimte="1"] :where(.card,.stat,.dagpaneel,.menu-kaart){
+  background:color-mix(in srgb,var(--card) 76%,transparent);
+  backdrop-filter:blur(14px) saturate(150%);-webkit-backdrop-filter:blur(14px) saturate(150%);
+  box-shadow:inset 0 1px 0 var(--rt-glans),inset 0 0 0 1px var(--rt-rand),var(--rt-schaduw);
+}
+html[data-ruimte="1"] :where(.segment){background:color-mix(in srgb,var(--card2) 72%,transparent)}
+html[data-ruimte="1"] :where(.knop){background:color-mix(in srgb,var(--card2) 82%,transparent)}
+html[data-ruimte="1"] :where(.invoer){background:color-mix(in srgb,var(--card2) 80%,transparent)}
+html[data-ruimte="1"] #scherm :where(.card){transform-origin:50% 0}
+
+/* ---------- Knoppen: indrukken, veren, gloeien ---------- */
+html[data-ruimte="1"] :where(.knop,.icon-btn,.rijknop,.chip,.keuze,.segment button,.stat,.vink,.mini-vink,.sub-knop,.cijfers button,.menu-kaart,.dp-stat,.wk-tegel,.ug-cat,.hs-kaart){
+  transition:transform .28s var(--rt-veer),box-shadow .28s var(--rt-ease),background-color .2s,color .2s,opacity .2s,border-color .2s;
+}
+html[data-ruimte="1"] :where(.knop,.icon-btn,.chip,.keuze,.segment button,.sub-knop,.cijfers button,.ug-cat):active{transform:scale(.94)}
+html[data-ruimte="1"] :where(.rijknop,.menu-kaart,.hs-kaart):active{transform:scale(.985)}
+html[data-ruimte="1"] :where(.stat,.dp-stat,.wk-tegel):active{transform:scale(.97)}
+html[data-ruimte="1"] :where(.vink,.mini-vink):active{transform:scale(.88)}
+html[data-ruimte="1"] .knop.primair{
+  background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 86%,#fff) 0%,var(--accent) 100%);
+  box-shadow:0 10px 24px -12px var(--accent),inset 0 1px 0 rgba(255,255,255,.3);
+}
+html[data-ruimte="1"] .knop.primair:active{box-shadow:0 4px 12px -8px var(--accent),inset 0 1px 0 rgba(255,255,255,.2)}
+html[data-ruimte="1"] .knop.rand{border-color:color-mix(in srgb,var(--line2) 80%,transparent);background:color-mix(in srgb,var(--card) 40%,transparent)}
+html[data-ruimte="1"] .knop3d{transition:transform .12s cubic-bezier(.3,.7,.4,1),box-shadow .12s}
+html[data-ruimte="1"] .knop3d::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(115deg,transparent 32%,rgba(255,255,255,.28) 50%,transparent 68%);
+  transform:translateX(-130%);transition:transform .9s var(--rt-ease);
+}
+html[data-ruimte="1"] .knop3d:active::after{transform:translateX(130%);transition-duration:.55s}
+
+/* Lichtgloed vanuit het aanraakpunt */
+.rt-gloed{position:absolute;inset:0;border-radius:inherit;overflow:hidden;pointer-events:none;z-index:2}
+.rt-gloed b{
+  position:absolute;border-radius:50%;transform:scale(0);opacity:1;
+  background:radial-gradient(circle,var(--rt-tik) 0%,color-mix(in srgb,var(--rt-tik) 40%,transparent) 32%,transparent 64%);
+  animation:rt-gloed .62s cubic-bezier(.2,.8,.2,1) forwards;
+}
+html[data-ruimte="1"] :where(.knop.primair,.knop3d,.tab-plus,.knop.gevaar,.ug-knop,.hs-kaart){--rt-tik:rgba(255,255,255,.55)}
+@keyframes rt-gloed{0%{transform:scale(0);opacity:1}70%{opacity:.7}100%{transform:scale(1);opacity:0}}
+
+/* ---------- Onderbalk: actieve tab met lichtspoor ---------- */
+html[data-ruimte="1"] nav#tabs button{transition:transform .3s var(--rt-veer),color .25s}
+html[data-ruimte="1"] nav#tabs button:active{opacity:1;transform:scale(.9)}
+html[data-ruimte="1"] nav#tabs button.tab-plus:active{transform:translateY(3px) scale(.98)}
+html[data-ruimte="1"] nav#tabs button svg{transition:transform .38s var(--rt-veer),filter .38s}
+html[data-ruimte="1"] nav#tabs button[aria-current="true"]:not(.tab-plus) svg{transform:translateY(-1px) scale(1.1);filter:drop-shadow(0 0 7px var(--rt-gloed))}
+html[data-ruimte="1"] nav#tabs button.tab-plus{box-shadow:0 4px 0 0 color-mix(in srgb,var(--accent) 55%,#000),0 10px 22px -4px color-mix(in srgb,var(--accent) 65%,transparent),inset 0 1.5px 0 0 rgba(255,255,255,.4),0 0 0 4px var(--bg)}
+.rt-spoor{
+  position:absolute;left:0;bottom:calc(var(--safe-b) + 5px);height:3px;width:0;border-radius:3px;opacity:0;
+  background:var(--accent);box-shadow:0 0 10px 1px var(--rt-gloed);pointer-events:none;transform-origin:0 50%;
+}
+
+/* ---------- Schakelaar als fysiek onderdeel ---------- */
+html[data-ruimte="1"] .toggle{transition:background .3s,box-shadow .3s}
+html[data-ruimte="1"] .toggle::after{transition:transform .34s cubic-bezier(.34,1.5,.64,1),width .16s ease;box-shadow:0 1px 3px rgba(0,0,0,.3),0 0 0 0 rgba(255,255,255,.6)}
+html[data-ruimte="1"] .toggle:active::after{width:33px}
+html[data-ruimte="1"] .toggle[aria-pressed="true"]:active::after{transform:translateX(15px)}
+html[data-ruimte="1"] .toggle[aria-pressed="true"]{box-shadow:0 0 0 3px color-mix(in srgb,var(--green) 20%,transparent),0 0 16px color-mix(in srgb,var(--green) 45%,transparent)}
+
+/* ---------- Vinkje als penseelstreek ---------- */
+html[data-ruimte="1"] .vink svg,html[data-ruimte="1"] .mini-vink svg{
+  stroke-dasharray:22;stroke-dashoffset:22;
+  transition:opacity .12s,transform .32s var(--rt-veer),stroke-dashoffset .4s cubic-bezier(.4,0,.2,1) .05s;
+}
+html[data-ruimte="1"] .taak.af .vink svg,html[data-ruimte="1"] .vink.gedaan svg,html[data-ruimte="1"] .subtaak.af .mini-vink svg{stroke-dashoffset:0}
+html[data-ruimte="1"] .vink::before,html[data-ruimte="1"] .mini-vink::before{transition:background .25s,border-color .25s,transform .34s var(--rt-veer),box-shadow .3s}
+html[data-ruimte="1"] .taak.af .vink::before,html[data-ruimte="1"] .vink.gedaan::before{box-shadow:0 0 14px color-mix(in srgb,var(--green) 55%,transparent);animation:rt-vinkpop .48s var(--rt-veer)}
+@keyframes rt-vinkpop{0%{transform:scale(.8)}55%{transform:scale(1.16)}100%{transform:scale(1)}}
+
+/* Lichtexplosie bij afronden */
+.rt-burst{position:fixed;z-index:95;pointer-events:none;width:0;height:0}
+.rt-burst .ring{position:absolute;left:-15px;top:-15px;width:30px;height:30px;border-radius:50%;border:2px solid var(--green);animation:rt-burstring .58s cubic-bezier(.2,.8,.2,1) forwards}
+.rt-burst .deel{position:absolute;left:-3px;top:-3px;width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);opacity:0;animation:rt-burstdeel .62s cubic-bezier(.15,.7,.3,1) var(--dl) forwards}
+@keyframes rt-burstring{from{transform:scale(.4);opacity:.95}to{transform:scale(2.4);opacity:0}}
+@keyframes rt-burstdeel{0%{transform:translate(0,0) scale(1);opacity:1}100%{transform:translate(var(--dx),var(--dy)) scale(.15);opacity:0}}
+
+/* ---------- Bladen: de app wijkt, het blad komt uit de diepte ---------- */
+html[data-ruimte="1"] .overlay{background:rgba(6,8,14,.36);backdrop-filter:blur(8px) saturate(.9);-webkit-backdrop-filter:blur(8px) saturate(.9);transition:opacity .34s}
+html[data-ruimte="1"] .blad{
+  background:color-mix(in srgb,var(--bg) 84%,transparent);
+  backdrop-filter:blur(26px) saturate(170%);-webkit-backdrop-filter:blur(26px) saturate(170%);
+  box-shadow:var(--shadow-lg),inset 0 1px 0 var(--rt-glans);
+  transform:translateY(100%) scale(.96);transition:transform .28s cubic-bezier(.32,.72,0,1);
+}
+html[data-ruimte="1"] .blad.open{transform:none;transition-duration:.46s}
+html[data-ruimte="1"] .blad.open .blad-inhoud>*{animation:rt-op .42s var(--rt-ease) backwards}
+html[data-ruimte="1"] .blad.open .blad-inhoud>*:nth-child(2){animation-delay:.04s}
+html[data-ruimte="1"] .blad.open .blad-inhoud>*:nth-child(3){animation-delay:.08s}
+html[data-ruimte="1"] .blad.open .blad-inhoud>*:nth-child(4){animation-delay:.12s}
+html[data-ruimte="1"] .blad.open .blad-inhoud>*:nth-child(5){animation-delay:.16s}
+html[data-ruimte="1"] .blad.open .blad-inhoud>*:nth-child(6){animation-delay:.2s}
+html[data-ruimte="1"] .blad.open .blad-inhoud>*:nth-child(7){animation-delay:.24s}
+html[data-ruimte="1"] .blad.open .blad-inhoud>*:nth-child(n+8){animation-delay:.28s}
+html[data-ruimte="1"] .blad-voet{background:color-mix(in srgb,var(--card) 70%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+html[data-ruimte="1"] .rt-bron{box-shadow:inset 0 0 0 1px var(--rt-gloed),0 0 18px -4px var(--rt-gloed);border-radius:12px;transition:box-shadow .3s}
+
+/* ---------- Toast uit de diepte, fout met trilling ---------- */
+html[data-ruimte="1"] #toast{
+  background:color-mix(in srgb,var(--text) 90%,transparent);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  transform:translate(-50%,18px) scale(.94);filter:blur(4px);
+  transition:opacity .3s,transform .42s var(--rt-veer),filter .3s;
+}
+html[data-ruimte="1"] #toast.zicht{transform:translate(-50%,0) scale(1);filter:none}
+html[data-ruimte="1"] #toast.rt-fout{animation:rt-schud .5s cubic-bezier(.36,.07,.19,.97);box-shadow:0 0 0 1px var(--red),0 10px 32px -8px var(--red)}
+@keyframes rt-schud{
+  10%,90%{transform:translate(calc(-50% - 1px),0)}20%,80%{transform:translate(calc(-50% + 2px),0)}
+  30%,50%,70%{transform:translate(calc(-50% - 4px),0)}40%,60%{transform:translate(calc(-50% + 4px),0)}
+}
+html[data-ruimte="1"] .invoer.rt-fout{animation:rt-schud2 .5s cubic-bezier(.36,.07,.19,.97);box-shadow:0 0 0 2px color-mix(in srgb,var(--red) 40%,transparent)}
+@keyframes rt-schud2{10%,90%{transform:translateX(-1px)}20%,80%{transform:translateX(2px)}30%,50%,70%{transform:translateX(-4px)}40%,60%{transform:translateX(4px)}}
+
+/* ---------- Schermovergangen ---------- */
+#rt-oud{
+  position:absolute;overflow:hidden;pointer-events:none;z-index:25;
+  padding:4px 14px calc(var(--navh) + 24px);will-change:transform,opacity,filter;
+}
+#rt-oorsprong{
+  position:fixed;z-index:26;pointer-events:none;transform-origin:0 0;border-radius:16px;
+  background:color-mix(in srgb,var(--accent) 10%,transparent);
+  box-shadow:0 0 0 1.5px var(--rt-gloed),0 0 44px var(--rt-gloed);
+}
+html[data-ruimte="1"] h1#titel,html[data-ruimte="1"] #ondertitel{will-change:auto}
+
+/* Opkomen van lijsten en kaarten na een navigatie */
+.rt-in{animation:rt-op .5s var(--rt-ease) backwards}
+@keyframes rt-op{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}
+
+/* Nieuwe regel na hertekenen: lichtpuls */
+.rt-nieuw{animation:rt-puls 1.3s ease-out}
+@keyframes rt-puls{
+  0%{background-color:color-mix(in srgb,var(--accent) 24%,transparent);box-shadow:inset 0 0 0 1px var(--accent),0 0 18px var(--rt-gloed)}
+  100%{background-color:transparent;box-shadow:none}
+}
+
+/* ---------- Data die zich vormt ---------- */
+html[data-ruimte="1"] .ring{transition:--p .9s var(--rt-ease)}
+html[data-ruimte="1"] .balk>i{transition:width .8s var(--rt-ease)}
+html[data-ruimte="1"] .uitklap{animation:rt-ontvouw .34s var(--rt-ease)}
+@keyframes rt-ontvouw{from{opacity:0;transform:translateY(-6px);clip-path:inset(0 0 100% 0)}to{opacity:1;transform:none;clip-path:inset(0)}}
+html[data-ruimte="1"] .taak{transition:background-color .25s}
+
+/* ---------- Verder naar (koppelingen tussen schermen) ---------- */
+.verwant{margin:26px 0 6px;padding:0 2px}
+.verwant .klein{margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em;font-weight:700;font-size:calc(11.5px * var(--t))}
+.verwant .chiprij{gap:8px}
+.verwant .keuze{min-height:38px;padding:0 12px;display:inline-flex;align-items:center;gap:6px}
+.verwant .keuze svg{width:15px;height:15px}
+
+/* ---------- Zeven tabs: korte labels op smalle schermen ---------- */
+nav#tabs button .kort{display:none}
+@media (max-width:420px){
+  nav#tabs button{font-size:calc(9.3px * var(--t));letter-spacing:-.015em;padding:6px 0 4px}
+  nav#tabs button .lang{display:none}
+  nav#tabs button .kort{display:inline}
+}
