@@ -34,6 +34,11 @@ vervang('shles: (typeof vwShLes === "function" ? vwShLes : vwStart)',
 vervang("(CATEGORIEEN.find(c => c[0] === k) || CATEGORIEEN[6])", '(CATEGORIEEN.find(c => c[0] === k) || CATEGORIEEN.find(c => c[0] === "overig"))', 2)
 vervang("(VLCATS.find(c => c[0] === k) || VLCATS[6])", '(VLCATS.find(c => c[0] === k) || VLCATS.find(c => c[0] === "overig"))', 2)
 
+# 3c. Checklists: kopjes tellen niet mee als punt.
+vervang('onder = c ? c.items.filter(i => i.af).length + " van " + c.items.length + " af" : "";',
+        'onder = c ? c.items.filter(i => i.af && !clSectie(i)).length + " van " + c.items.filter(i => !clSectie(i)).length + " af" : "";')
+vervang("if (c.items.length && c.items.every(x => x.af)) {", "if (c.items.some(x => !clSectie(x)) && c.items.every(x => x.af || clSectie(x))) {")
+
 # 3. HobbySkills staat niet in de onderbalk; bereikbaar via Nieuw, Meer, Persoonlijk en het dagoverzicht.
 
 # 4. Iconen: tabicoon en illustratie voor de startscherm-tegel.
@@ -62,7 +67,7 @@ ILL_WL = ('<symbol id="ill-wishlist" viewBox="0 0 100 80"><g fill="none" stroke=
 vervang('<symbol id="ill-persoonlijk"', ILL + '\n' + ILL_WL + '\n<symbol id="ill-persoonlijk"')
 
 # 5. Stijl: achteraan in het bestaande <style>-blok.
-css = "\n\n" + lees("ruimte.css") + "\n\n" + lees("hobbyskills.css") + "\n\n" + lees("sh-tabs.css") + "\n\n" + lees("eigen-categorieen.css") + "\n\n" + lees("fin-vast.css") + "\n\n" + lees("wishlist.css") + "\n\n" + lees("nieuw-rail.css") + "\n"
+css = "\n\n" + lees("ruimte.css") + "\n\n" + lees("hobbyskills.css") + "\n\n" + lees("sh-tabs.css") + "\n\n" + lees("eigen-categorieen.css") + "\n\n" + lees("fin-vast.css") + "\n\n" + lees("wishlist.css") + "\n\n" + lees("nieuw-rail.css") + "\n\n" + lees("mm-export.css") + "\n"
 vervang('</style>\n</head>', css + '</style>\n</head>')
 
 # 6. Scripts: vlak vóór het blok dat start() aanroept.
@@ -70,7 +75,7 @@ marker = "/* Alles is geladen — de app kan starten. */"
 assert html.count(marker) == 1, "startmarker niet gevonden"
 i = html.index(marker)
 j = html.rfind("<script>", 0, i)
-blokken = "".join(f"<script>\n{lees(naam)}\n</script>\n" for naam in ("sh-theorie.js", "sh-modellen.js", "sh-scrum.js", "sh-dashboard.js", "ruimte.js", "hobbyskills.js", "hs-sjablonen.js", "mm-bron.js", "koppelingen.js", "eigen-categorieen.js", "fin-vast.js", "wishlist.js", "nieuw-rail.js"))
+blokken = "".join(f"<script>\n{lees(naam)}\n</script>\n" for naam in ("sh-theorie.js", "sh-modellen.js", "sh-scrum.js", "sh-dashboard.js", "ruimte.js", "hobbyskills.js", "hs-sjablonen.js", "mm-bron.js", "koppelingen.js", "eigen-categorieen.js", "fin-vast.js", "wishlist.js", "nieuw-rail.js", "mm-export.js"))
 html = html[:j] + blokken + html[j:]
 
 UIT.write_text(html, encoding="utf-8")
