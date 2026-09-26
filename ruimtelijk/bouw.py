@@ -20,7 +20,7 @@ def vervang(oud, nieuw, n=1):
 
 
 # 1. Opslag: nieuwe winkel (hs_items) vraagt een hogere databaseversie.
-vervang('const DB_NAAM = "futureme", DB_VERSIE = 7;', 'const DB_NAAM = "futureme", DB_VERSIE = 10;')  # 8: hs_items, 9: wl_items, 10: Anker (mf_*)
+vervang('const DB_NAAM = "futureme", DB_VERSIE = 7;', 'const DB_NAAM = "futureme", DB_VERSIE = 11;')  # 8: hs_items, 9: wl_items, 10: Anker (mf_*), 11: Voortgang (vg_*)
 # 1b. Stores met extra opties (oplopende sleutel, indexen) uit DB_OPTIES; bestaande stores blijven ongemoeid.
 vervang('if (!d.objectStoreNames.contains(naam)) d.createObjectStore(naam, { keyPath: sleutel });',
         'if (!d.objectStoreNames.contains(naam)) {\n'
@@ -87,10 +87,16 @@ ILL_ANKER = ('<symbol id="ill-anker" viewBox="0 0 100 80"><g fill="none" stroke=
              '  <path d="M8 74c6-4 12-4 18 0s12 4 18 0 12-4 18 0 12 4 18 0 8-3 12-1" stroke-opacity=".45"/>\n'
              '  <circle cx="82" cy="18" r="9" fill="currentColor" fill-opacity=".2" stroke-opacity=".6"/>\n'
              '</g></symbol>')
-vervang('<symbol id="ill-persoonlijk"', ILL + '\n' + ILL_WL + '\n' + ILL_ANKER + '\n<symbol id="ill-persoonlijk"')
+ILL_VOORTGANG = ('<symbol id="ill-voortgang" viewBox="0 0 100 80"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">\n'
+                 '  <path d="M10 70h80" stroke-opacity=".5"/>\n'
+                 '  <path d="M14 60l16-14 14 8 18-20 16 6" stroke-opacity=".95"/>\n'
+                 '  <circle cx="30" cy="46" r="3.5" fill="currentColor" stroke="none"/><circle cx="44" cy="54" r="3.5" fill="currentColor" stroke="none"/><circle cx="62" cy="34" r="3.5" fill="currentColor" stroke="none"/>\n'
+                 '  <path d="M78 40V8" stroke-opacity=".9"/><path d="M78 9h14l-4 6 4 6H78" fill="currentColor" fill-opacity=".85" stroke-opacity=".9"/>\n'
+                 '</g></symbol>')
+vervang('<symbol id="ill-persoonlijk"', ILL + '\n' + ILL_WL + '\n' + ILL_ANKER + '\n' + ILL_VOORTGANG + '\n<symbol id="ill-persoonlijk"')
 
 # 5. Stijl: achteraan in het bestaande <style>-blok.
-css = "\n\n" + lees("ruimte.css") + "\n\n" + lees("hobbyskills.css") + "\n\n" + lees("sh-tabs.css") + "\n\n" + lees("eigen-categorieen.css") + "\n\n" + lees("fin-vast.css") + "\n\n" + lees("wishlist.css") + "\n\n" + lees("nieuw-rail.css") + "\n\n" + lees("mm-export.css") + "\n\n" + lees("retro.css").replace("__PIXELFONT__", base64.b64encode((HIER / "fonts" / "press-start-2p.woff2").read_bytes()).decode()) + "\n\n" + lees("incasso-bellen.css") + "\n\n" + lees("nieuw-overzicht.css") + "\n\n" + lees("sh-ideeen.css") + "\n\n" + lees("anker.css") + "\n"
+css = "\n\n" + lees("ruimte.css") + "\n\n" + lees("hobbyskills.css") + "\n\n" + lees("sh-tabs.css") + "\n\n" + lees("eigen-categorieen.css") + "\n\n" + lees("fin-vast.css") + "\n\n" + lees("wishlist.css") + "\n\n" + lees("nieuw-rail.css") + "\n\n" + lees("mm-export.css") + "\n\n" + lees("retro.css").replace("__PIXELFONT__", base64.b64encode((HIER / "fonts" / "press-start-2p.woff2").read_bytes()).decode()) + "\n\n" + lees("incasso-bellen.css") + "\n\n" + lees("nieuw-overzicht.css") + "\n\n" + lees("sh-ideeen.css") + "\n\n" + lees("anker.css") + "\n\n" + lees("voortgang.css") + "\n"
 vervang('</style>\n</head>', css + '</style>\n</head>')
 
 # 6. Scripts: vlak vóór het blok dat start() aanroept.
@@ -98,7 +104,7 @@ marker = "/* Alles is geladen — de app kan starten. */"
 assert html.count(marker) == 1, "startmarker niet gevonden"
 i = html.index(marker)
 j = html.rfind("<script>", 0, i)
-blokken = "".join(f"<script>\n{lees(naam)}\n</script>\n" for naam in ("sh-theorie.js", "sh-modellen.js", "sh-scrum.js", "sh-dashboard.js", "ruimte.js", "hobbyskills.js", "hs-sjablonen.js", "mm-bron.js", "koppelingen.js", "eigen-categorieen.js", "fin-vast.js", "wishlist.js", "sh-ideeen.js", "anker-data.js", "anker-speler.js", "anker-schermen.js", "anker-koppelingen.js", "nieuw-rail.js", "nieuw-overzicht.js", "nieuw-analyse.js", "mm-export.js", "retro.js", "incasso-bellen.js", "tijdlijn-rust.js"))
+blokken = "".join(f"<script>\n{lees(naam)}\n</script>\n" for naam in ("sh-theorie.js", "sh-modellen.js", "sh-scrum.js", "sh-dashboard.js", "ruimte.js", "hobbyskills.js", "hs-sjablonen.js", "mm-bron.js", "koppelingen.js", "eigen-categorieen.js", "fin-vast.js", "wishlist.js", "sh-ideeen.js", "anker-data.js", "anker-speler.js", "anker-schermen.js", "anker-koppelingen.js", "voortgang-data.js", "voortgang.js", "nieuw-rail.js", "nieuw-overzicht.js", "nieuw-analyse.js", "mm-export.js", "retro.js", "incasso-bellen.js", "tijdlijn-rust.js"))
 html = html[:j] + blokken + html[j:]
 
 UIT.write_text(html, encoding="utf-8")
