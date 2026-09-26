@@ -397,7 +397,8 @@ function rtScrollDiepte() {
   for (const k of s.querySelectorAll(":scope > .card, :scope > .stats > .stat, :scope > .startgrid > .knop3d, :scope > .dagpaneel, :scope > .hs-lijst > .hs-kaart")) {
     const r = k.getBoundingClientRect();
     if (r.top > top + 60) { if (k._rtd) rtZetDiepte(k, 0); if (++mis > 3) break; continue; }
-    rtZetDiepte(k, Math.max(0, Math.min(1, (top + 60 - r.top) / 160)));
+    // Pas wijken als de kaart bijna uit beeld is (onderkant), zodat hoge kaarten leesbaar blijven.
+    rtZetDiepte(k, Math.max(0, Math.min(1, (top + 140 - r.bottom) / 140)));
   }
 }
 {
