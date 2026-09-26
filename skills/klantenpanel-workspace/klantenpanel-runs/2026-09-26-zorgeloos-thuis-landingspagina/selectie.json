@@ -1,0 +1,133 @@
+{
+ "doelgroep": "Huishoudens 55+ zonder handige klusser in de buurt, en drukke tweeverdieners; Apeldoorn e.o.",
+ "personas": [
+  {
+   "id": "P30",
+   "naam": "Gerard Willems",
+   "gewicht_pct": 2.7,
+   "kansgroep": false,
+   "aangrenzend": false,
+   "reden": "55+ hoofdgroep, koopwoning, klust zelf maar knieën; Consumentenbond-lezer die abonnementsvoorwaarden leest",
+   "kernzin": "Magazijnchef van 58 in de Betuwe, kinderen het huis uit, spaart voor zijn pensioen, lid van ANWB en Consumentenbond en wisselt alleen als het aantoonbaar beter én goedkoper is."
+  },
+  {
+   "id": "P35",
+   "naam": "Hennie Bosman",
+   "gewicht_pct": 2.1,
+   "kansgroep": false,
+   "aangrenzend": false,
+   "reden": "55+ alleenwonend, laag digitaal, huurflat: kan zij zich aanmelden via een app?",
+   "kernzin": "Receptioniste van 62 in Alphen aan den Rijn, na haar scheiding alleenwonend in een huurflat, bescheiden inkomen, gezellig en trouw, doet digitale dingen met enige moeite."
+  },
+  {
+   "id": "P40",
+   "naam": "Ria van den Heuvel",
+   "gewicht_pct": 2.7,
+   "kansgroep": false,
+   "aangrenzend": false,
+   "reden": "55+ weduwe in een dorp, regelt sinds kort alles zelf, voorzichtig met online betalen",
+   "kernzin": "Weduwe van 71 in een Brabants dorp, jarenlang huisvrouw en later verkoopster, katholiek, sociaal actief en handig met haar iPad voor WhatsApp en Marktplaats, maar voorzichtig met betalen online."
+  },
+  {
+   "id": "P42",
+   "naam": "Bep Salakory",
+   "gewicht_pct": 2.2,
+   "kansgroep": false,
+   "aangrenzend": false,
+   "reden": "55+ met AOW en krap budget: is 14,95 per maand haalbaar en wat is het alternatief (kinderen)",
+   "kernzin": "Gepensioneerde verkoopster van 69 in Rotterdam, geboren in Nederland uit Indische ouders, alleenwonend in een sociale huurflat met alleen AOW en een klein pensioen, gastvrij en zuinig."
+  },
+  {
+   "id": "P45",
+   "naam": "Corrie Nijland",
+   "gewicht_pct": 2.8,
+   "kansgroep": false,
+   "aangrenzend": false,
+   "reden": "75+ kwetsbaar, kinderen beslissen: sluit aan bij 'senioren die het liever overlaten'",
+   "kernzin": "Weduwe van 79 in een seniorenwoning in een Overijssels dorp, thuiszorg en slechter zicht, kinderen regelen het meeste, vertrouwt op de dorpsgemeenschap en op wat ze al jaren kent."
+  },
+  {
+   "id": "P47",
+   "naam": "Els Bruinsma",
+   "gewicht_pct": 2.6,
+   "kansgroep": false,
+   "aangrenzend": false,
+   "reden": "75+ vitaal en digitaal redelijk vaardig: de senior die zelf online kan afsluiten en anderen adviseert",
+   "kernzin": "Gehuwde oud-verpleegkundige van 76 in Hoorn, gezond en actief, reist met haar man, gebruikt iPad en e-mail met gemak, en beoordeelt alles met een zorgblik: is het veilig en nuttig?"
+  },
+  {
+   "id": "P31",
+   "naam": "Annemarie Kok",
+   "gewicht_pct": 2.2,
+   "kansgroep": false,
+   "aangrenzend": false,
+   "reden": "55+ theoretisch opgeleid, ruim budget, kritisch op taal en voorwaarden",
+   "kernzin": "Docent Nederlands op een mbo van 61 in Leiden, hbo, koopwoning met partner, leest NRC, kiest bewust en duurzaam en is allergisch voor slordige taal."
+  },
+  {
+   "id": "P13",
+   "naam": "Anouk Hendriks",
+   "gewicht_pct": 2.2,
+   "kansgroep": false,
+   "aangrenzend": false,
+   "reden": "drukke tweeverdiener met jonge kinderen en mantelzorg: kern van 'drukke gezinnen'",
+   "kernzin": "Wijkverpleegkundige van 33 in Noord-Brabant, twee jonge kinderen, mantelzorger voor haar moeder en structureel tijdarm: alles moet in een gestolen kwartier te regelen zijn."
+  },
+  {
+   "id": "P16",
+   "naam": "Jeroen Smit",
+   "gewicht_pct": 2.4,
+   "kansgroep": false,
+   "aangrenzend": false,
+   "reden": "drukke tweeverdiener met hoog inkomen en Vinex-huis: betaalt voor gemak, wil de rekensom snappen",
+   "kernzin": "Afdelingsmanager bij een bank van 44 in een Utrechtse Vinex-wijk, gezin met tieners, hoog inkomen, duurzaam-bewust en gewend aan professionele kwaliteit."
+  },
+  {
+   "id": "P06",
+   "naam": "Sanne de Groot",
+   "gewicht_pct": 2.4,
+   "kansgroep": false,
+   "aangrenzend": false,
+   "reden": "jong stel met koophuis in de regio (Ede) dat veel zelf doet: twijfelgeval binnen tweeverdieners",
+   "kernzin": "Basisschoollerares van 29 uit de Gelderse Vallei, samenwonend in een koophuis, plant een gezin en let scherp op de balans tussen gemak en geld."
+  },
+  {
+   "id": "P39",
+   "naam": "Henk Groothuis",
+   "gewicht_pct": 2.8,
+   "kansgroep": false,
+   "aangrenzend": true,
+   "reden": "aangrenzend: vitale gepensioneerde die alles zelf klust; laat zien wie afhaakt en of zijn vrouw anders kiest",
+   "kernzin": "Gepensioneerd monteur van 68 uit de Achterhoek, koophuis en camper, vitaal en handig, vertrouwt zijn bank en huisarts maar wantrouwt alles online, en beslist samen met zijn vrouw."
+  },
+  {
+   "id": "K10",
+   "naam": "Nel Hoogendoorn",
+   "gewicht_pct": 0.9,
+   "kansgroep": true,
+   "aangrenzend": false,
+   "reden": "kansgroep: beslisser is niet de gebruiker (dochter regelt voor moeder van 86)",
+   "kernzin": "Vrouw van 86 in Leiden, lichamelijk kwetsbaar en licht vergeetachtig, haar dochter Marjan (58) regelt alles en beslist over aankopen; Nel gebruikt ze, Marjan betaalt en installeert."
+  },
+  {
+   "id": "K06",
+   "naam": "Johan Wubbels",
+   "gewicht_pct": 1.2,
+   "kansgroep": true,
+   "aangrenzend": false,
+   "reden": "kansgroep: laaggeletterd; kan hij de pagina en de app-stappen volgen",
+   "kernzin": "Stratenmaker van 56 in Oost-Groningen, laaggeletterd en daar handig in verstopt, hardwerkend, zijn dochter leest de brieven, hij kiest op vertrouwen en op wie hem in gewone woorden uitlegt wat het is."
+  },
+  {
+   "id": "K12",
+   "naam": "Jasper Hoek",
+   "gewicht_pct": 0.6,
+   "kansgroep": true,
+   "aangrenzend": false,
+   "reden": "kansgroep: weigert apps en accounts; hoeveel van de markt valt af door 'download de app'",
+   "kernzin": "Docent wiskunde van 47 in Wageningen die principieel geen apps, loyaliteitskaarten of social media gebruikt, contant betaalt waar het kan, alles leest en elke dienst beoordeelt op wat die over hem wil weten."
+  }
+ ],
+ "waarschuwingen": [],
+ "som_gewicht_pct": 29.8
+}
