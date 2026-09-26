@@ -1,0 +1,40 @@
+{
+ "skill_name": "klantenpanel",
+ "evals": [
+  {
+   "id": 1,
+   "prompt": "Ik start een dienst in Apeldoorn: 'Zorgeloos Thuis', een abonnement van 14,95 per maand voor onbeperkt kleine klusjes en technische hulp thuis (lamp ophangen, wifi fixen, tv instellen), binnen 48 uur een vaste buurtklusser. Hieronder de tekst van mijn landingspagina. Doelgroep: huishoudens 55+ zonder handige klusser in de buurt, en drukke tweeverdieners. Ik wil weten of ik dit zo lanceer en tegen welke prijs. Test dit voor me met een klantenpanel. [landingspagina-tekst als bestand]",
+   "expected_output": "Intake in één beurt (alleen wat ontbreekt), selectie van 10-15 persona's met 2-3 kansgroepen getoond met gewicht en reden, 40-50 varianten via script, vier rondes met per ronde een korte samenvatting, realisme-controles, eindrapport met drie concepten, aanbeveling en betrouwbaarheidsparagraaf; runmap met alle reacties.",
+   "files": ["evals/files/zorgeloos-thuis-landingspagina.md"],
+   "expectations": [
+    "De skill vraagt in één beurt alleen naar wat niet uit het materiaal blijkt en stelt geen vragen die het materiaal al beantwoordt",
+    "De selectie bevat 10 tot 15 persona's waarvan 2 tot 3 kansgroepen, met gewicht en reden per persona, en wordt aan de gebruiker getoond voordat het panel draait",
+    "varianten.json bevat 40 tot 50 varianten, minimaal 3 per persona, met seed vastgelegd",
+    "Er zijn vier rondes met per ronde reacties/*.jsonl, aggregatie.json, realisme.json en samenvatting.md",
+    "Elke variantreactie bevat eerst vrije tekst en daarna scores; de realisme-controle heeft gedraaid",
+    "Het eindrapport bevat drie duidelijk verschillende concepten met per concept sterkste en zwakste segmenten gewogen én ongewogen, gevaren, kansen, citaten met variant-id en toetsen bij echte mensen",
+    "Het eindrapport eindigt met een aanbeveling en een betrouwbaarheidsparagraaf die zegt wat een synthetisch panel niet kan"
+   ]
+  },
+  {
+   "id": 2,
+   "prompt": "Wat vinden klanten van deze prijs? Ik verkoop handgemaakte houten speelgoedauto's via een webshop voor 39 euro per stuk en overweeg 49. Geen idee wie mijn doelgroep precies is.",
+   "expected_output": "De skill stelt zelf een doelgroep voor (bijvoorbeeld ouders en grootouders van jonge kinderen met ruimte voor cadeaus) en laat die bevestigen, vraagt naar de beslissing en het materiaal, en draait daarna het panel met nadruk op ronde 2 (Van Westendorp).",
+   "files": [],
+   "expectations": [
+    "De skill stelt een doelgroep voor op basis van het materiaal en vraagt om bevestiging in dezelfde beurt als de overige intakevragen",
+    "Ronde 2 levert een Van Westendorp-bereik op uit het aggregatiescript en het rapport noemt het als bandbreedte, niet als prijsadvies"
+   ]
+  },
+  {
+   "id": 3,
+   "prompt": "Kun je deze advertentietekst voor mijn rijschool even door je panel halen? 'Haal je rijbewijs in 10 lessen. Bel nu.' Ik wil weten of jongeren hierop reageren en of ouders het vertrouwen.",
+   "expected_output": "Intake kort; selectie met jonge persona's én ouders (beslisser-is-niet-gebruiker), kansgroepen zoals K01 en K03; vier rondes; rapport met drie concepten.",
+   "files": [],
+   "expectations": [
+    "De selectie bevat zowel jonge persona's als ouders van jongeren en minstens één kansgroep die vertrouwen of taal blootlegt",
+    "De samenvattingen tussen de rondes verwijzen naar variant-ids of citaten en niet alleen naar gemiddelden"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,66 @@
+{
+ "scores_uitleg": "Alle scores lopen van 1 tot 7. 1 = helemaal niet, 4 = neutraal/onverschillig, 7 = helemaal wel. Geef scores pas NA de reactie in eigen woorden en laat ze uit die reactie volgen.",
+ "score_velden": {
+  "begrip": "Snap ik binnen een paar seconden wat dit is, voor wie en waarom?",
+  "relevantie": "Is dit voor iemand zoals ik, in mijn situatie?",
+  "aantrekkelijkheid": "Spreekt het me aan (toon, uitstraling, belofte)?",
+  "vertrouwen": "Geloof ik dat dit bedrijf doet wat het belooft en netjes met mij omgaat?",
+  "intentie": "Zou ik dit echt gaan gebruiken of kopen (niet: 'zou ik het leuk vinden')?"
+ },
+ "gedrag_opties": ["klikt weg", "leest verder", "bewaart voor later", "vraagt iemand anders", "deelt met iemand", "meldt zich aan of koopt", "zoekt een alternatief", "negeert"],
+ "bezwaar_categorieen": ["prijs", "begrip", "relevantie", "vertrouwen", "gemak", "toegankelijkheid", "taal", "digitaal", "tijd", "privacy", "alternatief", "opzegbaarheid", "kwaliteit", "geen"],
+ "basisverwachting": "In echte panels vindt bij een nieuw aanbod meestal 20 tot 40 procent het interessant, is een derde onverschillig en haakt de rest af of wijst het af. Onverschilligheid, niet snappen, afhaken en afwijzen zijn dus normale reacties. Laat je variantkenmerken (stemming, tijd, budget, ervaring) echt doorwerken.",
+ "rondes": {
+  "1": {
+   "titel": "Eerste indruk en begrip",
+   "doel": "Wat valt op in de eerste seconden, begrijpt men wat het is, voor wie en waarom, wat is onduidelijk en wat roept het op.",
+   "vragen": [
+    "Wat valt je als eerste op, in de eerste vijf seconden? (beeld, kop, woord, prijs, iets wat stoort)",
+    "Leg in je eigen woorden uit wat dit is, voor wie het bedoeld is en waarom iemand het zou willen. Als je het niet snapt, zeg dat en zeg waar je afhaakt.",
+    "Wat is onduidelijk, wat mis je, welk woord of welke zin begrijp je niet of vertrouw je niet?",
+    "Welk gevoel roept het op (nieuwsgierig, onverschillig, wantrouwend, 'niet voor mij', enthousiast)? En waardoor precies?",
+    "Wat zou je nu doen: wegklikken, verder lezen, bewaren, iemand vragen, aanmelden?"
+   ],
+   "velden_extra": [],
+   "scores": ["begrip", "relevantie", "aantrekkelijkheid", "vertrouwen", "intentie"]
+  },
+  "2": {
+   "titel": "Waarde, prijs en bezwaren",
+   "doel": "Zou men het gebruiken of kopen, wat mag het kosten, wat zijn alternatieven, waarom niet, wat maakt wantrouwig en wat houdt tegen in de praktijk.",
+   "vragen": [
+    "Zou je dit gebruiken of kopen? Wanneer wel, wanneer niet? Wat doe je nu al voor hetzelfde probleem (alternatief, niets, zelf doen, iemand anders)?",
+    "Prijs (Van Westendorp), vier bedragen in euro's voor de eenheid die in het materiaal staat: bij welke prijs is het zo goedkoop dat je aan de kwaliteit twijfelt (te_goedkoop), bij welke prijs is het een koopje (goedkoop), bij welke prijs wordt het duur maar overweeg je het nog (duur), bij welke prijs is het te duur en haak je af (te_duur). Reken vanuit jouw budget en jouw alternatieven, niet vanuit wat 'redelijk' klinkt.",
+    "Wat maakt je wantrouwend of wat is het grootste bezwaar (kleine lettertjes, wie zit erachter, opzeggen, verborgen kosten, kwaliteit)?",
+    "Wat houdt je in de praktijk tegen, ook als je het zou willen: toegankelijkheid, taal, digitale stappen, geld deze maand, tijd, iemand anders die moet meebeslissen?",
+    "Wat zou het bedrijf moeten veranderen of erbij zeggen zodat jij wél ja zegt?"
+   ],
+   "velden_extra": ["prijs", "alternatief", "waarde_voor_geld"],
+   "scores": ["relevantie", "vertrouwen", "waarde_voor_geld", "intentie"]
+  },
+  "3": {
+   "titel": "Verbeterde versies vergelijken",
+   "doel": "Het panel vergelijkt de verbeterde versies uit ronde 1 en 2 met elkaar en met het origineel.",
+   "vragen": [
+    "Bekijk alle versies (het origineel en de verbeterde versies). Reageer per versie kort in eigen woorden: wat is beter of slechter dan het origineel, voor jou?",
+    "Welke versie kies je als je moet kiezen, en waarom? Als geen enkele versie je overtuigt, zeg dat en kies dan de minst slechte.",
+    "Wat is per versie het grootste bezwaar dat overblijft?",
+    "Welke versie zou je aan iemand anders in je omgeving aanraden, en aan wie?"
+   ],
+   "velden_extra": ["voorkeur", "voorkeur_reden"],
+   "scores": ["begrip", "relevantie", "aantrekkelijkheid", "vertrouwen", "intentie"]
+  },
+  "4": {
+   "titel": "Eindtoets van de concepten",
+   "doel": "Het panel beoordeelt de kandidaat-concepten, inclusief risico's en kansen per segment.",
+   "vragen": [
+    "Bekijk de concepten. Reageer per concept in eigen woorden: wat spreekt aan, wat stoort, zou je het gebruiken of kopen, en tegen deze prijs?",
+    "Welk concept kies je, en welk concept zou je nooit kiezen? Waarom?",
+    "Wat is per concept het grootste risico voor het bedrijf als het dit lanceert (mensen haken af omdat..., het wordt misbruikt..., het wordt niet begrepen..., het botst met...)?",
+    "Waar zit voor mensen zoals jij een kans die het bedrijf nog niet benut (een behoefte, een moment, een kanaal, een variant)?",
+    "Wat zou het bedrijf bij echte mensen zoals jij moeten toetsen voordat het dit lanceert?"
+   ],
+   "velden_extra": ["voorkeur", "voorkeur_reden", "nooit", "risico", "kans", "toets_bij_echte_mensen"],
+   "scores": ["begrip", "relevantie", "aantrekkelijkheid", "vertrouwen", "intentie"]
+  }
+ }
+}
