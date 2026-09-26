@@ -19,6 +19,11 @@ html[data-retro="1"] .ib-hint{font-family:var(--pixel);font-weight:400;font-size
   box-shadow:inset -3px -5px 9px color-mix(in srgb,var(--accent) 28%,transparent),inset 3px 3px 7px rgba(255,255,255,.45),0 4px 10px rgba(20,30,60,.16);
   backdrop-filter:blur(7px) saturate(1.4);-webkit-backdrop-filter:blur(7px) saturate(1.4);
   animation:ib-zweef var(--zweef,4.2s) ease-in-out var(--fase,0s) infinite}
+/* Groot euroteken als watermerk, zo groot als de bel */
+.ib-bel .ib-binnen::before{content:"€";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;
+  font-size:calc(33px * var(--t));font-weight:900;line-height:1;color:var(--accent);opacity:.16;transform:translateY(1px);transition:opacity .25s}
+.ib-bel.snel .ib-binnen::before{color:var(--red)}
+.ib-bel.alle .ib-binnen::before,.ib-bel.open .ib-binnen::before{content:none}
 .ib-bel .ib-binnen::after{content:"";position:absolute;inset:-1px;border-radius:inherit;pointer-events:none;opacity:.55;mix-blend-mode:screen;
   background:conic-gradient(from 200deg,rgba(255,120,200,.0),rgba(255,120,200,.35),rgba(120,200,255,.35),rgba(140,255,190,.3),rgba(255,230,120,.3),rgba(255,120,200,.0));
   -webkit-mask:radial-gradient(circle,transparent 58%,#000 72%);mask:radial-gradient(circle,transparent 58%,#000 72%)}
@@ -49,3 +54,5 @@ html[data-retro="1"] .ib-hint{font-family:var(--pixel);font-weight:400;font-size
 .ib-acties{display:flex;gap:8px;margin-top:6px}
 .ib-acties .knop{flex:1;justify-content:center}
 @media (prefers-reduced-motion:reduce){.ib-bel .ib-binnen{animation:none}.ib-bel{transition-duration:.01s}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ib-bel .ib-binnen::before{opacity:.26}}
+:root[data-theme="dark"] .ib-bel .ib-binnen::before{opacity:.26}
