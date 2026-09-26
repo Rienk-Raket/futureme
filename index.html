@@ -23581,7 +23581,7 @@ function vwProfiel() {
   h += sectie2("over", "Over jou", [p.naam, l != null ? l + " jaar" : ""].filter(Boolean).join(" · ") || "Naam en geboortedatum", `
     <div class="veld"><label for="pf-naam">Naam</label><input class="invoer" id="pf-naam" value="${esc(p.naam)}" maxlength="40" autocomplete="given-name" placeholder="Hoe mag de app je noemen?"></div>
     <div class="veld"><label for="pf-gd">Geboortedatum</label><input class="invoer" id="pf-gd" type="date" value="${esc(p.geboortedatum)}" max="${vandaagISO()}"></div>
-    <p class="pf-klein">${l != null ? `Leeftijd: <b>${l} jaar</b>` : "Je leeftijd wordt berekend uit je geboortedatum."}</p>`);
+    <p class="pf-klein pf-leeftijd" aria-live="polite">${pfLeeftijdTekst(l)}</p>`);
   h += sectie2("lichaam", "Lichaam", [p.lengte ? p.lengte + " cm" : "", gw ? nwoGetal(gw.kg, 1) + " kg" : ""].filter(Boolean).join(" · ") || "Lengte en gewicht", `
     <div class="pf-twee"><div class="veld"><label for="pf-lengte">Lengte (cm)</label><input class="invoer" id="pf-lengte" type="number" inputmode="numeric" min="50" max="250" value="${p.lengte || ""}"></div>
       <div class="veld"><label for="pf-gewicht">Gewicht (kg)</label><input class="invoer" id="pf-gewicht" type="number" inputmode="decimal" step="0.1" min="20" max="400" value="${p.gewicht || ""}"></div></div>
@@ -23605,6 +23605,7 @@ function vwProfiel() {
     <p class="pf-klein">Alles blijft op dit toestel. Je profiel gaat mee in je back-up.</p>`);
   return `<div class="pf">${h}</div>`;
 }
+const pfLeeftijdTekst = l => l != null ? `Leeftijd: <b>${l} jaar</b>` : "Je leeftijd wordt berekend uit je geboortedatum.";
 function pfAanpakLijst() {
   const a = ndAanpak();
   const rij = (n, w) => `<li><span>${n}</span><b>${w}</b></li>`;
@@ -23653,11 +23654,28 @@ document.addEventListener("click", async e => {
   if (el.dataset.act === "pf-vragen") pfVragenBlad();
   else if (el.dataset.act === "pf-tips") { await zetInst("ndTips", !inst("ndTips", true)); V.pfOpen = "app"; teken(); }
 });
+/* Geboortedatum: op iPhone meldt het datumwiel elke draai als wijziging.
+   Opnieuw tekenen zou het wiel dan sluiten. Daarom slaan we de datum stil op
+   (het wiel blijft open) en tekenen we pas opnieuw als het veld de focus
+   verliest, dus na "Gereed". */
+let pfDatumGewijzigd = false;
+document.addEventListener("input", e => { if (e.target && e.target.id === "pf-gd") pfDatumStil(e.target); });
+async function pfDatumStil(t) {
+  if (!t.value || t.value === pfProfiel().geboortedatum) return;
+  pfDatumGewijzigd = true;
+  await pfZet({ geboortedatum: t.value });
+  const el = document.querySelector(".pf-leeftijd"); if (el) el.innerHTML = pfLeeftijdTekst(pfLeeftijd(t.value));
+}
+document.addEventListener("focusout", e => {
+  if (!e.target || e.target.id !== "pf-gd" || !pfDatumGewijzigd) return;
+  pfDatumGewijzigd = false; V.pfOpen = "over";
+  setTimeout(() => { if (V.view === "profiel" && document.activeElement?.id !== "pf-gd") { teken(); toast("Opgeslagen"); } }, 50);
+});
 document.addEventListener("change", async e => {
   const t = e.target; if (!t || !t.id || !t.id.startsWith("pf-") || V.view !== "profiel") return;
+  if (t.id === "pf-gd") { await pfDatumStil(t); return; }
   const p = pfProfiel();
   if (t.id === "pf-naam") await pfZet({ naam: t.value.trim().slice(0, 40) });
-  else if (t.id === "pf-gd") await pfZet({ geboortedatum: t.value });
   else if (t.id === "pf-lengte") await pfZet({ lengte: t.value ? Math.round(+t.value) : null });
   else if (t.id === "pf-gewicht") await pfZet({ gewicht: t.value ? Math.round(+t.value * 10) / 10 : null });
   else if (t.id === "pf-richting") { await pfZet({ nd: Object.assign({}, p.nd, { handmatig: t.value || null }) }); await pfSyncAnker(); V.pfOpen = "aanpak"; }
