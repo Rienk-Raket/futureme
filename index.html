@@ -20348,12 +20348,10 @@ function nwoThemas() {
 
   // Gezondheid en roken
   const rk = typeof rookCijfers === "function" ? rookCijfers() : null;
-  const pogingen = S.gebeurtenissen.filter(g => /^Gestopt met roken sinds/.test(g.tekst || "")).length || (rk ? 1 : 0);
   const gew = S.vs_gewicht.slice().sort((a, b) => a.datum < b.datum ? -1 : 1), laatste = gew[gew.length - 1], eerste = gew[0];
   const sport30 = S.vs_sportlog.filter(l => l.datum >= van30).length;
   const gez = [];
-  if (rk) gez.push(r("Dagen gestopt met roken", n(rk.heleDagen), `${eur(rk.bespaard)} bespaard · ${n(rk.sigaretten)} sigaretten niet`));
-  if (pogingen) gez.push(r("Stoppogingen", n(pogingen)));
+  if (rk) gez.push(r("Dagen gestopt met roken", n(rk.heleDagen)), r("Sigaretten niet gerookt", n(rk.sigaretten)), r("Bespaard", eur(rk.bespaard)));
   gez.push(r("Sportsessies (30 dagen)", n(sport30)));
   if (laatste) gez.push(r("Gewicht", String(laatste.kg).replace(".", ",") + " kg", eerste && eerste !== laatste ? `${laatste.kg - eerste.kg > 0 ? "+" : ""}${String(Math.round((laatste.kg - eerste.kg) * 10) / 10).replace(".", ",")} kg sinds ${datumLabel(eerste.datum, true)}` : ""));
   gez.push(r("Eetmomenten vandaag", n(S.vs_logs.filter(l => l.datum === v && l.moment !== "water").length)));
