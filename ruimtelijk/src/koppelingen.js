@@ -214,7 +214,7 @@ function titelPassend() {
   const t = $("#titel"), kop = $("#top");
   if (!t || !kop) return;
   const past = () => t.scrollWidth <= t.clientWidth + 1;
-  t.style.fontSize = ""; t.classList.remove("tweeregels"); kop.classList.remove("krap");
+  t.style.fontSize = ""; t.classList.remove("tweeregels", "breek"); kop.classList.remove("krap");
   if (!t.textContent || past()) return;
   kop.classList.add("krap");
   if (past()) return;
@@ -222,7 +222,10 @@ function titelPassend() {
   for (let px = basis - 1; px >= min; px--) { t.style.fontSize = px + "px"; if (past()) return; }
   // Twee regels: begin weer wat groter en krimp tot alles zichtbaar is (minimaal 14px).
   t.classList.add("tweeregels");
-  const pastTwee = () => t.scrollHeight <= t.clientHeight + 2;
+  // Eerst zonder woorden te breken (ook het langste woord moet passen), pas daarna midden in een woord.
+  const pastTwee = () => t.scrollHeight <= t.clientHeight + 2 && t.scrollWidth <= t.clientWidth + 1;
+  for (let px = Math.round(basis * .8); px >= 14; px--) { t.style.fontSize = px + "px"; if (pastTwee()) return; }
+  t.classList.add("breek");
   for (let px = Math.round(basis * .8); px >= 14; px--) { t.style.fontSize = px + "px"; if (pastTwee()) return; }
 }
 {

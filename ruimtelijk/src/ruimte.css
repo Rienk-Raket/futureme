@@ -232,4 +232,5 @@ header#top.krap .top-row{gap:3px}
 header#top.krap .werkpil{padding:0 9px}
 header#top.krap .werkpil span{display:none}
 header#top.krap .top-row>.icon-btn{min-width:38px}
-h1#titel.tweeregels{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.1;overflow-wrap:anywhere}
+h1#titel.tweeregels{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.1;overflow-wrap:normal}
+h1#titel.tweeregels.breek{overflow-wrap:anywhere}

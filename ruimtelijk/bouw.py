@@ -27,7 +27,8 @@ vervang('shles: (typeof vwShLes === "function" ? vwShLes : vwStart)',
         'shles: (typeof vwShLes === "function" ? vwShLes : vwStart),\n'
         '    hobbyskills: (typeof vwHobbySkills === "function" ? vwHobbySkills : vwStart),\n'
         '    hobbyskill: (typeof vwHobbySkill === "function" ? vwHobbySkill : vwStart),\n'
-        '    wishlist: (typeof vwWishlist === "function" ? vwWishlist : vwStart)')
+        '    wishlist: (typeof vwWishlist === "function" ? vwWishlist : vwStart),\n'
+        '    wens: (typeof vwWens === "function" ? vwWens : vwStart)')
 
 # 3b. Categorieën: terugvallen op "overig" op naam, niet op positie (ruimte voor eigen categorieën).
 vervang("(CATEGORIEEN.find(c => c[0] === k) || CATEGORIEEN[6])", '(CATEGORIEEN.find(c => c[0] === k) || CATEGORIEEN.find(c => c[0] === "overig"))', 2)
