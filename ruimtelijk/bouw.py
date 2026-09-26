@@ -20,13 +20,14 @@ def vervang(oud, nieuw, n=1):
 
 
 # 1. Opslag: nieuwe winkel (hs_items) vraagt een hogere databaseversie.
-vervang('const DB_NAAM = "futureme", DB_VERSIE = 7;', 'const DB_NAAM = "futureme", DB_VERSIE = 8;')
+vervang('const DB_NAAM = "futureme", DB_VERSIE = 7;', 'const DB_NAAM = "futureme", DB_VERSIE = 9;')  # 8: hs_items, 9: wl_items
 
 # 2. Views van HobbySkills in de tekenkaart.
 vervang('shles: (typeof vwShLes === "function" ? vwShLes : vwStart)',
         'shles: (typeof vwShLes === "function" ? vwShLes : vwStart),\n'
         '    hobbyskills: (typeof vwHobbySkills === "function" ? vwHobbySkills : vwStart),\n'
-        '    hobbyskill: (typeof vwHobbySkill === "function" ? vwHobbySkill : vwStart)')
+        '    hobbyskill: (typeof vwHobbySkill === "function" ? vwHobbySkill : vwStart),\n'
+        '    wishlist: (typeof vwWishlist === "function" ? vwWishlist : vwStart)')
 
 # 3b. Categorieën: terugvallen op "overig" op naam, niet op positie (ruimte voor eigen categorieën).
 vervang("(CATEGORIEEN.find(c => c[0] === k) || CATEGORIEEN[6])", '(CATEGORIEEN.find(c => c[0] === k) || CATEGORIEEN.find(c => c[0] === "overig"))', 2)
@@ -45,11 +46,14 @@ ILL = ('<symbol id="ill-hobby" viewBox="0 0 100 80"><g fill="none" stroke="curre
        '  <path d="M84 6l2.6 7.4 7.4 2.6-7.4 2.6L84 26l-2.6-7.4L74 16l7.4-2.6z" fill="currentColor" fill-opacity=".95" stroke="none"/>\n'
        '  <path d="M14 30c10-6 20-4 28-12" stroke-opacity=".5"/>\n'
        '</g></symbol>')
-vervang('<symbol id="i-ster"', ICOON + '\n<symbol id="i-ster"')
+CADEAU = ('<symbol id="i-cadeau" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'
+          '<rect x="3.5" y="8.5" width="17" height="4.5" rx="1.2"/><path d="M5 13v6.5a1.5 1.5 0 0 0 1.5 1.5h11a1.5 1.5 0 0 0 1.5-1.5V13M12 8.5V21"/>'
+          '<path d="M12 8.5S10.8 3.5 8 3.5a2.5 2.5 0 0 0 0 5h4zM12 8.5s1.2-5 4-5a2.5 2.5 0 0 1 0 5h-4z"/></symbol>')
+vervang('<symbol id="i-ster"', ICOON + '\n' + CADEAU + '\n<symbol id="i-ster"')
 vervang('<symbol id="ill-persoonlijk"', ILL + '\n<symbol id="ill-persoonlijk"')
 
 # 5. Stijl: achteraan in het bestaande <style>-blok.
-css = "\n\n" + lees("ruimte.css") + "\n\n" + lees("hobbyskills.css") + "\n\n" + lees("sh-tabs.css") + "\n\n" + lees("eigen-categorieen.css") + "\n\n" + lees("fin-vast.css") + "\n"
+css = "\n\n" + lees("ruimte.css") + "\n\n" + lees("hobbyskills.css") + "\n\n" + lees("sh-tabs.css") + "\n\n" + lees("eigen-categorieen.css") + "\n\n" + lees("fin-vast.css") + "\n\n" + lees("wishlist.css") + "\n"
 vervang('</style>\n</head>', css + '</style>\n</head>')
 
 # 6. Scripts: vlak vóór het blok dat start() aanroept.
@@ -57,7 +61,7 @@ marker = "/* Alles is geladen — de app kan starten. */"
 assert html.count(marker) == 1, "startmarker niet gevonden"
 i = html.index(marker)
 j = html.rfind("<script>", 0, i)
-blokken = "".join(f"<script>\n{lees(naam)}\n</script>\n" for naam in ("sh-theorie.js", "sh-modellen.js", "sh-scrum.js", "sh-dashboard.js", "ruimte.js", "hobbyskills.js", "hs-sjablonen.js", "mm-bron.js", "koppelingen.js", "eigen-categorieen.js", "fin-vast.js"))
+blokken = "".join(f"<script>\n{lees(naam)}\n</script>\n" for naam in ("sh-theorie.js", "sh-modellen.js", "sh-scrum.js", "sh-dashboard.js", "ruimte.js", "hobbyskills.js", "hs-sjablonen.js", "mm-bron.js", "koppelingen.js", "eigen-categorieen.js", "fin-vast.js", "wishlist.js"))
 html = html[:j] + blokken + html[j:]
 
 UIT.write_text(html, encoding="utf-8")
