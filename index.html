@@ -2402,6 +2402,13 @@ h1#titel.tweeregels.breek{overflow-wrap:anywhere}
 .nw-rail.sleept .nw-slot{transition:none}
 .nw-rail.piep .nw-slot{transition-duration:.5s}
 .nw-slot>.knop3d{width:100%}
+/* Hoogte volgt het ingeklapte overzicht ernaast (--nw-kh, gezet in nwoHoogte). */
+.nw-rail{--nw-kh:92px}
+.nw-slot>.knop3d.breed{min-height:0;height:var(--nw-kh);transition:height .3s cubic-bezier(.22,1,.36,1)}
+.nw-slot .knop3d.breed .ill3d{height:min(66px,calc(var(--nw-kh) - 14px));width:min(82px,calc((var(--nw-kh) - 14px) * 1.24))}
+.nw-rail.nw-laag .nw-slot .knop3d.breed{padding-top:6px;padding-bottom:6px}
+.nw-rail.nw-laag .nw-slot .knop3d .nm3d{font-size:calc(15px * var(--t));white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nw-rail.nw-laag .nw-slot .knop3d .ds3d{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .nw-slot .knop3d .tekst3d{opacity:calc(.15 + var(--nw-p) * .85);transition:opacity .4s}
 .nw-rail.sleept .nw-slot .knop3d .tekst3d{transition:none}
 /* Telling: ingeklapt boven de illustratie, uitgeklapt op de gewone plek. */
@@ -21987,7 +21994,9 @@ let nwGepiept = false;
     const b = h.indexOf("</div>", a);
     const knoppen = h.slice(a + merk.length, b).split(/(?=<button class="knop3d)/).map(s => s.trim()).filter(s => s.startsWith("<button"));
     const open = V.nwOpen;
-    const rail = `<div class="nw-rail${open ? " open" : ""}" style="--nw-p:${open ? 1 : 0}">
+    // Laatst gemeten knophoogte meteen meegeven, dan springt er niets bij het tekenen (zie nwoHoogte).
+    const kh = V.nwKnopH ? `;--nw-kh:${V.nwKnopH}px` : "";
+    const rail = `<div class="nw-rail${open ? " open" : ""}${V.nwKnopH && V.nwKnopH < 84 ? " nw-laag" : ""}" style="--nw-p:${open ? 1 : 0}${kh}">
       ${knoppen.map((k, n) => `<div class="nw-slot" style="--i:${n}">${k.replace('class="knop3d"', 'class="knop3d breed"')}</div>`).join("")}
     </div>`;
     return h.slice(0, a) + rail + h.slice(b + 6);
@@ -22257,9 +22266,22 @@ function nwoStatistieken() {
     return h.slice(0, m.index + m[0].length) + paneel + h.slice(m.index + m[0].length);
   };
 }
+/* De knoppen zijn samen precies even hoog als het ingeklapte overzicht ernaast
+   (ringdiagram + alle statistieken dicht). Staat er een statistiek open, dan
+   telt die uitklap niet mee: de knoppen blijven dan gewoon staan. */
+const NW_KNOP_MIN = 56, NW_KNOP_MAX = 120, NW_GAT = 13;
 function nwoHoogte() {
   const rail = $(".nw-rail"), p = rail && rail.querySelector(".nw-paneel");
   if (!p) return;
+  let dicht = p.offsetHeight;
+  p.querySelectorAll(".nwo-thema").forEach(t => { const kop = t.querySelector(".nwo-themakop"); if (kop) dicht -= t.offsetHeight - kop.offsetHeight; });
+  const n = rail.querySelectorAll(".nw-slot").length;
+  if (n) {
+    const kh = Math.max(NW_KNOP_MIN, Math.min(NW_KNOP_MAX, +((dicht - NW_GAT * (n - 1)) / n).toFixed(2)));
+    V.nwKnopH = kh;
+    rail.style.setProperty("--nw-kh", kh + "px");
+    rail.classList.toggle("nw-laag", kh < 84);
+  }
   rail.style.minHeight = p.offsetHeight + 8 + "px";
 }
 RT_NA.push(() => { if (V.view === "start") requestAnimationFrame(nwoHoogte); });

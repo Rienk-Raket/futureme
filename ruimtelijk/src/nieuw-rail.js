@@ -23,7 +23,9 @@ let nwGepiept = false;
     const b = h.indexOf("</div>", a);
     const knoppen = h.slice(a + merk.length, b).split(/(?=<button class="knop3d)/).map(s => s.trim()).filter(s => s.startsWith("<button"));
     const open = V.nwOpen;
-    const rail = `<div class="nw-rail${open ? " open" : ""}" style="--nw-p:${open ? 1 : 0}">
+    // Laatst gemeten knophoogte meteen meegeven, dan springt er niets bij het tekenen (zie nwoHoogte).
+    const kh = V.nwKnopH ? `;--nw-kh:${V.nwKnopH}px` : "";
+    const rail = `<div class="nw-rail${open ? " open" : ""}${V.nwKnopH && V.nwKnopH < 84 ? " nw-laag" : ""}" style="--nw-p:${open ? 1 : 0}${kh}">
       ${knoppen.map((k, n) => `<div class="nw-slot" style="--i:${n}">${k.replace('class="knop3d"', 'class="knop3d breed"')}</div>`).join("")}
     </div>`;
     return h.slice(0, a) + rail + h.slice(b + 6);

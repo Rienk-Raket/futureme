@@ -193,9 +193,22 @@ function nwoStatistieken() {
     return h.slice(0, m.index + m[0].length) + paneel + h.slice(m.index + m[0].length);
   };
 }
+/* De knoppen zijn samen precies even hoog als het ingeklapte overzicht ernaast
+   (ringdiagram + alle statistieken dicht). Staat er een statistiek open, dan
+   telt die uitklap niet mee: de knoppen blijven dan gewoon staan. */
+const NW_KNOP_MIN = 56, NW_KNOP_MAX = 120, NW_GAT = 13;
 function nwoHoogte() {
   const rail = $(".nw-rail"), p = rail && rail.querySelector(".nw-paneel");
   if (!p) return;
+  let dicht = p.offsetHeight;
+  p.querySelectorAll(".nwo-thema").forEach(t => { const kop = t.querySelector(".nwo-themakop"); if (kop) dicht -= t.offsetHeight - kop.offsetHeight; });
+  const n = rail.querySelectorAll(".nw-slot").length;
+  if (n) {
+    const kh = Math.max(NW_KNOP_MIN, Math.min(NW_KNOP_MAX, +((dicht - NW_GAT * (n - 1)) / n).toFixed(2)));
+    V.nwKnopH = kh;
+    rail.style.setProperty("--nw-kh", kh + "px");
+    rail.classList.toggle("nw-laag", kh < 84);
+  }
   rail.style.minHeight = p.offsetHeight + 8 + "px";
 }
 RT_NA.push(() => { if (V.view === "start") requestAnimationFrame(nwoHoogte); });
