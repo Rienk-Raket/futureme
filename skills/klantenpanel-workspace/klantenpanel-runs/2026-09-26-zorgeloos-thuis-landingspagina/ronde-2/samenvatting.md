@@ -13,7 +13,7 @@
 | relevantie | 3,68 | 3,11 |
 | waarde voor geld | 3,42 | niet gevraagd |
 | positief (intentie 5-7) | 7,9% | 0% |
-| negatief (intentie 1-3) | 81,9% | 95,2% |
+| negatief (intentie 1-3) | 81,9% | 95,6% |
 
 Bezwaren gewogen: prijs 36%, vertrouwen 24%, relevantie 17%, alternatief 13%. Gedrag: bewaart voor later 28%, deelt met iemand 20%, klikt weg 18%, vraagt iemand anders 18%. Sterkst: P40 Ria, P13 Anouk, P16 Jeroen (intentie 3,33). Zwakst: K12 Jasper (1,67), P39 Henk (1,75), K06 Johan (2,0). Kansgroepen ongewogen intentie 2,0 tegenover hoofdgroepen 2,66.
 

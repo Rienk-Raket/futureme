@@ -1,0 +1,258 @@
+{
+ "ronde": 4,
+ "segmenten": {
+  "hoofdgroep": [
+   "P30",
+   "P35",
+   "P40",
+   "P42",
+   "P45",
+   "P47",
+   "P31",
+   "P13",
+   "P16",
+   "P06",
+   "P39"
+  ],
+  "kansgroep": [
+   "K10",
+   "K06",
+   "K12"
+  ],
+  "55-plus zelfstandig": [
+   "P30",
+   "P35",
+   "P40",
+   "P42",
+   "P47",
+   "P31",
+   "P39"
+  ],
+  "75-plus of via familie": [
+   "P45",
+   "K10"
+  ],
+  "tweeverdieners en gezinnen": [
+   "P13",
+   "P16",
+   "P06"
+  ],
+  "zelfklussers": [
+   "P39",
+   "P30",
+   "K06",
+   "P06"
+  ],
+  "krap budget": [
+   "P42",
+   "P35",
+   "P45",
+   "K06"
+  ]
+ },
+ "resultaten": {
+  "hoofdgroep": {
+   "concept-1": {
+    "personas": 11,
+    "varianten": 36,
+    "gewicht_pct_samen": 27.0,
+    "intentie_gewogen": 3.04,
+    "intentie_ongewogen": 3.02,
+    "aandeel_positief_gewogen_pct": 10.5,
+    "voorkeur_gewogen_pct": 64.7
+   },
+   "concept-2": {
+    "personas": 11,
+    "varianten": 36,
+    "gewicht_pct_samen": 27.0,
+    "intentie_gewogen": 2.05,
+    "intentie_ongewogen": 2.14,
+    "aandeel_positief_gewogen_pct": 7.5,
+    "voorkeur_gewogen_pct": 27.6
+   },
+   "concept-3": {
+    "personas": 11,
+    "varianten": 36,
+    "gewicht_pct_samen": 27.0,
+    "intentie_gewogen": 1.58,
+    "intentie_ongewogen": 1.55,
+    "aandeel_positief_gewogen_pct": 3.0,
+    "voorkeur_gewogen_pct": 7.7
+   }
+  },
+  "kansgroep": {
+   "concept-1": {
+    "personas": 3,
+    "varianten": 9,
+    "gewicht_pct_samen": 2.7,
+    "intentie_gewogen": 3.19,
+    "intentie_ongewogen": 3.22,
+    "aandeel_positief_gewogen_pct": 11.1,
+    "voorkeur_gewogen_pct": 88.9
+   },
+   "concept-2": {
+    "personas": 3,
+    "varianten": 9,
+    "gewicht_pct_samen": 2.7,
+    "intentie_gewogen": 2.48,
+    "intentie_ongewogen": 2.44,
+    "aandeel_positief_gewogen_pct": 11.1,
+    "voorkeur_gewogen_pct": 11.1
+   },
+   "concept-3": {
+    "personas": 3,
+    "varianten": 9,
+    "gewicht_pct_samen": 2.7,
+    "intentie_gewogen": 1.26,
+    "intentie_ongewogen": 1.22,
+    "aandeel_positief_gewogen_pct": 0.0,
+    "voorkeur_gewogen_pct": 0.0
+   }
+  },
+  "55-plus zelfstandig": {
+   "concept-1": {
+    "personas": 7,
+    "varianten": 23,
+    "gewicht_pct_samen": 18.1,
+    "intentie_gewogen": 3.2,
+    "intentie_ongewogen": 3.19,
+    "aandeel_positief_gewogen_pct": 12.0,
+    "voorkeur_gewogen_pct": 69.1
+   },
+   "concept-2": {
+    "personas": 7,
+    "varianten": 23,
+    "gewicht_pct_samen": 18.1,
+    "intentie_gewogen": 1.86,
+    "intentie_ongewogen": 1.93,
+    "aandeel_positief_gewogen_pct": 7.6,
+    "voorkeur_gewogen_pct": 23.9
+   },
+   "concept-3": {
+    "personas": 7,
+    "varianten": 23,
+    "gewicht_pct_samen": 18.1,
+    "intentie_gewogen": 1.61,
+    "intentie_ongewogen": 1.58,
+    "aandeel_positief_gewogen_pct": 0.0,
+    "voorkeur_gewogen_pct": 7.0
+   }
+  },
+  "75-plus of via familie": {
+   "concept-1": {
+    "personas": 2,
+    "varianten": 7,
+    "gewicht_pct_samen": 2.7,
+    "intentie_gewogen": 2.83,
+    "intentie_ongewogen": 3.12,
+    "aandeel_positief_gewogen_pct": 11.1,
+    "voorkeur_gewogen_pct": 55.6
+   },
+   "concept-2": {
+    "personas": 2,
+    "varianten": 7,
+    "gewicht_pct_samen": 2.7,
+    "intentie_gewogen": 3.28,
+    "intentie_ongewogen": 3.54,
+    "aandeel_positief_gewogen_pct": 11.1,
+    "voorkeur_gewogen_pct": 44.4
+   },
+   "concept-3": {
+    "personas": 2,
+    "varianten": 7,
+    "gewicht_pct_samen": 2.7,
+    "intentie_gewogen": 1.11,
+    "intentie_ongewogen": 1.17,
+    "aandeel_positief_gewogen_pct": 0.0,
+    "voorkeur_gewogen_pct": 0.0
+   }
+  },
+  "tweeverdieners en gezinnen": {
+   "concept-1": {
+    "personas": 3,
+    "varianten": 9,
+    "gewicht_pct_samen": 7.1,
+    "intentie_gewogen": 2.84,
+    "intentie_ongewogen": 2.89,
+    "aandeel_positief_gewogen_pct": 9.4,
+    "voorkeur_gewogen_pct": 57.3
+   },
+   "concept-2": {
+    "personas": 3,
+    "varianten": 9,
+    "gewicht_pct_samen": 7.1,
+    "intentie_gewogen": 2.35,
+    "intentie_ongewogen": 2.44,
+    "aandeel_positief_gewogen_pct": 9.4,
+    "voorkeur_gewogen_pct": 31.5
+   },
+   "concept-3": {
+    "personas": 3,
+    "varianten": 9,
+    "gewicht_pct_samen": 7.1,
+    "intentie_gewogen": 1.66,
+    "intentie_ongewogen": 1.67,
+    "aandeel_positief_gewogen_pct": 11.3,
+    "voorkeur_gewogen_pct": 11.3
+   }
+  },
+  "zelfklussers": {
+   "concept-1": {
+    "personas": 4,
+    "varianten": 14,
+    "gewicht_pct_samen": 9.2,
+    "intentie_gewogen": 2.47,
+    "intentie_ongewogen": 2.5,
+    "aandeel_positief_gewogen_pct": 0.0,
+    "voorkeur_gewogen_pct": 75.8
+   },
+   "concept-2": {
+    "personas": 4,
+    "varianten": 14,
+    "gewicht_pct_samen": 9.2,
+    "intentie_gewogen": 1.91,
+    "intentie_ongewogen": 1.88,
+    "aandeel_positief_gewogen_pct": 0.0,
+    "voorkeur_gewogen_pct": 24.2
+   },
+   "concept-3": {
+    "personas": 4,
+    "varianten": 14,
+    "gewicht_pct_samen": 9.2,
+    "intentie_gewogen": 1.26,
+    "intentie_ongewogen": 1.27,
+    "aandeel_positief_gewogen_pct": 0.0,
+    "voorkeur_gewogen_pct": 0.0
+   }
+  },
+  "krap budget": {
+   "concept-1": {
+    "personas": 4,
+    "varianten": 13,
+    "gewicht_pct_samen": 7.1,
+    "intentie_gewogen": 3.04,
+    "intentie_ongewogen": 2.98,
+    "aandeel_positief_gewogen_pct": 0.0,
+    "voorkeur_gewogen_pct": 68.1
+   },
+   "concept-2": {
+    "personas": 4,
+    "varianten": 13,
+    "gewicht_pct_samen": 7.1,
+    "intentie_gewogen": 2.22,
+    "intentie_ongewogen": 2.19,
+    "aandeel_positief_gewogen_pct": 8.9,
+    "voorkeur_gewogen_pct": 31.9
+   },
+   "concept-3": {
+    "personas": 4,
+    "varianten": 13,
+    "gewicht_pct_samen": 7.1,
+    "intentie_gewogen": 1.34,
+    "intentie_ongewogen": 1.33,
+    "aandeel_positief_gewogen_pct": 0.0,
+    "voorkeur_gewogen_pct": 0.0
+   }
+  }
+ }
+}

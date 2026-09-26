@@ -1,0 +1,78 @@
+{
+ "ronde": 4,
+ "status": "ok",
+ "controles": [
+  {
+   "controle": "spreiding_binnen_persona",
+   "ok": true,
+   "waarde": 0.0,
+   "drempel": 0.5,
+   "toelichting": "persona's zonder spreiding in intentie (std < 0.5): []"
+  },
+  {
+   "controle": "positiviteit",
+   "ok": true,
+   "waarde": {
+    "concept-1": 0.105,
+    "concept-2": 0.079,
+    "concept-3": 0.027000000000000003
+   },
+   "drempel": 0.65,
+   "toelichting": "gewogen aandeel intentie >= 5 per object; faalt als alle objecten erboven zitten"
+  },
+  {
+   "controle": "negativiteit_waarschuwing",
+   "ok": true,
+   "waarschuwing": false,
+   "waarde": {
+    "concept-1": 0.105,
+    "concept-2": 0.079,
+    "concept-3": 0.027000000000000003
+   },
+   "drempel": 0.05,
+   "toelichting": "alleen een waarschuwing: bij alle objecten minder dan 5% positief. Controleer of het materiaal een objectieve fout bevat die iedereen raakt (dan is het echt) en benoem het in samenvatting en rapport; geen herhaling nodig."
+  },
+  {
+   "controle": "begrip_te_hoog",
+   "ok": true,
+   "waarde": {
+    "concept-1": 6.02,
+    "concept-2": 4.99,
+    "concept-3": 4.64
+   },
+   "drempel": 6.3,
+   "toelichting": "gewogen gemiddeld begrip per object; bijna niemand snapt alles"
+  },
+  {
+   "controle": "gelijkvormigheid_tussen_personas",
+   "ok": true,
+   "waarde": 0.001,
+   "drempel": 0.05,
+   "toelichting": "aandeel paren van verschillende persona's met woordoverlap >= 0.35; meest betrokken: [('P30', 3), ('P45', 3), ('P35', 3), ('K06', 2)]"
+  },
+  {
+   "controle": "een_bezwaar_domineert",
+   "ok": true,
+   "waarde": {
+    "concept-1": 0.315,
+    "concept-2": 0.47700000000000004,
+    "concept-3": 0.434
+   },
+   "drempel": 0.7,
+   "toelichting": "gewogen aandeel van de grootste bezwaar-categorie per object"
+  },
+  {
+   "controle": "volledigheid",
+   "ok": true,
+   "waarde": {
+    "ontbrekend": 0,
+    "dubbel": 0,
+    "fouten": 0
+   },
+   "drempel": 0,
+   "toelichting": "ontbrekend: []; dubbel: []; fouten: []"
+  }
+ ],
+ "herhalen_personas": [],
+ "advies": "Geen actie nodig."
+}

@@ -1,0 +1,996 @@
+# Ronde 4: Eindtoets van de concepten
+
+Records: 135, varianten: 45. Realisme: **ok**
+
+- OK spreiding_binnen_persona: 0.0 (drempel 0.5). persona's zonder spreiding in intentie (std < 0.5): []
+- OK positiviteit: {'concept-1': 0.105, 'concept-2': 0.079, 'concept-3': 0.027000000000000003} (drempel 0.65). gewogen aandeel intentie >= 5 per object; faalt als alle objecten erboven zitten
+- OK negativiteit_waarschuwing: {'concept-1': 0.105, 'concept-2': 0.079, 'concept-3': 0.027000000000000003} (drempel 0.05). alleen een waarschuwing: bij alle objecten minder dan 5% positief. Controleer of het materiaal een objectieve fout bevat die iedereen raakt (dan is het echt) en benoem het in samenvatting en rapport; geen herhaling nodig.
+- OK begrip_te_hoog: {'concept-1': 6.02, 'concept-2': 4.99, 'concept-3': 4.64} (drempel 6.3). gewogen gemiddeld begrip per object; bijna niemand snapt alles
+- OK gelijkvormigheid_tussen_personas: 0.001 (drempel 0.05). aandeel paren van verschillende persona's met woordoverlap >= 0.35; meest betrokken: [('P30', 3), ('P45', 3), ('P35', 3), ('K06', 2)]
+- OK een_bezwaar_domineert: {'concept-1': 0.315, 'concept-2': 0.47700000000000004, 'concept-3': 0.434} (drempel 0.7). gewogen aandeel van de grootste bezwaar-categorie per object
+- OK volledigheid: {'ontbrekend': 0, 'dubbel': 0, 'fouten': 0} (drempel 0). ontbrekend: []; dubbel: []; fouten: []
+
+## Object `concept-1` (n=45)
+
+| score | gewogen | ongewogen |
+|---|---|---|
+| begrip | 6.02 | 5.99 |
+| relevantie | 3.83 | 3.83 |
+| aantrekkelijkheid | 4.63 | 4.64 |
+| vertrouwen | 4.31 | 4.33 |
+| intentie | 3.06 | 3.07 |
+
+Intentie gewogen: {'negatief (1-3)': 72.7, 'neutraal (4)': 16.8, 'positief (5-7)': 10.5}
+Gedrag gewogen %: {'bewaart voor later': 47.6, 'leest verder': 22.8, 'deelt met iemand': 10.9, 'vraagt iemand anders': 7.8, 'negeert': 6.0, 'klikt weg': 4.9}
+Bezwaren gewogen %: {'vertrouwen': 31.5, 'alternatief': 27.9, 'relevantie': 19.0, 'prijs': 13.2, 'gemak': 3.3, 'kwaliteit': 2.7, 'privacy': 2.5}
+Kansgroep vs hoofdgroep (ongewogen gem.): {'kansgroep': {'begrip': 5.89, 'relevantie': 3.78, 'aantrekkelijkheid': 4.78, 'vertrouwen': 4.11, 'intentie': 3.22}, 'hoofdgroep': {'begrip': 6.02, 'relevantie': 3.85, 'aantrekkelijkheid': 4.61, 'vertrouwen': 4.39, 'intentie': 3.02}}
+Sterkst: [('K10', 'Nel Hoogendoorn', 4), ('P35', 'Hennie Bosman', 3.67), ('P40', 'Ria van den Heuvel', 3.67)]  |  Zwakst: [('P45', 'Corrie Nijland', 2.25), ('P06', 'Sanne de Groot', 2.33), ('P39', 'Henk Groothuis', 2.5)]
+
+| persona | gew% | K | n | intentie gem | std | scores | gedrag | bezwaren |
+|---|---|---|---|---|---|---|---|---|
+| P30 Gerard Willems | 2.5 |  | 4 | 2.5 | 0.5 | {'begrip': 6.5, 'relevantie': 2.75, 'aantrekkelijkheid': 4.75, 'vertrouwen': 4.25, 'intentie': 2.5} | {'deelt met iemand': 1, 'leest verder': 1, 'negeert': 1, 'bewaart voor later': 1} | ['relevantie', 'prijs', 'relevantie', 'alternatief'] |
+| P35 Hennie Bosman | 1.9 |  | 3 | 3.67 | 0.47 | {'begrip': 6, 'relevantie': 5, 'aantrekkelijkheid': 4.67, 'vertrouwen': 4.67, 'intentie': 3.67} | {'bewaart voor later': 2, 'deelt met iemand': 1} | ['prijs', 'vertrouwen', 'prijs'] |
+| P40 Ria van den Heuvel | 2.7 |  | 3 | 3.67 | 1.25 | {'begrip': 6, 'relevantie': 4.33, 'aantrekkelijkheid': 4.33, 'vertrouwen': 4.33, 'intentie': 3.67} | {'bewaart voor later': 2, 'deelt met iemand': 1} | ['alternatief', 'vertrouwen', 'vertrouwen'] |
+| P42 Bep Wesselink | 2.2 |  | 3 | 3.33 | 0.47 | {'begrip': 6.33, 'relevantie': 4.33, 'aantrekkelijkheid': 4.67, 'vertrouwen': 4.33, 'intentie': 3.33} | {'bewaart voor later': 3} | ['alternatief', 'vertrouwen', 'alternatief'] |
+| P45 Corrie Nijland | 1.8 |  | 4 | 2.25 | 1.09 | {'begrip': 5.5, 'relevantie': 3.5, 'aantrekkelijkheid': 3.75, 'vertrouwen': 3.5, 'intentie': 2.25} | {'vraagt iemand anders': 1, 'leest verder': 1, 'bewaart voor later': 1, 'negeert': 1} | ['prijs', 'alternatief', 'alternatief', 'vertrouwen'] |
+| P47 Els Bruinsma | 3.8 |  | 3 | 3.67 | 0.94 | {'begrip': 6.67, 'relevantie': 4.67, 'aantrekkelijkheid': 5, 'vertrouwen': 3.33, 'intentie': 3.67} | {'bewaart voor later': 1, 'vraagt iemand anders': 1, 'leest verder': 1} | ['vertrouwen', 'prijs', 'vertrouwen'] |
+| P31 Annemarie Kok | 2.2 |  | 3 | 3 | 0.82 | {'begrip': 6, 'relevantie': 3.67, 'aantrekkelijkheid': 5, 'vertrouwen': 5, 'intentie': 3} | {'bewaart voor later': 2, 'leest verder': 1} | ['relevantie', 'alternatief', 'privacy'] |
+| P13 Anouk Hendriks | 2.0 |  | 3 | 3.33 | 1.25 | {'begrip': 6, 'relevantie': 4.33, 'aantrekkelijkheid': 5, 'vertrouwen': 5, 'intentie': 3.33} | {'klikt weg': 1, 'bewaart voor later': 1, 'deelt met iemand': 1} | ['relevantie', 'alternatief', 'gemak'] |
+| P16 Jeroen Smit | 2.4 |  | 3 | 3 | 0.0 | {'begrip': 6, 'relevantie': 4, 'aantrekkelijkheid': 4.67, 'vertrouwen': 5, 'intentie': 3} | {'leest verder': 2, 'klikt weg': 1} | ['relevantie', 'alternatief', 'kwaliteit'] |
+| P06 Sanne de Groot | 2.7 |  | 3 | 2.33 | 0.47 | {'begrip': 5.67, 'relevantie': 3, 'aantrekkelijkheid': 4.33, 'vertrouwen': 4.33, 'intentie': 2.33} | {'bewaart voor later': 2, 'leest verder': 1} | ['relevantie', 'vertrouwen', 'alternatief'] |
+| P39 Henk Groothuis | 2.8 |  | 4 | 2.5 | 0.5 | {'begrip': 5.5, 'relevantie': 2.75, 'aantrekkelijkheid': 4.5, 'vertrouwen': 4.5, 'intentie': 2.5} | {'bewaart voor later': 2, 'leest verder': 1, 'negeert': 1} | ['alternatief', 'vertrouwen', 'relevantie', 'vertrouwen'] |
+| K10 Nel Hoogendoorn | 0.9 | K | 3 | 4 | 0.82 | {'begrip': 5.67, 'relevantie': 4.67, 'aantrekkelijkheid': 4.33, 'vertrouwen': 4, 'intentie': 4} | {'bewaart voor later': 2, 'leest verder': 1} | ['prijs', 'gemak', 'vertrouwen'] |
+| K06 Johan Wubbels | 1.2 | K | 3 | 2.67 | 0.94 | {'begrip': 5.33, 'relevantie': 3, 'aantrekkelijkheid': 4.33, 'vertrouwen': 4, 'intentie': 2.67} | {'deelt met iemand': 1, 'bewaart voor later': 1, 'vraagt iemand anders': 1} | ['vertrouwen', 'alternatief', 'relevantie'] |
+| K12 Jasper Hoek | 0.6 | K | 3 | 3 | 0.82 | {'begrip': 6.67, 'relevantie': 3.67, 'aantrekkelijkheid': 5.67, 'vertrouwen': 4.33, 'intentie': 3} | {'bewaart voor later': 1, 'vraagt iemand anders': 1, 'leest verder': 1} | ['relevantie', 'alternatief', 'vertrouwen'] |
+
+Citaten:
+- P30-a: Voor mezelf niet, maar die kaart van €69 voor schoonmoeder, dat is een aardig idee.
+- P30-b: Tot een half uur, zeggen ze. Eerst zien hoe vaak dat lukt.
+- P30-c: Vijfentwintig euro per klus, helder. Maar een lamp hang ik zelf wel op.
+- P30-d: Degelijk op papier, dat moet ik ze nageven. Maar Wim doet het nu voor een tientje.
+- P35-a: Die kaart samen met de buurvrouw delen, dat zie ik wel zitten.
+- P35-b: Of gratis, ja ja. Laat eerst maar zien dat ze echt op tijd komen.
+- P35-c: Geen abonnement, prima. Maar wat kost dat extra kwartier dan?
+- P40-a: Vijfentwintig euro voor een half uurtje? Harrie doet het voor een tientje en een bakske koffie.
+- P40-b: Geen abonnement en nooit meer dan afgesproken, dat wil ik zwart op wit, en dat staat er.
+- P40-c: Die klussenkaart met Door van hiernaast delen, da's gezellig en scheelt ons allebei.
+- P42-a: Drie voor 69 euro, dat is 23 euro per keer. Mijn dochter rekent het nog even na.
+- P42-b: Of gratis, dat zeggen ze allemaal. Ik wil eerst weten wie er voor mijn deur staat.
+- P42-c: Geen abonnement, dat wil ik horen. Maar die deur doet de woningbouw al.
+- P45-a: Of gratis, ja ja. Dat zei die vorige ook. Dat moet mijn zoon maar bekijken.
+- P45-b: Vijfentwintig euro voor een halfuurtje? De mannen van de kerk doen het voor een gift.
+- P45-c: Deelbaar met de buren, zo gaat het hier nou net. Maar Gerrit doet het nu nog.
+- P45-d: Iemand aan de deur die ik niet ken, en dan contant betalen? Daar word ik onrustig van.
+- P47-a: Klinkt nuchter, maar ik wil eerst weten wie er bij mij aanbelt.
+- P47-b: Die klussenkaart als cadeau voor Riet, dat is nou eens iets nuttigs.
+- P47-c: Gratis als hij niet komt? Ik had liever gewoon licht gehad.
+- P31-a: Duidelijk, dat wel. Maar mijn man hangt de lampen op, en ik ga liever naar het theater.
+- P31-b: Binnen twee werkdagen, dat zou Henk eens moeten beloven. Maar wie laat mij weten hoe het ging?
+- P31-c: De voorwaarden zijn netjes, maar de formulering over mijn gegevens klopt niet. Wanneer ben ik hier klant?
+- P13-a: Vijfentwintig euro, geen abonnement, snap ik. Maar lampen doet mijn man, dus door.
+- P13-b: Als Henk een keer niet kan, weet ik jullie te vinden. Eerder niet.
+- P13-c: Begin- en eindtijd op de factuur, geen voorrijkosten. Dat hadden we de vorige keer moeten hebben.
+- P16-a: Helder model, geen vaste last. Maar mijn vrouw heeft gelijk: die lamp hang ik zelf op.
+- P16-b: Duidelijke kop. Maar mijn buurtklusser doet dit ook al, dus waarom overstappen?
+- P16-c: Dit snap ik meteen. Nu nog het tarief na die dertig minuten zwart op wit.
+- P06-a: Helder en eerlijk, maar ik doe het zelf; de klussenkaart voor mijn ouders bewaar ik.
+- P06-b: Klinkt netjes, maar 'binnen twee werkdagen' heb ik al eens beloofd gekregen. Toen kwam er niemand.
+- P06-c: Duidelijk, maar mijn buurman doet het voor koffie. Screenshot voor later.
+- P39-a: Begin- en eindtijd op de factuur, zo hoort het. Maar zolang Bennie kan, bel ik Bennie.
+- P39-b: Nooit meer dan afgesproken, en niet opgelost is niet betalen. Dat staat er tenminste zwart op wit.
+- P39-c: Voor mij niks, ik hang mijn eigen lampen. Maar die kaart voor Truus, daar zegt Ans wat.
+- P39-d: Of gratis, dat heb ik eerder gehoord. De lampen doe ik zelf, of mijn schoonzoon.
+- K10-a: Geen abonnement, dat is fijn. Maar vijfentwintig euro... dat moet Marjan weten.
+- K10-b: Vijfentwintig euro is prima, maar dan moet ik alsnog elke keer zelf bellen.
+- K10-c: Negenenzestig euro en geen abonnement. Valt het tegen, dan ben ik alleen dat kwijt.
+- K06-a: Vijfentwintig piek en gewoon betalen met de pin, dat snap ik tenminste.
+- K06-b: Voor een half uur? Dat doe ik voor de buurvrouw voor een bak koffie.
+- K06-c: Vijfentwintig per keer, geen abonnement. Goed, maar nu even niet.
+- K12-a: Geen abonnement, betalen per keer. Dat snap ik in één oogopslag, en dat is zeldzaam.
+- K12-b: €25 per halfuur is €50 per uur. Onze klusjesman doet het voor minder, contant.
+- K12-c: Bellen, contant, geen account. Maar 'alleen zolang u klant bent' klopt niet met zeven jaar fiscale bewaarplicht.
+
+Verbeterideeën:
+- P30-a: Zet de klussenkaart als cadeau voor ouders bovenaan, met een voorbeeld van wat je voor drie klussen krijgt.
+- P30-b: Laat zien welk deel van de klussen echt binnen het half uur blijft en wat een uitgelopen klus gemiddeld kost.
+- P30-c: Zeg in de kop voor wie het bedoeld is, dan weet ik meteen of ik het moet doorsturen.
+- P30-d: Noem dat de telefoon in Nederland wordt opgenomen, door mensen van het bedrijf zelf.
+- P35-a: Zet er een voorbeeld bij van twee buren die samen een klussenkaart delen, dat spreekt mensen zoals ik aan.
+- P35-b: Zeg erbij hoe je 'gratis' dan krijgt, zonder dat je er zelf achteraan moet bellen.
+- P35-c: Noem een vast tarief per extra kwartier en hoeveel ze op materiaal rekenen.
+- P40-a: Zet 'tot 30 minuten' en wat er daarna gebeurt in dezelfde grote letters als de €25.
+- P40-b: Laat de klussenkaart pas betalen na de eerste klus, zodat je niet vooraf €69 kwijt bent aan een onbekende.
+- P40-c: Maak een buurtkaart: klussen voor een straat of kaartclub samen, met één vaste klusser voor iedereen.
+- P42-a: Verkoop de klussenkaart ook contant op een vaste plek in de wijk, zoals het wijkcentrum, niet alleen per telefoon.
+- P42-b: Zet een foto en de naam van de vaste klusser voor de wijk erbij, zodat je weet wie er aanbelt.
+- P42-c: Maak voor huurders een lijstje 'dit doet de woningbouw niet', zodat je ziet waar je voor betaalt.
+- P45-a: Zet in de kop de naam en het dorp van de klusser, zodat je meteen ziet dat het iemand van hier is.
+- P45-b: Noem klusjes die bij ons horen, zoals de kerkradio, het alarmkastje en de rookmelder, in plaats van wifi.
+- P45-c: Maak een buurtkaart die meerdere ouderen in één straat samen kunnen gebruiken.
+- P45-d: Schrap betalen aan de deur en laat de eerste afspraak altijd via een familielid lopen.
+- P47-a: Zet een foto en naam van de vaste klusser op de site, niet alleen die van de oprichter.
+- P47-b: Verkoop ook een losse cadeaubon voor één klus van €25, niet alleen de kaart van drie.
+- P47-c: Beloof niet alleen gratis bij te laat, maar een vaste terugbelafspraak binnen een uur.
+- P31-a: Zet de Klussenkaart als cadeaubon in de kop, dan denk ik meteen aan mijn moeder in plaats van aan mezelf.
+- P31-b: Voeg toe dat een familielid na afloop een berichtje kan krijgen, ook bij een losse klus.
+- P31-c: Schrijf: 'Wij bewaren alleen uw naam, adres en telefoonnummer, tot een jaar na uw laatste klus.'
+- P13-a: Zet in de kop dat je het ook voor je ouders kunt boeken en betalen, nu zit dat verstopt bij de klussenkaart.
+- P13-b: Zet een Google-score en een handvol reviews uit de regio erbij in plaats van één citaat.
+- P13-c: Laat je bij de klussenkaart een contactpersoon kiezen, zoals bij concept 2.
+- P16-a: Geef naast lampen en wifi voorbeelden voor een modern huis: slimme thermostaat, warmtepomp-app, laadpaal, zonnepanelenmonitoring.
+- P16-b: Zet bovenaan wat dit beter maakt dan de klusjesman uit de buurtapp: in dienst, verzekerd, vaste prijs.
+- P16-c: Publiceer het uurtarief na de eerste 30 minuten in plaats van 'de klusser noemt vooraf de prijs'.
+- P06-a: Zet de klussenkaart als cadeau voor ouders bovenaan, met een knop 'geef deze kaart cadeau'.
+- P06-b: Laat zien hoe vaak jullie de twee-werkdagenbelofte vorig jaar echt haalden, met een percentage.
+- P06-c: Zet een voorbeeld in de kop waar je als handig stel niet zelf aan begint, zoals een stopcontact of de meterkast.
+- P39-a: Zet erbij welk vakdiploma de klusser heeft, elektra of installatietechniek, zodat een vakman weet met wie hij te maken heeft.
+- P39-b: Schrijf erbij wat 'opgelost' betekent en wie dat bepaalt, bijvoorbeeld als de wifi een dag later weer uitvalt.
+- P39-c: Verkoop de klussenkaart ook bij de bakker of de supermarkt in het dorp, dan geef je hem echt als cadeau.
+- P39-d: Zet in de kop dat er een vaste klusser uit het dorp met naam komt, dat zegt me meer dan 'of gratis'.
+- K10-a: Zet 'de factuur kan naar uw zoon of dochter' groot bovenaan bij de prijs, niet onderaan in de kleine letters.
+- K10-b: Laat de klusser ook bij losse klussen na afloop een berichtje sturen aan wie de factuur krijgt.
+- K10-c: Beloof op de kaart dat de klusser eerst de familie belt voordat hij bij een oudere aanbelt.
+- K06-a: Zet bovenaan een filmpje van de klusser die in gewone woorden zegt wat hij doet en wat het kost.
+- K06-b: Maak een buurtkaart die je met een paar huizen in de straat samen koopt, dan wordt het van ons allemaal.
+- K06-c: Zet het telefoonnummer en de prijs groot op een kaartje dat je op de koelkast kunt hangen.
+- K12-a: Noem in de kop ook wat een klus van een uur ongeveer kost, zodat je niet pas aan de deur hoort wat het wordt.
+- K12-b: Noem ook een uurprijs, zodat je het eerlijk kunt vergelijken met een zelfstandige klusjesman.
+- K12-c: Vervang 'bel of app' door 'bel, mail of schrijf' en noem de fiscale bewaartermijn van facturen erbij.
+
+Triggers:
+- P30-a: De klussenkaart als cadeau voor schoonmoeder, per factuur te betalen en twee jaar geldig.
+- P30-b: Onafhankelijke beoordelingen, liefst van de Consumentenbond of veel echte reviews in de buurt.
+- P30-c: Als ik iemand weet die het niet meer zelf kan, bijvoorbeeld in de familie.
+- P30-d: Als mijn huidige klusser stopt, of als ik zeker weet dat ik hier een vast aanspreekpunt heb dat opneemt.
+- P35-a: Als mijn buurvrouw en ik samen een klussenkaart nemen en hem om de beurt gebruiken.
+- P35-b: Als mijn dochter het uitzoekt en zegt dat ze het zelf goed heeft gehoord van iemand.
+- P35-c: Een vaste prijs per extra kwartier op de site, dan weet ik waar ik aan toe ben.
+- P40-a: Als de buurvrouw of iemand van de kaartclub zegt dat die vaste klusser goed bevalt.
+- P40-b: Steeds dezelfde klusser die zich voorstelt met naam en pasje, en eerst iemand aan de telefoon krijgen.
+- P40-c: Als de buurvrouw er ook een neemt en ze de kaart samen gebruiken.
+- P42-a: Als ik de klussenkaart samen met de buurvrouw koop, zodat het per klus rond de 20 euro uitkomt.
+- P42-b: Als iemand van de soos of uit de flat zegt dat deze klusser echt komt en netjes is.
+- P42-c: Als duidelijk staat welke klussen niet onder de service van de corporatie vallen, zoals de tv en de wifi.
+- P45-a: Als de buurvrouw of de thuiszorg zegt dat het een goeie jongen uit het dorp is.
+- P45-b: Als hij op zaterdag komt wanneer mijn kerkradio het niet doet, zodat ik zondag de dienst kan horen.
+- P45-c: Als Gerrit het niet meer kan en de buurvrouw en ik samen een kaart nemen.
+- P45-d: Als de wijkzuster of de dokter zegt dat het een betrouwbaar bedrijf is.
+- P47-a: Als Joke bevestigt dat het dezelfde club is en dat de klusser netjes was.
+- P47-b: Als een paar vriendinnen van de bridge er al goede ervaringen mee hebben.
+- P47-c: Een bevestiging de dag ervoor met naam en tijd van de klusser.
+- P31-a: Als mijn man een keer niet kan en het dringend is, zou ik dit nummer willen hebben liggen.
+- P31-b: Als Henk weer eens niet terugbelt terwijl mijn moeder in het donker zit, is die garantie van twee werkdagen goud waard.
+- P31-c: Een Klussenkaart als cadeau voor mijn buurvrouw zou ik zo bestellen, als die privacyzin klopt.
+- P13-a: Als ik het met één appje voor mijn moeder kan regelen zonder dat ik erbij hoef te zijn.
+- P13-b: Een flink aantal echte reviews van mensen uit mijn eigen buurt, bijvoorbeeld in de buurtapp.
+- P13-c: Als de klussenkaart op het adres van mama kan staan en de klusser met mij afstemt.
+- P16-a: Als de klusser ook de dingen doet waar ik nu weekenden aan kwijt ben, zoals de laadpaal of de warmtepompinstellingen, wordt het interessant.
+- P16-b: Een vaste klusser die ook weet hoe ons huis in elkaar zit, zodat ik niet elke keer opnieuw hoef uit te leggen.
+- P16-c: Een openbaar tarief voor wat na die 30 minuten komt, per kwartier, zodat de meerprijs geen onderhandeling wordt.
+- P06-a: Als ik de klussenkaart als verjaardagscadeau aan mijn ouders kan geven en zij er echt gebruik van maken.
+- P06-b: Reviews van mensen uit onze eigen buurt, niet één citaat uit Apeldoorn.
+- P06-c: Als onze buurman een keer niet kan en ik snel iemand nodig heb die ik kan vertrouwen.
+- P39-a: Als Bennie een keer niet kan en de buurman zegt dat deze klusser echt vakwerk levert, bel ik.
+- P39-b: Als iemand uit het dorp zegt dat ze echt op tijd kwamen en dat de factuur klopte.
+- P39-c: Als Truus zegt dat ze het wil en ik de kaart gewoon per telefoon als cadeau kan bestellen.
+- P39-d: Als mijn dochter of de buurman zegt dat ze er echt goed mee geholpen zijn.
+- K10-a: Als Marjan zegt dat het goed is en dat de factuur naar haar gaat.
+- K10-b: De klussenkaart als goedkope proef met de factuur naar haar.
+- K10-c: Met de klussenkaart kan ze het proberen zonder vast te zitten, voor haar eigen huis en dat van mama.
+- K06-a: Als mijn zwager of iemand van de duivenclub zegt dat die vaste klusser echt op tijd kwam, dan koop ik die kaart.
+- K06-b: Als ik zelf door mijn rug niet meer kan klussen voor mijn moeder, dan is dit het eerste waar ik aan denk.
+- K06-c: Als het een keer echt nodig is en een buurman zegt dat die man betrouwbaar was, dan bel ik.
+- K12-a: Als 'op tijd of gratis' echt zwart op wit in de voorwaarden staat, net zo concreet als die begin- en eindtijd op de factuur.
+- K12-b: Als onze huidige klusjesman stopt, is dit het eerste nummer dat ik zou bellen.
+- K12-c: Een volledige, eerlijke zin over bewaartermijnen, inclusief de fiscale, en de toezegging dat klagen of opzeggen nooit via een app hoeft.
+
+## Object `concept-2` (n=45)
+
+| score | gewogen | ongewogen |
+|---|---|---|
+| begrip | 4.99 | 4.96 |
+| relevantie | 2.99 | 3.16 |
+| aantrekkelijkheid | 3.59 | 3.62 |
+| vertrouwen | 4.26 | 4.18 |
+| intentie | 2.09 | 2.21 |
+
+Intentie gewogen: {'negatief (1-3)': 74.4, 'neutraal (4)': 17.8, 'positief (5-7)': 7.9}
+Gedrag gewogen %: {'klikt weg': 30.1, 'negeert': 24.6, 'deelt met iemand': 16.1, 'vraagt iemand anders': 13.9, 'leest verder': 8.2, 'bewaart voor later': 3.9, 'meldt zich aan of koopt': 3.3}
+Bezwaren gewogen %: {'relevantie': 47.7, 'prijs': 23.1, 'vertrouwen': 12.6, 'begrip': 5.7, 'kwaliteit': 5.6, 'alternatief': 3.9, 'privacy': 1.3}
+Kansgroep vs hoofdgroep (ongewogen gem.): {'kansgroep': {'begrip': 4.67, 'relevantie': 3.22, 'aantrekkelijkheid': 3.22, 'vertrouwen': 3.67, 'intentie': 2.44}, 'hoofdgroep': {'begrip': 5.04, 'relevantie': 3.14, 'aantrekkelijkheid': 3.73, 'vertrouwen': 4.33, 'intentie': 2.14}}
+Sterkst: [('K10', 'Nel Hoogendoorn', 4.33), ('P13', 'Anouk Hendriks', 4), ('P45', 'Corrie Nijland', 2.75)]  |  Zwakst: [('P16', 'Jeroen Smit', 1), ('K12', 'Jasper Hoek', 1.33), ('P47', 'Els Bruinsma', 1.33)]
+
+| persona | gew% | K | n | intentie gem | std | scores | gedrag | bezwaren |
+|---|---|---|---|---|---|---|---|---|
+| P30 Gerard Willems | 2.5 |  | 4 | 1.75 | 1.3 | {'begrip': 5, 'relevantie': 2, 'aantrekkelijkheid': 3, 'vertrouwen': 3.75, 'intentie': 1.75} | {'negeert': 1, 'klikt weg': 1, 'deelt met iemand': 1, 'leest verder': 1} | ['relevantie', 'relevantie', 'relevantie', 'vertrouwen'] |
+| P35 Hennie Bosman | 1.9 |  | 3 | 2.33 | 1.89 | {'begrip': 5, 'relevantie': 3.33, 'aantrekkelijkheid': 3.67, 'vertrouwen': 4.67, 'intentie': 2.33} | {'vraagt iemand anders': 1, 'klikt weg': 1, 'negeert': 1} | ['relevantie', 'relevantie', 'prijs'] |
+| P40 Ria van den Heuvel | 2.7 |  | 3 | 2 | 1.41 | {'begrip': 5.33, 'relevantie': 3, 'aantrekkelijkheid': 3.67, 'vertrouwen': 5, 'intentie': 2} | {'klikt weg': 1, 'negeert': 1, 'vraagt iemand anders': 1} | ['relevantie', 'prijs', 'prijs'] |
+| P42 Bep Wesselink | 2.2 |  | 3 | 2 | 1.41 | {'begrip': 5.33, 'relevantie': 3.33, 'aantrekkelijkheid': 4, 'vertrouwen': 4.67, 'intentie': 2} | {'negeert': 2, 'vraagt iemand anders': 1} | ['prijs', 'relevantie', 'prijs'] |
+| P45 Corrie Nijland | 1.8 |  | 4 | 2.75 | 1.09 | {'begrip': 5.25, 'relevantie': 5, 'aantrekkelijkheid': 4.75, 'vertrouwen': 4.5, 'intentie': 2.75} | {'negeert': 1, 'deelt met iemand': 1, 'leest verder': 1, 'vraagt iemand anders': 1} | ['prijs', 'prijs', 'alternatief', 'vertrouwen'] |
+| P47 Els Bruinsma | 3.8 |  | 3 | 1.33 | 0.47 | {'begrip': 5.33, 'relevantie': 2, 'aantrekkelijkheid': 3, 'vertrouwen': 4.33, 'intentie': 1.33} | {'klikt weg': 2, 'deelt met iemand': 1} | ['relevantie', 'relevantie', 'relevantie'] |
+| P31 Annemarie Kok | 2.2 |  | 3 | 2.33 | 1.89 | {'begrip': 5.33, 'relevantie': 3.33, 'aantrekkelijkheid': 4, 'vertrouwen': 4, 'intentie': 2.33} | {'klikt weg': 1, 'deelt met iemand': 1, 'negeert': 1} | ['relevantie', 'vertrouwen', 'vertrouwen'] |
+| P13 Anouk Hendriks | 2.0 |  | 3 | 4 | 1.63 | {'begrip': 5.33, 'relevantie': 6, 'aantrekkelijkheid': 5.33, 'vertrouwen': 4.33, 'intentie': 4} | {'bewaart voor later': 1, 'leest verder': 1, 'meldt zich aan of koopt': 1} | ['relevantie', 'prijs', 'kwaliteit'] |
+| P16 Jeroen Smit | 2.4 |  | 3 | 1 | 0.0 | {'begrip': 4.33, 'relevantie': 2, 'aantrekkelijkheid': 2.67, 'vertrouwen': 4.33, 'intentie': 1} | {'negeert': 2, 'deelt met iemand': 1} | ['relevantie', 'relevantie', 'begrip'] |
+| P06 Sanne de Groot | 2.7 |  | 3 | 2.33 | 1.25 | {'begrip': 4.67, 'relevantie': 2.33, 'aantrekkelijkheid': 3.67, 'vertrouwen': 4, 'intentie': 2.33} | {'negeert': 1, 'deelt met iemand': 1, 'klikt weg': 1} | ['relevantie', 'vertrouwen', 'begrip'] |
+| P39 Henk Groothuis | 2.8 |  | 4 | 1.75 | 1.3 | {'begrip': 4.5, 'relevantie': 2.25, 'aantrekkelijkheid': 3.25, 'vertrouwen': 4, 'intentie': 1.75} | {'leest verder': 1, 'klikt weg': 2, 'vraagt iemand anders': 1} | ['relevantie', 'prijs', 'kwaliteit', 'alternatief'] |
+| K10 Nel Hoogendoorn | 0.9 | K | 3 | 4.33 | 1.25 | {'begrip': 5.33, 'relevantie': 6, 'aantrekkelijkheid': 4.33, 'vertrouwen': 4.33, 'intentie': 4.33} | {'vraagt iemand anders': 1, 'meldt zich aan of koopt': 1, 'bewaart voor later': 1} | ['prijs', 'kwaliteit', 'vertrouwen'] |
+| K06 Johan Wubbels | 1.2 | K | 3 | 1.67 | 0.94 | {'begrip': 4, 'relevantie': 2, 'aantrekkelijkheid': 2.67, 'vertrouwen': 3.67, 'intentie': 1.67} | {'klikt weg': 2, 'vraagt iemand anders': 1} | ['relevantie', 'relevantie', 'prijs'] |
+| K12 Jasper Hoek | 0.6 | K | 3 | 1.33 | 0.47 | {'begrip': 4.67, 'relevantie': 1.67, 'aantrekkelijkheid': 2.67, 'vertrouwen': 3, 'intentie': 1.33} | {'klikt weg': 2, 'bewaart voor later': 1} | ['relevantie', 'privacy', 'privacy'] |
+
+Citaten:
+- P30-a: Een tientje per maand zodat mijn zoon weet dat de lamp hangt? Dat hebben we niet nodig.
+- P30-b: €119 per jaar voor één klusje per maand? Daar krijg je per keer bijna vijf klussen voor.
+- P30-c: Voor mij niks, maar voor schoonmoeder? Dat moeten we eens met de familie bespreken.
+- P30-d: Waarom staat hier geen vakdiploma bij? En wat doen ze met die foto's?
+- P35-a: Eerst gratis kennismaken en mijn zoon erbij, dan durf ik het wel.
+- P35-b: Familie op de achtergrond? Ik ben 62, niet 90.
+- P35-c: Bijna honderdtwintig euro per jaar voor klusjes die ik niet heb? Nee.
+- P40-a: Mijn dochter hoeft niet te weten dat ik een lamp heb laten ophangen, hoor.
+- P40-b: Bijna honderdtwintig euro per jaar voor een berichtje aan mijn zoon? Nee, dank je.
+- P40-c: Als mijn dochter de eerste keer mag komen en zegt dat het goed is, dan doe ik het.
+- P42-a: Honderdnegentien euro per jaar, kind, daar betaal ik een maand gas en licht van.
+- P42-b: Mijn dochter mag erbij zijn, maar de klusser belt mij. Ik ben nog geen 84.
+- P42-c: Negen vijfennegentig, die zet ik in het rijtje en haal ik er meteen weer af.
+- P45-a: Elke maand betalen voor niks? Nee. Ik red me wel.
+- P45-b: Nooit betalen aan de deur, dat is goed. Dat laat ik de kinderen zien.
+- P45-c: Het is voor mij bedacht, dat zie ik. Maar Gerrit doet het nu voor bonbons.
+- P45-d: Mijn dochter mag erbij zijn, dat stelt gerust. Maar eerst moet de wijkzuster het zeggen.
+- P47-a: Voor mijn buurvrouw misschien, voor mij niet; ik heb geen oppas nodig.
+- P47-b: Niets voor mij, maar voor Riet en haar zoon zou dit goed zijn.
+- P47-c: Voor de dame met de rollator naast me, niet voor mij.
+- P31-a: Familie op de achtergrond? Dat is voor mijn moeder, niet voor mij.
+- P31-b: Dat ik een berichtje krijg als de lamp hangt, dat is voor mij de hele reden.
+- P31-c: Juist bij kwetsbare mensen verwacht ik de meest complete voorwaarden. Hier ontbreken er drie.
+- P13-a: De klusser belt mij, niet mama? Screenshot. Morgen kijk ik verder.
+- P13-b: Dat berichtje achteraf is fijn, maar nog een tientje per maand erbij? Niet nu.
+- P13-c: De klusser belt mij, niet mama, en we delen de kosten. Gewoon praktisch.
+- P16-a: Keurig bedacht, maar dit is een product voor mijn ouders, niet voor ons.
+- P16-b: Niet voor ons, wel iets voor mijn ouders. Ik stuur het door naar mijn zus.
+- P16-c: Pas bij het citaat snap ik voor wie het is. Te laat.
+- P06-a: Mooi bedacht voor mijn oma later, maar vandaag scroll ik eroverheen.
+- P06-b: Ik dacht meteen aan mijn oma. Dit stuur ik door naar de familie-app.
+- P06-c: Familie op de achtergrond? Geen idee wat het is. Door.
+- P39-a: Een berichtje naar mijn dochter omdat de lamp hangt? Zover ben ik nog lang niet.
+- P39-b: Te laat en dan is die maand gratis? Dat is een tientje, geen klus.
+- P39-c: Voor Truus zou dit wel wat zijn. Dan hoef ik niet voor elke lamp naar Winterswijk.
+- P39-d: Mijn kinderen wonen om de hoek. Die komen zelf kijken, daar hoeft geen klusser voor te appen.
+- K10-a: Niet betalen aan de deur, dat is goed. Maar Marjan heeft al zoveel aan haar hoofd.
+- K10-b: Hij belt mij, niet mama, en er wordt nooit aan de deur betaald. Dat wil ik.
+- K10-c: Mooi opgeschreven, maar zo'n berichtje voor de familie is me eerder beloofd. Nooit gezien.
+- K06-a: Familie op de achtergrond? Ik red me zelf wel, dank je.
+- K06-b: Voor moeder misschien. Maar ik woon om de hoek, en het kost weer een tientje.
+- K06-c: Per maand? Nee. Ik zit net alles op te zeggen.
+- K12-a: Familie op de achtergrond? Mijn kinderen zijn elf en veertien. Dit is voor mijn ouders.
+- K12-b: Voor mijn moeder misschien. Maar een berichtje via wat, en wat bewaren ze dan?
+- K12-c: Een klusser die aan mijn kind rapporteert wat hij in mijn huis deed. Nee, dank je.
+
+Verbeterideeën:
+- P30-a: Maak duidelijker voor wie dit is, bijvoorbeeld 'voor uw vader of moeder', in plaats van het aan iedereen te brengen.
+- P30-b: Zet de jaarprijs erbij en vergelijk eerlijk met per keer betalen, zoals bij concept 3.
+- P30-c: Een kort stukje 'zo regelt u dit voor uw moeder' voor de kinderen die het afsluiten.
+- P30-d: Zet vakdiploma en de privacyregel er net zo in als bij de andere twee concepten.
+- P35-a: Laat ook iemand van rond de zestig aan het woord die gewoon nog werkt, niet alleen iemand van 84.
+- P35-b: Laat die familie weg uit de kop en zet het er pas onderaan bij als keuze.
+- P35-c: Zeg er net zo eerlijk als bij concept 3 bij wanneer je per keer goedkoper uit bent.
+- P40-a: Haal de familie uit de kop en laat een actieve zeventiger aan het woord in plaats van een 84-jarige.
+- P40-b: Maak de familie-optie een gratis extraatje bij de losse klus in plaats van een apart abonnement.
+- P40-c: Geef kinderen een kaartje of linkje waarmee ze de gratis kennismaking voor hun moeder kunnen aanbieden.
+- P42-a: Zet bovenaan wat het per jaar kost en vanaf hoeveel klussen het voordeliger is dan 25 euro per keer.
+- P42-b: Maak het de gewone gang dat ik zelf gebeld word en de factuur krijg, en laat familie alleen meelezen als ik dat aanzet.
+- P42-c: Bied het berichtje aan de familie ook los aan bij een klus per keer, zonder maandbedrag.
+- P45-a: Zet bovenaan dat de kinderen het kunnen betalen en regelen, in plaats van 'per maand'.
+- P45-b: Laat de kinderen de kosten delen als standaard, niet als bijzinnetje onderaan.
+- P45-c: Laat het berichtje ook als telefoontje of briefje kunnen, voor wie geen slimme telefoon heeft.
+- P45-d: Laat de thuiszorg of huisarts een folder meegeven, zodat de aanbeveling van iemand komt die ik ken.
+- P47-a: Maak de familie-optie een vinkje onderaan in plaats van de kop.
+- P47-b: Laat een vriendin of buurvrouw het een paar maanden cadeau kunnen doen, niet alleen kinderen.
+- P47-c: Kies een kop die over de klusser gaat en niet over de familie.
+- P31-a: Spreek in de kop de dochter of zoon aan in plaats van de oudere zelf.
+- P31-b: Vertel wie de vaste klusser in haar wijk is, met naam en foto, voordat hij voor het eerst aanbelt.
+- P31-c: Zet dezelfde zekerheden als bij Klussen sparen erin en laat de oudere altijd zelf ook een berichtje krijgen.
+- P13-a: Maak een variant waarin de contactpersoon alles regelt, voor ouders met geheugenproblemen.
+- P13-b: Geef de eerste drie maanden gratis, zodat je ziet of je het echt gebruikt voordat het geld kost.
+- P13-c: Vermeld dat klussers geleerd hebben om te gaan met ouderen met geheugenproblemen.
+- P16-a: Positioneer dit expliciet als product voor de volwassen kinderen die voor hun ouders regelen, met de zoon of dochter als koper.
+- P16-b: Maak een versie die de zoon of dochter aanmeldt en betaalt, met een kop die tegen hen praat.
+- P16-c: Zeg in de eerste regel voor wie dit is in plaats van het in het klantcitaat te verstoppen.
+- P06-a: Laat de kop niet alleen over de familie gaan, maar zeg voor wie het bedoeld is: 'voor uw ouders, met u op de achtergrond'.
+- P06-b: Laat meerdere families aan het woord, liefst ook het kind dat contactpersoon is.
+- P06-c: Begin met wat je krijgt, 'een vaste klusser voor uw ouders', en pas daarna de familie.
+- P39-a: Noem ook bij dit concept het vakdiploma van de klusser, niet alleen VOG en verzekering.
+- P39-b: Zeg duidelijk of dat berichtje een sms, een app of een brief is.
+- P39-c: Vermeld het vakdiploma ook hier en stuur de contactpersoon het berichtje per sms, zonder app.
+- P39-d: Maak in de kop duidelijk dat het bedoeld is voor mensen van wie de familie ver weg woont.
+- K10-a: Leg in één zin uit dat het de dochter tijd bespaart, zodat de moeder niet denkt dat ze haar kind extra werk bezorgt.
+- K10-b: Geef de dochter een vast nummer om de eigen klusser te appen, en noem wie er komt als hij ziek of op vakantie is.
+- K10-c: Zeg eerlijk wat er gebeurt bij een vergeetachtige klant: de klusser komt alleen op een afspraak die de contactpersoon heeft bevestigd.
+- K06-a: Zeg in de kop dat dit voor uw ouders is, dan voelt een man van mijn leeftijd zich niet aangesproken als oude man.
+- K06-b: Laat die eerste gratis kennismaking bij de ouders thuis doen met de zoon erbij, en dan pas beslissen.
+- K06-c: Zet bovenaan in één zin voor wie het is, want in twee minuten zie ik alleen 'per maand'.
+- K12-a: Zeg in de kop voor wie het is, bijvoorbeeld 'voor uw ouders', zodat iemand als ik niet hoeft te raden.
+- K12-b: Zet dezelfde bewaarzin als bij de andere concepten erbij en noem het kanaal waarlangs het berichtje gaat.
+- K12-c: Maak het melden per bezoek een keuze in plaats van één keer aanvinken, en voeg een bewaarparagraaf toe.
+
+Triggers:
+- P30-a: Als het zonder maandbedrag kon, met die familie-berichtjes als losse extra.
+- P30-b: Niets, dit is voor een andere doelgroep.
+- P30-c: Dat schoonmoeder zelf ja zegt en dat de kosten met de familie gedeeld kunnen worden.
+- P30-d: Dezelfde zekerheden als bij de andere concepten, zwart op wit.
+- P35-a: Een gratis kennismaking waarbij mijn zoon kan aanschuiven, dan beslissen we het samen.
+- P35-b: Niets vandaag; hooguit als mijn dochter het voor zichzelf wil regelen.
+- P35-c: Alleen als mijn kinderen het samen voor mij zouden willen betalen, en dat wil ik ze niet vragen.
+- P40-a: Als het wordt gebracht als hulp voor haarzelf, zonder dat de kinderen in de kop staan.
+- P40-b: Als het zonder het familiedeel goedkoper was, of gewoon per klus.
+- P40-c: De gratis kennismaking waar haar dochter bij kan zijn.
+- P42-a: Alleen als het aantoonbaar goedkoper is dan per klus betalen en ik zelf de rekening krijg.
+- P42-b: Een gratis kennismaking waarbij mijn dochter erbij is en ik de klusser eerst zelf kan zien.
+- P42-c: Misschien later, als ik slechter word en mijn dochter het wil betalen.
+- P45-a: Als mijn dochter zegt dat zij het regelt en betaalt, zodat ik er niks mee hoef.
+- P45-b: Als mijn zoon zegt dat het van mijn geld af kan en hij de factuur krijgt.
+- P45-c: Als mijn dochter het bericht krijgt en ik er zelf niks voor hoef te lezen.
+- P45-d: Als de thuiszorg of iemand van de kerk het aanraadt en mijn dochter bij het eerste bezoek is.
+- P47-a: Alleen als ik ooit zelf minder kan en mijn kinderen erom vragen.
+- P47-b: Als Riets zoon het voor haar zou regelen en betalen.
+- P47-c: Niets, dit is echt voor iemand anders.
+- P31-a: Als het expliciet aan mij als dochter gericht was, voor mijn moeder, zou ik blijven hangen.
+- P31-b: Het gratis eerste bezoek waar ik zelf bij kan zijn, zou mijn moeder over de streep trekken.
+- P31-c: Als de ontbrekende punten, vakdiploma, privacy en gespaarde klussen bij opzeggen, er wel stonden, zou ik het voor mijn moeder overwegen.
+- P13-a: Een berichtje na afloop, zodat ik niet hoef na te bellen of het gelukt is.
+- P13-b: Als mijn broer via de gedeelde factuur de helft betaalt en ik het eerst gratis kan proberen.
+- P13-c: De gratis kennismaking waar ik zelf bij kan zijn.
+- P16-a: Alleen als mijn ouders hulp nodig krijgen en ik vanuit Utrecht wil meekijken, zou ik dit overwegen.
+- P16-b: Als het expliciet gericht is op mij als zoon die vanaf zijn werk wil zien dat bij mijn ouders alles geregeld is.
+- P16-c: Een kop die in één zin zegt: voor ouderen die zelfstandig wonen, met hun kinderen als vangnet.
+- P06-a: Als mijn ouders of oma hulp nodig krijgen en ik zonder gedoe op de achtergrond kan meekijken.
+- P06-b: Als mijn moeder en broer ook enthousiast zijn en we de kosten met z'n drieën kunnen delen.
+- P06-c: Een kop die in één zin zegt dat dit een klusser voor je ouders is, met jou als contactpersoon.
+- P39-a: Pas als ik zelf echt slecht ter been raak en mijn dochter het voorstelt.
+- P39-b: Als ik het op papier kreeg en rustig kon lezen hoe dat berichtje gaat, zonder app.
+- P39-c: Het gratis kennismakingsbezoek waar ik bij kan zijn, zodat ik die klusser zelf even aan het werk zie.
+- P39-d: Eigenlijk niets, zolang de kinderen in de buurt wonen.
+- K10-a: Als Marjan zelf zegt dat het haar juist werk en zorgen scheelt.
+- K10-b: De gratis kennismaking waar zij bij kan zijn, zodat mama het gezicht kent.
+- K10-c: Bij de gratis kennismaking zelf aanwezig zijn en zien wie er bij mama komt.
+- K06-a: Alleen als het echt voor mijn moeder is en ik zelf de contactpersoon ben, niet andersom.
+- K06-b: Als mijn broer de helft betaalt en mijn moeder die vaste man vertrouwt, dan kan ik mijn zaterdag weer aan de duiven geven.
+- K06-c: Niets op dit moment.
+- K12-a: Niets voor mezelf; hooguit als mijn ouders er later zelf om vragen.
+- K12-b: Als er staat dat het berichtje ook een gewone sms of brief kan zijn en er niets gedeeld wordt zonder schriftelijke toestemming.
+- K12-c: Alleen als de klant zelf per bezoek bepaalt of er iets gemeld wordt, en dat schriftelijk kan vastleggen.
+
+## Object `concept-3` (n=45)
+
+| score | gewogen | ongewogen |
+|---|---|---|
+| begrip | 4.64 | 4.62 |
+| relevantie | 2.63 | 2.54 |
+| aantrekkelijkheid | 3.12 | 2.97 |
+| vertrouwen | 4.38 | 4.29 |
+| intentie | 1.55 | 1.48 |
+
+Intentie gewogen: {'negatief (1-3)': 97.3, 'positief (5-7)': 2.7}
+Gedrag gewogen %: {'klikt weg': 37.2, 'negeert': 28.5, 'leest verder': 17.8, 'zoekt een alternatief': 9.5, 'bewaart voor later': 7.0}
+Bezwaren gewogen %: {'prijs': 43.4, 'begrip': 16.2, 'vertrouwen': 14.7, 'relevantie': 12.4, 'opzegbaarheid': 6.0, 'alternatief': 4.8, 'tijd': 2.5}
+Kansgroep vs hoofdgroep (ongewogen gem.): {'kansgroep': {'begrip': 4.67, 'relevantie': 2.0, 'aantrekkelijkheid': 2.33, 'vertrouwen': 3.67, 'intentie': 1.22}, 'hoofdgroep': {'begrip': 4.6, 'relevantie': 2.69, 'aantrekkelijkheid': 3.14, 'vertrouwen': 4.46, 'intentie': 1.55}}
+Sterkst: [('P16', 'Jeroen Smit', 2.67), ('P47', 'Els Bruinsma', 2), ('P35', 'Hennie Bosman', 1.67)]  |  Zwakst: [('K12', 'Jasper Hoek', 1), ('P06', 'Sanne de Groot', 1), ('P45', 'Corrie Nijland', 1)]
+
+| persona | gew% | K | n | intentie gem | std | scores | gedrag | bezwaren |
+|---|---|---|---|---|---|---|---|---|
+| P30 Gerard Willems | 2.5 |  | 4 | 1.5 | 0.5 | {'begrip': 5.25, 'relevantie': 2, 'aantrekkelijkheid': 3.25, 'vertrouwen': 5, 'intentie': 1.5} | {'klikt weg': 2, 'negeert': 1, 'leest verder': 1} | ['prijs', 'prijs', 'begrip', 'prijs'] |
+| P35 Hennie Bosman | 1.9 |  | 3 | 1.67 | 0.47 | {'begrip': 4.33, 'relevantie': 3.33, 'aantrekkelijkheid': 3, 'vertrouwen': 5, 'intentie': 1.67} | {'klikt weg': 1, 'negeert': 1, 'leest verder': 1} | ['begrip', 'opzegbaarheid', 'alternatief'] |
+| P40 Ria van den Heuvel | 2.7 |  | 3 | 1.67 | 0.47 | {'begrip': 4, 'relevantie': 2.67, 'aantrekkelijkheid': 3, 'vertrouwen': 4.67, 'intentie': 1.67} | {'klikt weg': 2, 'zoekt een alternatief': 1} | ['vertrouwen', 'prijs', 'begrip'] |
+| P42 Bep Wesselink | 2.2 |  | 3 | 1.33 | 0.47 | {'begrip': 5, 'relevantie': 2.67, 'aantrekkelijkheid': 3, 'vertrouwen': 4.67, 'intentie': 1.33} | {'leest verder': 1, 'klikt weg': 2} | ['prijs', 'begrip', 'prijs'] |
+| P45 Corrie Nijland | 1.8 |  | 4 | 1 | 0.0 | {'begrip': 3.25, 'relevantie': 2.25, 'aantrekkelijkheid': 2.25, 'vertrouwen': 4, 'intentie': 1} | {'negeert': 3, 'zoekt een alternatief': 1} | ['begrip', 'relevantie', 'opzegbaarheid', 'begrip'] |
+| P47 Els Bruinsma | 3.8 |  | 3 | 2 | 0.82 | {'begrip': 5.33, 'relevantie': 3.33, 'aantrekkelijkheid': 3.67, 'vertrouwen': 4.33, 'intentie': 2} | {'negeert': 1, 'zoekt een alternatief': 1, 'bewaart voor later': 1} | ['prijs', 'prijs', 'vertrouwen'] |
+| P31 Annemarie Kok | 2.2 |  | 3 | 1.67 | 0.47 | {'begrip': 4.33, 'relevantie': 2.67, 'aantrekkelijkheid': 3.33, 'vertrouwen': 4.67, 'intentie': 1.67} | {'negeert': 1, 'klikt weg': 1, 'leest verder': 1} | ['tijd', 'begrip', 'prijs'] |
+| P13 Anouk Hendriks | 2.0 |  | 3 | 1.33 | 0.47 | {'begrip': 5.33, 'relevantie': 2.67, 'aantrekkelijkheid': 3, 'vertrouwen': 4.33, 'intentie': 1.33} | {'klikt weg': 1, 'negeert': 1, 'leest verder': 1} | ['relevantie', 'prijs', 'relevantie'] |
+| P16 Jeroen Smit | 2.4 |  | 3 | 2.67 | 1.7 | {'begrip': 5, 'relevantie': 4, 'aantrekkelijkheid': 4, 'vertrouwen': 4.67, 'intentie': 2.67} | {'leest verder': 1, 'bewaart voor later': 1, 'klikt weg': 1} | ['prijs', 'alternatief', 'vertrouwen'] |
+| P06 Sanne de Groot | 2.7 |  | 3 | 1 | 0.0 | {'begrip': 4.33, 'relevantie': 2, 'aantrekkelijkheid': 3.33, 'vertrouwen': 4, 'intentie': 1} | {'klikt weg': 2, 'negeert': 1} | ['relevantie', 'vertrouwen', 'prijs'] |
+| P39 Henk Groothuis | 2.8 |  | 4 | 1.25 | 0.43 | {'begrip': 4.5, 'relevantie': 2, 'aantrekkelijkheid': 2.75, 'vertrouwen': 3.75, 'intentie': 1.25} | {'leest verder': 1, 'klikt weg': 2, 'negeert': 1} | ['prijs', 'opzegbaarheid', 'relevantie', 'prijs'] |
+| K10 Nel Hoogendoorn | 0.9 | K | 3 | 1.33 | 0.47 | {'begrip': 4.33, 'relevantie': 2.33, 'aantrekkelijkheid': 2, 'vertrouwen': 3.67, 'intentie': 1.33} | {'negeert': 2, 'klikt weg': 1} | ['begrip', 'vertrouwen', 'relevantie'] |
+| K06 Johan Wubbels | 1.2 | K | 3 | 1.33 | 0.47 | {'begrip': 4, 'relevantie': 1.67, 'aantrekkelijkheid': 2.67, 'vertrouwen': 4, 'intentie': 1.33} | {'leest verder': 1, 'negeert': 2} | ['prijs', 'prijs', 'prijs'] |
+| K12 Jasper Hoek | 0.6 | K | 3 | 1 | 0.0 | {'begrip': 5.67, 'relevantie': 2, 'aantrekkelijkheid': 2.33, 'vertrouwen': 3.33, 'intentie': 1} | {'klikt weg': 1, 'negeert': 1, 'zoekt een alternatief': 1} | ['prijs', 'prijs', 'vertrouwen'] |
+
+Citaten:
+- P30-a: Netjes dat ze het zelf zeggen: bij twee klussen per jaar ben je per keer goedkoper.
+- P30-b: Twee jaar vast, en dan? €4,60 voordeel, daar ga ik niet voor vastzitten.
+- P30-c: Weer een abonnement waar je voor moet rekenen. Laat maar.
+- P30-d: Eerlijk over geld, dat waardeer ik. Maar er komt deze maand geen vaste last bij.
+- P35-a: Sparen voor klusjes? Dat snap ik 's avonds laat echt niet meer.
+- P35-b: Weer zo'n maandbedrag. Nee, daar heb ik vandaag echt geen zin in.
+- P35-c: Eerlijk dat ze het zeggen, maar dan kies ik dus voor per keer.
+- P40-a: Hoe meer regeltjes, hoe meer ik denk: daar zit een addertje onder.
+- P40-b: Eerlijk dat ze het zelf zeggen: bij twee klussen ben je per keer goedkoper. Dat ben ik.
+- P40-c: Ik moet in de bus al gaan rekenen, dat is niks voor mij.
+- P42-a: Eerlijk dat ze het zeggen, maar bij mijn twee klussen is sparen gewoon duurder.
+- P42-b: Sparen tot zes, sparen tot acht, gezin... nee, mijn nummer wordt zo geroepen.
+- P42-c: Sparen noemen ze het, maar het gaat elke maand van mijn rekening. Dat is een abonnement.
+- P45-a: Sparen doe ik bij de bank, niet bij een klusjesman.
+- P45-b: Weer elke maand betalen. Ze zeggen het zelf al: per keer is goedkoper.
+- P45-c: Ze zeggen het zelf eerlijk: per keer is goedkoper. Dan weet ik het al.
+- P45-d: Twee keer voorgelezen en nog snap ik het niet. Dat laat ik aan de kinderen.
+- P47-a: Eerlijk rekenvoorbeeld, en daaruit blijkt dat het voor ons niet loont.
+- P47-b: Nagerekend in de trein: het scheelt bijna niks, dus waarom zou ik?
+- P47-c: Klein bedrag, dat is het punt niet; komen ze ook echt?
+- P31-a: Klussen sparen? Dat klinkt als zegeltjes plakken. Ik heb geen zin om te rekenen.
+- P31-b: Eerlijk rekenvoorbeeld, maar ik heb geen zin om te rekenen. Zeg me gewoon wat ik moet kiezen.
+- P31-c: Het eerlijkste rekenvoorbeeld van de drie, maar waarom betaalt wie alleen woont meer per klus?
+- P13-a: Weer een abonnement. Nee joh, ik heb er al genoeg die ik vergeet op te zeggen.
+- P13-b: Eerlijk rekenvoorbeeld, maar geen klant die iets zegt. En weer een incasso erbij.
+- P13-c: Eerlijk gerekend, en juist daardoor weet ik: voor ons huis heeft dit geen zin.
+- P16-a: Eindelijk een bedrijf dat de rekensom laat zien. Alleen komt mijn som uit op per keer.
+- P16-b: Twee klussen per maand voor het gezin, dat scheelt mij zaterdagen. Die bewaar ik.
+- P16-c: Een abonnement dat verdient aan klussen die je niet gebruikt. Daar pas ik voor.
+- P06-a: Eerlijk rekenvoorbeeld, maar een abonnement voor klusjes die ik zelf doe? Nee.
+- P06-b: Weer een abonnement en geen enkele klant die iets vertelt. Nee, dank je.
+- P06-c: Sparen voor klussen is een leuk idee, maar deze maand komt er geen abonnement bij.
+- P39-a: Eerlijk gerekend, dat moet ik ze nageven. Maar ik kom nooit aan vier klussen.
+- P39-b: Na drie maanden ben je je gespaarde klussen kwijt. Dat is het lettertje waar het om draait.
+- P39-c: Net de sportschool van onze schoonzoon: betalen en niet gaan. Doe mij maar per keer.
+- P39-d: Elke maand €7,95 voor klussen die ik zelf doe? Die gaat van het lijstje af, niet erop.
+- K10-a: Klussen sparen? Ik spaar voor de kleinkinderen, niet voor lampen.
+- K10-b: Sparen tot zes, vervalt na drie maanden. Daar verdienen ze aan, dat ken ik wel.
+- K10-c: Voor wie spaar ik die klussen eigenlijk op? Mama heeft er twee per jaar.
+- K06-a: Twee klussen per jaar, dan ben ik per keer goedkoper. Zeggen ze zelf.
+- K06-b: Weer een abonnement? Nee joh, we zijn juist aan het schrappen.
+- K06-c: Bijna acht euro per maand voor niks? Dat reken ik zo uit.
+- K12-a: Weer een maandbedrag. Die haal ik er nu juist uit.
+- K12-b: Omslagpunt bij vier klussen per jaar. Wij halen er twee. Dan is het sommetje snel klaar.
+- K12-c: Ze zeggen 'eerlijk' dat twee klussen per keer goedkoper is. Drie ook. Dan is het niet eerlijk.
+
+Verbeterideeën:
+- P30-a: Laat mensen na een jaar per keer automatisch terugzetten naar de voordeligste vorm als ze weinig klussen gebruiken.
+- P30-b: Schrijf erbij wat er na twee jaar met de prijs gebeurt en dat je dan kosteloos kunt stoppen.
+- P30-c: Zet het jaarbedrag en het aantal klussen in één zin in de kop.
+- P30-d: Beloof schriftelijk dat een prijswijziging na twee jaar ruim vooraf wordt gemeld en dat je dan zonder kosten stopt.
+- P35-a: Zet de vaste klusser met naam en foto bovenaan in plaats van het rekenvoorbeeld.
+- P35-b: Zet 'elke maand opzegbaar, gewoon bellen' groot naast de prijs.
+- P35-c: Laat mensen na een jaar zonder kosten overstappen naar per keer als ze te weinig gebruiken.
+- P40-a: Zet bovenaan hoe je betaalt en dat er niets automatisch van je rekening gaat zonder dat je het weet.
+- P40-b: Bied klanten van de losse klus na een jaar zelf aan om over te stappen als sparen voor hen goedkoper is.
+- P40-c: Haal de gezinsvariant van deze pagina en zet er één zin neer: meer dan drie klussen per jaar? Dan is dit voordeliger.
+- P42-a: Zet het rekenvoorbeeld naast de klussenkaart van 69 euro, zodat je in één oogopslag ziet wat voor jou het goedkoopst is.
+- P42-b: Begin met één zin: 'U betaalt 7,95 per maand, krijgt één klus per maand, en wat u niet gebruikt blijft staan.'
+- P42-c: Noem het gewoon een abonnement in plaats van sparen; dat voelt eerlijker voor mensen die rekenen.
+- P45-a: Haal het gezinsabonnement en het rekenvoorbeeld van de voorkant, begin met één prijs.
+- P45-b: Zeg er gewoon bij voor wie dit niks is, zoals alleenstaande ouderen met weinig klussen.
+- P45-c: Laat opzeggen ook per brief of telefoon gaan en laat gespaarde klussen niet vervallen.
+- P45-d: Leg uit wat er gebeurt bij ziekenhuisopname of verhuizing naar een verpleeghuis, in gewone woorden.
+- P47-a: Bied een jaarbundel die je eenmalig betaalt, zonder maandelijkse afschrijving.
+- P47-b: Leg uit voor wie het gezinsabonnement is, of laat het weg.
+- P47-c: Zet 'vaste klant, vaste klusser, prijs twee jaar vast' al in de kop.
+- P31-a: Begin met één zin als 'Voor wie vier of meer klussen per jaar heeft' in plaats van met het maandbedrag.
+- P31-b: Zet bovenaan een korte keuzehulp: weinig klussen, dan per keer; vier of meer, dan sparen.
+- P31-c: Maak de prijs per klus gelijk voor alleenstaanden en gezinnen, en gebruik overal hetzelfde tarief voor een extra klus.
+- P13-a: Laat gespaarde klussen ook op een ander adres inzetten, bijvoorbeeld bij je ouders.
+- P13-b: Voeg ervaringen van klanten toe, liefst van gezinnen, in plaats van alleen rekensommen.
+- P13-c: Voeg de contactpersoon-optie uit concept 2 toe aan dit abonnement.
+- P16-a: Laat ongebruikte gespaarde klussen overdraagbaar zijn aan ouders of buren, zoals bij de klussenkaart.
+- P16-b: Maak de gezinsvariant zelf de kop, met voorbeelden van gezinsklussen zoals fietsen, hockeydoeltjes en de slimme thermostaat.
+- P16-c: Laat klussen boven het plafond niet vervallen maar geef ze terug als tegoed of korting.
+- P06-a: Geef een kort keuzehulpje: 'minder dan drie klussen per jaar? kies per keer'.
+- P06-b: Zet bovenaan wat er met ongebruikte klussen gebeurt als je opzegt, en voeg echte klantervaringen toe.
+- P06-c: Laat de vaste klusser met gezicht en naam zien, dan voelt het minder als een abonnement op niks.
+- P39-a: Laat het jaaroverzicht ook zien of iemand per keer goedkoper uit was geweest, en bied dan zelf de overstap aan.
+- P39-b: Schrijf op wat de prijs na twee jaar maximaal wordt en zet gespaarde klussen bij opzeggen om in een tegoed dat blijft staan.
+- P39-c: Leg uit wat 'Gezin' betekent: één huis met meer mensen, of meerdere adressen binnen een familie.
+- P39-d: Zet het eerlijke rekenvoorbeeld bovenaan, dan ziet iemand die snel kijkt meteen of het voor hem loont.
+- K10-a: Noem het gewoon 'elke maand een klus voor €7,95' en laat het woord sparen weg.
+- K10-b: Voeg de contactpersoon-regeling toe en laat gespaarde klussen na opzeggen gewoon uitgebruiken.
+- K10-c: Maak gespaarde klussen overdraagbaar aan een familielid en zeg dat 'Gezin' ook een ouder op een ander adres kan zijn.
+- K06-a: Laat een mens dat rekenvoorbeeld hardop voorrekenen in een kort filmpje of aan de telefoon.
+- K06-b: Laat opzeggen gewoon telefonisch of aan de balie kunnen, niet per e-mail, en haal dat gezinsabonnement weg.
+- K06-c: Laat zien dat je gespaarde klussen aan een ander kan geven, dan is het geen weggegooid geld.
+- K12-a: Zet het rekenvoorbeeld direct onder de kop, zodat je in tien seconden ziet of het voor jou uitkomt.
+- K12-b: Laat gespaarde klussen niet vervallen maar betaal het ongebruikte deel terug bij opzeggen.
+- K12-c: Schrijf het echte omslagpunt op: pas vanaf vier klussen per jaar voordelig, daaronder niet.
+
+Triggers:
+- P30-a: Als ik merk dat ik toch vaker iemand nodig heb, bijvoorbeeld met mijn knieën.
+- P30-b: Een garantie dat de prijs ook na twee jaar niet zomaar stijgt, of dat ik vooraf bericht krijg.
+- P30-c: Als iemand die ik ken zegt dat het uitkomt.
+- P30-d: Een aanbod zonder vaste last, met hetzelfde jaaroverzicht en dezelfde eerlijkheid.
+- P35-a: Als mijn vriendin zegt dat ze het heeft en dat die vaste klusser zo aardig is.
+- P35-b: Als in de kop meteen staat dat opzeggen elke maand kan met één telefoontje.
+- P35-c: Als ik vaker klussen had, bijvoorbeeld na een verhuizing, dan zou ik dit door die vaste prijs wel nemen.
+- P40-a: Een vaste prijs zonder uitzonderingen en betalen per factuur, net als bij de losse klus.
+- P40-b: Als ze na een jaar losse klussen ziet dat ze er meer dan vier heeft gehad.
+- P40-c: Eén zin bovenaan die zegt voor wie het goedkoper is, zonder rekensom.
+- P42-a: Als ik gespaarde klussen na opzeggen aan mijn dochter of buurvrouw mag geven in plaats van dat ze na drie maanden vervallen.
+- P42-b: Als iemand het me in twee zinnen uitlegt, zonder rekenvoorbeeld.
+- P42-c: Alleen als ik echt meer dan vier klussen per jaar had, en die heb ik niet.
+- P45-a: Eén bedrag en één zin, dan zou ik het misschien nog aan mijn zoon geven.
+- P45-b: Niks eigenlijk, dan liever per keer als er echt wat is.
+- P45-c: Niks, bij twee klussen per jaar kies ik de kaart uit het eerste concept.
+- P45-d: Als mijn zoon het uitrekent en zegt dat het goedkoper is.
+- P47-a: Als wij structureel meer dan vier klussen per jaar zouden hebben.
+- P47-b: Als je de gespaarde klussen aan een buurvrouw zou mogen geven.
+- P47-c: Voorrang voor abonnees als het druk is, zwart op wit.
+- P31-a: Als in de kop meteen stond voor wie dit goedkoper is, zou ik niet hoeven te rekenen.
+- P31-b: Als er in één zin stond voor welk huishouden dit de beste keus is, zou ik verder lezen.
+- P31-c: Als de gespaarde klussen ook door mijn moeder gebruikt mochten worden, zou het voor ons wel uitkomen.
+- P13-a: Als hetzelfde abonnement ook klussen bij mama dekt.
+- P13-b: Ervaringen van andere gezinnen die zeggen dat ze hun klussen echt opmaken.
+- P13-c: Als je het abonnement op het adres van mama zet met mij als aanspreekpunt.
+- P16-a: Als ik zeker weet dat ik vier of meer klussen per jaar heb, bijvoorbeeld met de klussen van mijn ouders erbij, klopt de som wel.
+- P16-b: Een proefmaand of gratis eerste klus voor de gezinsvariant, zodat ik het naast mijn huidige klusser kan vergelijken.
+- P16-c: Als ongebruikte klussen niet vervallen maar worden terugbetaald of overdraagbaar zijn.
+- P06-a: Alleen als de badkamerverbouwing klussen oplevert die ik echt niet zelf kan, zoals elektra.
+- P06-b: Een proefperiode van drie maanden waarin ik zonder gedoe kan stoppen en geld terugkrijg voor ongebruikte klussen.
+- P06-c: Een eerste maand gratis, zodat ik het kan proberen zonder dat het meteen geld kost.
+- P39-a: Als mijn heup en knieën minder worden en ik echt meer dan vier klussen per jaar heb.
+- P39-b: Als gespaarde klussen nooit vervallen en ik ook per brief kan opzeggen.
+- P39-c: Als het voor Truus aantoonbaar goedkoper uitkomt dan losse klussen, maar dat wil ik dan eerst zwart op wit zien.
+- P39-d: Als ik in één oogopslag zag dat het mij geld bespaart ten opzichte van per keer.
+- K10-a: Alleen als Marjan het uitlegt en zegt dat het goedkoper is.
+- K10-b: Als er een contactpersoon bij kon zoals in het andere concept en gespaarde klussen niet vervallen.
+- K10-c: Een gezinsabonnement dat uitdrukkelijk geldt voor ouder en kind op twee adressen.
+- K06-a: Als ik vaker dingen met tv en internet heb, zou ik het sommetje opnieuw maken.
+- K06-b: Niets eigenlijk, alleen als het de buurt samen neemt en het per huis maar een paar euro is.
+- K06-c: Als ik door mijn knieën echt niks meer kan, misschien, maar dan hoor ik het liever van iemand die ik ken.
+- K12-a: Als ik zeker vier klussen per jaar had, maar die heb ik niet.
+- K12-b: Als ik aantoonbaar meer dan vier klussen per jaar zou hebben.
+- K12-c: Een correct omslagpunt en gespaarde klussen die nooit vervallen of bij opzeggen worden terugbetaald.
+
+## Voorkeur
+Gewogen %: {'concept-1': 66.9, 'concept-2': 26.1, 'concept-3': 7.0}
+Ongewogen aantal: {'concept-1': 31, 'concept-2': 12, 'concept-3': 2}
+Per persona: {'K06': {'concept-1': 3}, 'K10': {'concept-1': 2, 'concept-2': 1}, 'K12': {'concept-1': 3}, 'P06': {'concept-1': 2, 'concept-2': 1}, 'P13': {'concept-2': 2, 'concept-1': 1}, 'P16': {'concept-1': 2, 'concept-3': 1}, 'P30': {'concept-1': 3, 'concept-2': 1}, 'P31': {'concept-1': 2, 'concept-2': 1}, 'P35': {'concept-2': 1, 'concept-1': 2}, 'P39': {'concept-1': 3, 'concept-2': 1}, 'P40': {'concept-1': 2, 'concept-2': 1}, 'P42': {'concept-1': 2, 'concept-2': 1}, 'P45': {'concept-1': 2, 'concept-2': 2}, 'P47': {'concept-1': 2, 'concept-3': 1}}
+Nooit: {'concept-3': 25, 'concept-2': 19, 'concept-1': 1}
+Redenen:
+- K06-a: concept-1 omdat Gewoon 25 euro als er wat is, geen abonnement, en die kaart kan ik mooi aan mijn moeder geven.
+- K06-b: concept-1 omdat Geen vaste kosten erbij deze maand, en die kaart kan ik met de buren of mijn moeder delen als het nodig is.
+- K06-c: concept-1 omdat Het enige zonder maandbedrag, en dat zet ik er nu niet bij.
+- K10-a: concept-1 omdat Geen abonnement in een krappe maand, en de factuur kan naar Marjan, dus dan hoeft er niets elke maand af.
+- K10-b: concept-2 omdat Marjan kiest het omdat de klusser alleen haar belt, er nooit aan de deur betaald wordt en ze achteraf een berichtje krijgt.
+- K10-c: concept-1 omdat Na een eerdere teleurstelling wil Marjan eerst proberen met de klussenkaart, zonder vast te zitten, en die kaart kan ze ook voor haar eigen huis gebruiken.
+- K12-a: concept-1 omdat Geen maandbedrag en een duidelijke belofte; nu ik aan het bezuinigen ben past alleen betalen per keer.
+- K12-b: concept-1 omdat Als ik ooit iets anders nodig heb dan onze eigen klusjesman, dan zonder abonnement en zonder account.
+- K12-c: concept-1 omdat Het enige concept zonder maandbedrag dat ook zonder app en account werkt, al moet de bewaarzin wel kloppen.
+- P06-a: concept-1 omdat Geen abonnement en een klussenkaart die ik aan mijn ouders kan geven; lampen en planken doe ik zelf al.
+- P06-b: concept-2 omdat Voor mijn oma zou ik graag de contactpersoon zijn die een berichtje krijgt, dat scheelt ons allemaal zorgen.
+- P06-c: concept-1 omdat Deze maand kan er geen vast bedrag bij, en per keer betalen kan altijd nog als het nodig is.
+- P13-a: concept-2 omdat Omdat de klusser mij belt en niet mijn moeder, dat scheelt me echt gedoe.
+- P13-b: concept-1 omdat Geen vaste kosten in een krappe maand, en handig als reserve voor als Henk een keer niet kan.
+- P13-c: concept-2 omdat Het is het enige concept dat past bij hoe ik mama nu al help, en met mijn zus kunnen we de kosten delen.
+- P16-a: concept-1 omdat Geen nieuwe vaste last terwijl we juist aan het snijden zijn, en ik betaal alleen als er echt iets kapot is.
+- P16-b: concept-3 omdat De gezinsvariant van €13,95 kan me zaterdagen schelen die nu opgaan aan klussen tussen de hockeywedstrijden door.
+- P16-c: concept-1 omdat Het enige concept waar ik niet eerst hoef uit te zoeken wat ik koop: klus, prijs, klaar.
+- P30-a: concept-1 omdat Geen abonnement, alleen betalen als er echt iets is, en die kaart kan ik cadeau doen.
+- P30-b: concept-1 omdat Als het dan moet, dan per keer, zonder ergens aan vast te zitten.
+- P30-c: concept-2 omdat Voor mezelf hoeft het niet, maar voor schoonmoeder is dit meteen duidelijk en kunnen we het met de familie delen.
+- P30-d: concept-1 omdat Het degelijkst op papier: afgesproken prijs, bon bij het materiaal, tijden op de factuur en geen vaste last.
+- P31-a: concept-1 omdat Geen abonnement en in één oogopslag duidelijk: ik betaal alleen als er echt iets is, de rest gaat naar de schouwburg.
+- P31-b: concept-2 omdat Het neemt mijn zorg om mijn moeder weg: ik hoor wat er gedaan is en zij hoeft nooit aan de deur te betalen.
+- P31-c: concept-1 omdat Toegankelijk voor iedereen, de voorwaarden kloppen en bij mijn paar klussen per jaar is per keer volgens hun eigen som het voordeligst.
+- P35-a: concept-2 omdat Een vaste klusser die eerst gratis kennis komt maken en mijn zoon een berichtje stuurt, dat voelt het meest vertrouwd en gezellig.
+- P35-b: concept-1 omdat Geen abonnement, gewoon betalen als er iets kapot is, dan kan ik ook niet weer ergens aan vast blijven zitten.
+- P35-c: concept-1 omdat Ik ben juist mijn vaste lasten aan het schrappen, dus alleen betalen als er echt iets te doen is, en dan liefst de klussenkaart.
+- P39-a: concept-1 omdat Geen abonnement, betalen als er iets is, en een klusser met vakdiploma; dat past bij hoe ik het nu met Bennie van de buurman doe.
+- P39-b: concept-1 omdat Geen vaste lasten erbij in een krappe maand, en wat ik betaal en wanneer niet staat er duidelijk bij.
+- P39-c: concept-2 omdat Niet voor mezelf maar voor mijn zus Truus, en dan ben ik de contactpersoon die het berichtje krijgt in plaats van steeds naar Winterswijk te rijden.
+- P39-d: concept-1 omdat Het enige zonder maandbedrag, dus het kost niks zolang ik het niet nodig heb.
+- P40-a: concept-1 omdat Geen abonnement: gewoon bellen als er iets is en per factuur of contant betalen.
+- P40-b: concept-1 omdat Er komt geen vaste last bij en de prijsgarantie is het duidelijkst, precies wat ze na haar vorige teleurstelling zoekt.
+- P40-c: concept-2 omdat Haar dochter mag bij de gratis kennismaking zijn en je betaalt nooit aan de deur, dus het voelt veilig.
+- P42-a: concept-1 omdat Geen vaste last, en met de klussenkaart kom ik op 23 euro per klus, die ik ook nog met de buurvrouw kan delen.
+- P42-b: concept-2 omdat Dat mijn dochter de eerste keer mag meekijken en niemand aan de deur geld vraagt, geeft me rust, als ik zelf maar de baas blijf.
+- P42-c: concept-1 omdat Het is het enige zonder vaste last, en ik ben juist aan het schrappen.
+- P45-a: concept-1 omdat Als het dan toch moet, liever alleen betalen als er echt iets kapot is, niet elke maand.
+- P45-b: concept-2 omdat Nooit betalen aan de deur en een berichtje naar mijn dochter, dat is het enige wat ik de kinderen zou laten zien.
+- P45-c: concept-1 omdat Ik heb hooguit twee klussen per jaar en die kaart kan ik delen met de buurvrouw, dat past bij hoe het hier gaat.
+- P45-d: concept-2 omdat Dat mijn dochter er de eerste keer bij mag zijn en de klusser alleen haar belt, maakt het voor mij minder eng.
+- P47-a: concept-1 omdat Ik betaal alleen als er echt iets is, en wij hebben hooguit een paar klusjes per jaar.
+- P47-b: concept-1 omdat Geen vaste lasten erbij in een krappe maand, en de klussenkaart kan ik met mijn buurvrouw delen.
+- P47-c: concept-3 omdat Voor een klein vast bedrag ben ik vaste klant, en dat voelt zekerder dan per keer bellen en afwachten.
+
+## risicos
+- K06-a/concept-1: Mensen zoals ik die zelf handig zijn denken 'lampen ophangen, dat kan ik zelf' en lezen niet verder tot de tv en wifi.
+- K06-a/concept-2: Mannen die trots zijn haken meteen af omdat het klinkt alsof de kinderen voor hen moeten zorgen.
+- K06-a/concept-3: Wie handig is rekent zelf uit dat het niet loont en neemt het niet, terwijl wie het wel neemt misschien juist veel klussen opspaart.
+- K06-b/concept-1: In dorpen waar iedereen elkaar helpt, voelt betalen voor een lamp ophangen raar en blijft de telefoon stil.
+- K06-b/concept-2: Kinderen die dichtbij wonen zien geen reden om te betalen en de ouders zelf beslissen het niet.
+- K06-b/concept-3: Het wordt niet begrepen: drie prijzen, sparen, gezin en extra's zijn te veel voor iemand die het moet laten voorlezen.
+- K06-c/concept-1: Het blijft liggen omdat mensen het pas nodig hebben als het nummer allang weg is.
+- K06-c/concept-2: Mensen die hun vaste lasten nalopen zien 9,95 als de eerste die eruit kan.
+- K06-c/concept-3: Mensen zeggen het binnen een jaar op zodra ze hun vaste lasten nalopen en zien dat ze niks gebruikten.
+- K10-a/concept-1: Hoogbejaarden zien alleen '€25 per klus' en schrikken, terwijl wat ze gerust zou stellen (factuur naar familie, niet opgelost is niets betalen) onderaan staat.
+- K10-a/concept-2: De gebruiker ziet 'per maand' en legt het weg voordat de beslisser, de dochter, het ooit onder ogen krijgt.
+- K10-a/concept-3: Het woord 'sparen' wordt door ouderen niet begrepen of opgevat als een spaarrekening, waardoor ze het meteen wegleggen.
+- K10-b/concept-1: Klanten boeken één keer in paniek, bijvoorbeeld voor de tv, en komen daarna niet meer terug omdat er geen vaste band ontstaat.
+- K10-b/concept-2: Onduidelijk wat 'een klus tot 30 minuten' is, waardoor discussies ontstaan met vermoeide mantelzorgers die al weinig geduld hebben.
+- K10-b/concept-3: Mensen die net slecht zijn behandeld door een abonnementsbedrijf zien hierin dezelfde truc en haken af.
+- K10-c/concept-1: Klanten die al eens teleurgesteld zijn, vertrouwen de garanties pas na een eerste keer en haken bij één late klusser definitief af.
+- K10-c/concept-2: Eén gemist berichtje naar de contactpersoon en het vertrouwen van de mantelzorger, waar dit hele concept op draait, is weg.
+- K10-c/concept-3: Het eerlijke rekenvoorbeeld overtuigt juist de mensen met weinig klussen om per keer te betalen, zodat het abonnement vooral zware gebruikers trekt.
+- K12-a/concept-1: Dat 'binnen twee werkdagen of gratis' in drukke weken niet haalbaar is en de marge opeet.
+- K12-a/concept-2: Dat jongere huishoudens de kop niet begrijpen en het weggooien voordat de oudere doelgroep het ziet.
+- K12-a/concept-3: Dat mensen die hun vaste lasten doorlichten dit als eerste opzeggen en de gespaarde klussen als weggegooid geld voelen.
+- K12-b/concept-1: Dat mensen met een eigen klusjesman geen reden zien over te stappen, zodat klanten pas komen als die wegvalt.
+- K12-b/concept-2: Dat het als toezicht op ouderen gaat voelen zodra onduidelijk is welke informatie naar familie gaat.
+- K12-b/concept-3: Dat klanten na een jaar in het jaaroverzicht zien dat ze €95 betaalden voor twee klussen en boos opzeggen.
+- K12-c/concept-1: Dat een te mooie privacybelofte bij de eerste kritische klant of journalist onderuitgaat.
+- K12-c/concept-2: Dat het botst met ouderen die zich onder toezicht gesteld voelen, zeker zodra er in een familie onenigheid is.
+- K12-c/concept-3: Dat rekenaars het omslagpunt narekenen en het woord 'eerlijk' zich tegen het bedrijf keert.
+- P06-a/concept-1: Jonge mensen die zelf klussen zien alleen '€25 per klus' en klikken weg voordat ze de cadeaukaart zien.
+- P06-a/concept-2: Het wordt gezien als ouderenzorg, waardoor zelfstandige ouderen die geen 'hulpje' willen afhaken.
+- P06-a/concept-3: Mensen nemen het af, gebruiken weinig en voelen zich na een jaar bij het jaaroverzicht toch afgezet.
+- P06-b/concept-1: Eén keer een gemiste afspraak en mensen zoals ik vertellen het aan iedereen in de buurtapp.
+- P06-b/concept-2: Het wordt misbruikt als goedkope huishoudhulp voor klussen die veel langer dan dertig minuten duren.
+- P06-b/concept-3: Mensen voelen zich na opzeggen bekocht omdat hun gespaarde klussen na drie maanden vervallen.
+- P06-c/concept-1: Het concurreert met de handige buurman of vader die het gratis doet.
+- P06-c/concept-2: Wie alleen de kop leest snapt niet dat het om een klusser gaat en scrolt door.
+- P06-c/concept-3: Bij krappe maanden is een vast bedrag het eerste waar mensen op bezuinigen, dus hoge opzegging.
+- P13-a/concept-1: Mensen denken 'bel ik wel als het nodig is' en zijn het bedrijf daarna gewoon vergeten.
+- P13-a/concept-2: Als de klusser toch bij een verwarde ouder belt zonder dat de contactpersoon het weet, ben je de hele familie kwijt.
+- P13-a/concept-3: Mensen sluiten het af, gebruiken het niet en voelen zich genept als ze boven de zes gespaarde klussen uitkomen.
+- P13-b/concept-1: Veel mensen hebben al een buurman of vaste klusjesman en gebruiken dit alleen als noodoplossing, te weinig om van te leven.
+- P13-b/concept-2: Wie al hulp heeft, ziet hier alleen vaste kosten in en voelt zich schuldig tegenover de buurman die het nu doet.
+- P13-b/concept-3: Zonder verhalen van klanten voelt het als een kaal abonnement en zet niemand de eerste stap.
+- P13-c/concept-1: Mensen kopen de kaart, gebruiken één klus en zijn boos als de rest na twee jaar verlopen is.
+- P13-c/concept-2: De ouder zelf kan het voelen als betutteling door de kinderen en de klusser dan niet binnenlaten.
+- P13-c/concept-3: Het eerlijke rekenvoorbeeld overtuigt veel mensen dat ze per keer goedkoper uit zijn, waardoor bijna niemand het abonnement neemt.
+- P16-a/concept-1: Veel klussen passen niet in 30 minuten, waardoor de €25 in de praktijk een lokprijs lijkt en klanten zich bij de deur overvallen voelen.
+- P16-a/concept-2: Ouderen voelen zich betutteld door 'familie op de achtergrond', terwijl kinderen niet weten dat het bestaat omdat de tekst tegen de oudere praat.
+- P16-a/concept-3: Juist de rekenaars lezen het eerlijke rekenvoorbeeld en kiezen daardoor voor losse klussen, waardoor alleen twijfelaars zonder gebruik overblijven.
+- P16-b/concept-1: Klanten zien het als de zoveelste klusjesdienst en vergelijken het met de goedkope zzp'er uit de buurtapp.
+- P16-b/concept-2: Ouderen die zelf nog alles regelen, haken af op het idee dat hun kinderen berichtjes krijgen.
+- P16-b/concept-3: Gespaarde klussen die ongebruikt verlopen voelen achteraf als weggegooid geld en leiden tot opzeggingen na het eerste jaar.
+- P16-c/concept-1: Klussers gaan onder tijdsdruk van 30 minuten meerwerk aanbieden, en dan voelt de €25 als lokkertje.
+- P16-c/concept-2: Het wordt niet begrepen door wie het niet uit zichzelf voor een oudere ouder leest, en die groep haakt al bij de kop af.
+- P16-c/concept-3: Klanten merken na een jaar dat ze klussen hebben laten vervallen en voelen zich bedrogen, wat de reputatie van het hele bedrijf raakt.
+- P30-a/concept-1: Klussen van een half uur lopen uit, en dan voelt de meerprijs voor mensen die al eens teleurgesteld zijn toch als een verrassing.
+- P30-a/concept-2: Mensen die zelf nog alles kunnen, voelen zich betutteld door die familie-opzet en haken meteen af.
+- P30-a/concept-3: Wie weinig klussen heeft, rekent zelf uit dat het niet loont en neemt dus niets, ook niet per keer.
+- P30-b/concept-1: Als bijna elke klus boven het half uur uitkomt, voelen klanten zich beetgenomen en vertellen ze dat verder.
+- P30-b/concept-2: Mensen rekenen de jaarprijs uit en zien dat ze met per keer betalen veel goedkoper uit zijn.
+- P30-b/concept-3: Kritische klanten lezen 'twee jaar vast' als een aangekondigde prijsverhoging en haken af.
+- P30-c/concept-1: Handige mensen zien alleen 'een lamp, een plank' en denken meteen dat ze dit niet nodig hebben.
+- P30-c/concept-2: De ouder zelf voelt zich overvallen als de kinderen het regelen zonder dat zij het wil.
+- P30-c/concept-3: Het woord 'sparen' voor klussen wordt niet begrepen, mensen zien alleen een maandbedrag.
+- P30-d/concept-1: Mensen met een vaste klusser in de buurt of familie zien geen reden om te wisselen.
+- P30-d/concept-2: Juist bij het concept met contactpersonen en foto's ontbreekt uitleg over gegevens, en dat valt op bij wie grondig leest.
+- P30-d/concept-3: Mensen met een krappe maand stellen elke nieuwe maandlast uit, ook als het aanbod eerlijk is.
+- P31-a/concept-1: Mensen zoals ik vinden het prima, maar denken er niet meer aan op het moment dat de lamp echt kapot is.
+- P31-a/concept-2: Zestigers haken in een paar seconden af omdat ze zich te jong voelen voor een aanbod met 'uw dochter of zoon'.
+- P31-a/concept-3: Wie snel kijkt, begrijpt niet waarom je een klus zou sparen en ziet alleen nog een abonnement.
+- P31-b/concept-1: Mensen met een eigen klusjesman zien geen reden om over te stappen zolang die het nog redelijk doet.
+- P31-b/concept-2: De oudere zelf voelt zich misschien gecontroleerd door de kinderen en weigert, ook als de kinderen het willen betalen.
+- P31-b/concept-3: Mensen begrijpen niet waarom ze dit zouden nemen als het bedrijf zelf zegt dat per keer vaak goedkoper is.
+- P31-c/concept-1: Slordige zinnen in de voorwaarden kosten precies het vertrouwen van mensen die die voorwaarden wel lezen.
+- P31-c/concept-2: Kritische lezers zien dat juist dit concept, voor de kwetsbaarste klanten, de dunste voorwaarden heeft.
+- P31-c/concept-3: Precieze lezers ontdekken dat een extra klus €20 of €25 kost afhankelijk van het concept en gaan twijfelen aan de rest.
+- P35-a/concept-1: Mensen bellen alleen als het echt nodig is en dan ook nog één klein dingetje, zodat de klusser voor €25 op pad moet.
+- P35-a/concept-2: Het komt over als iets voor hulpbehoevende ouderen, waardoor zestigers die nog werken het wegklikken.
+- P35-a/concept-3: Het wordt niet begrepen door mensen die niet graag rekenen, zodat ze het laten liggen.
+- P35-b/concept-1: Eén keer niet op tijd komen en mensen vertellen het aan iedereen, want ze zijn al vaker teleurgesteld.
+- P35-b/concept-2: Mensen die nog midden in het leven staan voelen zich oud gemaakt en haken meteen af.
+- P35-b/concept-3: Mensen die al eens vastzaten aan een abonnement lezen alleen 'per maand' en kijken niet verder.
+- P35-c/concept-1: Mensen voelen zich achteraf overvallen door de prijs van een klus die net langer duurde.
+- P35-c/concept-2: Mensen die bezuinigen zien er een extra vaste last in en zeggen het bij de eerste krappe maand op.
+- P35-c/concept-3: Mensen die weinig klussen hebben rekenen het na en kiezen dan gewoon per keer, zodat er weinig abonnees overblijven.
+- P39-a/concept-1: Als 'tot 30 minuten' in de praktijk te krap blijkt, voelen mensen zich bij elke klus alsnog afgerekend op meerprijs.
+- P39-a/concept-2: Vitale ouderen voelen zich betutteld door de familie-invalshoek en haken af voordat ze de klusser zelf zien.
+- P39-a/concept-3: Handige klanten sparen klussen op die ze nooit gebruiken, voelen zich na een jaar bestolen, en dat gaat in een dorp snel rond.
+- P39-b/concept-1: Discussies over wanneer een klus 'opgelost' is kunnen de niet-betalen-belofte duur maken en tot gedoe aan de deur leiden.
+- P39-b/concept-2: Mensen lezen 'die maand gratis' als een magere vergoeding en gaan de belofte van twee werkdagen minder geloven.
+- P39-b/concept-3: Klanten die opzeggen en hun gespaarde klussen verliezen, voelen zich bekocht en vertellen dat aan iedereen door.
+- P39-c/concept-1: Als de voorbeeldklussen structureel uitlopen, voelt '€25 per klus' als een lokprijs en haken kritische klanten af.
+- P39-c/concept-2: De oudere voelt dat de familie meekijkt en weigert, terwijl juist de familie wil betalen.
+- P39-c/concept-3: Het wordt gezien als een sportschoolabonnement waarbij het bedrijf verdient aan klussen die niemand gebruikt.
+- P39-d/concept-1: Mensen die eerder door een klusbedrijf zijn laten zitten, lezen 'of gratis' als een lokkertje en kijken niet verder.
+- P39-d/concept-2: Families die dichtbij wonen vinden het overbodig, en de kop maakt niet duidelijk voor wie het wel is.
+- P39-d/concept-3: Wie zijn vaste lasten doorloopt schrapt dit als eerste, omdat niet te zien is wat je er per maand voor terugkrijgt.
+- P40-a/concept-1: In dorpen hebben mensen al een buurman of vrijwilliger en vinden ze €25 voor een half uur te veel.
+- P40-a/concept-2: Zelfstandige ouderen voelen zich betutteld en haken bij de kop al af.
+- P40-a/concept-3: Het wordt gezien als een abonnement met addertjes en wekt wantrouwen bij wie op de kleine lettertjes let.
+- P40-b/concept-1: Bij mensen die al eens zijn teleurgesteld valt de belofte 'binnen twee werkdagen of gratis' bij de eerste gemiste afspraak om.
+- P40-b/concept-2: Het is het eerste wat mensen schrappen als ze hun vaste lasten op een rij zetten.
+- P40-b/concept-3: Het eerlijke rekenvoorbeeld houdt juist de weinig-klussers weg, zodat vooral veelgebruikers overblijven.
+- P40-c/concept-1: Mensen bellen pas als er echt iets kapot is en vergeten de dienst daartussen, zodat er weinig vaste klanten ontstaan.
+- P40-c/concept-2: Door de 84-jarige in het citaat lijkt het iets voor hoogbejaarden, en jongere senioren herkennen zich er niet in.
+- P40-c/concept-3: Het sparen wordt niet begrepen, en wie het niet kan uitrekenen kiest voor de zekerheid niets.
+- P42-a/concept-1: Mensen zoals ik bellen alleen als familie of buren niet kunnen, dus er komen te weinig klussen binnen.
+- P42-a/concept-2: Families die het nu al zelf doen zien geen reden om er elke maand voor te betalen.
+- P42-a/concept-3: Wie het eerlijke rekenvoorbeeld echt narekent, komt uit bij per keer betalen en neemt geen abonnement.
+- P42-b/concept-1: Mensen die al eens bij een klusjesman zijn blijven zitten geloven de garantie niet en bellen de eerste keer nooit.
+- P42-b/concept-2: Als het klinkt als zorg voor hulpbehoevenden, voelen mensen van zeventig zich oud gemaakt en haken ze af.
+- P42-b/concept-3: Mensen snappen het sparen niet in één keer en denken dat ze voor niks betalen.
+- P42-c/concept-1: Huurders betalen voor klussen die de corporatie al doet en voelen zich achteraf afgezet.
+- P42-c/concept-2: Mensen die hun vaste lasten tegen het licht houden schrappen dit als eerste, omdat het het duurste maandbedrag is.
+- P42-c/concept-3: Het woord sparen wekt argwaan bij zuinige mensen zodra ze zien dat het een maandelijkse afschrijving is.
+- P45-a/concept-1: Mensen die al eens door een klusjesman zijn laten zitten, geloven 'of gratis' niet en lezen niet verder.
+- P45-a/concept-2: Oudere mensen met weinig geld lezen alleen '€9,95 per maand' en haken af voordat ze bij de familie-uitleg zijn.
+- P45-a/concept-3: Het idee van klussen sparen wordt door ouderen niet begrepen en voelt als een spaarpot waar je geld in verdwijnt.
+- P45-b/concept-1: In dorpen met een kerkklusjesploeg of burenhulp voelt €25 per klus al snel als duur en zakelijk.
+- P45-b/concept-2: Als de kinderen het niet willen betalen, komt het nooit bij de oudere zelf terecht, want die beslist niet over geld.
+- P45-b/concept-3: Het eerlijke rekenvoorbeeld overtuigt juist ouderen met weinig klussen om het niet te nemen.
+- P45-c/concept-1: Mensen die een behulpzame buurman hebben, zien pas de waarde als die buurman wegvalt, en dan zoeken ze niet in een folder.
+- P45-c/concept-2: Het familie-idee spreekt aan, maar ouderen die nu gratis buurhulp hebben, gaan daar niet voor betalen.
+- P45-c/concept-3: Wie de kleine lettertjes leest, ziet vervallende klussen en opzeggen per e-mail en vertrouwt het abonnement niet.
+- P45-d/concept-1: Kwetsbare ouderen verwarren een klusser die aan de deur afrekent met oplichters en doen de deur niet open.
+- P45-d/concept-2: Zonder aanbeveling van thuiszorg, huisarts of kerk blijft zelfs dit concept bij angstige ouderen liggen.
+- P45-d/concept-3: Kwetsbare ouderen zijn bang om te blijven betalen als ze ziek worden of moeten verhuizen, en beginnen er niet aan.
+- P47-a/concept-1: Als de 'vaste klusser uit uw buurt' een keer een ander blijkt te zijn, is de hele belofte in één klap ongeloofwaardig.
+- P47-a/concept-2: Vitale ouderen voelen zich als hulpbehoevend weggezet en haken af voordat ze lezen hoe goed het verder geregeld is.
+- P47-a/concept-3: Mensen die weinig klussen hebben rekenen het na, zien dat het niet loont en beginnen er niet aan of zeggen snel op.
+- P47-b/concept-1: Als klussen vaak net langer dan 30 minuten duren, voelt €25 als lokprijs en gaat dat in de kring rond.
+- P47-b/concept-2: De oudere wil het niet en het kind betaalt, waardoor onduidelijk wordt wie beslist en wie opzegt.
+- P47-b/concept-3: Het gezinsabonnement wordt niet begrepen en roept vragen op over delen met buren, wat gedoe of misbruik geeft.
+- P47-c/concept-1: Mensen met een slechte ervaring lezen 'of gratis' als zoethoudertje en niet als garantie.
+- P47-c/concept-2: Wie alleen de kop ziet leest 'hulpbehoevend' en scrolt door, ook al is de rest zorgvuldig geregeld.
+- P47-c/concept-3: Mensen nemen het in een opwelling, gebruiken het niet en voelen zich na een jaar bekocht, wat de naam schaadt.
+
+## kansen
+- K06-a/concept-1: De klussenkaart als cadeau voor je ouders verkopen in de winkel of bij de bouwmarkt, waar ik hem gewoon kan pakken en afrekenen.
+- K06-a/concept-2: Draai het om: de 56-jarige als contactpersoon voor zijn eigen moeder, want die zoon klust nu alles zelf en is kapot.
+- K06-a/concept-3: Een eerlijk rekenvoorbeeld werkt bij mensen die uit het hoofd rekenen; zeg het ook hardop op de radio van RTV Noord.
+- K06-b/concept-1: Zonen en dochters met een versleten lijf die nu alles voor hun ouders klussen, die willen dit straks voor hun ouders.
+- K06-b/concept-2: Mensen die de kosten met broers of zussen delen, als dat met één telefoontje geregeld is zonder dat ik het geld moet ophalen.
+- K06-b/concept-3: Een pot voor de hele straat of het buurthuis, waar klussen voor iedereen uit komen die het nodig heeft.
+- K06-c/concept-1: Een magneetje of kaartje door de bus in de wijk, met alleen de prijs en het nummer.
+- K06-c/concept-2: Een los gratis kennismakingsbezoek zonder abonnement, zodat je eerst die man ziet voor je ergens aan vastzit.
+- K06-c/concept-3: Een jaaroverzicht is goed, maar vertel het ook aan de telefoon, dan weet ik zonder lezen wat het me kost.
+- K10-a/concept-1: Een papieren folder of stukje in de krant van het zorgcentrum die de oudere kan bewaren voor de dochter.
+- K10-a/concept-2: Een versie van de folder die aan de dochter is gericht, zodat de moeder hem alleen maar hoeft door te geven.
+- K10-a/concept-3: Een simpele kaart aan de muur of op de koelkast met het nummer van de vaste klusser erop.
+- K10-b/concept-1: De klussenkaart verkopen als cadeau van kinderen aan hun ouders, via zorgcentra en thuiszorg.
+- K10-b/concept-2: Aanbieden via thuiszorg, zorgcentra en mantelzorgsteunpunten, waar dochters als Marjan al komen.
+- K10-b/concept-3: Een familievariant die de ouder en het kind op twee adressen samen dekt.
+- K10-c/concept-1: De mantelzorger zelf als klant zien: één kaart voor klussen bij de ouder en in het eigen huis.
+- K10-c/concept-2: Een uitgewerkte regeling voor ouders met beginnende dementie, waarin de klusser alles via de contactpersoon afstemt.
+- K10-c/concept-3: Gespaarde klussen die binnen de familie overgaan, van ouder naar kind of andersom.
+- K12-a/concept-1: Mensen die hun vaste lasten doorlichten gericht aanspreken: 'geen maandbedrag' is voor hen het hele verkoopargument.
+- K12-a/concept-2: Een variant die kinderen hun ouders cadeau doen, zonder dat de ouder zelf een abonnement hoeft af te sluiten.
+- K12-a/concept-3: Een vooruitbetaalde jaarbundel zonder automatische verlenging voor wie geen doorlopende afschrijving wil.
+- K12-b/concept-1: Vindbaar zijn op het moment dat iemands vaste klusjesman stopt, bijvoorbeeld via de buurtkrant of de bibliotheek.
+- K12-b/concept-2: Een variant waarbij het verslag per post komt, voor ouderen en families zonder smartphone.
+- K12-b/concept-3: Het jaaroverzicht omzetten in advies, 'u was per keer goedkoper uit geweest', wat vertrouwen wekt bij mensen die rekenen.
+- K12-c/concept-1: Zich uitdrukkelijk profileren als dienst die zonder app, account en tracking werkt; die groep is klein maar blijft trouw.
+- K12-c/concept-2: Het aanbieden aan mantelzorgers voor hun ouders, met de oudere als enige die beslist wat er gedeeld wordt.
+- K12-c/concept-3: Een werkelijk eerlijk jaaroverzicht dat het verschil terugstort als per keer betalen goedkoper was geweest.
+- P06-a/concept-1: De klussenkaart als cadeau van volwassen kinderen aan hun ouders, rond verjaardagen en Sinterklaas.
+- P06-a/concept-2: Kinderen die op afstand wonen en voor hun ouders willen betalen, zonder dat het betuttelend voelt.
+- P06-a/concept-3: Doe-het-zelvers zouden eerder een abonnement nemen voor lastige klussen zoals elektra of een groep in de meterkast.
+- P06-b/concept-1: Klussen die net te groot zijn voor een doe-het-zelver, zoals een stopcontact verplaatsen tijdens een verbouwing.
+- P06-b/concept-2: Kleinkinderen en kinderen die de kosten samen willen delen, bijvoorbeeld via één betaallink voor de hele familie.
+- P06-b/concept-3: Een pakket voor stellen die verbouwen: een paar vakmensklussen die je kunt inzetten wanneer het project dat vraagt.
+- P06-c/concept-1: Een eerste klus voor een tientje om kennis te maken, zodat je het eens probeert zonder dat het pijn doet.
+- P06-c/concept-2: Een cadeau-variant die je aan je ouders geeft zonder dat het meteen een abonnement voor jezelf wordt.
+- P06-c/concept-3: Een klussenpot die je zelf opbouwt en die je niet verliest, zoals spaarpunten.
+- P13-a/concept-1: De klussenkaart voor je ouders, die nu diep in de tekst staat, als eerste laten zien aan mantelzorgers.
+- P13-a/concept-2: Mantelzorgers bereiken via WhatsApp-groepen en ouderplatforms, daar zitten wij 's avonds laat.
+- P13-a/concept-3: Een 'klus bij mama'-optie in hetzelfde abonnement voor gezinnen die ook voor een ouder zorgen.
+- P13-b/concept-1: Jezelf neerzetten als de betrouwbare reserve voor als je vaste hulp uitvalt of op vakantie is.
+- P13-b/concept-2: Het terugkoppelberichtje voor ongeruste kinderen los aanbieden, ook bij klussen per keer.
+- P13-b/concept-3: Een klusbon als cadeau of voor een verhuizing maakt het iets leuks in plaats van een vaste last.
+- P13-c/concept-1: Via wijkverpleging en mantelzorgsteunpunten aanbieden, daar zitten precies de families die dit zoeken.
+- P13-c/concept-2: Kosten delen tussen broers en zussen via één betaalverzoek, zodat niemand hoeft voor te schieten.
+- P13-c/concept-3: Een spaarpakket voor mantelzorgers: klussen sparen op het adres van je ouder, met jou als aanspreekpunt.
+- P16-a/concept-1: Huishoudens met een warmtepomp en zonnepanelen hebben technische kleine klussen waar geen gewone klusjesman voor komt.
+- P16-a/concept-2: Werkende veertigers met ouders op afstand zouden hier voor betalen als ze zelf de aanmelder en betaler kunnen zijn.
+- P16-a/concept-3: Een jaarlijkse 'huis-APK' voor warmtepomp, rookmelders en afvoeren zou een abonnement voor een gezinshuis wel rechtvaardigen.
+- P16-b/concept-1: Een gezinshuis heeft een terugkerende stroom kleine klussen die nu in de weekenden blijft liggen.
+- P16-b/concept-2: De zoon of dochter op afstand is de echte koper, en die zit op LinkedIn en in de NRC, niet in de buurtkrant.
+- P16-b/concept-3: Drukke gezinnen kopen tijd; een gezinsbundel met vaste maandelijkse afspraak zou de weekenden echt vrijmaken.
+- P16-c/concept-1: Een vaste klusser die voor de volgende keer al weet wat er in huis zit is voor een kritische klant een echte reden om terug te komen.
+- P16-c/concept-2: Kinderen die zich verantwoordelijk voelen voor een ouder willen zekerheid, en daar kun je gericht op adverteren.
+- P16-c/concept-3: Kritische klanten zouden een tegoed-model met terugbetaling van ongebruikte klussen wel vertrouwen.
+- P30-a/concept-1: Vijftigplussers die niet voor zichzelf maar voor hun ouders iets willen regelen, bijvoorbeeld rond verjaardagen of Sinterklaas.
+- P30-a/concept-2: De schoonfamilie van mensen zoals ik: een ouder alleen thuis, waarbij wij de kosten willen delen.
+- P30-a/concept-3: Een jaaroverzicht dat laat zien of je beter per keer had kunnen betalen, dat zou zuinige mensen overtuigen.
+- P30-b/concept-1: Verenigingen zoals de voetbalclub, met een klussenkaart op rekening voor de kantine en de kleedkamers.
+- P30-b/concept-2: Kinderen die al voor hun ouders regelen, bereiken via de huisarts of de ANWB Kampioen in plaats van via de ouder zelf.
+- P30-b/concept-3: Een jaarbedrag in één keer vooraf, zonder automatische verlenging, voor mensen die abonnementen wantrouwen.
+- P30-c/concept-1: De klussenkaart deelbaar met buren past in een dorp; maak er een buurtkaart van via de dorpsvereniging.
+- P30-c/concept-2: De familie-app: één bericht naar alle broers en zussen tegelijk, dan hoeft niemand meer rond te bellen.
+- P30-c/concept-3: Het rekenvoorbeeld hoort bovenaan, want dat is het enige wat een moe iemand overtuigt.
+- P30-d/concept-1: Mensen die net slecht behandeld zijn door een groot bedrijf, zoeken juist 'vast gezicht en eigen telefoon'; zet dat voorop.
+- P30-d/concept-2: Een variant voor ouders die de zoon of dochter niet hoeft te betalen, gewoon per klus met een berichtje naar de familie.
+- P30-d/concept-3: Het jaaroverzicht ook bij per-keer-klanten, zodat zuinige mensen zien wat ze uitgeven zonder abonnement.
+- P31-a/concept-1: De Klussenkaart als cadeau voor ouders of buren verdient een eigen plek, bijvoorbeeld rond Moederdag of Sinterklaas.
+- P31-a/concept-2: Mensen van mijn leeftijd zijn juist de kinderen die dit voor hun ouders zouden regelen en betalen.
+- P31-a/concept-3: Een los kaartje zonder maandbedrag spreekt mensen die weinig klussen hebben meer aan dan sparen.
+- P31-b/concept-1: Het moment dat de vaste klusjesman stopt of onbereikbaar is, is het moment om mensen zoals mij binnen te halen.
+- P31-b/concept-2: Kinderen van zestig met ouders van in de tachtig zijn de eigenlijke kopers; spreek ons aan waar wij lezen, zoals het AD of een nieuwsbrief.
+- P31-b/concept-3: Een ouder-variant van sparen, waarbij ik als dochter betaal en mijn moeder de klussen gebruikt, zou wel aanslaan.
+- P31-c/concept-1: Mensen zoals ik kopen de Klussenkaart voor een buurvrouw of ouder die het zelf niet regelt; bied dat actief aan.
+- P31-c/concept-2: Een versie waarin de oudere gelijkwaardig meedoet, met eigen berichtjes en eigen keuzes, zou kinderen én ouders geruststellen.
+- P31-c/concept-3: Gespaarde klussen delen met een ouder of buurvrouw zou dit abonnement ook zinnig maken voor wie zelf weinig klussen heeft.
+- P35-a/concept-1: De klussenkaart als cadeau van de kinderen voor Moederdag of een verjaardag, dan hoef ik het zelf niet te kopen.
+- P35-a/concept-2: Dat je bij de kennismaking even koffie drinkt en de klusser leert kennen, dat maakt het voor alleenwonenden persoonlijk.
+- P35-a/concept-3: Een folder bij de sportschool voor 60-plussers of in het huis-aan-huisblad, waar je het rustig kunt lezen.
+- P35-b/concept-1: Dochters en zonen die aan tafel meekijken zijn de echte beslissers; laat hen het voor hun moeder kunnen boeken.
+- P35-b/concept-2: Het echt richten op de kinderen, als iets wat zij voor hun ouders regelen, niet op de oudere zelf.
+- P35-b/concept-3: Een proefperiode van drie maanden zonder verplichtingen voor mensen die abonnementen wantrouwen.
+- P35-c/concept-1: Duidelijk maken wat de woningcorporatie al betaalt en wat niet, want in een huurflat weet je dat vaak niet.
+- P35-c/concept-2: Het aanbieden aan kinderen van ouders boven de tachtig, want voor hen is het berichtje echt handig.
+- P35-c/concept-3: Dat jaaroverzicht van betaald en gebruikt ook naar mensen sturen die per keer betalen, zodat ze zelf kunnen kiezen.
+- P39-a/concept-1: Mensen zoals ik die nu alles zelf doen, maar na een operatie of met een slechte knie tijdelijk iemand nodig hebben.
+- P39-a/concept-2: Een tijdelijke variant voor na een ziekenhuisopname, zoals mijn heup, waarin de familie alleen een paar maanden meekijkt.
+- P39-a/concept-3: Een seizoenscontrole voor huizen van ouderen, zoals rookmelders, goten en de cv, in één afspraak per jaar.
+- P39-b/concept-1: Een papieren folder met alle voorwaarden, voor mensen die dit op een telefoonschermpje niet goed kunnen lezen.
+- P39-b/concept-2: De contactpersoon-regeling ook aanbieden bij losse klussen, zonder dat je er een maandbedrag voor moet betalen.
+- P39-b/concept-3: Een losse klussenbundel zonder maandbedrag voor wie het geld liever niet elke maand ziet afgaan.
+- P39-c/concept-1: De klussenkaart als cadeau van kinderen, broers of zussen, met verjaardagen en Kerst als moment.
+- P39-c/concept-2: Broers en zussen van alleenstaande ouderen als contactpersoon en betaler, niet alleen de kinderen.
+- P39-c/concept-3: Een familiepakket waarmee je klussen verdeelt over je eigen huis en dat van een ouder of zus op een ander adres.
+- P39-d/concept-1: Een eenmalige huischeck voor wie bezuinigt, met tochtstrips, radiatorfolie en de cv, om op de energierekening te besparen.
+- P39-d/concept-2: Ouderen van wie de kinderen ver weg of in het buitenland wonen, daar zit de echte behoefte.
+- P39-d/concept-3: Het eerlijke rekenvoorbeeld staat nu onderaan, terwijl juist bezuinigers dat als eerste willen zien.
+- P40-a/concept-1: De klussenkaart als cadeau verkopen via de KBO, de kerk of de kaartclub, zodat hij via bekenden binnenkomt.
+- P40-a/concept-2: De buurvrouw als contactpersoon vooraan zetten, want in het dorp let je toch al op elkaar.
+- P40-a/concept-3: Een spaarvorm die je eens per jaar per factuur vooruit betaalt, zonder maandelijkse afschrijving.
+- P40-b/concept-1: Ouderen die hun vaste lasten verlagen zoeken juist een losse prijs; zeg hardop dat dit geen vaste last is.
+- P40-b/concept-2: Kinderen die verder weg wonen kunnen het als cadeau betalen, dan telt het niet mee bij de lasten van de oudere zelf.
+- P40-b/concept-3: Ook losse klanten een jaaroverzicht sturen, zodat ze zelf zien welke vorm voor hen goedkoper is.
+- P40-c/concept-1: Verkopen via de kaartclub, het kerkkoor of de KBO, waar mensen elkaar dingen aanraden.
+- P40-c/concept-2: De kinderen via hun eigen kanalen aanspreken, want bij ouderen zoals Ria beslist de dochter mee.
+- P40-c/concept-3: Het rekenwerk aan de telefoon laten doen: u belt, en wij zeggen wat bij u past.
+- P42-a/concept-1: Een klussenkaart voor een hele portiek of galerij, zodat de klusser in één middag bij drie buren langsgaat.
+- P42-a/concept-2: Kinderen die ver weg wonen als koper benaderen in plaats van de ouder die zelf wil rondkomen.
+- P42-a/concept-3: Een jaarkaart die je één keer per jaar contant betaalt, zonder automatische afschrijving elke maand.
+- P42-b/concept-1: Een gratis kennismaking ook bij de losse klus, zodat je de man eerst ziet voordat je iets betaalt.
+- P42-b/concept-2: De kennismaking plannen op een vast moment dat de familie toch langskomt, zoals de woensdag met de kleinkinderen.
+- P42-b/concept-3: Een papieren spaarkaart met stempels zoals bij de bakker, zodat je ziet hoeveel klussen je nog hebt.
+- P42-c/concept-1: Samenwerken met woningcorporaties, zodat huurders weten wat de corporatie doet en wat de klusser erbij doet.
+- P42-c/concept-2: Het familiebericht als extraatje bij elke losse klus, zodat het geen reden hoeft te zijn voor een abonnement.
+- P42-c/concept-3: Een jaaroverzicht ook voor wie per keer betaalt, zodat mensen die hun lasten op een rij zetten zien wat ze uitgeven.
+- P45-a/concept-1: Een klusser die op een vaste dag in het dorp is en via de buurt bekend wordt, net als de bakker vroeger.
+- P45-a/concept-2: Het aanbod rechtstreeks aan de kinderen richten, die de post en het geld van hun moeder al doen.
+- P45-a/concept-3: Een papieren kaartje met grote letters waarop staat hoeveel klussen je nog hebt, dat kan de dochter voorlezen.
+- P45-b/concept-1: Samenwerken met de diaconie of burenhulp voor de klussen die vrijwilligers niet durven, zoals elektra.
+- P45-b/concept-2: Het abonnement als verjaardagscadeau van de kinderen aan moeder aanbieden, want daar denken ze nu nooit aan.
+- P45-b/concept-3: Het sparen koppelen aan de klussen die elk jaar terugkomen, zoals de rookmelder en de kerkradio nakijken.
+- P45-c/concept-1: De klussenkaart via de dorpsvereniging of de kerk laten verspreiden, zodat buren hem samen kopen.
+- P45-c/concept-2: Het eerste gratis bezoek aanbieden als kennismaking in het buurthuis of na de kerkdienst, met koffie.
+- P45-c/concept-3: Een jaaroverzicht op papier met grote letters, dat de dochter kan voorlezen, maakt het voor ouderen controleerbaar.
+- P45-d/concept-1: Een foto en naam van de klusser vooraf per post sturen, zodat je weet wie er aanbelt.
+- P45-d/concept-2: Via de wijkverpleging, huisarts en kerk laten aanbevelen, want dat zijn de enigen die ouderen zoals ik geloven.
+- P45-d/concept-3: Een regeling dat het abonnement vanzelf stopt bij opname of overlijden, zodat de kinderen geen gedoe hebben.
+- P47-a/concept-1: Verspreid de klussenkaart via bridgeclubs en zwemverenigingen, want daar adviseren wij elkaar en gaat een goede naam snel rond.
+- P47-a/concept-2: Verkoop dit aan de kinderen als iets wat zij voor hun ouders regelen, dan hoeft de oudere zichzelf niet als zorgbehoevend te zien.
+- P47-a/concept-3: Een vooruitbetaalde jaarbundel voor wie liever geen doorlopende afschrijving heeft.
+- P47-b/concept-1: Een klus kunnen boeken en betalen voor een ander, zoals een buurvrouw die het zelf niet regelt.
+- P47-b/concept-2: Buurvrouwen en vriendinnen als betalende contactpersoon, want die zijn vaak dichterbij dan de kinderen.
+- P47-b/concept-3: Een abonnement dat twee of drie buren in hetzelfde appartementencomplex samen delen.
+- P47-c/concept-1: Een berichtje de avond ervoor met naam en foto van de klusser, zodat je weet dat hij echt komt.
+- P47-c/concept-2: Folders in de wachtkamer van huisarts en fysio, daar zitten precies de mensen voor wie dit wel is.
+- P47-c/concept-3: Voorrang bij drukte voor abonnees, want voor wie eerder vergeten werd is dat de echte reden om vast te betalen.
+
+## toetsen_bij_echte_mensen
+- K06-a: Of handige mannen als ik de klusser vooral willen voor tv, wifi en telefoon, en niet voor lampen en planken.
+- K06-a: Of mensen van mijn leeftijd dit lezen als 'hulp voor mij' of als 'hulp voor mijn ouders', dat maakt alles uit.
+- K06-a: Hoeveel klussen per jaar mensen als ik echt uitbesteden, want dat bepaalt of sparen ooit loont.
+- K06-b: Of mensen in kleine dorpen wel betalen voor iets wat de buurman nu gratis doet, en wat de klusser dan anders moet doen.
+- K06-b: Of ouders van 80+ een vreemde klusser binnenlaten als hun zoon het nu doet, en wie van de twee dan beslist.
+- K06-b: Of mensen die niet goed lezen het verschil tussen 7,95, 13,95, 20 en 25 euro nog kunnen volgen als je het voorleest.
+- K06-c: Of mensen die bezuinigen het nummer bewaren voor later, of het meteen vergeten zodra de nood er is.
+- K06-c: Of mensen die weinig tijd hebben snappen dat dit voor hun ouders bedoeld is en niet voor henzelf.
+- K06-c: Of mensen die bezuinigen een klein vast bedrag beter vinden dan 25 euro ineens, of juist andersom.
+- K10-a: Of 85-plussers ooit zelf de klusser bellen, of dat elke klus toch via een kind loopt.
+- K10-a: Of ouderen de contactpersoon-regeling zien als hulp voor hun kind of als extra last voor hun kind.
+- K10-a: Of hoogbejaarden 'klussen sparen' zonder uitleg begrijpen.
+- K10-b: Hoeveel klussen per jaar een hoogbejaarde in een aanleunwoning echt heeft.
+- K10-b: Of mantelzorgers het berichtje achteraf als rust ervaren of als nog een melding op hun telefoon.
+- K10-b: Hoe mantelzorgers met slechte abonnementservaringen reageren op het woord 'sparen' en de vervaltermijn.
+- K10-c: Of mantelzorgers de klussenkaart voor hun ouder kopen of eigenlijk voor zichzelf.
+- K10-c: Hoe vergeetachtige ouderen reageren als de klusser komt op een afspraak die hun kind heeft gemaakt.
+- K10-c: Of mantelzorgers 'Gezin' opvatten als ouder en kind op twee adressen, en of ze dat zouden willen.
+- K12-a: Of mensen die eerder door een klusdienst in de steek zijn gelaten de 'of gratis'-belofte geloven.
+- K12-a: Of ouderen de 'contactpersoon' als hulp ervaren of als toezicht.
+- K12-a: Hoeveel klussen per jaar mensen werkelijk hebben, want daarvan hangt af of dit ooit voordelig is.
+- K12-b: Of mensen die al een vaste klusjesman hebben dit als vervanging of als aanvulling zien, en tegen welke uurprijs.
+- K12-b: Hoe ouderen zelf reageren op een klusser die aan hun kind rapporteert, los van wat het kind ervan vindt.
+- K12-b: Hoeveel klussen er gemiddeld per jaar echt gebruikt worden en hoeveel er vervallen.
+- K12-c: Of privacybewuste klanten de gegevensbelofte na het lezen van de volledige privacyverklaring nog geloven.
+- K12-c: Wat er gebeurt als oudere en contactpersoon het oneens zijn over wat er gedeeld of betaald wordt.
+- K12-c: Of mensen het rekenvoorbeeld narekenen en hoe ze reageren als blijkt dat het omslagpunt gunstig is voorgesteld.
+- P06-a: Of kinderen van rond de dertig de klussenkaart echt kopen voor hun ouders, en of die ouders hem dan ook gebruiken.
+- P06-a: Of ouderen zelf de contactpersoon-functie prettig vinden of zich erdoor gecontroleerd voelen.
+- P06-a: Hoeveel klussen per jaar mensen werkelijk hebben, en of dat overeenkomt met wat ze vooraf denken.
+- P06-b: Of mensen die eerder door een klusser zijn teleurgesteld de 'anders gratis'-belofte geloven, en wat ze nodig hebben om dat wel te doen.
+- P06-b: Of ouderen zelf blij zijn dat hun kinderen een berichtje krijgen, of dat ze dat liever niet willen.
+- P06-b: Of mensen het sparen van klussen begrijpen als voordeel, of het vooral zien als geld dat ze vooruitbetalen.
+- P06-c: Voor welke klussen mensen die een handige buurman of vader hebben toch een betaalde klusser zouden inschakelen.
+- P06-c: Of mensen die alleen de kop en prijs zien kunnen vertellen wat ze voor €9,95 krijgen.
+- P06-c: Of mensen 'sparen' als voordeel zien of als geld dat verdwijnt als ze het niet opmaken.
+- P13-a: Of mensen die 's avonds scrollen de optie voor hun ouders überhaupt zien zonder door te lezen.
+- P13-a: Of kinderen van ouders met beginnende dementie dit als hulp ervaren of als nog een ding om te regelen.
+- P13-a: Of mensen het sparen snappen of het vooral zien als een incasso die ongemerkt doorloopt.
+- P13-b: Hoeveel mensen al een vaste klushulp hebben en wat hen zou laten overstappen of aanvullen.
+- P13-b: Of kinderen een maandbedrag willen betalen voor een ouder die al een vaste klushulp heeft.
+- P13-b: Hoeveel klussen gezinnen echt per jaar hebben, en hoeveel ze toch zelf of met familie doen.
+- P13-c: Of families de kaart echt delen tussen broers, zussen en ouders, en wie dan de afspraak maakt.
+- P13-c: Of ouders de klusser binnenlaten als hun kind het geregeld heeft, of zich gepasseerd voelen.
+- P13-c: Hoeveel klussen per jaar huishoudens en ouderen echt hebben, want daar staat of valt dit rekenvoorbeeld mee.
+- P16-a: Toets hoeveel van de gemelde klussen echt binnen 30 minuten klaar zijn en hoe vaak de vooraf genoemde meerprijs tot afhaken leidt.
+- P16-a: Toets of de kinderen of de ouders zelf de koper zijn en wie zich aangesproken voelt door de tekst.
+- P16-a: Toets hoeveel klussen per jaar huishoudens echt hebben, los van wat ze denken te hebben.
+- P16-b: Toets waarom mensen die al een vaste klusser hebben zouden overstappen, en wat die huidige oplossing mist.
+- P16-b: Toets of de oudere of het kind de beslissing neemt en wie uiteindelijk betaalt.
+- P16-b: Toets of gezinnen de twee klussen per maand echt opmaken of dat ze na zes maanden gespaarde klussen zien verlopen.
+- P16-c: Toets hoe klanten reageren op het moment dat de klusser een meerprijs noemt, en of ze dan doorzetten of afhaken.
+- P16-c: Toets of mensen binnen vijf seconden zien dat dit een product voor ouderen met familie op afstand is.
+- P16-c: Toets hoeveel gespaarde klussen er in de praktijk vervallen en hoe klanten reageren als ze dat zien.
+- P30-a: Of mensen de klussenkaart echt als cadeau kopen of het alleen een leuk idee vinden.
+- P30-a: Of de ouder zelf of de kinderen dit willen afsluiten, en wie van de twee het gesprek begint.
+- P30-a: Hoeveel klussen mensen zoals ik echt per jaar hebben, en of dat boven de vier uitkomt.
+- P30-b: Hoeveel echte klussen binnen 30 minuten passen en wat mensen accepteren als het uitloopt.
+- P30-b: Of de betalende kinderen €9,95 per maand redelijk vinden als hun ouder maar een paar klussen per jaar heeft.
+- P30-b: Hoe mensen 'de prijs staat twee jaar vast' lezen: als zekerheid of als waarschuwing.
+- P30-c: Of mensen die zelf handig zijn het aanbod doorgeven aan ouders of buren, of het gewoon wegleggen.
+- P30-c: Of de oudere zelf het gevoel heeft dat ze haar eigen zaken houdt, of dat de familie het over haar hoofd regelt.
+- P30-c: Of mensen binnen een paar seconden snappen wat 'een klus sparen' betekent.
+- P30-d: Of mensen die al een vaste klusser hebben ooit wisselen, en wat ze dan de doorslag geeft.
+- P30-d: Of mensen het vertrouwen dat familie berichtjes en foto's krijgt, en wie die gegevens mag zien.
+- P30-d: Of mensen na een jaar met het overzicht in de hand tevreden zijn, of zich rijk rekenen en opzeggen.
+- P31-a: Toets of mensen die dit in dertig seconden zien, het telefoonnummer of de naam een maand later nog weten.
+- P31-a: Toets of zestigers dit zien als iets voor henzelf of voor hun ouders, en wie van de twee het uiteindelijk afsluit.
+- P31-a: Toets of mensen in een paar seconden kunnen zeggen wat 'een klus sparen' betekent.
+- P31-b: Toets hoeveel mensen al een klusjesman hebben en wat hen zou doen overstappen.
+- P31-b: Toets of de ouder zich gesteund of betutteld voelt als de kinderen dit voor haar regelen.
+- P31-b: Toets of mensen na het rekenvoorbeeld nog weten welk concept voor hen het goedkoopst is.
+- P31-c: Toets of lezers de privacyzin en het begrip 'klant' bij losse klussen hetzelfde uitleggen.
+- P31-c: Toets bij ouderen zelf, niet alleen bij hun kinderen, of zij zich met de contactpersoon-regeling nog de baas voelen.
+- P31-c: Toets of alleenstaanden het gezinstarief als oneerlijk ervaren en of dat hen doet afhaken.
+- P35-a: Of vrouwen zoals ik de klussenkaart echt samen met een buurvrouw of vriendin zouden delen, en hoe ze dat dan regelen.
+- P35-a: Of mensen van onder de 70 zich aangesproken voelen, of dat het berichtje aan de familie juist betuttelend overkomt.
+- P35-a: Of mensen het woord 'klussen sparen' in één keer snappen zonder het rekenvoorbeeld te lezen.
+- P35-b: Of mensen die eerder zijn teleurgesteld de 'of gratis'-belofte geloven of juist wantrouwen.
+- P35-b: Of vijftigers en zestigers zich beledigd voelen door de familie-invalshoek in de kop.
+- P35-b: Of mensen in een paar seconden zien dat het maandelijks opzegbaar is, of alleen het maandbedrag onthouden.
+- P35-c: Of mensen met een krappe beurs vooraf willen weten wat een uitloop kost, of het 'vooraf afspreken' genoeg vinden.
+- P35-c: Wie er in de praktijk betaalt: de oudere zelf of de kinderen, en of ouderen het wel willen dat hun kinderen betalen.
+- P35-c: Hoeveel klussen mensen zoals ik echt per jaar hebben, want daar hangt de hele rekensom van af.
+- P39-a: Hoeveel van de voorbeeldklussen in oudere huizen echt binnen 30 minuten lukken, en hoe mensen de meerprijs dan ervaren.
+- P39-a: Of mensen van mijn leeftijd een meekijkende contactpersoon als hulp of als bemoeienis ervaren.
+- P39-a: Hoeveel klussen mensen werkelijk per jaar laten doen en of ze het rekenvoorbeeld zo lezen als bedoeld.
+- P39-b: Of mensen de garantie 'niet opgelost, niets betalen' geloven of juist als lokkertje zien.
+- P39-b: Of mensen begrijpen hoe het berichtje na afloop verstuurd wordt en of ze denken dat ze er een app voor moeten installeren.
+- P39-b: Hoe mensen reageren op het vervallen van gespaarde klussen en op het ontbreken van een prijs na twee jaar.
+- P39-c: Hoe lang de genoemde voorbeeldklussen echt duren in oudere huizen en of het prijsvoorstel vooraf goed valt.
+- P39-c: Of de oudere zelf een meekijkende contactpersoon accepteert, en niet alleen de familie die het koopt.
+- P39-c: Of mensen 'Gezin' begrijpen en of ze het sparen als voordeel of als verborgen verlies zien.
+- P39-d: Of mensen die al eens door een klusbedrijf zijn teleurgesteld de belofte 'op tijd of gratis' geloven.
+- P39-d: Of de kop in een paar seconden duidelijk maakt voor wie dit is en wat die €9,95 per maand oplevert.
+- P39-d: Of mensen die snel kijken het verschil tussen sparen en een gewoon abonnement überhaupt opmerken.
+- P40-a: Hoe ouderen in dorpen €25 afwegen tegen de vrijwilliger of buurman die ze nu al vragen.
+- P40-a: Of zeventigers de familie-optie lezen als steun of als bemoeienis.
+- P40-a: Of ouderen de spaarregels na één keer lezen kunnen navertellen zonder zich beetgenomen te voelen.
+- P40-b: Of mensen die eerder door een klusdienst zijn teleurgesteld de garanties geloven, en welke het zwaarst weegt.
+- P40-b: Wie er echt betaalt, de oudere of de kinderen, en of ouderen dat accepteren als een kind het betaalt.
+- P40-b: Hoeveel klussen per jaar ouderen echt hebben en of ze dat zelf goed inschatten.
+- P40-c: Of ouderen de klussenkaart echt met buren willen delen en hoe ze dat onderling regelen.
+- P40-c: Of ouderen de kennismaking met familie erbij geruststellend of betuttelend vinden.
+- P40-c: Of ouderen na één keer lezen kunnen zeggen of sparen voor hen goedkoper is.
+- P42-a: Of ouderen 25 euro per klus echt betalen als ze nu gratis hulp van buren of familie hebben.
+- P42-a: Of ouderen het goed vinden dat hun kinderen de factuur krijgen, of dat dat voelt als afhankelijk zijn.
+- P42-a: Hoeveel kleine klussen alleenwonende ouderen werkelijk per jaar hebben, want dat bepaalt of sparen ooit loont.
+- P42-b: Of de belofte 'binnen twee werkdagen of gratis' vertrouwen geeft of juist doet denken aan loze beloftes.
+- P42-b: Of ouderen de contactpersoon ervaren als steun of als betutteling, en wie volgens hen de factuur hoort te krijgen.
+- P42-b: Of ouderen het spaaridee binnen een minuut kunnen navertellen zonder het rekenvoorbeeld.
+- P42-c: Welke kleine klussen huurders in sociale huur echt zelf moeten regelen en betalen.
+- P42-c: Of mensen met een krap budget het maandbedrag zien als zekerheid of als het zoveelste abonnement.
+- P42-c: Of zuinige huishoudens 'sparen' zien als voordeel of als verstopte vaste last.
+- P45-a: Of ouderen die al eens teleurgesteld zijn de belofte 'binnen twee werkdagen of gratis' geloven of juist wantrouwen.
+- P45-a: Of mensen met krap geld een maandbedrag zien als zekerheid of als weggegooid geld.
+- P45-a: Of mensen boven de 75 'klussen sparen' in één keer snappen zonder dat iemand het uitlegt.
+- P45-b: Of mensen die al gratis hulp van kerk of buren krijgen €25 per klus eerlijk vinden.
+- P45-b: Of kinderen van ouders met weinig geld dit abonnement voor hun moeder willen betalen.
+- P45-b: Of ouderen die al abonnementen hebben op alarmering en maaltijden nog een abonnement erbij willen.
+- P45-c: Of oudere buren een klussenkaart echt samen delen of dat het in de praktijk bij één persoon blijft liggen.
+- P45-c: Of het berichtje naar de contactpersoon werkt voor ouderen zonder smartphone en hun kinderen.
+- P45-c: Of ouderen zonder e-mail zich buitengesloten voelen door opzeggen per e-mail.
+- P45-d: Of alleenwonende ouderen de klusser zonder familie erbij binnenlaten, en wat daar nodig voor is.
+- P45-d: Of een aanbeveling van thuiszorg of huisarts het verschil maakt tussen nee en ja bij kwetsbare ouderen.
+- P45-d: Of ouderen en hun kinderen snappen wat er met gespaarde klussen gebeurt bij ziekte, opname of overlijden.
+- P47-a: Of mensen van 75+ de belofte 'niet opgelost, dan gratis' geloven of er juist een addertje onder vermoeden.
+- P47-a: Of ouderen zelf, en niet alleen hun kinderen, de toon van 'familie op de achtergrond' acceptabel vinden.
+- P47-a: Hoeveel klussen per jaar ouderen echt hebben, want het hele rekenvoorbeeld hangt daaraan.
+- P47-b: Hoe vaak een klus echt binnen 30 minuten klaar is, en of mensen de meerprijs vooraf eerlijk vinden.
+- P47-b: Of kinderen op afstand echt willen betalen, en of de ouder het dan nog als eigen keuze ervaart.
+- P47-b: Of mensen door het rekenvoorbeeld meer vertrouwen krijgen of juist afhaken omdat het niet loont.
+- P47-c: Wat mensen die eerder door een klusser zijn laten zitten nodig hebben om het opnieuw te proberen.
+- P47-c: Welke kop mensen in een paar seconden aanspreekt zonder dat ze zich oud of afhankelijk voelen.
+- P47-c: Of mensen die alleen de kop lezen begrijpen dat een klus maximaal 30 minuten is en wat er dan wel of niet onder valt.
