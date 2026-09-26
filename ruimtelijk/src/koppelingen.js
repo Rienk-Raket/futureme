@@ -41,7 +41,8 @@ const VERWANT = {
   persoonlijk: [["vandaag", "Vandaag"], ["hobbyskills", "HobbySkills"], ["gewoontes", "Gewoontes"]],
   filters: [["zoeken", "Zoeken"], ["komend", "Komend"]],
   zoeken: [["filters", "Slimme lijsten"], ["logboek", "Logboek"]],
-  instellingen: [["backup", "Back-up"], ["help", "Uitleg"]],
+  instellingen: [["ontwerp", "Ontwerp"], ["backup", "Back-up"], ["help", "Uitleg"]],
+  ontwerp: [["instellingen", "Instellingen"], ["stats", "Terugblik"], ["vandaag", "Vandaag"]],
   backup: [["instellingen", "Instellingen"], ["help", "Uitleg"]],
   help: [["instellingen", "Instellingen"], ["backup", "Back-up"]]
 };
@@ -50,7 +51,7 @@ const VERWANT_ICO = {
   checklists: "lijst", checklist: "lijst", afspraken: "groep", afspraak: "groep", personen: "persoon", mindmap: "mindmap", hobbyskills: "hobby",
   gewoontes: "vuur", dagboek: "boek", logboek: "logboek", tijd: "tijd", focus: "doel", financieel: "portemonnee", werk: "koffer",
   gezondheid: "hart", roken: "blad", sidehustles: "raket", filters: "bliksem", zoeken: "zoek", instellingen: "instel", backup: "download",
-  help: "vraag", persoonlijk: "persoon", inbox: "inbox", meldingen: "inbox", welkom: "vandaag", start: "plus"
+  help: "vraag", ontwerp: "ster", persoonlijk: "persoon", inbox: "inbox", meldingen: "inbox", welkom: "vandaag", start: "plus"
 };
 function verwantHTML() {
   const l = (VERWANT[V.view] || []).filter(([v]) => v !== V.view);
@@ -95,6 +96,7 @@ vwMeer = function () {
       ["stats", "grafiek", "Terugblik", "Weekcijfers"]]],
     ["App", [
       ["instellingen", "instel", "Instellingen", "Weergave, bediening, privacy"],
+      ["ontwerp", "ster", "Ontwerp", "Glas, diepte en beweging"],
       ["backup", "download", "Back-up", "Export, import, agenda"],
       ["help", "vraag", "Uitleg", "Installeren en beperkingen"]]]
   ];

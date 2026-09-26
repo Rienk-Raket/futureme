@@ -47,7 +47,8 @@ vervang('shles: (typeof vwShLes === "function" ? vwShLes : vwStart)',
         '    profiel: (typeof vwProfiel === "function" ? vwProfiel : vwStart),\n'
         '    huishouden: (typeof vwHuishouden === "function" ? vwHuishouden : vwStart),\n'
         '    hhlijst: (typeof vwHhLijst === "function" ? vwHhLijst : vwStart),\n'
-        '    hhwaarom: (typeof vwHhWaarom === "function" ? vwHhWaarom : vwStart)')
+        '    hhwaarom: (typeof vwHhWaarom === "function" ? vwHhWaarom : vwStart),\n'
+        '    ontwerp: (typeof vwOntwerp === "function" ? vwOntwerp : vwStart)')
 
 # 3b. Categorieën: terugvallen op "overig" op naam, niet op positie (ruimte voor eigen categorieën).
 vervang("(CATEGORIEEN.find(c => c[0] === k) || CATEGORIEEN[6])", '(CATEGORIEEN.find(c => c[0] === k) || CATEGORIEEN.find(c => c[0] === "overig"))', 2)
@@ -114,7 +115,7 @@ BEZEM = ('<symbol id="i-bezem" viewBox="0 0 24 24" fill="none" stroke="currentCo
 vervang('<symbol id="ill-persoonlijk"', ILL + '\n' + ILL_WL + '\n' + ILL_ANKER + '\n' + ILL_VOORTGANG + '\n' + ILL_HUIS + '\n' + BEZEM + '\n<symbol id="ill-persoonlijk"')
 
 # 5. Stijl: achteraan in het bestaande <style>-blok.
-css = "\n\n" + lees("ruimte.css") + "\n\n" + lees("hobbyskills.css") + "\n\n" + lees("sh-tabs.css") + "\n\n" + lees("eigen-categorieen.css") + "\n\n" + lees("fin-vast.css") + "\n\n" + lees("wishlist.css") + "\n\n" + lees("nieuw-rail.css") + "\n\n" + lees("mm-export.css") + "\n\n" + lees("retro.css").replace("__PIXELFONT__", base64.b64encode((HIER / "fonts" / "press-start-2p.woff2").read_bytes()).decode()) + "\n\n" + lees("incasso-bellen.css") + "\n\n" + lees("nieuw-overzicht.css") + "\n\n" + lees("sh-ideeen.css") + "\n\n" + lees("anker.css") + "\n\n" + lees("voortgang.css") + "\n\n" + lees("huishouden.css") + "\n"
+css = "\n\n" + lees("ruimte.css") + "\n\n" + lees("ruimte-data.css") + "\n\n" + lees("ontwerp.css") + "\n\n" + lees("hobbyskills.css") + "\n\n" + lees("sh-tabs.css") + "\n\n" + lees("eigen-categorieen.css") + "\n\n" + lees("fin-vast.css") + "\n\n" + lees("wishlist.css") + "\n\n" + lees("nieuw-rail.css") + "\n\n" + lees("mm-export.css") + "\n\n" + lees("retro.css").replace("__PIXELFONT__", base64.b64encode((HIER / "fonts" / "press-start-2p.woff2").read_bytes()).decode()) + "\n\n" + lees("incasso-bellen.css") + "\n\n" + lees("nieuw-overzicht.css") + "\n\n" + lees("sh-ideeen.css") + "\n\n" + lees("anker.css") + "\n\n" + lees("voortgang.css") + "\n\n" + lees("huishouden.css") + "\n"
 vervang('</style>\n</head>', css + '</style>\n</head>')
 
 # 6. Scripts: vlak vóór het blok dat start() aanroept.
@@ -128,7 +129,7 @@ kennis = json.loads(KENNIS_PAD.read_text(encoding="utf-8"))
 for sleutel in ("meta", "richtingen", "aanpak", "vragen", "tips", "huishouden", "onderbouwing", "bronnen"):
     assert sleutel in kennis, f"kennisbank mist '{sleutel}'"
 kennis_js = "const FM_KENNIS = " + json.dumps(kennis, ensure_ascii=False).replace("</", "<\\/") + ";"
-blokken = f"<script>\n\"use strict\";\n// Kennisbank (gegenereerd uit kennis/huishouden.json, niet met de hand aanpassen)\n{kennis_js}\n</script>\n" + "".join(f"<script>\n{lees(naam)}\n</script>\n" for naam in ("sh-theorie.js", "sh-modellen.js", "sh-scrum.js", "sh-dashboard.js", "ruimte.js", "hobbyskills.js", "hs-sjablonen.js", "mm-bron.js", "koppelingen.js", "eigen-categorieen.js", "fin-vast.js", "wishlist.js", "sh-ideeen.js", "anker-data.js", "anker-speler.js", "anker-schermen.js", "anker-koppelingen.js", "voortgang-data.js", "voortgang.js", "profiel.js", "huishouden-data.js", "huishouden.js", "huishouden-sessie.js", "nieuw-rail.js", "nieuw-overzicht.js", "nieuw-analyse.js", "mm-export.js", "retro.js", "incasso-bellen.js", "tijdlijn-rust.js"))
+blokken = f"<script>\n\"use strict\";\n// Kennisbank (gegenereerd uit kennis/huishouden.json, niet met de hand aanpassen)\n{kennis_js}\n</script>\n" + "".join(f"<script>\n{lees(naam)}\n</script>\n" for naam in ("sh-theorie.js", "sh-modellen.js", "sh-scrum.js", "sh-dashboard.js", "ruimte.js", "ruimte-data.js", "hobbyskills.js", "hs-sjablonen.js", "mm-bron.js", "koppelingen.js", "eigen-categorieen.js", "fin-vast.js", "wishlist.js", "sh-ideeen.js", "anker-data.js", "anker-speler.js", "anker-schermen.js", "anker-koppelingen.js", "voortgang-data.js", "voortgang.js", "profiel.js", "huishouden-data.js", "huishouden.js", "huishouden-sessie.js", "nieuw-rail.js", "nieuw-overzicht.js", "nieuw-analyse.js", "mm-export.js", "ontwerp.js", "retro.js", "incasso-bellen.js", "tijdlijn-rust.js"))
 html = html[:j] + blokken + html[j:]
 
 UIT.write_text(html, encoding="utf-8")

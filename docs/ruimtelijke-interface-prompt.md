@@ -1,3 +1,5 @@
+> **Vervangen:** de ruimtelijke laag volgt nu [specificatie v4](spatial/futureme-spatial-specificatie-v4.md) en de [uber-prompt voor Claude Opus 5.5](prompts/futureme-spatial-uberprompt.md). Dit document blijft staan als geschiedenis.
+
 # Ruimtelijke interface voor FutureMe — geoptimaliseerde ontwerpprompt
 
 Dit document is de aangescherpte versie van de oorspronkelijke ontwerpbrief

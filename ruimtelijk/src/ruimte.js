@@ -1,34 +1,53 @@
 "use strict";
 /* ==========================================================================
-   50. Ruimtelijke laag — diepte, glas en betekenisvolle beweging
+   50. Ruimtelijke laag v4 — diepte, glas en betekenisvolle beweging
+   Specificatie: docs/spatial/futureme-spatial-specificatie-v4.md
    Legt zich over de bestaande app heen zonder het datamodel of de bestaande
-   handlers te raken: ga(), terug(), teken(), toast() en pasInstellingenToe()
-   worden ingepakt; de rest luistert mee op documentniveau.
+   handlers te raken: ga(), terug(), teken(), toast(), pasInstellingenToe() en
+   vwInstellingen() worden ingepakt; de rest luistert mee op documentniveau.
+   Openbaar voor andere modules: RT_NA, rtAan(), rtVol(), rtStil(), rtBurst(),
+   de klasse .rt-fout en het object FM_RUIMTE (status voor het Ontwerp-scherm).
    ========================================================================== */
-const RT = { tap: null, stapel: [], pending: null, vorigeView: null, vorigeParam: null, taken: null, getallen: new Map(), spoor: null, titel: "", eerste: true, ori: false };
+const RT = { tap: null, stapel: [], pending: null, vorigeView: null, vorigeParam: null, taken: null, getallen: new Map(), spoor: null, titel: "", eerste: true, ori: false, io: null };
 const RT_E = "cubic-bezier(.22,1,.36,1)";
 /** Hooks die na elke tekening draaien (ook als de laag uit staat). */
 const RT_NA = [];
 const rtStil = () => !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
 const rtAan = () => document.documentElement.dataset.ruimte === "1" && !rtStil();
+/** Vol = alle beweging (veren, parallax, kantelen, deeltjes); anders "rustig". */
+const rtVol = () => rtAan() && document.documentElement.dataset.beweging !== "rustig" && document.documentElement.dataset.budget !== "licht";
+const rtDuur = ms => rtVol() ? ms : Math.round(ms * .55);
+/** Status voor het Ontwerp-scherm en voor tests. */
+const FM_RUIMTE = { versie: "4.0", fps: [], budgetMelding: false };
 
-/* ---------- Instelling + achtergrondlaag ---------- */
+/* ---------- Instellingen + achtergrondlaag ---------- */
 function rtAchtergrond() {
   let a = $("#rt-achtergrond");
   if (document.documentElement.dataset.ruimte !== "1") { if (a) a.remove(); return; }
   if (!a) {
     a = document.createElement("div"); a.id = "rt-achtergrond"; a.setAttribute("aria-hidden", "true");
-    a.innerHTML = "<i></i><i></i><i></i>";
+    a.innerHTML = "<i></i><i></i><i></i><i></i>";
     document.body.prepend(a);
   }
 }
+/** Dagdeel kleurt de aurora: ochtend (6–12), middag (12–18), avond (18–23), nacht. */
+function rtDagdeel() {
+  const u = new Date().getHours();
+  document.documentElement.dataset.dagdeel = u >= 6 && u < 12 ? "ochtend" : u >= 12 && u < 18 ? "middag" : u >= 18 && u < 23 ? "avond" : "nacht";
+}
 document.documentElement.dataset.ruimte = "1";
+document.documentElement.dataset.beweging = "vol";
+rtDagdeel();
 rtAchtergrond();
+setInterval(rtDagdeel, 5 * 60 * 1000);
+document.addEventListener("visibilitychange", () => { document.documentElement.dataset.verborgen = document.hidden ? "1" : "0"; if (!document.hidden) rtDagdeel(); });
 {
   const _pas = pasInstellingenToe;
   pasInstellingenToe = function () {
     _pas();
-    document.documentElement.dataset.ruimte = inst("ruimte", true) && !inst("rust", false) ? "1" : "0";
+    const h = document.documentElement;
+    h.dataset.ruimte = inst("ruimte", true) && !inst("rust", false) ? "1" : "0";
+    h.dataset.beweging = inst("beweging", "vol") === "rustig" ? "rustig" : "vol";
     rtAchtergrond();
     rtSpoor(true);
   };
@@ -37,16 +56,42 @@ rtAchtergrond();
     let h = _vwI();
     const kantel = typeof DeviceOrientationEvent !== "undefined" && typeof DeviceOrientationEvent.requestPermission === "function"
       ? `<button class="knop klein rand" data-act="rt-kantel" style="margin-top:4px">${ico("mindmap")} Parallax bij kantelen toestaan</button>` : "";
-    const extra = schakelaar("ruimte", "Ruimtelijke interface", "Glas, diepte en vloeiende overgangen tussen schermen. Staat uit in de prikkelarme modus.", inst("ruimte", true)) + kantel;
+    const extra = schakelaar("ruimte", "Ruimtelijke interface", "Glas, diepte en vloeiende overgangen tussen schermen. Staat uit in de prikkelarme modus.", inst("ruimte", true))
+      + `<div class="veld"><span class="labeltekst">Beweging</span>${segment("beweging", [["vol", "Vol"], ["rustig", "Rustig"]], inst("beweging", "vol"))}
+         <small class="klein" style="display:block;margin-top:4px">Rustig: korte overgangen zonder veren, deeltjes, kantelen of parallax. Staat je toestel op "beweging verminderen", dan staat alle beweging uit.</small></div>`
+      + schakelaar("dagring", "Dagring op Vandaag", "Je dag als klok: afspraken als bogen, taken met een tijd als punten, en een wijzer voor nu.", inst("dagring", true))
+      + kantel
+      + `<button class="knop klein rand" data-act="ga" data-view="ontwerp" style="margin-top:8px">${ico("ster")} Ontwerpsysteem bekijken</button>`;
     const i = h.indexOf('data-toggle="rust"'), j = i < 0 ? -1 : h.indexOf("</div>", i);
     return j < 0 ? h + `<div class="card card-pad">${extra}</div>` : h.slice(0, j + 6) + extra + h.slice(j + 6);
   };
 }
 
+/* ---------- Adaptief bewegingsbudget ----------
+   Tijdens elke schermovergang tellen we frames. Zakt het toestel drie keer
+   onder 40 fps, dan schakelt de laag voor deze sessie naar "licht": geen
+   glasvervaging op kaarten, aurora stil, geen kantelen. Eén melding. */
+function rtMeetFps(duur) {
+  if (!rtAan() || document.hidden || document.documentElement.dataset.budget === "licht") return;
+  let n = 0; const t0 = performance.now();
+  const stap = nu => {
+    n++;
+    if (nu - t0 < duur) { requestAnimationFrame(stap); return; }
+    const fps = Math.round(n * 1000 / (nu - t0));
+    FM_RUIMTE.fps.push(fps); if (FM_RUIMTE.fps.length > 8) FM_RUIMTE.fps.shift();
+    const traag = FM_RUIMTE.fps.slice(-5).filter(f => f < 40).length;
+    if (traag >= 3) {
+      document.documentElement.dataset.budget = "licht";
+      if (!FM_RUIMTE.budgetMelding) { FM_RUIMTE.budgetMelding = true; toast("Beweging vereenvoudigd zodat alles soepel blijft"); }
+    }
+  };
+  requestAnimationFrame(stap);
+}
+
 /* ---------- Aanraking: oorsprong onthouden + lichtgloed ---------- */
 function rtOorsprongVan(t) {
   if (!t || !t.closest) return null;
-  let el = t.closest(".rijknop,.taak,.stat,.knop3d,.dp-stat,.wk-tegel,.ug-widget,.sh-kaart,.mm-mmkaart,.vs-sportkaart,.dagpaneel,.menu-kaart,.hs-kaart,.tl2-kaart");
+  let el = t.closest(".rijknop,.taak,.stat,.knop3d,.dp-stat,.wk-tegel,.ug-widget,.sh-kaart,.mm-mmkaart,.vs-sportkaart,.dagpaneel,.menu-kaart,.hs-kaart,.tl2-kaart,.fm-dagring");
   if (!el) { const c = t.closest(".card"); if (c && c.getBoundingClientRect().height < 300) el = c; }
   if (!el) el = t.closest("button,[data-act]");
   return el;
@@ -69,6 +114,29 @@ document.addEventListener("pointerdown", e => {
   const k = e.target.closest(".knop,.icon-btn,.rijknop,.chip,.keuze,.segment button,.knop3d,.vink,.mini-vink,nav#tabs button,.stat,.sub-knop,.cijfers button,.toggle,.menu-kaart,.dp-stat,.wk-tegel,.ug-cat,.ug-knop,.hs-kaart,.hs-check,.sh-check");
   if (k && !k.disabled && !k.closest(".mm-canvaswrap")) rtGloed(k, e.clientX, e.clientY);
 }, { capture: true, passive: true });
+
+/* Glanslicht en kantelen richting de aanwijzer (alleen muis/pen). */
+{
+  let tick = false, laatst = null;
+  document.addEventListener("pointermove", e => {
+    if (e.pointerType === "touch" || !rtAan()) return;
+    laatst = e;
+    if (tick) return; tick = true;
+    requestAnimationFrame(() => {
+      tick = false;
+      const t = laatst.target.closest && laatst.target.closest(".card,.menu-kaart,.stat,.hs-kaart,.knop3d");
+      if (!t) return;
+      const r = t.getBoundingClientRect();
+      const x = (laatst.clientX - r.left) / r.width, y = (laatst.clientY - r.top) / r.height;
+      t.style.setProperty("--mx", (x * 100).toFixed(1) + "%");
+      t.style.setProperty("--my", (y * 100).toFixed(1) + "%");
+      if (rtVol() && r.height < 260) {
+        t.style.setProperty("--fm-kx", ((.5 - y) * 6).toFixed(2) + "deg");
+        t.style.setProperty("--fm-ky", ((x - .5) * 8).toFixed(2) + "deg");
+      }
+    });
+  }, { passive: true });
+}
 
 /* ---------- Navigatie inpakken ---------- */
 {
@@ -119,7 +187,7 @@ function rtSnapshot(vanView) {
   if (!s || !app) return null;
   try {
     const k = s.cloneNode(true);
-    k.id = "rt-oud"; k.setAttribute("aria-hidden", "true");
+    k.id = "rt-oud"; k.setAttribute("aria-hidden", "true"); k.inert = true;
     k.querySelectorAll("[id]").forEach(n => n.removeAttribute("id"));
     k.querySelectorAll("canvas,video,iframe").forEach(n => n.remove());
     const r = s.getBoundingClientRect(), ar = app.getBoundingClientRect();
@@ -142,9 +210,13 @@ function rtOvergang(p, oud) {
     return `inset(${t}px ${rr}px ${b}px ${l}px round 18px)`;
   };
   const vol = "inset(0px 0px 0px 0px round 0px)";
+  const soort = p ? p.soort : "zacht";
   try {
-    const soort = p ? p.soort : "zacht";
-    if (soort === "vooruit") {
+    if (!rtVol()) {
+      // Rustig: alleen een korte kruisvervaging, geen schaal, vervaging of oorsprong.
+      if (oud) oud.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 200, fill: "forwards" }).onfinish = klaar;
+      s.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 240, easing: RT_E });
+    } else if (soort === "vooruit") {
       if (oud) oud.animate([{ opacity: 1, transform: "scale(1)", filter: "blur(0px)" }, { opacity: 0, transform: "scale(.94)", filter: "blur(8px)" }], { duration: 380, easing: RT_E, fill: "forwards" }).onfinish = klaar;
       if (rect) { s.animate([{ clipPath: inset(rect), opacity: .35 }, { clipPath: vol, opacity: 1 }], { duration: 460, easing: RT_E }); rtOorsprongGeest(rect, sr); }
       else s.animate([{ opacity: 0, transform: "scale(.96)", filter: "blur(6px)" }, { opacity: 1, transform: "none", filter: "blur(0px)" }], { duration: 420, easing: RT_E });
@@ -165,6 +237,7 @@ function rtOvergang(p, oud) {
     }
   } catch (e) { klaar(); }
   if (oud) setTimeout(klaar, 800);
+  rtMeetFps(420);
   rtTitel();
 }
 function rtOorsprongGeest(rect, sr) {
@@ -184,8 +257,8 @@ function rtTitel() {
   if (!t) return;
   const nu = t.textContent + "|" + (o ? o.textContent : "");
   if (nu !== RT.titel && RT.titel) {
-    t.animate([{ opacity: 0, transform: "translateY(6px)" }, { opacity: 1, transform: "none" }], { duration: 360, easing: RT_E });
-    if (o) o.animate([{ opacity: 0, transform: "translateY(4px)" }, { opacity: 1, transform: "none" }], { duration: 360, easing: RT_E, delay: 40 });
+    t.animate([{ opacity: 0, transform: "translateY(6px)" }, { opacity: 1, transform: "none" }], { duration: rtDuur(360), easing: RT_E });
+    if (o) o.animate([{ opacity: 0, transform: "translateY(4px)" }, { opacity: 1, transform: "none" }], { duration: rtDuur(360), easing: RT_E, delay: 40 });
   }
   RT.titel = nu;
 }
@@ -196,20 +269,41 @@ function rtNaTekenen(vol, vanView, vanParam) {
   if (!s) return;
   rtSpoor();
   if (rtAan() && V.view !== "mindmap") {
-    if (vol) { rtStagger(s); rtGetallen(s, true); rtVullen(s); rtGrafieken(s); }
-    else { rtNieuweItems(s, vanView, vanParam); rtGetallen(s, false); }
+    if (vol) { rtStagger(s); if (rtVol()) rtGetallen(s, true); rtVullen(s); rtGrafieken(s); rtOnthul(s); }
+    else { rtNieuweItems(s, vanView, vanParam); if (rtVol()) rtGetallen(s, false); }
   }
   RT.vorigeView = V.view; RT.vorigeParam = V.param;
   RT.taken = new Set(Array.from(s.querySelectorAll("[data-taak]")).map(n => n.dataset.taak));
   rtScrollDiepte();
 }
 function rtStagger(s) {
-  Array.from(s.children).slice(0, 14).forEach((k, i) => { k.classList.add("rt-in"); k.style.animationDelay = (i * 32) + "ms"; });
+  const stap = rtVol() ? 32 : 0;
+  Array.from(s.children).slice(0, 14).forEach((k, i) => { k.classList.add("rt-in"); k.style.animationDelay = (i * stap) + "ms"; });
+  if (!rtVol()) return;
   let j = 0;
   s.querySelectorAll(".card > .taak, .card > .rijknop, .stats > .stat, .startgrid > .knop3d, .menu-grid > .menu-kaart, .hs-lijst > .hs-kaart").forEach(n => {
     if (j++ > 20) return;
     n.classList.add("rt-in"); n.style.animationDelay = (40 + j * 24) + "ms";
   });
+}
+/* Onthullen bij scrollen: blokken onder de vouw wachten tot ze in beeld komen. */
+function rtOnthul(s) {
+  if (RT.io) RT.io.disconnect();
+  if (!rtVol() || !("IntersectionObserver" in window)) return;
+  const onder = s.getBoundingClientRect().bottom;
+  const kand = Array.from(s.children).slice(0, 60).filter(k => k.id !== "rt-oud" && k.getBoundingClientRect().top > onder + 8);
+  if (!kand.length) return;
+  RT.io = new IntersectionObserver(items => {
+    items.forEach(it => {
+      if (!it.isIntersecting) return;
+      const el = it.target;
+      RT.io.unobserve(el);
+      el.classList.add("rt-onthul");
+      requestAnimationFrame(() => el.classList.remove("rt-wacht"));
+      setTimeout(() => el.classList.remove("rt-onthul"), 700);
+    });
+  }, { root: s, rootMargin: "0px 0px -6% 0px", threshold: .01 });
+  kand.forEach(k => { k.classList.remove("rt-in"); k.classList.add("rt-wacht"); RT.io.observe(k); });
 }
 function rtNieuweItems(s, vanView, vanParam) {
   if (vanView !== V.view || vanParam !== V.param || !RT.taken) return;
@@ -247,7 +341,7 @@ function rtTel(el, van, naar, pre, suf, f, orig) {
   requestAnimationFrame(stap);
 }
 function rtGetallen(s, vol) {
-  const els = Array.from(s.querySelectorAll(".stat .getal, .knop3d .bal3d, .dp-stat > b, .ring > span, .hs-getal, .werk-kop .cf b, .wk-leg b")).slice(0, 18);
+  const els = Array.from(s.querySelectorAll(".stat .getal, .knop3d .bal3d, .dp-stat > b, .ring > span, .hs-getal, .werk-kop .cf b, .wk-leg b, [data-fm-tel]")).slice(0, 22);
   els.forEach((el, i) => {
     if (el.children.length) return;
     const tekst = el.textContent.trim();
@@ -281,8 +375,9 @@ function rtVullen(s) {
 /* Grafieken tekenen zichzelf: lijnen van links naar rechts, staafjes vanaf de basis. */
 function rtGrafieken(s) {
   let n = 0;
+  const duur = rtDuur(900);
   Array.from(s.querySelectorAll("svg")).forEach(v => {
-    if (v.querySelector("use") || v.closest(".mm-canvaswrap,.mm-viewport,.ill3d")) return;
+    if (v.querySelector("use") || v.closest(".mm-canvaswrap,.mm-viewport,.ill3d,.fm-rk")) return;
     const vr = v.getBoundingClientRect();
     if (vr.width < 60) return;
     v.querySelectorAll("polyline, path").forEach(p => {
@@ -292,14 +387,14 @@ function rtGrafieken(s) {
       if (cs.fill !== "none" && cs.fill !== "rgba(0, 0, 0, 0)") return;
       let L = 0; try { L = p.getTotalLength(); } catch (e) { return; }
       if (!L || L > 6000) return;
-      p.animate([{ strokeDasharray: `${L} ${L}`, strokeDashoffset: L }, { strokeDasharray: `${L} ${L}`, strokeDashoffset: 0 }], { duration: 900, easing: RT_E, delay: 120 });
+      p.animate([{ strokeDasharray: `${L} ${L}`, strokeDashoffset: L }, { strokeDasharray: `${L} ${L}`, strokeDashoffset: 0 }], { duration: duur, easing: RT_E, delay: 120 });
     });
     v.querySelectorAll("rect").forEach((r, i) => {
       if (n++ > 120) return;
       const h = r.getBoundingClientRect().height;
       if (!h || h > vr.height * .92) return;
       r.style.transformBox = "fill-box"; r.style.transformOrigin = "50% 100%";
-      r.animate([{ transform: "scaleY(.02)", opacity: .3 }, { transform: "scaleY(1)", opacity: 1 }], { duration: 650, easing: RT_E, delay: 60 + Math.min(i, 30) * 28 });
+      r.animate([{ transform: "scaleY(.02)", opacity: .3 }, { transform: "scaleY(1)", opacity: 1 }], { duration: rtDuur(650), easing: RT_E, delay: 60 + Math.min(i, 30) * (rtVol() ? 28 : 8) });
     });
   });
 }
@@ -314,7 +409,7 @@ function rtSpoor(reset) {
   const act = nav.querySelector('button[aria-current="true"]:not(.tab-plus)');
   if (!act) { sp.style.opacity = "0"; RT.spoor = null; return; }
   const nr = nav.getBoundingClientRect(), ar = act.getBoundingClientRect();
-  const w = Math.round(ar.width * .42), l = Math.round(ar.left - nr.left + (ar.width - w) / 2);
+  const w = Math.round(ar.width * .42), l = Math.round(ar.left - nr.left - nav.clientLeft + (ar.width - w) / 2);
   if (RT.spoor && Math.abs(RT.spoor.l - l) < 1 && sp.style.opacity === "1") return;
   sp.style.opacity = "1";
   if (RT.spoor) {
@@ -323,7 +418,7 @@ function rtSpoor(reset) {
       { transform: `translateX(${v.l}px)`, width: v.w + "px" },
       { transform: `translateX(${min}px)`, width: (max - min) + "px", offset: .45 },
       { transform: `translateX(${l}px)`, width: w + "px" }
-    ], { duration: 480, easing: RT_E });
+    ], { duration: rtDuur(480), easing: RT_E });
   }
   sp.style.transform = `translateX(${l}px)`; sp.style.width = w + "px";
   RT.spoor = { l, w };
@@ -338,6 +433,25 @@ function rtSpoor(reset) {
     const oud = $(".rt-bron"); if (oud) oud.classList.remove("rt-bron");
     if (open && rtAan() && RT.tap && Date.now() - RT.tap.t < 900 && RT.tap.el && RT.tap.el.closest("#scherm")) RT.tap.el.classList.add("rt-bron");
   }).observe(blad, { attributes: true, attributeFilter: ["class"] });
+}
+
+/* ---------- Pincode: foute code trilt rood, ontgrendelen opent de app uit de diepte ---------- */
+{
+  const slotEl = $("#slot"), tekst = $("#slot-tekst");
+  if (slotEl && tekst) {
+    new MutationObserver(() => {
+      slotEl.classList.remove("rt-fout");
+      if (rtAan() && /onjuist|verschillen/i.test(tekst.textContent)) { void slotEl.offsetWidth; slotEl.classList.add("rt-fout"); }
+    }).observe(tekst, { childList: true, characterData: true, subtree: true });
+    new MutationObserver(recs => {
+      const was = recs.some(r => (r.oldValue || "").includes("zicht"));
+      if (was && !slotEl.classList.contains("zicht") && rtAan()) {
+        slotEl.classList.remove("rt-fout");
+        const app = $("#app");
+        if (app) app.animate([{ opacity: 0, transform: "scale(.94)", filter: "blur(10px)" }, { opacity: 1, transform: "none", filter: "blur(0px)" }], { duration: rtDuur(520), easing: RT_E });
+      }
+    }).observe(slotEl, { attributes: true, attributeFilter: ["class"], attributeOldValue: true });
+  }
 }
 
 /* ---------- Toast: fouten trillen ---------- */
@@ -355,6 +469,7 @@ function rtSpoor(reset) {
 
 /* ---------- Afronden: lichtexplosie vanuit het vinkje ---------- */
 function rtBurst(x, y, kleur) {
+  if (!rtVol()) return;
   const d = document.createElement("div");
   d.className = "rt-burst"; d.setAttribute("aria-hidden", "true");
   d.style.left = x + "px"; d.style.top = y + "px";
@@ -390,7 +505,7 @@ function rtZetDiepte(k, p) {
 function rtScrollDiepte() {
   const s = $("#scherm"); if (!s) return;
   const st = s.scrollTop;
-  document.documentElement.style.setProperty("--rt-scroll", (-st * .05).toFixed(1) + "px");
+  document.documentElement.style.setProperty("--rt-scroll", rtVol() ? (-st * .05).toFixed(1) + "px" : "0px");
   if (!rtAan() || V.view === "mindmap") return;
   const top = s.getBoundingClientRect().top;
   let mis = 0;
@@ -417,14 +532,14 @@ function rtParallax(gx, gy) {
   h.setProperty("--rt-py", (gy * 14).toFixed(1) + "px");
 }
 window.addEventListener("deviceorientation", e => {
-  if (e.gamma == null || !rtAan()) return;
+  if (e.gamma == null || !rtVol()) return;
   RT.ori = true;
   rtParallax(Math.max(-1, Math.min(1, e.gamma / 30)), Math.max(-1, Math.min(1, ((e.beta || 0) - 40) / 30)));
 }, { passive: true });
 {
   let tick = false;
   window.addEventListener("pointermove", e => {
-    if (RT.ori || e.pointerType !== "mouse" || tick || !rtAan()) return;
+    if (RT.ori || e.pointerType !== "mouse" || tick || !rtVol()) return;
     tick = true;
     requestAnimationFrame(() => { tick = false; rtParallax((e.clientX / innerWidth - .5) * .9, (e.clientY / innerHeight - .5) * .9); });
   }, { passive: true });
