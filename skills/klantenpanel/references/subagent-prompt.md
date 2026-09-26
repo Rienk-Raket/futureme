@@ -20,6 +20,8 @@ Elke variant is dezelfde persoon op een andere dag. De variantkenmerken moeten e
 
 Doel van deze ronde: {{RONDE_DOEL}}
 
+Ga ervan uit dat het aanbod beschikbaar is waar deze persona woont en dat de persona tot de mogelijke klanten behoort, ook als het materiaal een andere plaats of regio noemt: de plaats is context, niet het onderwerp van de test. Beoordeel het aanbod alsof het in jouw eigen woonplaats wordt aangeboden. Alleen als de opdrachtgever hieronder uitdrukkelijk vraagt om de regio of de beschikbaarheid te beoordelen, doe je dat.
+
 {{CONTEXT}}
 
 {{MATERIAAL}}
