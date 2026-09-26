@@ -1,8 +1,8 @@
 {
- "versie": "1.0",
+ "versie": "1.1",
  "peildatum": "2026-09",
  "markt": "Nederland, volwassenen (18+)",
- "toelichting": "Zestig fictieve persona's die samen de volwassen bevolking van Nederland benaderen. Elk gewicht is een geschat bevolkingsaandeel in procenten; alle gewichten tellen op tot 100. Persona's met kansgroep=true zijn kleinere, vaak over het hoofd geziene groepen. Schema en bronnen: zie personas-schema.md en bronnen.md.",
+ "toelichting": "Zestig fictieve persona's die samen de volwassen bevolking van Nederland benaderen. Elk gewicht is een geschat bevolkingsaandeel in procenten; alle gewichten tellen op tot 100. Persona's met kansgroep=true zijn kleinere, vaak over het hoofd geziene groepen. Schema en bronnen: zie personas-schema.md en bronnen.md. Versie 1.1 verwerkt een onafhankelijke review (klantenpanel-workspace/review-personas.md).",
  "schalen": {
   "1-5 schalen": "prijsgevoeligheid, duurzaamheid, vertrouwen_bedrijven, vertrouwen_instanties, scepsis, sociale_bewijskracht: 1 = laag/zwak, 5 = hoog/sterk",
   "innovatie_adoptie": "innovator | early adopter | early majority | late majority | achterblijver (Rogers)",
@@ -12,10 +12,10 @@
  "personas": [
   {
    "id": "P01",
-   "naam": "Daan Hoekstra",
+   "naam": "Daan Vermeulen",
    "kansgroep": false,
    "kansgroep_reden": null,
-   "gewicht_pct": 2.0,
+   "gewicht_pct": 2.3,
    "kernzin": "Mbo-student techniek van 20 die nog thuis woont in een Brabants dorp, alles op zijn telefoon doet en elke euro twee keer omdraait omdat hij spaart voor een auto.",
    "demografie": {
     "leeftijd": 20,
@@ -97,15 +97,15 @@
    "naam": "Noor Brinkman",
    "kansgroep": false,
    "kansgroep_reden": null,
-   "gewicht_pct": 1.8,
-   "kernzin": "Wo-studente van 22 in Utrecht met een Duitse moeder, bijbaan in de horeca, duurzaam ingesteld en gewend om alles online te regelen en te vergelijken.",
+   "gewicht_pct": 2.2,
+   "kernzin": "Hbo-studente social work van 22 in Utrecht met een Duitse moeder, bijbaan in de horeca, duurzaam ingesteld en gewend om alles online te regelen en te vergelijken.",
    "demografie": {
     "leeftijd": 22,
     "leeftijdsgroep": "18-24",
     "gender": "vrouw",
     "huishouden": "kamer in studentenhuis",
     "levensfase": "student",
-    "opleiding": "wo-bachelor bestuurskunde (in opleiding)",
+    "opleiding": "hbo social work (in opleiding)",
     "opleidingsrichting": "theoretisch",
     "werk": "student",
     "beroep": "student, bijbaan bediening",
@@ -403,7 +403,7 @@
     "aankoopstijl": "praktisch, lokaal, koopt bij bekende winkels",
     "innovatie_adoptie": "early majority",
     "prijsgevoeligheid": 4,
-    "duurzaamheid": 3,
+    "duurzaamheid": 4,
     "vertrouwen_bedrijven": 3,
     "vertrouwen_instanties": 4,
     "scepsis": 3,
@@ -425,7 +425,7 @@
    "naam": "Sanne de Groot",
    "kansgroep": false,
    "kansgroep_reden": null,
-   "gewicht_pct": 2.4,
+   "gewicht_pct": 2.7,
    "kernzin": "Basisschoollerares van 29 uit de Gelderse Vallei, samenwonend in een koophuis, plant een gezin en let scherp op de balans tussen gemak en geld.",
    "demografie": {
     "leeftijd": 29,
@@ -589,8 +589,8 @@
    "naam": "Kim Wolters",
    "kansgroep": false,
    "kansgroep_reden": null,
-   "gewicht_pct": 1.8,
-   "kernzin": "Kapster van 27 in Zuid-Limburg met een Belgische vader, werkt in loondienst en knipt daarnaast aan huis, woont samen in een huurhuis en is koningin van de aanbiedingen.",
+   "gewicht_pct": 2.0,
+   "kernzin": "Kapster van 27 in Zuid-Limburg met een Belgische vader, sinds een jaar zzp'er met een salon aan huis, woont samen in een huurhuis en is koningin van de aanbiedingen.",
    "demografie": {
     "leeftijd": 27,
     "leeftijdsgroep": "25-34",
@@ -599,8 +599,8 @@
     "levensfase": "jong stel",
     "opleiding": "mbo-3 haarverzorging",
     "opleidingsrichting": "praktisch",
-    "werk": "loondienst en klein bijverdienen",
-    "beroep": "kapster in een salon, 32 uur",
+    "werk": "zzp (startend)",
+    "beroep": "zelfstandig kapster aan huis, voorheen in loondienst",
     "inkomen": "beneden modaal",
     "financiele_ruimte": "beperkt",
     "woonsituatie": "huur particulier",
@@ -616,7 +616,7 @@
     "beperking": "geen"
    },
    "profiel": {
-    "dagelijkse_situatie": "Lange dagen op haar benen, veel klanten die hun verhaal kwijt willen. Haar vriend werkt bij een autobedrijf over de grens in Duitsland. Tankt en koopt boodschappen in Duitsland omdat het goedkoper is. Wil ooit een eigen salon, maar durft de stap niet.",
+    "dagelijkse_situatie": "Knipt in de omgebouwde garage en bij klanten thuis, zes dagen per week met gaten in de agenda. Doet 's avonds zelf de facturen en Instagram. Haar vriend werkt bij een autobedrijf over de grens in Duitsland. Tankt en koopt boodschappen in Duitsland omdat het goedkoper is. Wil over drie jaar een echte salon huren, maar de btw-aangifte en de zorgpremie als zzp'er vallen tegen.",
     "belangrijk": [
      "Gezelligheid en persoonlijk contact",
      "Goedkoper dan de buren betalen",
@@ -633,7 +633,7 @@
      "familie"
     ],
     "beslisstijl": "Koopt wat klanten en vriendinnen aanraden en wat in de aanbieding is. Gevoelig voor een persoonlijke benadering. Kan lang twijfelen bij grote bedragen en dan tóch impulsief kopen.",
-    "budget": "Zo'n 200 euro vrij per maand. Zoekt kortingscodes bij alles.",
+    "budget": "Zo'n 200 euro per maand vrij, in slechte maanden minder. Zoekt kortingscodes bij alles; zakelijke uitgaven wegen anders dan privé.",
     "stem": "Hartelijk, praktisch, met een zachte g die je bijna hoort. 'Joh, dat is toch veel te duur?', 'leuk, maar wie betaalt dat?'"
    },
    "gedrag": {
@@ -658,7 +658,8 @@
    "tags": [
     "jong-stel",
     "praktisch",
-    "loondienst",
+    "zzp",
+    "startend",
     "zuid",
     "limburg",
     "grensregio",
@@ -671,13 +672,13 @@
    "naam": "Thomas Bakker",
    "kansgroep": false,
    "kansgroep_reden": null,
-   "gewicht_pct": 2.0,
+   "gewicht_pct": 1.6,
    "kernzin": "Strategieconsultant van 34 in Den Haag, tweeverdiener zonder kinderen, tijdarm en welvarend: hij betaalt graag voor gemak, maar verwacht dan wel dat alles klopt.",
    "demografie": {
     "leeftijd": 34,
     "leeftijdsgroep": "25-34",
     "gender": "man",
-    "huishouden": "samenwonend, geen kinderen (tweeverdieners)",
+    "huishouden": "gehuwd met zijn man, geen kinderen (tweeverdieners)",
     "levensfase": "carrièrefase",
     "opleiding": "wo master econometrie",
     "opleidingsrichting": "theoretisch",
@@ -698,7 +699,7 @@
     "beperking": "geen"
    },
    "profiel": {
-    "dagelijkse_situatie": "Werkt 50 tot 60 uur, veel bij klanten. Zijn partner is advocaat. Ze laten boodschappen bezorgen, hebben een schoonmaker en eten vaak buiten de deur. Sport om zes uur 's ochtends. Vakanties zijn ver en kort.",
+    "dagelijkse_situatie": "Werkt 50 tot 60 uur, veel bij klanten. Zijn man Joris is advocaat. Ze laten boodschappen bezorgen, hebben een schoonmaker en eten vaak buiten de deur. Sport om zes uur 's ochtends. Vakanties zijn ver en kort.",
     "belangrijk": [
      "Tijd besparen",
      "Kwaliteit en status van wat hij kiest",
@@ -730,7 +731,7 @@
     ],
     "aankoopstijl": "snel, premium, gemaksgericht",
     "innovatie_adoptie": "early adopter",
-    "prijsgevoeligheid": 1,
+    "prijsgevoeligheid": 2,
     "duurzaamheid": 3,
     "vertrouwen_bedrijven": 4,
     "vertrouwen_instanties": 4,
@@ -750,10 +751,10 @@
   },
   {
    "id": "P10",
-   "naam": "Jessica Pengel",
+   "naam": "Jessica Doorson",
    "kansgroep": false,
    "kansgroep_reden": null,
-   "gewicht_pct": 1.5,
+   "gewicht_pct": 1.3,
    "kernzin": "Alleenstaande moeder van 30 in Almere met een Surinaamse vader, werkt parttime in de schoonmaak naast een aanvullende uitkering, rekent elke week uit wat er nog kan.",
    "demografie": {
     "leeftijd": 30,
@@ -836,7 +837,7 @@
    "naam": "Piotr Nowak",
    "kansgroep": false,
    "kansgroep_reden": null,
-   "gewicht_pct": 1.2,
+   "gewicht_pct": 1.0,
    "kernzin": "Poolse stukadoor van 32, negen jaar in Nederland en nu zzp'er in het Westland, spreekt redelijk Nederlands, werkt hard en regelt zijn leven via Facebookgroepen en zijn vrouw.",
    "demografie": {
     "leeftijd": 32,
@@ -863,7 +864,7 @@
     "beperking": "geen"
    },
    "profiel": {
-    "dagelijkse_situatie": "Rijdt om zes uur weg naar klussen in de regio, vaak via aannemers. Zijn vrouw werkt in een kas en doet de administratie. Ze sturen geld naar familie in Polen en willen over een paar jaar beslissen: hier blijven of terug. Weekenden: Poolse winkel, voetbal, kerk.",
+    "dagelijkse_situatie": "Rijdt om zes uur weg naar klussen in de regio, vaak via aannemers, met Roemeense en Poolse collega's. Zijn vrouw werkt in een kas en doet de administratie samen met hem. Ze sturen geld naar familie in Polen en willen over een paar jaar beslissen: hier blijven of terug. Weekenden: Poolse winkel, voetbal, kerk.",
     "belangrijk": [
      "Eerlijk werk, eerlijk betaald",
      "Duidelijkheid, ook in begrijpelijke taal",
@@ -918,7 +919,7 @@
    "naam": "Bram Jansen",
    "kansgroep": false,
    "kansgroep_reden": null,
-   "gewicht_pct": 2.0,
+   "gewicht_pct": 2.3,
    "kernzin": "Installatiemonteur van 26 in Overijssel, samenwonend in een net gekochte starterswoning, doe-het-zelver die alles zelf uitzoekt en weinig ophef verdraagt.",
    "demografie": {
     "leeftijd": 26,
@@ -935,7 +936,7 @@
     "woonsituatie": "koop (starterswoning)",
     "regio": "Oost",
     "provincie": "Overijssel",
-    "stedelijkheid": "matig stedelijk",
+    "stedelijkheid": "weinig stedelijk",
     "plaats_type": "Rijssen",
     "herkomst": "Nederland",
     "taal_thuis": "Nederlands (Twents/Sallands)",
@@ -945,7 +946,7 @@
     "beperking": "geen"
    },
    "profiel": {
-    "dagelijkse_situatie": "Rijdt in een bedrijfsbus langs klanten, vaak tot vijf uur. Zijn vriendin werkt bij een apotheek. Alle avonden en weekenden gaan in de verbouwing van hun huis. Kijkt YouTube om dingen zelf te repareren en koopt gereedschap als hobby.",
+    "dagelijkse_situatie": "Rijdt in een bedrijfsbus langs klanten, vaak tot vijf uur. Zijn vriendin werkt bij een apotheek. Alle avonden en weekenden gaan in de verbouwing van hun huis; op zaterdag voetbalt hij in het tweede van de dorpsclub. Kijkt YouTube om dingen zelf te repareren en koopt gereedschap als hobby. Gelooft in de techniek van warmtepompen en zonnepanelen, niet in de praatjes eromheen.",
     "belangrijk": [
      "Zelf kunnen bepalen en zelf doen",
      "Degelijkheid, geen tierelantijnen",
@@ -978,7 +979,7 @@
     "aankoopstijl": "onderzoekend, prijs-kwaliteit, koopt liever dan huurt of abonneert",
     "innovatie_adoptie": "early majority",
     "prijsgevoeligheid": 4,
-    "duurzaamheid": 2,
+    "duurzaamheid": 4,
     "vertrouwen_bedrijven": 3,
     "vertrouwen_instanties": 3,
     "scepsis": 4,
@@ -1000,7 +1001,7 @@
    "naam": "Anouk Hendriks",
    "kansgroep": false,
    "kansgroep_reden": null,
-   "gewicht_pct": 2.2,
+   "gewicht_pct": 2.0,
    "kernzin": "Wijkverpleegkundige van 33 in Noord-Brabant, twee jonge kinderen, mantelzorger voor haar moeder en structureel tijdarm: alles moet in een gestolen kwartier te regelen zijn.",
    "demografie": {
     "leeftijd": 33,
@@ -1109,7 +1110,7 @@
     "beperking": "geen"
    },
    "profiel": {
-    "dagelijkse_situatie": "Van maandag tot donderdag onderweg, slaapt in de cabine. Zijn vrouw werkt in de thuiszorg en runt het gezin. In het weekend sleutelt hij aan de auto en voetbal met zijn zoon. Boos over dieselprijzen, regels en stikstof, maar trots op zijn werk.",
+    "dagelijkse_situatie": "Van maandag tot donderdag onderweg, slaapt in de cabine. Rijdt sinds twee jaar een elektrische truck voor zijn werkgever en is daar lyrisch over: stil, sterk, minder moe thuis; over het beleid eromheen is hij een stuk minder te spreken. Bestelt vanuit de cabine online de boodschappen voor thuis; zijn vrouw werkt in de thuiszorg en beslist over de auto en de verzekeringen. In het weekend sleutelt hij en voetbalt hij met zijn zoon. Boos over dieselprijzen, regels en stikstof, maar trots op zijn werk.",
     "belangrijk": [
      "Gewoon doen wat je belooft",
      "Nederlandse degelijkheid",
@@ -1125,7 +1126,7 @@
      "eerlijkheid",
      "hard werken"
     ],
-    "beslisstijl": "Zijn vrouw doet de meeste aankopen; hij beslist over auto, gereedschap en verzekeringen. Vertrouwt op merken die hij al twintig jaar kent en op de mening van collega's. Nieuwe dingen bekijkt hij eerst een jaar aan.",
+    "beslisstijl": "Zijn vrouw beslist over de auto en de verzekeringen, hij over gereedschap, techniek en de boodschappen. Vertrouwt op merken die hij al twintig jaar kent en op de mening van collega's. Nieuwe techniek probeert hij graag als een collega het heeft; nieuwe diensten bekijkt hij eerst een jaar aan.",
     "budget": "Samen ruim 600 euro per maand vrij, maar drie kinderen slokken dat op. Grote uitgaven worden gespaard.",
     "stem": "Recht door zee, Drents-nuchter, argwanend. 'Wat willen ze nou van me?', 'daar trap ik niet in', 'kan best, maar niet voor mij'."
    },
@@ -1142,7 +1143,7 @@
     "aankoopstijl": "merkentrouw, koopt in de winkel, uitgesteld bij nieuwe dingen",
     "innovatie_adoptie": "late majority",
     "prijsgevoeligheid": 4,
-    "duurzaamheid": 1,
+    "duurzaamheid": 2,
     "vertrouwen_bedrijven": 2,
     "vertrouwen_instanties": 1,
     "scepsis": 5,
@@ -1270,11 +1271,11 @@
     "taal_thuis": "Nederlands",
     "nederlands_niveau": "moedertaal",
     "geloof": "geen",
-    "gezondheid": "goed, sport veel",
+    "gezondheid": "overgewicht, probeert af te vallen, sport met wisselend succes",
     "beperking": "geen"
    },
    "profiel": {
-    "dagelijkse_situatie": "Hybride werken, veel vergaderingen, 's avonds nog mail. Zijn vrouw werkt vier dagen als fysiotherapeut. Zonnepanelen, warmtepomp, elektrische leaseauto. Kinderen hockeyen; weekenden gaan op aan sportvelden en klussen. Denkt na over de studiekosten van de kinderen.",
+    "dagelijkse_situatie": "Hybride werken, veel vergaderingen, 's avonds nog mail. Zijn vrouw werkt vier dagen als fysiotherapeut. Zonnepanelen, warmtepomp, elektrische leaseauto. Kinderen hockeyen; weekenden gaan op aan sportvelden en klussen. Probeert af te vallen en heeft daar al drie apps voor gehad. Denkt na over de studiekosten van de kinderen.",
     "belangrijk": [
      "Professionaliteit en betrouwbaarheid",
      "Verantwoord ondernemen dat niet alleen praatjes is",
@@ -1311,7 +1312,7 @@
     "vertrouwen_bedrijven": 4,
     "vertrouwen_instanties": 4,
     "scepsis": 3,
-    "sociale_bewijskracht": 2
+    "sociale_bewijskracht": 3
    },
    "tags": [
     "gezin",
@@ -1387,7 +1388,7 @@
     ],
     "aankoopstijl": "gevoelsmatig op merk en esthetiek, wisselend budget",
     "innovatie_adoptie": "early adopter",
-    "prijsgevoeligheid": 3,
+    "prijsgevoeligheid": 4,
     "duurzaamheid": 4,
     "vertrouwen_bedrijven": 2,
     "vertrouwen_instanties": 3,
@@ -1411,7 +1412,7 @@
    "naam": "Kevin Oude Nijhuis",
    "kansgroep": false,
    "kansgroep_reden": null,
-   "gewicht_pct": 1.3,
+   "gewicht_pct": 1.1,
    "kernzin": "Eigenaar van een schildersbedrijf met zes man in Twente, 37 jaar, praktisch opgeleid, altijd te weinig tijd, beoordeelt alles op of het hem werk of geld scheelt.",
    "demografie": {
     "leeftijd": 37,
@@ -1438,7 +1439,7 @@
     "beperking": "geen"
    },
    "profiel": {
-    "dagelijkse_situatie": "Om zeven uur de jongens aansturen, daarna offertes, klanten bezoeken en 's avonds administratie met zijn vrouw die de boekhouding doet. Personeel vinden is zijn grootste zorg. Rijdt een bus en een pick-up. Zondag voetbal en familie.",
+    "dagelijkse_situatie": "Om zeven uur de jongens aansturen, daarna offertes, klanten bezoeken en 's avonds zelf de administratie in een boekhoud-app; zijn vrouw werkt als wijkverpleegkundige en bemoeit zich bewust niet met de zaak. Personeel vinden is zijn grootste zorg. Rijdt een bus en een pick-up. Zondag voetbal en familie.",
     "belangrijk": [
      "Tijd besparen",
      "Betrouwbare partners die doen wat ze zeggen",
@@ -1490,84 +1491,85 @@
   },
   {
    "id": "P19",
-   "naam": "Esther van der Wal",
+   "naam": "Merel Dijkstra",
    "kansgroep": false,
    "kansgroep_reden": null,
-   "gewicht_pct": 1.5,
-   "kernzin": "Parttime administratief medewerker van 40 op de Veluwe, gereformeerd, gezin met vier kinderen, zuinig en principieel: koopt bewust en kijkt of iets bij haar levensovertuiging past.",
+   "gewicht_pct": 2.0,
+   "kernzin": "Alleenwonende planner van 31 bij een logistiek bedrijf in Eindhoven, mbo-4, huurt een duur appartement, sport en date via apps, koopt online en probeert nieuwe diensten graag als ze er zelf iets aan heeft.",
    "demografie": {
-    "leeftijd": 40,
-    "leeftijdsgroep": "35-44",
+    "leeftijd": 31,
+    "leeftijdsgroep": "25-34",
     "gender": "vrouw",
-    "huishouden": "gehuwd, vier kinderen (6 tot 15)",
-    "levensfase": "groot gezin",
-    "opleiding": "mbo-4 administratie",
+    "huishouden": "alleenwonend",
+    "levensfase": "alleenstaand, werkend, geen kinderen",
+    "opleiding": "mbo-4 logistiek",
     "opleidingsrichting": "praktisch",
-    "werk": "loondienst parttime",
-    "beroep": "administratief medewerker bij een kerkelijke stichting, 16 uur",
-    "inkomen": "modaal (huishouden modaal, eenverdiener plus)",
-    "financiele_ruimte": "beperkt",
-    "woonsituatie": "koop (ruim, ouder huis)",
-    "regio": "Oost",
-    "provincie": "Gelderland",
-    "stedelijkheid": "weinig stedelijk",
-    "plaats_type": "dorp op de Veluwe (Bijbelgordel)",
+    "werk": "loondienst",
+    "beroep": "planner bij een logistiek dienstverlener",
+    "inkomen": "modaal",
+    "financiele_ruimte": "beperkt (hoge huur)",
+    "woonsituatie": "huur particulier (appartement)",
+    "regio": "Zuid",
+    "provincie": "Noord-Brabant",
+    "stedelijkheid": "sterk stedelijk",
+    "plaats_type": "Eindhoven, Woensel",
     "herkomst": "Nederland",
     "taal_thuis": "Nederlands",
     "nederlands_niveau": "moedertaal",
-    "geloof": "gereformeerd (praktiserend, twee keer per zondag naar de kerk)",
+    "geloof": "geen",
     "gezondheid": "goed",
     "beperking": "geen"
    },
    "profiel": {
-    "dagelijkse_situatie": "Runt een huishouden van zes met een strakke planning, kookt grote pannen, naait en repareert. Haar man werkt als uitvoerder in de bouw. Zondag is rustdag: geen aankopen, geen schermen. Actief in de kerk en op de school van de kinderen. Kijkt geen televisie, leest wel veel.",
+    "dagelijkse_situatie": "Werkt van acht tot vijf op de planning, fietst naar het werk. Betaalt 1.150 euro huur voor 55 vierkante meter en vindt dat absurd, maar kopen lukt alleen niet. Boulderen op dinsdag, vriendinnen op donderdag, dating-apps met wisselend succes. Kookt voor één, bestelt vaak, doet boodschappen online en tweedehands via Vinted. Wil over twee jaar een sabbatical naar Zuid-Amerika.",
     "belangrijk": [
-     "Dat iets past bij haar overtuiging en gezin",
-     "Zuinigheid en degelijkheid",
-     "Fatsoenlijke, respectvolle communicatie"
+     "Dat het bij haar leven past: alleen, druk, flexibel",
+     "Eerlijke prijs voor één persoon",
+     "Snel en zonder gedoe"
     ],
     "ergernissen": [
-     "Schreeuwerige reclame en seksualisering",
-     "Verplichte zondagsleveringen of -activiteiten",
-     "Bedrijven die haar levensstijl belachelijk maken"
+     "Alles is gemaakt voor gezinnen of stellen (gezinsverpakkingen, 'voor het hele gezin')",
+     "Abonnementen met een jaar vast",
+     "Bedrijven die je bellen"
     ],
     "waarden": [
-     "geloof",
-     "gezin",
-     "rentmeesterschap"
+     "vrijheid",
+     "eerlijkheid",
+     "plezier"
     ],
-    "beslisstijl": "Overlegt met haar man, vraagt in de kerkelijke kring naar ervaringen. Koopt tweedehands of degelijk nieuw; kiest voor lange termijn. Ziet iets nieuws eerst een tijd aan.",
-    "budget": "Met vier kinderen weinig ruimte: circa 150 euro per maand vrij. Elke vaste last wordt gewogen.",
-    "stem": "Rustig, beleefd, met een ondertoon van overtuiging. 'Voor ons gezin is dat niet nodig', 'dat lijkt me niet verstandig'."
+    "beslisstijl": "Beslist zelf en snel, op haar telefoon, na een blik op reviews. Probeert nieuwe diensten graag als ze maandelijks opzegbaar zijn. Rekent per maand: wat kost het en wat bespaart het me aan gedoe.",
+    "budget": "Ongeveer 300 euro per maand vrij na huur en vaste lasten; sparen voor de reis gaat voor.",
+    "stem": "Vlot, direct, met zelfspot. 'Voor mij alleen is dat de moeite niet', 'als ik maandelijks kan stoppen, prima', 'wie belt er nou nog?'"
    },
    "gedrag": {
-    "digitale_vaardigheid": "gemiddeld",
+    "digitale_vaardigheid": "hoog",
     "geletterdheid": "goed",
     "mediagebruik": [
-     "Reformatorisch Dagblad",
-     "WhatsApp",
-     "Marktplaats",
-     "kerkelijke nieuwsbrieven",
-     "geen social media behalve WhatsApp"
+     "Instagram",
+     "TikTok",
+     "Spotify",
+     "nu.nl",
+     "Vinted"
     ],
-    "aankoopstijl": "zuinig, degelijk, tweedehands, principieel",
-    "innovatie_adoptie": "late majority",
-    "prijsgevoeligheid": 5,
+    "aankoopstijl": "online, snel, reviews, maandelijks opzegbaar",
+    "innovatie_adoptie": "early majority",
+    "prijsgevoeligheid": 3,
     "duurzaamheid": 3,
     "vertrouwen_bedrijven": 3,
-    "vertrouwen_instanties": 4,
+    "vertrouwen_instanties": 3,
     "scepsis": 3,
-    "sociale_bewijskracht": 3
+    "sociale_bewijskracht": 4
    },
    "tags": [
-    "groot-gezin",
+    "alleenwonend",
     "praktisch",
-    "religieus",
-    "bijbelgordel",
-    "oost",
-    "platteland",
-    "zuinig",
-    "achterblijver"
+    "loondienst",
+    "zuid",
+    "stad",
+    "huurder",
+    "geen-kinderen",
+    "mobiel-first",
+    "opzegbaarheid"
    ]
   },
   {
@@ -1575,7 +1577,7 @@
    "naam": "Ayşe Kaya",
    "kansgroep": false,
    "kansgroep_reden": null,
-   "gewicht_pct": 1.7,
+   "gewicht_pct": 1.4,
    "kernzin": "Pedagogisch medewerker van 36 in Deventer, Turks-Nederlandse moeder van drie, moslima, spil van een groot familienetwerk en scherp op wat een gezinsuitgave werkelijk kost.",
    "demografie": {
     "leeftijd": 36,
@@ -1587,8 +1589,8 @@
     "opleidingsrichting": "praktisch",
     "werk": "loondienst parttime",
     "beroep": "pedagogisch medewerker kinderopvang, 24 uur",
-    "inkomen": "beneden modaal (huishouden modaal)",
-    "financiele_ruimte": "beperkt",
+    "inkomen": "beneden modaal (huishouden modaal-plus door ploegentoeslag van haar man)",
+    "financiele_ruimte": "gemiddeld",
     "woonsituatie": "huur sociaal (eengezinswoning)",
     "regio": "Oost",
     "provincie": "Overijssel",
@@ -1597,7 +1599,7 @@
     "herkomst": "Nederland, ouders geboren in Turkije",
     "taal_thuis": "Nederlands en Turks",
     "nederlands_niveau": "moedertaal",
-    "geloof": "islam (praktiserend, draagt hoofddoek)",
+    "geloof": "islam (niet praktiserend; vast in de ramadan, geen hoofddoek; haar man gaat wel naar de moskee)",
     "gezondheid": "goed",
     "beperking": "geen"
    },
@@ -1619,7 +1621,7 @@
      "gastvrijheid"
     ],
     "beslisstijl": "Vraagt zussen en schoonzussen, kijkt naar wat andere moeders doen. Beslist samen met haar man over grotere bedragen. Kiest bekend en vertrouwd, maar probeert nieuw als een moeder uit de buurt enthousiast is.",
-    "budget": "Rond 250 euro per maand vrij; kinderen en familieverplichtingen gaan voor.",
+    "budget": "Rond 350 euro per maand vrij; kinderen en familieverplichtingen gaan voor.",
     "stem": "Hartelijk, praktisch, soms streng. 'Voor mijn kinderen wil ik het wel weten', 'wie heeft dit bedacht, iemand zonder kinderen?'"
    },
    "gedrag": {
@@ -1681,15 +1683,15 @@
     "taal_thuis": "Nederlands",
     "nederlands_niveau": "moedertaal",
     "geloof": "geen (protestants opgevoed)",
-    "gezondheid": "redelijk (weinig beweging)",
-    "beperking": "geen"
+    "gezondheid": "redelijk (weinig beweging); op zijn 40e gediagnosticeerd met autisme",
+    "beperking": "autisme: liever schriftelijk dan bellen, houdt van vaste routines en duidelijke stappen"
    },
    "profiel": {
     "dagelijkse_situatie": "Werkt op de IT-afdeling van een gemeente, lost storingen op en zucht over gebruikers. Kookt voor zichzelf, gamet 's avonds online met vaste maten, kijkt series. Om het weekend zijn dochter, dan is hij een andere man. Contact met zijn moeder en broers via familiegroepen.",
     "belangrijk": [
      "Rust en geen gedoe",
      "Dat techniek gewoon werkt en veilig is",
-     "Zijn eigen tijd"
+     "Alles schriftelijk en voorspelbaar kunnen regelen"
     ],
     "ergernissen": [
      "Onnodige apps en accounts",
@@ -1758,7 +1760,7 @@
     "woonsituatie": "koop (jaren-30-huis)",
     "regio": "Noord",
     "provincie": "Groningen",
-    "stedelijkheid": "zeer sterk stedelijk",
+    "stedelijkheid": "sterk stedelijk",
     "plaats_type": "Groningen, Helpman",
     "herkomst": "Nederland",
     "taal_thuis": "Nederlands",
@@ -1824,80 +1826,81 @@
    "kansgroep": false,
    "kansgroep_reden": null,
    "gewicht_pct": 2.4,
-   "kernzin": "Productiemedewerker in ploegendienst van 52 uit Zeeuws-Vlaanderen, koopwoning, kinderen bijna het huis uit, sceptisch over alles wat nieuw en 'van bovenaf' komt.",
+   "kernzin": "Man van 52 in Roosendaal die na een burn-out stopte als operator en nu huisman en mantelzorger is zonder uitkering, terwijl zijn vrouw fulltime werkt; bedachtzaam, nog snel overprikkeld, en kritisch op alles wat druk of ingewikkeld is.",
    "demografie": {
     "leeftijd": 52,
     "leeftijdsgroep": "45-54",
     "gender": "man",
     "huishouden": "gehuwd, één thuiswonende zoon (20)",
-    "levensfase": "gezin, kinderen bijna uit huis",
+    "levensfase": "gezin, huisman",
     "opleiding": "lts/vmbo, later vakdiploma's",
     "opleidingsrichting": "praktisch",
-    "werk": "loondienst",
-    "beroep": "operator in de chemische industrie, vijfploegendienst",
-    "inkomen": "modaal-plus (ploegentoeslag)",
+    "werk": "niet werkend zonder uitkering (huisman, mantelzorg)",
+    "beroep": "voorheen operator in de chemische industrie, gestopt na burn-out",
+    "inkomen": "modaal (inkomen van partner)",
     "financiele_ruimte": "gemiddeld",
     "woonsituatie": "koop (jaren-70-huis, bijna afbetaald)",
     "regio": "Zuid",
-    "provincie": "Zeeland",
-    "stedelijkheid": "niet stedelijk",
-    "plaats_type": "dorp bij Terneuzen",
+    "provincie": "Noord-Brabant",
+    "stedelijkheid": "sterk stedelijk",
+    "plaats_type": "Roosendaal",
     "herkomst": "Nederland, moeder geboren in België",
-    "taal_thuis": "Nederlands (Zeeuws), Vlaamse familie over de grens",
+    "taal_thuis": "Nederlands (West-Brabants), Vlaamse familie over de grens",
     "nederlands_niveau": "moedertaal",
-    "geloof": "geen (protestants opgevoed)",
-    "gezondheid": "redelijk (slaapproblemen door ploegen, rookt)",
+    "geloof": "geen (katholiek opgevoed)",
+    "gezondheid": "herstellend van burn-out, slaapt beter, snel overprikkeld",
     "beperking": "geen"
    },
    "profiel": {
-    "dagelijkse_situatie": "Draait ploegen bij een chemiebedrijf, slaapt op rare tijden. Zijn vrouw werkt in een supermarkt. Vist, sleutelt aan zijn boot, kijkt voetbal. Koopt zijn boodschappen deels in België. Klaagt over de tolweg, de zorg die steeds verder weg is en over politiek.",
+    "dagelijkse_situatie": "Doet het huishouden, kookt, rijdt zijn vader naar het ziekenhuis en werkt twee ochtenden als vrijwilliger in de moestuin van de wijk. Zijn vrouw is teamleider bij een supermarkt en werkt fulltime; zij beslist over de grote uitgaven, hij over de dagelijkse. Na twee jaar thuis wil hij misschien weer iets in deeltijd, maar niet in ploegen. Vist, leest, mijdt drukke winkels en lange telefoongesprekken.",
     "belangrijk": [
-     "Niet genaaid worden",
-     "Dingen die gewoon werken en lang meegaan",
-     "Zijn eigen omgeving en mensen"
+     "Rust en overzicht",
+     "Eerlijkheid zonder verkooppraat",
+     "Dat hij serieus genomen wordt zonder zijn verhaal te hoeven vertellen"
     ],
     "ergernissen": [
-     "Randstad-bedrijven die Zeeland niet bezorgen of niet kennen",
-     "Hippe woorden en Engels",
-     "Alles moet digitaal"
+     "Drukke, flitsende websites en pushmeldingen",
+     "Bedrijven die je opjagen ('nog 2 uur')",
+     "Formulieren waar je uren mee kwijt bent"
     ],
     "waarden": [
      "nuchterheid",
-     "loyaliteit",
-     "eigen kring"
+     "zorgzaamheid",
+     "eigen tempo"
     ],
-    "beslisstijl": "Wacht af tot iets bewezen is, luistert naar collega's in de ploeg. Koopt in de winkel of via bekende webshops. Zegt makkelijk 'nee' en verandert zelden van mening.",
-    "budget": "Ongeveer 500 euro per maand vrij, veel naar boot en vakantie. Vaste lasten erbij: liever niet.",
-    "stem": "Zeeuws-bedaard, kortaf, met droge humor. 'Weer zoiets', 'wie verzint dit?', 'als het werkt, prima'."
+    "beslisstijl": "Neemt de tijd, leest rustig, overlegt met zijn vrouw en beslist dan definitief. Wisselt zelden. Haakt af bij alles wat druk of ingewikkeld voelt, ook als het goedkoop is.",
+    "budget": "Samen circa 450 euro per maand vrij; hij houdt de huishoudpot bij en vindt vaste lasten sneller een probleem dan zijn vrouw.",
+    "stem": "Bedaard, precies, soms wat vermoeid. 'Kan het ook rustiger?', 'wat willen ze nou van me?', 'als het werkt, prima'."
    },
    "gedrag": {
     "digitale_vaardigheid": "gemiddeld",
-    "geletterdheid": "voldoende",
+    "geletterdheid": "goed",
     "mediagebruik": [
-     "PZC",
-     "De Telegraaf",
-     "Facebook",
-     "Omroep Zeeland",
-     "YouTube"
+     "BN DeStem",
+     "NOS",
+     "Omroep Brabant",
+     "YouTube (vissen, tuin)",
+     "WhatsApp"
     ],
-    "aankoopstijl": "afwachtend, winkel, gevestigde merken",
+    "aankoopstijl": "afwachtend, winkel, gevestigde merken, overlegt met partner",
     "innovatie_adoptie": "late majority",
     "prijsgevoeligheid": 4,
-    "duurzaamheid": 1,
+    "duurzaamheid": 3,
     "vertrouwen_bedrijven": 2,
-    "vertrouwen_instanties": 2,
-    "scepsis": 5,
-    "sociale_bewijskracht": 3
+    "vertrouwen_instanties": 3,
+    "scepsis": 4,
+    "sociale_bewijskracht": 2
    },
    "tags": [
-    "gezin",
-    "praktisch",
-    "ploegendienst",
+    "huisman",
+    "niet-werkend",
+    "burn-out",
+    "mantelzorg",
     "zuid",
-    "platteland",
-    "sceptisch",
-    "late-majority",
-    "grensregio"
+    "stad",
+    "gezin",
+    "rustig",
+    "late-majority"
    ]
   },
   {
@@ -1906,7 +1909,7 @@
    "kansgroep": false,
    "kansgroep_reden": null,
    "gewicht_pct": 1.8,
-   "kernzin": "Thuiszorgmedewerker van 47 in Enschede, alleenstaande moeder van twee tieners, financieel krap maar vindingrijk, regelt alles via Facebook en de buurt.",
+   "kernzin": "Thuiszorgmedewerker van 47 in Almere, alleenstaande moeder van twee tieners, financieel krap maar vindingrijk, regelt alles via Facebook en de buurt.",
    "demografie": {
     "leeftijd": 47,
     "leeftijdsgroep": "45-54",
@@ -1920,14 +1923,14 @@
     "inkomen": "beneden modaal",
     "financiele_ruimte": "krap",
     "woonsituatie": "huur sociaal",
-    "regio": "Oost",
-    "provincie": "Overijssel",
-    "stedelijkheid": "sterk stedelijk",
-    "plaats_type": "Enschede, Wesselerbrink",
+    "regio": "Randstad",
+    "provincie": "Flevoland",
+    "stedelijkheid": "matig stedelijk",
+    "plaats_type": "Almere Haven",
     "herkomst": "Nederland",
     "taal_thuis": "Nederlands",
     "nederlands_niveau": "moedertaal",
-    "geloof": "geen",
+    "geloof": "protestants (PKN, gaat af en toe met de kinderen)",
     "gezondheid": "redelijk (rug en knieën van het werk)",
     "beperking": "geen"
    },
@@ -1950,7 +1953,7 @@
     ],
     "beslisstijl": "Beslist zelf en snel als het voordeel duidelijk is, anders nooit. Vraagt in de buurtapp of iemand ervaring heeft. Probeert gratis proefperiodes en zet meteen een herinnering om op te zeggen.",
     "budget": "Rond 60 euro per week vrij. Grote uitgaven via sparen of in termijnen; abonnementen alleen als ze maandelijks opzegbaar zijn.",
-    "stem": "Recht door zee, Twents, met humor. 'Leuk bedacht, maar wie betaalt dat?', 'ik zie 'm niet'."
+    "stem": "Recht door zee, met humor. 'Leuk bedacht, maar wie betaalt dat?', 'ik zie 'm niet'."
    },
    "gedrag": {
     "digitale_vaardigheid": "gemiddeld",
@@ -1960,7 +1963,7 @@
      "Marktplaats",
      "WhatsApp",
      "RTL",
-     "Tubantia (online)"
+     "Omroep Flevoland (online)"
     ],
     "aankoopstijl": "prijsgestuurd, tweedehands, proefperiodes",
     "innovatie_adoptie": "late majority",
@@ -1976,7 +1979,8 @@
     "praktisch",
     "zorg",
     "krap",
-    "oost",
+    "randstad",
+    "flevoland",
     "stad",
     "sociale-huur",
     "vindingrijk"
@@ -2047,7 +2051,7 @@
     "aankoopstijl": "via vertegenwoordigers en collega's, lange termijn",
     "innovatie_adoptie": "early majority (zakelijk), late majority (privé)",
     "prijsgevoeligheid": 4,
-    "duurzaamheid": 3,
+    "duurzaamheid": 4,
     "vertrouwen_bedrijven": 3,
     "vertrouwen_instanties": 1,
     "scepsis": 5,
@@ -2174,7 +2178,7 @@
     "taal_thuis": "Nederlands (Limburgs dialect)",
     "nederlands_niveau": "moedertaal",
     "geloof": "katholiek (cultureel, carnaval, communie)",
-    "gezondheid": "redelijk (overgewicht)",
+    "gezondheid": "goed",
     "beperking": "geen"
    },
    "profiel": {
@@ -2209,7 +2213,7 @@
      "RTL 4"
     ],
     "aankoopstijl": "aanbiedingsgestuurd, winkel, grensregio",
-    "innovatie_adoptie": "early majority",
+    "innovatie_adoptie": "late majority",
     "prijsgevoeligheid": 5,
     "duurzaamheid": 1,
     "vertrouwen_bedrijven": 3,
@@ -2278,7 +2282,7 @@
     ],
     "beslisstijl": "Beslist snel op prijs en op wat een kennis in de taxiwereld aanraadt. Belt liever dan dat hij leest. Wantrouwt abonnementen; betaalt liever per keer.",
     "budget": "Rond 200 euro per maand vrij, en de auto kan altijd kapot. Uitgaven voor de kinderen gaan voor.",
-    "stem": "Snel, warm, praktisch Amsterdams. 'Broer, wat kost het?', 'ik heb geen tijd voor dat gedoe'."
+    "stem": "Snel, warm, praktisch Amsterdams. 'Wat kost het, en wat kost het echt?', 'ik heb geen tijd voor dat gedoe'."
    },
    "gedrag": {
     "digitale_vaardigheid": "gemiddeld",
@@ -2326,14 +2330,14 @@
     "levensfase": "lege nest, arbeidsongeschikt",
     "opleiding": "hbo personeel en arbeid (deeltijd), daarna administratief werk",
     "opleidingsrichting": "theoretisch",
-    "werk": "arbeidsongeschikt (WIA), vrijwilligerswerk",
+    "werk": "gedeeltelijk arbeidsongeschikt (WIA), 8 uur thuiswerk, vrijwilligerswerk",
     "beroep": "voorheen administratief medewerker",
     "inkomen": "beneden modaal (huishouden modaal)",
     "financiele_ruimte": "beperkt",
     "woonsituatie": "koop (rijtjeshuis)",
     "regio": "Randstad",
     "provincie": "Zuid-Holland",
-    "stedelijkheid": "sterk stedelijk",
+    "stedelijkheid": "matig stedelijk",
     "plaats_type": "Dordrecht, Sterrenburg",
     "herkomst": "Nederland",
     "taal_thuis": "Nederlands",
@@ -2343,7 +2347,7 @@
     "beperking": "beperkte handfunctie, slechte dagen niet mobiel"
    },
    "profiel": {
-    "dagelijkse_situatie": "Deelt haar energie in blokken: ochtend is bruikbaar, middag rust. Haar man werkt als monteur. Doet vrijwilligerswerk bij de bibliotheek als het kan. Bestelt boodschappen online, gebruikt hulpmiddelen en heeft ervaring met UWV, gemeente en zorgverzekeraar. Actief in een reuma-Facebookgroep.",
+    "dagelijkse_situatie": "Deelt haar energie in blokken: ochtend is bruikbaar, middag rust. Haar man werkt als monteur. Werkt acht uur per week vanuit huis als telefoniste voor een verzekeraar en collecteert voor het Reumafonds. Bestelt boodschappen online, gebruikt hulpmiddelen en heeft ervaring met UWV, gemeente en zorgverzekeraar. Leest de krant op papier en belt liever dan dat ze appt.",
     "belangrijk": [
      "Dat iets rekening houdt met wat ze wel en niet kan",
      "Duidelijkheid en menselijke service",
@@ -2367,13 +2371,13 @@
     "digitale_vaardigheid": "gemiddeld",
     "geletterdheid": "goed",
     "mediagebruik": [
-     "Facebook (lotgenotengroepen)",
+     "AD (papier)",
      "RTL",
-     "AD",
+     "radio",
      "WhatsApp",
-     "YouTube"
+     "Reumafonds-nieuwsbrief"
     ],
-    "aankoopstijl": "rustig, online, op ervaringen van lotgenoten",
+    "aankoopstijl": "rustig, winkel én online, vraagt haar man en de reumaverpleegkundige",
     "innovatie_adoptie": "early majority (bij hulpmiddelen), late majority (rest)",
     "prijsgevoeligheid": 4,
     "duurzaamheid": 2,
@@ -2398,7 +2402,7 @@
    "naam": "Gerard Willems",
    "kansgroep": false,
    "kansgroep_reden": null,
-   "gewicht_pct": 2.7,
+   "gewicht_pct": 2.5,
    "kernzin": "Magazijnchef van 58 in de Betuwe, kinderen het huis uit, spaart voor zijn pensioen, lid van ANWB en Consumentenbond en wisselt alleen als het aantoonbaar beter én goedkoper is.",
    "demografie": {
     "leeftijd": 58,
@@ -2481,7 +2485,7 @@
    "kansgroep": false,
    "kansgroep_reden": null,
    "gewicht_pct": 2.2,
-   "kernzin": "Docent Nederlands op een mbo van 61 in Leiden, hbo, koopwoning met partner, leest NRC, kiest bewust en duurzaam en is allergisch voor slordige taal.",
+   "kernzin": "Docent Nederlands op een mbo van 61 in Leiden, hbo, koopwoning met partner, kijkt AD en NPO, kiest degelijk en is allergisch voor slordige taal en kleine lettertjes.",
    "demografie": {
     "leeftijd": 61,
     "leeftijdsgroep": "55-64",
@@ -2507,10 +2511,10 @@
     "beperking": "geen"
    },
    "profiel": {
-    "dagelijkse_situatie": "Drie dagen voor de klas met studenten die moeite hebben met lezen, twee dagen tuin, koor en oppassen op kleinkinderen. Haar man is net met pensioen als ingenieur. Ze eten weinig vlees, fietsen alles, gaan met de trein op vakantie. Leest boeken, doet mee aan buurtinitiatieven.",
+    "dagelijkse_situatie": "Drie dagen voor de klas met studenten die moeite hebben met lezen, twee dagen tuin, koor en oppassen op kleinkinderen. Haar man is net met pensioen als ingenieur. Ze kijkt graag Heel Holland Bakt, gaat met de auto naar de kleinkinderen in Alphen en vliegt één keer per jaar naar de zon. Leest veel, corrigeert in gedachten elke folder.",
     "belangrijk": [
      "Zorgvuldige taal en een eerlijk verhaal",
-     "Duurzaamheid als vanzelfsprekendheid",
+     "Gemak nu ze minder werkt",
      "Dat mensen die minder kunnen niet buitengesloten worden"
     ],
     "ergernissen": [
@@ -2520,7 +2524,7 @@
     ],
     "waarden": [
      "verantwoordelijkheid",
-     "cultuur",
+     "gezin",
      "gelijkwaardigheid"
     ],
     "beslisstijl": "Leest alles, ook de voorwaarden. Kiest bewust en heeft daar tijd voor. Koopt bij bedrijven waar ze een goed gevoel over heeft en blijft dan trouw.",
@@ -2531,16 +2535,16 @@
     "digitale_vaardigheid": "gemiddeld",
     "geletterdheid": "goed",
     "mediagebruik": [
-     "NRC",
-     "NPO Radio 1",
-     "De Groene Amsterdammer",
-     "e-mail nieuwsbrieven",
-     "geen social media"
+     "AD",
+     "NPO",
+     "Libelle",
+     "Facebook",
+     "e-mail nieuwsbrieven"
     ],
     "aankoopstijl": "bewust, trouw, kwaliteit boven prijs",
     "innovatie_adoptie": "late majority",
     "prijsgevoeligheid": 2,
-    "duurzaamheid": 5,
+    "duurzaamheid": 3,
     "vertrouwen_bedrijven": 3,
     "vertrouwen_instanties": 4,
     "scepsis": 3,
@@ -2562,7 +2566,7 @@
    "naam": "Ton Verhoeven",
    "kansgroep": false,
    "kansgroep_reden": null,
-   "gewicht_pct": 1.1,
+   "gewicht_pct": 0.9,
    "kernzin": "Eigenaar van een installatiebedrijf met twaalf man van 63 in Noord-Brabant, denkt aan overdracht, heeft alles al eens zien langskomen en beslist op ervaring en relaties.",
    "demografie": {
     "leeftijd": 63,
@@ -2644,7 +2648,7 @@
    "naam": "Joke Ramakers",
    "kansgroep": false,
    "kansgroep_reden": null,
-   "gewicht_pct": 2.2,
+   "gewicht_pct": 2.0,
    "kernzin": "Huishoudelijk hulp in de thuiszorg van 56 in een Zuid-Limburgs dorp, mantelzorger voor haar ouders en oppasoma, katholiek, praktisch en verstandig met weinig geld.",
    "demografie": {
     "leeftijd": 56,
@@ -2661,7 +2665,7 @@
     "woonsituatie": "koop (oud dorpshuis, afbetaald)",
     "regio": "Zuid",
     "provincie": "Limburg",
-    "stedelijkheid": "weinig stedelijk",
+    "stedelijkheid": "niet stedelijk",
     "plaats_type": "dorp in het Heuvelland",
     "herkomst": "Nederland",
     "taal_thuis": "Limburgs dialect",
@@ -2809,7 +2813,7 @@
    "naam": "Hennie Bosman",
    "kansgroep": false,
    "kansgroep_reden": null,
-   "gewicht_pct": 2.1,
+   "gewicht_pct": 1.9,
    "kernzin": "Receptioniste van 62 in Alphen aan den Rijn, na haar scheiding alleenwonend in een huurflat, bescheiden inkomen, gezellig en trouw, doet digitale dingen met enige moeite.",
    "demografie": {
     "leeftijd": 62,
@@ -2826,7 +2830,7 @@
     "woonsituatie": "huur sociaal (flat)",
     "regio": "Randstad",
     "provincie": "Zuid-Holland",
-    "stedelijkheid": "sterk stedelijk",
+    "stedelijkheid": "matig stedelijk",
     "plaats_type": "Alphen aan den Rijn",
     "herkomst": "Nederland",
     "taal_thuis": "Nederlands",
@@ -2975,7 +2979,7 @@
    "naam": "Ali Yıldız",
    "kansgroep": false,
    "kansgroep_reden": null,
-   "gewicht_pct": 1.3,
+   "gewicht_pct": 1.0,
    "kernzin": "Voormalig fabrieksarbeider van 61 in Zaandam, in de jaren tachtig uit Turkije gekomen, nu deels arbeidsongeschikt, spreekt eenvoudig Nederlands en laat zijn kinderen digitale zaken regelen.",
    "demografie": {
     "leeftijd": 61,
@@ -3002,7 +3006,7 @@
     "beperking": "beperkt mobiel, kan niet lang staan"
    },
    "profiel": {
-    "dagelijkse_situatie": "Gaat 's ochtends naar het theehuis en de moskee, doet kleine klusjes in de buurt. Zijn vrouw zorgt voor het huishouden en de kleinkinderen. Zijn kinderen regelen brieven, DigiD en de zorgverzekering. Reist elke zomer een maand naar zijn dorp in Turkije. Denkt na over waar hij oud wil worden.",
+    "dagelijkse_situatie": "Gaat 's ochtends naar het theehuis en de moskee, doet kleine klusjes in de buurt en repareert fietsen en scooters voor half Poelenburg; hij volgt op YouTube alles over elektrische fietsen en weet daar meer van dan zijn kinderen. Zijn vrouw werkt in de schoonmaak en zorgt met hem voor de kleinkinderen. Zijn kinderen regelen brieven, DigiD en de zorgverzekering. Reist elke zomer een maand naar zijn dorp in Turkije en denkt na over waar hij oud wil worden.",
     "belangrijk": [
      "Respect en gastvrijheid",
      "Zijn gezin en gemeenschap",
@@ -3016,7 +3020,7 @@
     "waarden": [
      "geloof",
      "familie",
-     "eer"
+     "trots op wat hij heeft opgebouwd"
     ],
     "beslisstijl": "Beslist samen met zijn zoon en vrouw. Vertrouwt op mensen die hij kent en op Turkse ondernemers in de buurt. Ziet iets nieuws pas als een familielid het gebruikt. Betaalt contant of via zijn zoon.",
     "budget": "Zeer beperkt; geld gaat naar familie en de reis naar Turkije.",
@@ -3059,13 +3063,13 @@
    "naam": "Monique Zeegers",
    "kansgroep": false,
    "kansgroep_reden": null,
-   "gewicht_pct": 1.8,
+   "gewicht_pct": 2.1,
    "kernzin": "HR-adviseur van 55 in Rotterdam, Surinaams-Creoolse roots, alleenstaand en welvarend, gezondheidsbewust en sociaal actief, koopt kwaliteit en laat zich niet overhalen.",
    "demografie": {
     "leeftijd": 55,
     "leeftijdsgroep": "55-64",
     "gender": "vrouw",
-    "huishouden": "alleenwonend, volwassen zoon uitwonend",
+    "huishouden": "latrelatie met haar vriendin, alleenwonend, volwassen zoon uitwonend",
     "levensfase": "alleenstaand, carrière",
     "opleiding": "hbo personeel en arbeid",
     "opleidingsrichting": "theoretisch",
@@ -3086,7 +3090,7 @@
     "beperking": "geen"
    },
    "profiel": {
-    "dagelijkse_situatie": "Werkt fulltime, veel gesprekken met medewerkers en managers. Sport drie keer per week, kookt gezond, gaat naar theater en concerten met vriendinnen. Actief in een vrouwennetwerk en in de kerkgemeenschap van haar moeder. Reist naar Suriname en Curaçao. Zorgt af en toe voor haar moeder van 80.",
+    "dagelijkse_situatie": "Werkt fulltime, veel gesprekken met medewerkers en managers. Sport drie keer per week, kookt gezond, gaat naar theater en concerten met haar vriendin en vriendinnen. Actief in een vrouwennetwerk en in de kerkgemeenschap van haar moeder. Reist naar Suriname en Curaçao. Zorgt af en toe voor haar moeder van 80.",
     "belangrijk": [
      "Kwaliteit en zelfrespect",
      "Vrouwen en mensen van kleur serieus genomen zien",
@@ -3168,7 +3172,7 @@
     "beperking": "geen"
    },
    "profiel": {
-    "dagelijkse_situatie": "Staat om zeven uur op, klust in de schuur, past op kleinkinderen, fietst met een groepje. Drie keer per jaar met de camper weg. Zijn vrouw regelt de agenda en het huishouden; hij de auto, de tuin en de techniek. Betaalt met pin maar houdt niet van apps. Krant op papier.",
+    "dagelijkse_situatie": "Staat om zeven uur op, klust in de schuur, past op kleinkinderen, fietst met een groepje. Drie keer per jaar met de camper weg. Hij doet de bankzaken en de boodschappen, zijn vrouw de agenda en de contacten met de kinderen; de auto, de tuin en de techniek zijn van hem. Betaalt met de app van de bank maar houdt niet van nieuwe apps. Krant op papier.",
     "belangrijk": [
      "Zekerheid en degelijkheid",
      "Dat je iemand kunt bellen",
@@ -3189,7 +3193,7 @@
     "stem": "Bedaard, Achterhoeks-droog, vriendelijk wantrouwend. 'Kan ik daar ook gewoon bellen?', 'daar ben ik te oud voor', 'mijn dochter zegt...'"
    },
    "gedrag": {
-    "digitale_vaardigheid": "laag",
+    "digitale_vaardigheid": "gemiddeld (bankiert via de app sinds het bankkantoor dicht is, appt, vindt QR-codes en inloggen met codes nog vervelend)",
     "geletterdheid": "voldoende",
     "mediagebruik": [
      "De Gelderlander (papier)",
@@ -3201,7 +3205,7 @@
     "aankoopstijl": "winkel, bekend, telefonisch, samen met partner",
     "innovatie_adoptie": "achterblijver",
     "prijsgevoeligheid": 3,
-    "duurzaamheid": 2,
+    "duurzaamheid": 3,
     "vertrouwen_bedrijven": 3,
     "vertrouwen_instanties": 4,
     "scepsis": 4,
@@ -3241,7 +3245,7 @@
     "woonsituatie": "koop (bungalow)",
     "regio": "Zuid",
     "provincie": "Noord-Brabant",
-    "stedelijkheid": "weinig stedelijk",
+    "stedelijkheid": "niet stedelijk",
     "plaats_type": "dorp bij Veghel",
     "herkomst": "Nederland",
     "taal_thuis": "Nederlands (Brabants)",
@@ -3307,7 +3311,7 @@
    "naam": "Wim de Vries",
    "kansgroep": false,
    "kansgroep_reden": null,
-   "gewicht_pct": 2.4,
+   "gewicht_pct": 2.8,
    "kernzin": "Gepensioneerd docent geschiedenis van 67 in Utrecht, actief vrijwilliger, leest NRC, digitaal vaardig en duurzaam, kritisch op commercie maar open voor goede initiatieven.",
    "demografie": {
     "leeftijd": 67,
@@ -3386,7 +3390,7 @@
   },
   {
    "id": "P42",
-   "naam": "Bep Salakory",
+   "naam": "Bep Wesselink",
    "kansgroep": false,
    "kansgroep_reden": null,
    "gewicht_pct": 2.2,
@@ -3406,7 +3410,7 @@
     "woonsituatie": "huur sociaal (flat, 3e etage met lift)",
     "regio": "Randstad",
     "provincie": "Zuid-Holland",
-    "stedelijkheid": "zeer sterk stedelijk",
+    "stedelijkheid": "sterk stedelijk",
     "plaats_type": "Rotterdam, Lombardijen",
     "herkomst": "Nederland, ouders geboren in Indonesië (Indisch)",
     "taal_thuis": "Nederlands",
@@ -3434,7 +3438,7 @@
     ],
     "beslisstijl": "Vraagt haar dochter en de buurvrouw. Koopt op de markt en bij de Action. Nieuwe abonnementen: bijna nooit. Als de dochter het regelt en het bespaart geld, dan wel.",
     "budget": "Rond 80 euro per maand vrij. Eén extra vaste last betekent ergens anders bezuinigen.",
-    "stem": "Zacht, hartelijk, met Indische uitdrukkingen. 'Aduh, dat is duur', 'mijn dochter kijkt wel'."
+    "stem": "Zacht, hartelijk, telt hardop mee in euro's. 'Dat is 180 euro per jaar, dat is de energierekening', 'mijn dochter kijkt wel'."
    },
    "gedrag": {
     "digitale_vaardigheid": "laag",
@@ -3473,7 +3477,7 @@
    "naam": "Anton Reijnders",
    "kansgroep": false,
    "kansgroep_reden": null,
-   "gewicht_pct": 1.8,
+   "gewicht_pct": 2.1,
    "kernzin": "Voormalig bakkerij-eigenaar van 73 in het Gooi, vermogend na de verkoop van zijn zaak, kritisch en gewend aan kwaliteit, bestelt liever telefonisch en laat zich niet opjagen.",
    "demografie": {
     "leeftijd": 73,
@@ -3495,7 +3499,7 @@
     "herkomst": "Nederland",
     "taal_thuis": "Nederlands",
     "nederlands_niveau": "moedertaal",
-    "geloof": "katholiek (cultureel)",
+    "geloof": "geen (katholiek opgevoed)",
     "gezondheid": "redelijk (hart, medicatie)",
     "beperking": "geen"
    },
@@ -3521,7 +3525,7 @@
     "stem": "Deftig-joviaal, ervaren, een tikje belerend. 'In mijn tijd...', 'wie zit hierachter?', 'daar betaal ik graag voor, als het goed is'."
    },
    "gedrag": {
-    "digitale_vaardigheid": "laag",
+    "digitale_vaardigheid": "gemiddeld (iPad voor e-mail, de beurs-app en het nieuws; bestelt liever telefonisch)",
     "geletterdheid": "goed",
     "mediagebruik": [
      "De Telegraaf",
@@ -3554,7 +3558,7 @@
    "naam": "Ruud Wijngaarde",
    "kansgroep": false,
    "kansgroep_reden": null,
-   "gewicht_pct": 1.4,
+   "gewicht_pct": 1.7,
    "kernzin": "Gepensioneerd buschauffeur van 67 in Amsterdam Zuidoost, geboren in Suriname en sinds 1975 in Nederland, actief in de kerk en de buurt, bescheiden inkomen en hecht aan persoonlijk contact.",
    "demografie": {
     "leeftijd": 67,
@@ -3566,8 +3570,8 @@
     "opleidingsrichting": "praktisch",
     "werk": "gepensioneerd, vrijwilliger",
     "beroep": "voorheen buschauffeur GVB",
-    "inkomen": "laag tot modaal (AOW met korting wegens jaren buitenland, plus pensioen)",
-    "financiele_ruimte": "beperkt",
+    "inkomen": "modaal (AOW plus GVB-pensioen)",
+    "financiele_ruimte": "gemiddeld",
     "woonsituatie": "huur sociaal (flat)",
     "regio": "Randstad",
     "provincie": "Noord-Holland",
@@ -3598,8 +3602,8 @@
      "trouw"
     ],
     "beslisstijl": "Vraagt in de kerk en de familie. Koopt bij mensen die hij kent, liefst in de buurt. Beslist samen met zijn vrouw. Als iets alleen online kan, laat hij het aan de kinderen of doet het niet.",
-    "budget": "Rond 150 euro per maand vrij; familie en kerk gaan voor.",
-    "stem": "Warm, bedachtzaam, met Surinaams ritme. 'Kijk, ik ken die mensen niet', 'als het goed is voor de buurt, dan doe ik mee'."
+    "budget": "Rond 300 euro per maand vrij; familie, kerk en een jaarlijkse reis naar Suriname gaan voor.",
+    "stem": "Warm, bedachtzaam, spreekt in voorbeelden uit de buurt en de kerk. 'Kijk, ik ken die mensen niet', 'als het goed is voor de buurt, dan doe ik mee'."
    },
    "gedrag": {
     "digitale_vaardigheid": "laag",
@@ -3637,7 +3641,7 @@
    "naam": "Corrie Nijland",
    "kansgroep": false,
    "kansgroep_reden": null,
-   "gewicht_pct": 2.8,
+   "gewicht_pct": 1.8,
    "kernzin": "Weduwe van 79 in een seniorenwoning in een Overijssels dorp, thuiszorg en slechter zicht, kinderen regelen het meeste, vertrouwt op de dorpsgemeenschap en op wat ze al jaren kent.",
    "demografie": {
     "leeftijd": 79,
@@ -3721,7 +3725,7 @@
    "naam": "Jan Dekker",
    "kansgroep": false,
    "kansgroep_reden": null,
-   "gewicht_pct": 2.2,
+   "gewicht_pct": 1.8,
    "kernzin": "Weduwnaar van 82 in Zeeland, oud-ambtenaar bij het waterschap, protestants, vaste routines, leest de krant van voor naar achter en hangt op bij iedereen die iets wil verkopen.",
    "demografie": {
     "leeftijd": 82,
@@ -3748,7 +3752,7 @@
     "beperking": "slechthorend, rijdt niet meer"
    },
    "profiel": {
-    "dagelijkse_situatie": "Staat om zeven uur op, krant, wandeling naar de bakker, radio. Kookt zelf eenvoudig, eet donderdag bij zijn zoon. Huishoudelijke hulp één keer per week. Zit in de kerkenraad geweest, nu nog koster-achtige taken. Betaalt met acceptgiro's zolang het kan en met pinpas in de winkel. Wantrouwt telefoon en deur.",
+    "dagelijkse_situatie": "Staat om zeven uur op, krant, wandeling naar de bakker, radio. Kookt zelf eenvoudig, eet donderdag bij zijn zoon. Huishoudelijke hulp één keer per week. Heeft in de kerkenraad gezeten, doet nog kleine taken in de kerk. Betaalt in de winkel met pinpas; overschrijvingen doet zijn zoon met hem samen op de tablet. Wantrouwt telefoon en deur.",
     "belangrijk": [
      "Regelmaat en zelfstandigheid",
      "Betrouwbare, vertrouwde partijen",
@@ -3769,7 +3773,7 @@
     "stem": "Formeel, Zeeuws-bedaard, kort. 'Daar heb ik geen behoefte aan', 'stuurt u maar een brief'."
    },
    "gedrag": {
-    "digitale_vaardigheid": "geen tot laag",
+    "digitale_vaardigheid": "laag (e-mailt met zijn zoon op een tablet, bankiert met hulp van zijn zoon, koopt niets online)",
     "geletterdheid": "goed",
     "mediagebruik": [
      "PZC (papier)",
@@ -3804,7 +3808,7 @@
    "naam": "Els Bruinsma",
    "kansgroep": false,
    "kansgroep_reden": null,
-   "gewicht_pct": 2.6,
+   "gewicht_pct": 3.8,
    "kernzin": "Gehuwde oud-verpleegkundige van 76 in Hoorn, gezond en actief, reist met haar man, gebruikt iPad en e-mail met gemak, en beoordeelt alles met een zorgblik: is het veilig en nuttig?",
    "demografie": {
     "leeftijd": 76,
@@ -3884,11 +3888,11 @@
   },
   {
    "id": "P48",
-   "naam": "Harry Zwart",
+   "naam": "Bertus Koster",
    "kansgroep": false,
    "kansgroep_reden": null,
-   "gewicht_pct": 1.8,
-   "kernzin": "Alleenwonende oud-havenwerker van 77 in Den Haag, beperkt mobiel, rookt, kijkt veel tv, zijn dochter regelt de post en het geld, en hij vertrouwt geen enkel bedrijf op zijn woord.",
+   "gewicht_pct": 1.3,
+   "kernzin": "Alleenwonende oud-magazijnmedewerker van 77 in Den Haag met COPD, beperkt mobiel, kaart twee middagen per week in het buurthuis, zijn dochter doet de post en de bank, en hij gelooft geen enkel bedrijf op zijn woord.",
    "demografie": {
     "leeftijd": 77,
     "leeftijdsgroep": "75+",
@@ -3898,7 +3902,7 @@
     "opleiding": "lagere school, ambachtsschool niet afgemaakt",
     "opleidingsrichting": "praktisch",
     "werk": "gepensioneerd",
-    "beroep": "voorheen havenarbeider en later portier",
+    "beroep": "voorheen magazijnmedewerker bij een groothandel, laatste jaren portier",
     "inkomen": "laag (AOW plus klein pensioen)",
     "financiele_ruimte": "krap",
     "woonsituatie": "huur sociaal (portiekflat)",
@@ -3914,37 +3918,37 @@
     "beperking": "beperkt mobiel, scootmobiel, kortademig"
    },
    "profiel": {
-    "dagelijkse_situatie": "Tv aan van 's ochtends tot 's avonds, scootmobiel naar de snackbar en de sigarettenwinkel. Thuiszorg twee keer per week. Zijn dochter komt zaterdag, doet de post, de bank en de boodschappen. Buurman helpt met de tv. Vindt de buurt achteruitgegaan en de wereld ingewikkeld geworden.",
+    "dagelijkse_situatie": "Staat laat op, leest de gratis krant, kijkt tv en rijdt op zijn scootmobiel naar het buurthuis om te klaverjassen en naar de markt. Thuiszorg twee keer per week voor de medicijnen en de steunkousen. Zijn dochter komt zaterdag, doet de post, de bank en de grote boodschappen. Hij volgt ADO en Feyenoord op tv en belt elke avond met zijn broer in Zoetermeer.",
     "belangrijk": [
-     "Met rust gelaten worden",
+     "Met rust gelaten worden door verkopers",
      "Zijn dochter niet tot last zijn",
-     "Gewoon tv, gewoon eten, gewoon roken"
+     "Zijn vaste middagen in het buurthuis"
     ],
     "ergernissen": [
      "Alles wat via internet moet",
-     "Mensen aan de deur",
-     "Prijzen die stijgen"
+     "Mensen aan de deur of aan de telefoon die iets willen verkopen",
+     "Prijzen die stijgen terwijl de AOW achterblijft"
     ],
     "waarden": [
      "eigen kring",
      "nuchterheid",
-     "trots"
+     "trots op zelfstandigheid"
     ],
-    "beslisstijl": "Beslist zelf 'nee', zijn dochter beslist 'ja'. Neemt niets aan van vreemden. Zou iets alleen accepteren als de thuiszorg of zijn dochter het regelt en het niets extra kost.",
-    "budget": "Rond 100 euro per maand vrij, grotendeels sigaretten en snackbar.",
-    "stem": "Haags, kortaf, mopperend, met humor. 'Wat mot je nou?', 'daar trap ik niet in', 'vraag m'n dochter maar'."
+    "beslisstijl": "Zegt zelf 'nee' tegen alles wat nieuw is; zijn dochter zegt soms 'ja' als het hem echt helpt. Neemt niets aan van vreemden. Zou iets alleen accepteren als de thuiszorg of zijn dochter het regelt en het geen nieuwe vaste last is.",
+    "budget": "Rond 120 euro per maand vrij, vooral voor het buurthuis, de markt en de kleinkinderen.",
+    "stem": "Haags, kortaf, met droge humor, wantrouwend maar niet onvriendelijk. 'Wat moet ik daarmee?', 'vraag m'n dochter maar', 'ik red me al veertig jaar zonder'."
    },
    "gedrag": {
     "digitale_vaardigheid": "geen",
     "geletterdheid": "beperkt",
     "mediagebruik": [
-     "tv (SBS6, RTL, Omroep West)",
+     "tv (NOS, SBS6, Omroep West)",
+     "gratis huis-aan-huiskrant",
+     "het buurthuis",
      "radio",
-     "de snackbar",
-     "buurman",
      "dochter"
     ],
-    "aankoopstijl": "contant, via dochter, buurtwinkel",
+    "aankoopstijl": "contant of pin, via dochter, markt en buurtwinkel",
     "innovatie_adoptie": "achterblijver",
     "prijsgevoeligheid": 5,
     "duurzaamheid": 1,
@@ -3969,11 +3973,11 @@
   },
   {
    "id": "K01",
-   "naam": "Jayden Martina",
+   "naam": "Jayden de Wit",
    "kansgroep": true,
    "kansgroep_reden": "Jongeren zonder startkwalificatie met flexwerk en schulden worden zelden meegenomen in klantonderzoek. Ze leggen bloot of een aanbod begrijpelijk en betaalbaar is voor wie geen buffer heeft, en wat het risico op wanbetaling en schaamte is.",
    "gewicht_pct": 1.0,
-   "kernzin": "Uitzendkracht van 19 in Rotterdam-Zuid met een Curaçaose moeder, geen startkwalificatie, schulden bij een telecomprovider en een BNPL-dienst, leeft van week tot week en leest liever niet.",
+   "kernzin": "Uitzendkracht van 19 in Almelo zonder startkwalificatie, woont bij zijn moeder, heeft een afgesloten telefoonabonnement en een 'koop nu, betaal later'-schuld, leeft van week tot week en leest liever niet.",
    "demografie": {
     "leeftijd": 19,
     "leeftijdsgroep": "18-24",
@@ -3987,19 +3991,19 @@
     "inkomen": "laag en wisselend",
     "financiele_ruimte": "krap, schulden",
     "woonsituatie": "bij moeder (huur sociaal)",
-    "regio": "Randstad",
-    "provincie": "Zuid-Holland",
-    "stedelijkheid": "zeer sterk stedelijk",
-    "plaats_type": "Rotterdam, Feijenoord",
-    "herkomst": "Nederland, moeder geboren op Curaçao",
-    "taal_thuis": "Nederlands en Papiaments",
-    "nederlands_niveau": "moedertaal (spreekt vlot, schrijft moeizaam)",
-    "geloof": "christelijk opgevoed, niet praktiserend",
+    "regio": "Oost",
+    "provincie": "Overijssel",
+    "stedelijkheid": "sterk stedelijk",
+    "plaats_type": "Almelo, De Riet",
+    "herkomst": "Nederland",
+    "taal_thuis": "Nederlands (Twents)",
+    "nederlands_niveau": "moedertaal (spreekt vlot, schrijft moeizaam, dyslexie nooit officieel vastgesteld)",
+    "geloof": "geen",
     "gezondheid": "goed",
     "beperking": "geen (dyslexie, nooit officieel vastgesteld)"
    },
    "profiel": {
-    "dagelijkse_situatie": "Krijgt diensten via een app, soms drie dagen, soms nul. Betaalt zijn moeder kostgeld als het kan. Heeft een telefoonabonnement dat is afgesloten en betaalt een oude 'koop nu, betaal later'-schuld af via een deurwaarder. Hangt met vrienden, maakt muziek, wil rijbewijs en 'iets eigens' beginnen.",
+    "dagelijkse_situatie": "Krijgt diensten via een app van het uitzendbureau, soms drie dagen in een distributiecentrum, soms nul. Betaalt zijn moeder kostgeld als het kan; zij werkt in de thuiszorg. Zijn telefoonabonnement is afgesloten en hij betaalt een oude 'koop nu, betaal later'-schuld af via een deurwaarder. Sleutelt aan scooters met vrienden, wil zijn rijbewijs halen en ooit een eigen klusbedrijfje.",
     "belangrijk": [
      "Respect en niet bekeken worden",
      "Direct voordeel, vandaag",
@@ -4017,7 +4021,7 @@
     ],
     "beslisstijl": "Beslist impulsief op zijn telefoon als iets gratis of goedkoop lijkt, en heeft daar later spijt van. Leest geen tekst langer dan drie regels. Vertrouwt vrienden, wantrouwt bedrijven en instanties.",
     "budget": "Sommige weken 50 euro vrij, andere weken niets. Elke vaste last is riskant.",
-    "stem": "Straattaal-achtig maar helder, kort. 'Ik lees dat niet', 'weer zo'n ding dat je geld kost', 'is het echt gratis of nep gratis?'"
+    "stem": "Kort, informeel, soms afwerend. 'Ik lees dat niet', 'weer zo'n ding dat je geld kost', 'is het echt gratis of nep gratis?'"
    },
    "gedrag": {
     "digitale_vaardigheid": "hoog (mobiel), laag (formulieren)",
@@ -4044,9 +4048,8 @@
     "schulden",
     "flexwerk",
     "laaggeletterd",
-    "randstad",
+    "oost",
     "stad",
-    "migratieachtergrond",
     "krap",
     "risico-wanbetaling"
    ]
@@ -4055,22 +4058,22 @@
    "id": "K02",
    "naam": "Sam Veldhuis",
    "kansgroep": true,
-   "kansgroep_reden": "Neurodivergente en non-binaire jongvolwassenen zijn klein in aantal maar vaak vroege gebruikers van nieuwe online diensten en gevoelig voor inclusieve of juist uitsluitende communicatie. Ze leggen bloot waar een aanbod onnodig aannames maakt over gender, prikkels en sociale interactie.",
+   "kansgroep_reden": "Non-binaire en transgender mensen zijn klein in aantal maar vaak vroege gebruikers van nieuwe online diensten en gevoelig voor inclusieve of juist uitsluitende communicatie (aanhef, formulieren, beeld). Ze leggen bloot waar een aanbod onnodig aannames maakt over gender en gezin.",
    "gewicht_pct": 0.5,
-   "kernzin": "Non-binaire freelance illustrator van 24 in Groningen met autisme, werkt vanuit huis voor internationale klanten, sterk online en gevoelig voor hoe iets klinkt en of het prikkelarm werkt.",
+   "kernzin": "Non-binaire medewerker klantcontact van 24 bij een webshop in Groningen, hbo communicatie, woont met twee huisgenoten, actief online, en let scherp op hoe een bedrijf mensen aanspreekt en of een formulier verder komt dan 'man/vrouw'.",
    "demografie": {
     "leeftijd": 24,
     "leeftijdsgroep": "18-24",
     "gender": "non-binair (hen/hun)",
-    "huishouden": "alleenwonend (studio)",
-    "levensfase": "startend zelfstandig",
-    "opleiding": "hbo kunstacademie",
+    "huishouden": "woont met twee huisgenoten",
+    "levensfase": "startend, werkend",
+    "opleiding": "hbo communicatie",
     "opleidingsrichting": "theoretisch",
-    "werk": "zzp",
-    "beroep": "freelance illustrator, opdrachten via platforms",
-    "inkomen": "laag en wisselend",
-    "financiele_ruimte": "krap",
-    "woonsituatie": "huur particulier (studio)",
+    "werk": "loondienst",
+    "beroep": "medewerker klantcontact bij een webshop, 32 uur",
+    "inkomen": "beneden modaal",
+    "financiele_ruimte": "beperkt",
+    "woonsituatie": "huur particulier (kamer in gedeeld huis)",
     "regio": "Noord",
     "provincie": "Groningen",
     "stedelijkheid": "zeer sterk stedelijk",
@@ -4079,41 +4082,41 @@
     "taal_thuis": "Nederlands, online veel Engels",
     "nederlands_niveau": "moedertaal",
     "geloof": "geen",
-    "gezondheid": "goed (autisme, gevoelig voor prikkels en overbelasting)",
-    "beperking": "prikkelgevoeligheid, moeite met bellen en onverwachte sociale interactie"
+    "gezondheid": "goed",
+    "beperking": "geen"
    },
    "profiel": {
-    "dagelijkse_situatie": "Werkt 's nachts het beste, communiceert met klanten via chat en e-mail, nooit telefonisch. Boodschappen laten bezorgen om drukke winkels te vermijden. Heeft een vaste routine en een kleine kring online vrienden. Inkomen schommelt; de huurtoeslag is essentieel. Gevoelig voor het gebruik van de juiste aanspreekvorm.",
+    "dagelijkse_situatie": "Beantwoordt chats en mails van klanten en ziet dagelijks hoe bedrijven mensen verkeerd aanspreken. Woont met twee huisgenoten in een oud huis in de Oosterpoort, kookt om beurten, speelt in een bandje. Heeft een kleine kring vrienden uit de queer-gemeenschap en online. Regelt alles digitaal, maar belt gerust als het moet. Gevoelig voor het gebruik van de juiste aanspreekvorm en voor of 'hen' überhaupt in een formulier past.",
     "belangrijk": [
-     "Duidelijke, voorspelbare processen zonder verrassingen",
-     "Gezien worden zoals hen is",
-     "Alles schriftelijk kunnen regelen"
+     "Gezien worden zoals hen is, zonder er een ding van te maken",
+     "Duidelijke, eerlijke communicatie",
+     "Betaalbaar"
     ],
     "ergernissen": [
-     "'Bel ons' als enige optie",
-     "Formulieren met alleen man/vrouw",
-     "Drukke, flitsende websites en pushmeldingen"
+     "Formulieren met alleen man/vrouw, 'geachte heer/mevrouw'",
+     "Bedrijven die inclusiviteit als reclame gebruiken en verder niets doen",
+     "Verplichte jaarcontracten"
     ],
     "waarden": [
-     "autonomie",
+     "eerlijkheid",
      "inclusiviteit",
-     "creativiteit"
+     "gemeenschap"
     ],
-    "beslisstijl": "Onderzoekt grondig, leest de voorwaarden en het privacybeleid, kijkt naar toon en toegankelijkheid. Probeert vroeg nieuwe online diensten als ze schriftelijk en voorspelbaar zijn. Haakt af bij verplicht bellen of chaos.",
-    "budget": "Rond 100 euro per maand vrij; betaalt liever kleine bedragen per maand dan een groot bedrag ineens.",
-    "stem": "Precies, rustig, reflectief, soms Engelse termen. 'Dit is voor mij niet toegankelijk omdat...', 'de toon is prettig neutraal'."
+    "beslisstijl": "Onderzoekt kort, leest hoe een bedrijf over zichzelf praat en of de aanmelding klopt voor hen. Probeert nieuwe online diensten vroeg en vertelt erover aan vrienden. Haakt af bij een aanmeldformulier dat hen niet past.",
+    "budget": "Rond 150 euro per maand vrij.",
+    "stem": "Rustig, precies, warm, soms Engelse termen. 'Ik kan me hier niet eens aanmelden', 'de toon is prettig neutraal', 'fijn, gewoon zonder gedoe'."
    },
    "gedrag": {
     "digitale_vaardigheid": "hoog",
     "geletterdheid": "goed",
     "mediagebruik": [
-     "Discord",
      "Instagram",
+     "Discord",
      "Reddit",
-     "Tumblr/Mastodon",
+     "Spotify",
      "nieuwsbrieven"
     ],
-    "aankoopstijl": "online, onderzoekend, early adopter bij online diensten",
+    "aankoopstijl": "online, onderzoekend, vroeg bij online diensten, maandelijks opzegbaar",
     "innovatie_adoptie": "early adopter",
     "prijsgevoeligheid": 4,
     "duurzaamheid": 4,
@@ -4126,12 +4129,11 @@
     "kansgroep",
     "jong",
     "non-binair",
-    "neurodivergent",
-    "zzp",
+    "loondienst",
     "noord",
     "stad",
     "online",
-    "toegankelijkheid",
+    "inclusiviteit",
     "krap"
    ]
   },
@@ -4303,85 +4305,85 @@
   },
   {
    "id": "K05",
-   "naam": "Wei Chen",
+   "naam": "Dennis Prins",
    "kansgroep": true,
-   "kansgroep_reden": "Chinees-Nederlandse ondernemers en andere kleine ondernemersgemeenschappen met een eigen taal en eigen kanalen zijn onzichtbaar in standaardonderzoek. Ze leggen bloot of een aanbod werkt buiten de Nederlandse mainstream, met andere betaalgewoonten en informatiebronnen.",
+   "kansgroep_reden": "Ruim een miljoen Nederlanders heeft een licht verstandelijke beperking of is zwakbegaafd. Ze doen mee als klant, begrijpen eenvoudige taal en plaatjes goed, maar worden door lange teksten, verborgen voorwaarden en verkoopdruk snel benadeeld. Ze leggen bloot of een aanbod echt begrijpelijk en eerlijk is, en waar het risico op misbruik en schulden zit.",
    "gewicht_pct": 0.6,
-   "kernzin": "Restauranthouder van 45 in Zeist, 25 jaar geleden uit Zuid-China gekomen, runt met zijn vrouw een Chinees-Indisch restaurant, leeft via WeChat en de gemeenschap, rekent scherp en vertrouwt op mensen boven merken.",
+   "kernzin": "Man van 34 met een licht verstandelijke beperking in Lelystad, werkt via de banenafspraak als vakkenvuller, woont begeleid zelfstandig met een bewindvoerder voor zijn geld, is goed van vertrouwen en houdt van duidelijke, korte uitleg met plaatjes.",
    "demografie": {
-    "leeftijd": 45,
-    "leeftijdsgroep": "45-54",
+    "leeftijd": 34,
+    "leeftijdsgroep": "35-44",
     "gender": "man",
-    "huishouden": "gehuwd, twee kinderen (14 en 17), ouders wonen boven het restaurant",
-    "levensfase": "gezin, ondernemer, drie generaties",
-    "opleiding": "middelbare school China, horeca in de praktijk",
+    "huishouden": "alleenwonend met ambulante begeleiding",
+    "levensfase": "zelfstandig met ondersteuning",
+    "opleiding": "praktijkonderwijs",
     "opleidingsrichting": "praktisch",
-    "werk": "ondernemer met personeel",
-    "beroep": "eigenaar restaurant (4 medewerkers plus familie)",
-    "inkomen": "modaal (wisselend, veel in de zaak)",
-    "financiele_ruimte": "gemiddeld",
-    "woonsituatie": "koop (boven de zaak)",
+    "werk": "loondienst (banenafspraak, 24 uur)",
+    "beroep": "vakkenvuller bij een supermarkt",
+    "inkomen": "laag (loon plus aanvulling)",
+    "financiele_ruimte": "krap (bewindvoering, vast weekbudget)",
+    "woonsituatie": "huur sociaal (appartement)",
     "regio": "Randstad",
-    "provincie": "Utrecht",
-    "stedelijkheid": "sterk stedelijk",
-    "plaats_type": "Zeist",
-    "herkomst": "China (geboren in China, sinds 2001 in Nederland)",
-    "taal_thuis": "Kantonees en Mandarijn, met de kinderen Nederlands",
-    "nederlands_niveau": "B1, spreekt functioneel, leest moeizaam",
-    "geloof": "geen (boeddhistische tradities)",
-    "gezondheid": "goed, lange dagen",
-    "beperking": "geen"
+    "provincie": "Flevoland",
+    "stedelijkheid": "matig stedelijk",
+    "plaats_type": "Lelystad",
+    "herkomst": "Nederland",
+    "taal_thuis": "Nederlands",
+    "nederlands_niveau": "moedertaal, leest korte eenvoudige teksten (niveau A2/B1)",
+    "geloof": "geen",
+    "gezondheid": "goed",
+    "beperking": "licht verstandelijke beperking (IQ rond 65), moeite met lange teksten, geld en plannen"
    },
    "profiel": {
-    "dagelijkse_situatie": "Werkt zes dagen van elf tot elf. Zijn dochter van 17 doet de Nederlandse administratie en de website. Leveranciers en nieuws via WeChat-groepen van Chinese ondernemers. Betaalt veel contant en per pin, wantrouwt abonnementen. Wil dat de kinderen studeren en niet het restaurant overnemen.",
+    "dagelijkse_situatie": "Werkt vier ochtenden bij de supermarkt en is daar trots op. Een begeleider komt twee keer per week langs voor de post en het plannen; een bewindvoerder beheert zijn geld en maakt wekelijks leefgeld over. Gamet, kijkt voetbal, gaat naar de dagbesteding-voetbalclub. Heeft eerder een telefoonabonnement en een loterij-abonnement afgesloten na een verkoopgesprek en daar schulden aan overgehouden; sindsdien mag hij niets tekenen zonder zijn begeleider.",
     "belangrijk": [
-     "Familie en hun toekomst",
-     "Een goede deal en een goede relatie",
-     "Geen verrassingen met instanties"
+     "Dat mensen aardig en duidelijk zijn",
+     "Zelf dingen kunnen doen zonder hulp te vragen",
+     "Dat hij niet weer in de problemen komt"
     ],
     "ergernissen": [
-     "Ingewikkelde Nederlandse contracten",
-     "Bedrijven die niet terugbellen of alleen mailen",
-     "Betutteling"
+     "Lange teksten en moeilijke woorden",
+     "Mensen die te snel praten",
+     "Als hij achteraf hoort dat iets geld kost"
     ],
     "waarden": [
-     "familie",
-     "hard werken",
-     "wederkerigheid"
+     "vriendelijkheid",
+     "zelfstandigheid",
+     "eerlijkheid"
     ],
-    "beslisstijl": "Beslist na overleg met zijn vrouw en dochter, en na navraag in de Chinese ondernemersgroep. Kiest voor relaties en referenties boven reclame. Wil onderhandelen en betaalt liever per keer.",
-    "budget": "Zakelijk grotere bedragen mogelijk als het de zaak helpt; privé zuinig.",
-    "stem": "Eenvoudig, direct Nederlands, vriendelijk, zakelijk. 'Mijn dochter leest', 'wat is de prijs zonder abonnement?', 'wie gebruikt dit al?'"
+    "beslisstijl": "Zegt snel ja als iemand aardig is en het leuk klinkt, en kan daarna niet zelf betalen of opzeggen. Zijn begeleider en bewindvoerder beslissen mee bij alles boven het weekgeld. Snapt een aanbod als het in drie korte zinnen en een plaatje staat.",
+    "budget": "Circa 60 euro leefgeld per week; alles daarbuiten loopt via de bewindvoerder.",
+    "stem": "Eenvoudig, vriendelijk, korte zinnen, soms enthousiast en dan onzeker. 'Dat klinkt leuk!', 'wat betekent dat?', 'dat moet ik aan Sandra vragen'."
    },
    "gedrag": {
-    "digitale_vaardigheid": "gemiddeld (WeChat, betaalapps), laag (Nederlandse portalen)",
-    "geletterdheid": "beperkt in het Nederlands",
+    "digitale_vaardigheid": "laag tot gemiddeld (WhatsApp, YouTube, games; formulieren en betalen niet zelf)",
+    "geletterdheid": "beperkt",
     "mediagebruik": [
-     "WeChat",
-     "Chinese nieuwsapps",
      "YouTube",
-     "dochter",
-     "gemeenschap"
+     "WhatsApp",
+     "tv (voetbal, RTL)",
+     "TikTok",
+     "begeleider"
     ],
-    "aankoopstijl": "relatiegericht, onderhandelend, contant of pin, via gemeenschap",
+    "aankoopstijl": "impulsief bij kleine bedragen, via begeleider bij grote; gevoelig voor vriendelijke verkopers",
     "innovatie_adoptie": "late majority",
-    "prijsgevoeligheid": 5,
+    "prijsgevoeligheid": 4,
     "duurzaamheid": 2,
-    "vertrouwen_bedrijven": 2,
-    "vertrouwen_instanties": 2,
-    "scepsis": 4,
+    "vertrouwen_bedrijven": 4,
+    "vertrouwen_instanties": 4,
+    "scepsis": 1,
     "sociale_bewijskracht": 5
    },
    "tags": [
     "kansgroep",
-    "ondernemer",
-    "horeca",
-    "migratieachtergrond",
-    "taalbarrière",
+    "lvb",
+    "eenvoudige-taal",
+    "bewindvoering",
     "randstad",
-    "eigen-kanalen",
-    "via-kinderen",
-    "contant"
+    "flevoland",
+    "krap",
+    "risico-misbruik",
+    "laaggeletterd"
    ]
   },
   {
@@ -4469,21 +4471,21 @@
   },
   {
    "id": "K07",
-   "naam": "Emma O'Neill",
+   "naam": "Ananya Rao",
    "kansgroep": true,
    "kansgroep_reden": "Engelstalige kennismigranten en expats zijn een kleine maar koopkrachtige groep die in Nederland alles snel online regelt en een aanbod meteen laat vallen als het alleen Nederlands is. Ze leggen bloot of een dienst ook internationaal en in het Engels werkt, en of aannames over Nederlandse gewoonten kloppen.",
    "gewicht_pct": 0.8,
-   "kernzin": "Ierse procesingenieur van 38 bij een technologiebedrijf in Eindhoven, sinds drie jaar in Nederland met partner en peuter, hoog inkomen, spreekt basis-Nederlands en regelt alles in het Engels en online.",
+   "kernzin": "Indiase softwareingenieur van 34 bij een technologiebedrijf in Eindhoven, sinds drie jaar in Nederland met partner en peuter, hoog inkomen, spreekt basis-Nederlands en regelt alles in het Engels en online.",
    "demografie": {
-    "leeftijd": 38,
-    "leeftijdsgroep": "35-44",
+    "leeftijd": 34,
+    "leeftijdsgroep": "25-34",
     "gender": "vrouw",
     "huishouden": "samenwonend met partner, één kind (2)",
     "levensfase": "jong gezin, expat",
-    "opleiding": "master chemical engineering (Ierland)",
+    "opleiding": "master computer science (India)",
     "opleidingsrichting": "theoretisch",
     "werk": "loondienst (kennismigrant)",
-    "beroep": "process engineer bij een high-techbedrijf",
+    "beroep": "software engineer bij een high-techbedrijf",
     "inkomen": "hoog",
     "financiele_ruimte": "ruim",
     "woonsituatie": "huur particulier (duur), overweegt kopen",
@@ -4491,15 +4493,15 @@
     "provincie": "Noord-Brabant",
     "stedelijkheid": "zeer sterk stedelijk",
     "plaats_type": "Eindhoven, Strijp",
-    "herkomst": "Ierland (geboren in Ierland, sinds 2023 in Nederland)",
-    "taal_thuis": "Engels",
+    "herkomst": "India (geboren in Bangalore, sinds 2023 in Nederland)",
+    "taal_thuis": "Engels en Kannada",
     "nederlands_niveau": "A2, leest eenvoudige teksten, mist nuance",
-    "geloof": "katholiek opgevoed, niet praktiserend",
+    "geloof": "hindoe (cultureel, feesten met de gemeenschap)",
     "gezondheid": "goed",
     "beperking": "geen"
    },
    "profiel": {
-    "dagelijkse_situatie": "Werkt fulltime in een internationaal team, haar partner werkt op afstand voor een Iers bedrijf. Peuter op een internationale opvang. Weekenden: fietsen, expats-meetups, vluchten naar Dublin. Regelt alles via apps en Google Translate; de gemeente en de belastingdienst blijven een raadsel. Voelt zich welkom maar niet altijd begrepen.",
+    "dagelijkse_situatie": "Werkt fulltime in een internationaal team, haar partner werkt op afstand voor een Indiaas bedrijf. Peuter op een internationale opvang. Weekenden: de Indiase gemeenschap in Eindhoven, vegetarisch koken, videobellen met familie in Bangalore, een keer per jaar drie weken naar India. Regelt alles via apps en Google Translate; de gemeente en de belastingdienst blijven een raadsel. Voelt zich welkom maar niet altijd begrepen, en merkt dat huren als expat lastig is.",
     "belangrijk": [
      "Alles in het Engels en online kunnen regelen",
      "Tijd besparen",
@@ -4517,7 +4519,7 @@
     ],
     "beslisstijl": "Beslist snel online, leest Engelstalige reviews, vergelijkt met wat ze thuis kende. Betaalt graag voor gemak. Haakt binnen tien seconden af als ze de taal niet snapt.",
     "budget": "Ruim; uitgaven tot 100 euro per maand voor gemak zijn geen beslissing.",
-    "stem": "Vriendelijk, Engels met wat Nederlandse woorden, pragmatisch. 'Is there an English version?', 'in Ireland we would just...', 'this is handy, if I can actually sign up'."
+    "stem": "Vriendelijk, Engels met wat Nederlandse woorden, pragmatisch. 'Is there an English version?', 'in Bangalore we would just...', 'this is handy, if I can actually sign up'."
    },
    "gedrag": {
     "digitale_vaardigheid": "hoog",
@@ -4525,9 +4527,9 @@
     "mediagebruik": [
      "LinkedIn",
      "Instagram",
-     "expat-Facebookgroepen",
+     "WhatsApp (gemeenschapsgroepen)",
      "DutchNews",
-     "podcasts"
+     "YouTube"
     ],
     "aankoopstijl": "snel, online, premium, Engelstalig",
     "innovatie_adoptie": "early adopter",
@@ -4541,6 +4543,7 @@
    "tags": [
     "kansgroep",
     "expat",
+    "kennismigrant",
     "engelstalig",
     "hoog-inkomen",
     "zuid",
@@ -4554,69 +4557,69 @@
    "id": "K08",
    "naam": "Bas Hollander",
    "kansgroep": true,
-   "kansgroep_reden": "Echte innovators zijn slechts een paar procent van de bevolking, maar ze bepalen of iets nieuws een eerste golf gebruikers krijgt en ze zijn genadeloos over wat 'echt nieuw' is. Ze leggen bloot of een concept onderscheidend is of een variant op iets bestaands.",
+   "kansgroep_reden": "Echte innovators zijn slechts een paar procent van de bevolking, maar ze bepalen of iets nieuws een eerste golf gebruikers krijgt en ze zijn genadeloos over wat 'echt nieuw' is. Deze variant zonder geld laat ook zien of een concept zonder groot budget aantrekkelijk blijft.",
    "gewicht_pct": 0.5,
-   "kernzin": "Productmanager en angel-investeerder van 41 in Amsterdam, vermogend geworden bij een start-up, koopt en test alles als eerste, is snel verveeld en beoordeelt een idee als een investeerder.",
+   "kernzin": "Junior softwareontwikkelaar van 27 in Enschede die elke nieuwe app, bèta en gadget als eerste probeert, weinig te besteden heeft, alles zelf host en een idee beoordeelt op of het écht nieuw en goed gebouwd is.",
    "demografie": {
-    "leeftijd": 41,
-    "leeftijdsgroep": "35-44",
+    "leeftijd": 27,
+    "leeftijdsgroep": "25-34",
     "gender": "man",
-    "huishouden": "samenwonend, één kind (5)",
-    "levensfase": "jong gezin, financieel onafhankelijk",
-    "opleiding": "wo kunstmatige intelligentie",
+    "huishouden": "samenwonend met partner",
+    "levensfase": "starter",
+    "opleiding": "hbo technische informatica",
     "opleidingsrichting": "theoretisch",
-    "werk": "ondernemer en investeerder",
-    "beroep": "productmanager, angel-investeerder in start-ups",
-    "inkomen": "zeer hoog",
-    "financiele_ruimte": "zeer ruim",
-    "woonsituatie": "koop (herenhuis)",
-    "regio": "Randstad",
-    "provincie": "Noord-Holland",
-    "stedelijkheid": "zeer sterk stedelijk",
-    "plaats_type": "Amsterdam, De Pijp",
+    "werk": "loondienst",
+    "beroep": "junior developer bij een softwarebedrijf",
+    "inkomen": "beneden modaal",
+    "financiele_ruimte": "beperkt",
+    "woonsituatie": "huur particulier (appartement)",
+    "regio": "Oost",
+    "provincie": "Overijssel",
+    "stedelijkheid": "sterk stedelijk",
+    "plaats_type": "Enschede, centrum",
     "herkomst": "Nederland",
-    "taal_thuis": "Nederlands en Engels",
+    "taal_thuis": "Nederlands en veel Engels",
     "nederlands_niveau": "moedertaal",
     "geloof": "geen",
-    "gezondheid": "goed (biohacker)",
+    "gezondheid": "goed",
     "beperking": "geen"
    },
    "profiel": {
-    "dagelijkse_situatie": "Werkt deels bij een start-up, deels aan zijn investeringen. Heeft elk nieuw apparaat en elke nieuwe app als eerste, en zegt de meeste na een maand weer op. Zijn partner is arts. Kind op een school met veel tweetalige gezinnen. Sport met wearables, eet volgens een schema, reist naar conferenties.",
+    "dagelijkse_situatie": "Werkt vier dagen, bouwt in de avonduren aan eigen projecten en een thuisserver. Heeft twintig bèta-apps op zijn telefoon, zegt de meeste na twee weken weer op en schrijft er over op een forum. Zijn partner studeert nog. Eet goedkoop, reist met de trein, koopt hardware tweedehands. Probeert alles wat nieuw is, maar betaalt alleen voor wat echt uniek is.",
     "belangrijk": [
      "Nieuw, slim en goed gebouwd",
      "Snelheid en frictieloosheid",
-     "Een team dat weet wat het doet"
+     "Een eerlijk businessmodel dat hij snapt"
     ],
     "ergernissen": [
      "Oude wijn in nieuwe zakken",
-     "Slechte onboarding",
-     "Middelmatige uitvoering"
+     "Slechte onboarding en trage apps",
+     "Diensten die je data verkopen of je vastzetten"
     ],
     "waarden": [
-     "innovatie",
-     "prestatie",
-     "nieuwsgierigheid"
+     "nieuwsgierigheid",
+     "openheid",
+     "vakmanschap"
     ],
-    "beslisstijl": "Beslist in seconden op basis van de propositie en de uitvoering. Probeert alles, betaalt zonder nadenken en vertrekt zodra het niet uniek meer is. Vraagt naar het businessmodel achter de prijs.",
-    "budget": "Onbeperkt voor consumentenaankopen; hij koopt op nieuwsgierigheid.",
-    "stem": "Snel, Engelse jargon, kritisch-enthousiast. 'Wat is de moat?', 'dit bestaat al, alleen slechter', 'onboarding is broken'."
+    "beslisstijl": "Beslist in seconden op de propositie en de uitvoering, probeert alles gratis en vertrekt zodra het niet uniek of te duur is. Vraagt naar het businessmodel achter de prijs en test of het zonder account of met export van zijn data werkt.",
+    "budget": "Rond 150 euro per maand vrij; abonnementen boven 5 euro per maand moeten iets unieks bieden.",
+    "stem": "Snel, Engelse jargon, kritisch-enthousiast. 'Dit bestaat al, alleen slechter', 'onboarding is broken', 'oké, dit is wél slim'."
    },
    "gedrag": {
     "digitale_vaardigheid": "zeer hoog",
     "geletterdheid": "goed",
     "mediagebruik": [
-     "X",
-     "Product Hunt",
-     "nieuwsbrieven",
-     "podcasts",
-     "LinkedIn"
+     "Hacker News",
+     "Reddit",
+     "Tweakers",
+     "YouTube",
+     "Mastodon"
     ],
-    "aankoopstijl": "eerste, snel, premium, hoge churn",
+    "aankoopstijl": "eerste, gratis proberen, hoge churn, betaalt alleen voor uniek",
     "innovatie_adoptie": "innovator",
-    "prijsgevoeligheid": 1,
+    "prijsgevoeligheid": 4,
     "duurzaamheid": 3,
-    "vertrouwen_bedrijven": 3,
+    "vertrouwen_bedrijven": 2,
     "vertrouwen_instanties": 3,
     "scepsis": 4,
     "sociale_bewijskracht": 1
@@ -4625,8 +4628,8 @@
     "kansgroep",
     "innovator",
     "tech",
-    "zeer-hoog-inkomen",
-    "randstad",
+    "laag-budget",
+    "oost",
     "stad",
     "early-signal",
     "hoge-churn"

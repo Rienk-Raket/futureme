@@ -26,7 +26,10 @@ RICHT = {
     "regio": {"Randstad": 47, "Zuid": 23, "Oost": 19, "Noord": 10},
     "herkomst_klasse": {"Nederland": 72, "Europa": 12, "buiten Europa": 16},
     "stedelijkheid_klasse": {"(zeer) sterk stedelijk": 52, "matig stedelijk": 16, "weinig/niet stedelijk": 32},
-    "werk_klasse": {"loondienst": 52, "zelfstandig": 9, "gepensioneerd": 24, "student": 6, "werkloos/uitkering": 6, "anders": 3},
+    "werk_klasse": {"loondienst": 50, "zelfstandig": 9, "gepensioneerd": 24, "student": 5, "werkloos/uitkering": 9, "anders": 3},
+    "zelfstandig_klasse": {"zzp": 7, "ondernemer met personeel": 2},
+    "stedelijkheid_fijn": {"zeer sterk stedelijk": 26, "sterk stedelijk": 26, "matig stedelijk": 16, "weinig stedelijk": 19, "niet stedelijk": 13},
+    "huishouden_klasse": {"alleenwonend": 22, "paar zonder thuiswonende kinderen": 33, "paar met kinderen": 28, "eenouder": 5, "thuiswonend kind": 8, "anders": 4},
     "digitaal_klasse": {"laag of geen": 18, "gemiddeld": 42, "hoog": 40},
     "innovatie_adoptie": {"innovator": 2.5, "early adopter": 13.5, "early majority": 34, "late majority": 34, "achterblijver": 16},
     "geloof_klasse": {"geen": 56, "katholiek": 17, "protestants": 14, "islam": 7, "anders": 6},
@@ -49,9 +52,25 @@ def klasse_werk(w):
     w = w.lower()
     if "gepensioneerd" in w: return "gepensioneerd"
     if "student" in w and "loondienst" not in w: return "student"
-    if "werkloos" in w or "arbeidsongeschikt" in w or "bijstand" in w or "flexwerk" in w: return "werkloos/uitkering"
+    if "werkloos" in w or "arbeidsongeschikt" in w or "bijstand" in w or "flexwerk" in w or "banenafspraak" in w: return "werkloos/uitkering"
     if "zzp" in w or "ondernemer" in w or "investeerder" in w: return "zelfstandig"
     if "loondienst" in w: return "loondienst"
+    return "anders"
+
+def klasse_zelfstandig(w):
+    w = w.lower()
+    if "gepensioneerd" in w: return None
+    if "zzp" in w: return "zzp"
+    if "ondernemer" in w or "investeerder" in w: return "ondernemer met personeel"
+    return None
+
+def klasse_huishouden(h):
+    h = h.lower()
+    if "eenouder" in h or "alleenstaande moeder" in h or "alleenstaande vader" in h: return "eenouder"
+    if "thuiswonend bij" in h or "bij moeder" in h or "bij ouders" in h: return "thuiswonend kind"
+    if "alleenwonend" in h or h.startswith("alleen") or "kamer" in h or "huisgenoten" in h or "studio" in h: return "alleenwonend"
+    if "kinderen (" in h or "kind (" in h or "thuiswonende" in h or "thuis" in h and "uit huis" not in h: return "paar met kinderen"
+    if "gehuwd" in h or "samenwonend" in h or "partner" in h or "latrelatie" in h: return "paar zonder thuiswonende kinderen"
     return "anders"
 
 def klasse_digitaal(d):
@@ -115,12 +134,23 @@ def main():
     tel("regio", lambda p: p["demografie"]["regio"])
     tel("herkomst_klasse", lambda p: klasse_herkomst(p["demografie"]["herkomst"]))
     tel("stedelijkheid_klasse", lambda p: klasse_stedelijk(p["demografie"]["stedelijkheid"]))
+    tel("stedelijkheid_fijn", lambda p: p["demografie"]["stedelijkheid"].split(" (")[0])
+    tel("huishouden_klasse", lambda p: klasse_huishouden(p["demografie"]["huishouden"]))
+    tel("provincie", lambda p: p["demografie"]["provincie"])
+    d = defaultdict(float)
+    for p in ps:
+        k = klasse_zelfstandig(p["demografie"]["werk"])
+        if k: d[k] += p["gewicht_pct"]
+    verdeling["zelfstandig_klasse"] = {k: round(v, 1) for k, v in d.items()}
+    dig = defaultdict(lambda: defaultdict(float))
+    for p in ps: dig[p["demografie"]["leeftijdsgroep"]][klasse_digitaal(p["gedrag"]["digitale_vaardigheid"])] += p["gewicht_pct"]
+    verdeling["digitaal_per_leeftijd_pct_binnen_groep"] = {lg: {k: round(100 * v / sum(dd.values()), 0) for k, v in dd.items()} for lg, dd in sorted(dig.items())}
     tel("werk_klasse", lambda p: klasse_werk(p["demografie"]["werk"]))
     tel("digitaal_klasse", lambda p: klasse_digitaal(p["gedrag"]["digitale_vaardigheid"]))
     tel("innovatie_adoptie", lambda p: klasse_adoptie(p["gedrag"]["innovatie_adoptie"]))
     tel("geloof_klasse", lambda p: klasse_geloof(p["demografie"]["geloof"]))
     tel("laaggeletterd_of_beperkt", lambda p: "ja" if p["gedrag"]["geletterdheid"].lower().startswith(("laag", "beperkt")) else "nee")
-    tel("chronisch_of_beperking", lambda p: "ja" if (p["demografie"]["beperking"].lower() not in ("geen",) or "chronisch" in p["demografie"]["gezondheid"].lower() or "kwetsbaar" in p["demografie"]["gezondheid"].lower()) else "nee")
+    tel("chronisch_of_beperking", lambda p: "ja" if (not p["demografie"]["beperking"].lower().startswith("geen") or "chronisch" in p["demografie"]["gezondheid"].lower() or "kwetsbaar" in p["demografie"]["gezondheid"].lower()) else "nee")
     tel("kansgroep", lambda p: "kansgroep" if p["kansgroep"] else "hoofdgroep")
 
     vergelijking = {}
@@ -143,7 +173,7 @@ def main():
             print(f"  {dim}")
             for r in rows:
                 print(f"    {r['klasse']:<28} panel {r['panel_pct']:>5}  richt {r['cbs_richt_pct']:>5}  ({r['afwijking']:+})")
-        for dim in ["laaggeletterd_of_beperkt", "chronisch_of_beperking", "kansgroep"]:
+        for dim in ["laaggeletterd_of_beperkt", "chronisch_of_beperking", "kansgroep", "provincie", "digitaal_per_leeftijd_pct_binnen_groep"]:
             print(f"  {dim}: {verdeling[dim]}")
         print("\nFouten:", *fouten, sep="\n  " if fouten else " geen")
         print("Waarschuwingen:", *waarschuwingen, sep="\n  " if waarschuwingen else " geen")

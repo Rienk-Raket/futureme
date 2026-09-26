@@ -1,0 +1,70 @@
+{
+ "ronde": 1,
+ "status": "ok_met_waarschuwing",
+ "controles": [
+  {
+   "controle": "spreiding_binnen_persona",
+   "ok": true,
+   "waarde": 0.5,
+   "drempel": 0.5,
+   "toelichting": "persona's zonder spreiding in intentie (std < 0.5): ['K10', 'K12', 'P06', 'P30', 'P31', 'P39', 'P47']"
+  },
+  {
+   "controle": "positiviteit",
+   "ok": true,
+   "waarde": {
+    "origineel": 0.0
+   },
+   "drempel": 0.65,
+   "toelichting": "gewogen aandeel intentie >= 5 per object; faalt als alle objecten erboven zitten"
+  },
+  {
+   "controle": "negativiteit_waarschuwing",
+   "ok": true,
+   "waarschuwing": true,
+   "waarde": {
+    "origineel": 0.0
+   },
+   "drempel": 0.05,
+   "toelichting": "alleen een waarschuwing: bij alle objecten minder dan 5% positief. Controleer of het materiaal een objectieve fout bevat die iedereen raakt (dan is het echt) en benoem het in samenvatting en rapport; geen herhaling nodig."
+  },
+  {
+   "controle": "begrip_te_hoog",
+   "ok": true,
+   "waarde": {
+    "origineel": 4.87
+   },
+   "drempel": 6.3,
+   "toelichting": "gewogen gemiddeld begrip per object; bijna niemand snapt alles"
+  },
+  {
+   "controle": "gelijkvormigheid_tussen_personas",
+   "ok": true,
+   "waarde": 0.0,
+   "drempel": 0.05,
+   "toelichting": "aandeel paren van verschillende persona's met woordoverlap >= 0.35; meest betrokken: []"
+  },
+  {
+   "controle": "een_bezwaar_domineert",
+   "ok": true,
+   "waarde": {
+    "origineel": 0.326
+   },
+   "drempel": 0.7,
+   "toelichting": "gewogen aandeel van de grootste bezwaar-categorie per object"
+  },
+  {
+   "controle": "volledigheid",
+   "ok": true,
+   "waarde": {
+    "ontbrekend": 0,
+    "dubbel": 0,
+    "fouten": 0
+   },
+   "drempel": 0,
+   "toelichting": "ontbrekend: []; dubbel: []; fouten: []"
+  }
+ ],
+ "herhalen_personas": [],
+ "advies": "Draai generate_variants.py --alleen <ids> --intensiteit 2, bouw de prompts opnieuw en laat die persona's opnieuw reageren; verwijder eerst hun oude jsonl."
+}

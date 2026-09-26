@@ -4,7 +4,7 @@
   {
    "id": "P30",
    "naam": "Gerard Willems",
-   "gewicht_pct": 2.7,
+   "gewicht_pct": 2.5,
    "kansgroep": false,
    "aangrenzend": false,
    "reden": "55+ hoofdgroep, koopwoning, klust zelf maar knieën; Consumentenbond-lezer die abonnementsvoorwaarden leest",
@@ -13,7 +13,7 @@
   {
    "id": "P35",
    "naam": "Hennie Bosman",
-   "gewicht_pct": 2.1,
+   "gewicht_pct": 1.9,
    "kansgroep": false,
    "aangrenzend": false,
    "reden": "55+ alleenwonend, laag digitaal, huurflat: kan zij zich aanmelden via een app?",
@@ -30,7 +30,7 @@
   },
   {
    "id": "P42",
-   "naam": "Bep Salakory",
+   "naam": "Bep Wesselink",
    "gewicht_pct": 2.2,
    "kansgroep": false,
    "aangrenzend": false,
@@ -40,7 +40,7 @@
   {
    "id": "P45",
    "naam": "Corrie Nijland",
-   "gewicht_pct": 2.8,
+   "gewicht_pct": 1.8,
    "kansgroep": false,
    "aangrenzend": false,
    "reden": "75+ kwetsbaar, kinderen beslissen: sluit aan bij 'senioren die het liever overlaten'",
@@ -49,7 +49,7 @@
   {
    "id": "P47",
    "naam": "Els Bruinsma",
-   "gewicht_pct": 2.6,
+   "gewicht_pct": 3.8,
    "kansgroep": false,
    "aangrenzend": false,
    "reden": "75+ vitaal en digitaal redelijk vaardig: de senior die zelf online kan afsluiten en anderen adviseert",
@@ -62,12 +62,12 @@
    "kansgroep": false,
    "aangrenzend": false,
    "reden": "55+ theoretisch opgeleid, ruim budget, kritisch op taal en voorwaarden",
-   "kernzin": "Docent Nederlands op een mbo van 61 in Leiden, hbo, koopwoning met partner, leest NRC, kiest bewust en duurzaam en is allergisch voor slordige taal."
+   "kernzin": "Docent Nederlands op een mbo van 61 in Leiden, hbo, koopwoning met partner, kijkt AD en NPO, kiest degelijk en is allergisch voor slordige taal en kleine lettertjes."
   },
   {
    "id": "P13",
    "naam": "Anouk Hendriks",
-   "gewicht_pct": 2.2,
+   "gewicht_pct": 2.0,
    "kansgroep": false,
    "aangrenzend": false,
    "reden": "drukke tweeverdiener met jonge kinderen en mantelzorg: kern van 'drukke gezinnen'",
@@ -85,7 +85,7 @@
   {
    "id": "P06",
    "naam": "Sanne de Groot",
-   "gewicht_pct": 2.4,
+   "gewicht_pct": 2.7,
    "kansgroep": false,
    "aangrenzend": false,
    "reden": "jong stel met koophuis in de regio (Ede) dat veel zelf doet: twijfelgeval binnen tweeverdieners",
@@ -129,5 +129,5 @@
   }
  ],
  "waarschuwingen": [],
- "som_gewicht_pct": 29.8
+ "som_gewicht_pct": 29.7
 }

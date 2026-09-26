@@ -1,0 +1,18 @@
+# Ronde 1: eerste indruk en begrip — samenvatting
+
+**Kern.** Het panel snapt de pagina (gewogen begrip 4,8 van 7) maar wijst het aanbod vrijwel unaniem af: gewogen intentie 1,9; 95% negatief (1-3), 5% neutraal, 0% positief; 40% klikt weg. Realisme-controle: alle controles OK, met de waarschuwing "negativiteit" (minder dan 5% positief). Die uitkomst is verklaarbaar: de pagina bevat een objectieve tegenstrijdigheid die vrijwel elke persona als eerste noemt.
+
+**Cijfers (ronde-1/aggregatie.json, object `origineel`).** Vertrouwen 2,8; relevantie 3,1; aantrekkelijkheid 3,3. Bezwaren gewogen: vertrouwen 31%, prijs 20%, opzegbaarheid 17%, digitaal 13%. Sterkst: P13 Anouk (intentie 3,0), P35 Hennie en P40 Ria (2,3). Zwakst: K12 Jasper (1,0), P39 Henk (1,25), P45 Corrie (1,5). Kansgroepen ongewogen intentie 1,7 versus hoofdgroepen 1,95.
+
+**Wat terugkomt, met bewijs.**
+1. *'Onbeperkt' bovenaan, 'maximaal 2 klusjes' in de kleine letters* wordt gelezen als bedrog en vergiftigt het vertrouwen in de rest (P13-b: "wat verzwijg je nog meer?"; P16-a; P31-b; K12-c; P40-a; K06-b). Komt bij 13 van 14 persona's voor.
+2. *Jaarabonnement achter '€1 voor de eerste maand'* (P39-b "daar is de buurman ook ingelopen"; P30-d over automatische verlenging; P40-b, P06-b, K06-c). Panelleden rekenen het om naar 179-180 euro per jaar en vergelijken dat met een buurman voor een tientje en koffie (P42-c, P45-b, P40-a, P13-b).
+3. *App-only* is een muur voor de 55-plussers en voor de mantelzorgers die het voor een ouder willen regelen (P40-c "ik wil bellen", P35-a, P42-b, P45-a, K06-a, K10-c, P39-c). Trigger die vrijwel overal terugkomt: bellen of WhatsApp naast de app.
+4. *Wie zit erachter?* Geen naam, adres, foto van de klusser, KvK of klant uit Apeldoorn (P30-b, P16-c, P47-a, P47-c, P35-b).
+5. *Beslisser is niet de gebruiker.* Anouk (P13-c), Jeroen (P16-c), Henk (P39-c), Johan (K06-b), Gerard (P30-c) en Nel/Marjan (K10-c) zien het aanbod vooral voor een ouder en missen een route "voor uw ouders regelen": kind meldt en betaalt, materiaal op factuur in plaats van afrekenen aan de deur.
+6. *Toon.* De zin over "senioren die het liever aan een ander overlaten" wordt als neerbuigend ervaren (P47-c, P31-c).
+
+**Wat kansgroepen zagen wat de rest miste.** K12 (Jasper) koppelt de foto-upload aan privacy ("een foto van mijn huis in hun app"); K06 (Johan) vraagt als eerste om een losse prijs per klus ("wat kost 't los?"), een idee dat daarna ook bij P40-b, P42-c, P47-b, P06-c, P39-d terugkomt; K10 (Nel/Marjan) legt bloot dat afrekenen van materiaal aan de deur bij een kwetsbare oudere een probleem is.
+
+**Aanpassingen voor ronde 2 (versie v1).** Eerlijke belofte in de kop (2 klusjes per maand, jaarprijs zichtbaar), maandelijks opzegbaar vanaf dag één, aanmelden en melden ook per telefoon en WhatsApp, blok "wie wij zijn" met oprichter, klusser met naam en foto, KvK, verzekering en één klant uit Apeldoorn, blok "voor uw ouders regelen" met betalen door het kind en materiaal op de factuur, neerbuigende zin geschrapt, jargon ("fair use", "smart home") weg. Prijs blijft €14,95 per maand zodat ronde 2 de prijs zuiver kan toetsen; de losse-klus-optie wordt in ronde 2 als alternatief genoemd in de context en in ronde 3 als aparte versie getest.
+- Na ronde 1 is de persona-bibliotheek bijgewerkt naar versie 1.1 (onafhankelijke review); de selectie is ververst (gewichten P30 2,7→2,5; P35 2,1→1,9; P45 2,8→1,8; P47 2,6→3,8; naam P42 Salakory→Wesselink; P39 en P31 licht aangepast) en ronde 1 is opnieuw geaggregeerd met de nieuwe gewichten. De ronde-1-reacties zelf zijn gemaakt met versie 1.0 van de persona-teksten.

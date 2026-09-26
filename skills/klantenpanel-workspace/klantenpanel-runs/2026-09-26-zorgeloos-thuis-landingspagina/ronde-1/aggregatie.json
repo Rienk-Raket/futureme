@@ -1,0 +1,619 @@
+{
+ "ronde": 1,
+ "titel": "Eerste indruk en begrip",
+ "n_records": 45,
+ "n_varianten": 45,
+ "objecten": {
+  "origineel": {
+   "n": 45,
+   "scores_gewogen": {
+    "begrip": 4.87,
+    "relevantie": 3.11,
+    "aantrekkelijkheid": 3.35,
+    "vertrouwen": 2.78,
+    "intentie": 1.91
+   },
+   "scores_ongewogen": {
+    "begrip": 4.83,
+    "relevantie": 3.11,
+    "aantrekkelijkheid": 3.3,
+    "vertrouwen": 2.76,
+    "intentie": 1.89
+   },
+   "intentie_verdeling_gewogen": {
+    "negatief (1-3)": 95.6,
+    "neutraal (4)": 4.4
+   },
+   "gedrag_gewogen_pct": {
+    "klikt weg": 41.8,
+    "vraagt iemand anders": 15.2,
+    "bewaart voor later": 13.3,
+    "negeert": 11.7,
+    "deelt met iemand": 10.0,
+    "zoekt een alternatief": 5.9,
+    "leest verder": 2.1
+   },
+   "bezwaar_gewogen_pct": {
+    "vertrouwen": 32.6,
+    "prijs": 20.8,
+    "opzegbaarheid": 15.6,
+    "digitaal": 13.0,
+    "relevantie": 6.1,
+    "toegankelijkheid": 4.7,
+    "alternatief": 4.2,
+    "gemak": 2.2,
+    "privacy": 0.7
+   },
+   "per_persona": {
+    "P30": {
+     "naam": "Gerard Willems",
+     "kansgroep": false,
+     "gewicht_pct": 2.5,
+     "n": 4,
+     "intentie_gem": 1.75,
+     "intentie_std": 0.43,
+     "scores_gem": {
+      "begrip": 5,
+      "relevantie": 2.75,
+      "aantrekkelijkheid": 3,
+      "vertrouwen": 2.5,
+      "intentie": 1.75
+     },
+     "gedrag": {
+      "leest verder": 1,
+      "klikt weg": 1,
+      "vraagt iemand anders": 1,
+      "zoekt een alternatief": 1
+     },
+     "bezwaren": [
+      "prijs",
+      "vertrouwen",
+      "relevantie",
+      "opzegbaarheid"
+     ],
+     "citaten": [
+      "P30-a: Onbeperkt, en dan onderaan maximaal twee per maand. Dat is 180 euro per jaar, eerst zien.",
+      "P30-b: Nieuw bedrijf, geen naam, geen adres, en ik moet een jaar vooruit betalen. Nee.",
+      "P30-c: Klusjesman op abonnement. Misschien iets voor je moeder, wij hebben Henk.",
+      "P30-d: Na het eerste jaar maandelijks opzegbaar, dat betekent dus dat het gewoon doorloopt. Dat hebben we al gehad."
+     ]
+    },
+    "P35": {
+     "naam": "Hennie Bosman",
+     "kansgroep": false,
+     "gewicht_pct": 1.9,
+     "n": 3,
+     "intentie_gem": 2.33,
+     "intentie_std": 1.25,
+     "scores_gem": {
+      "begrip": 4.33,
+      "relevantie": 3.67,
+      "aantrekkelijkheid": 3.67,
+      "vertrouwen": 3.33,
+      "intentie": 2.33
+     },
+     "gedrag": {
+      "vraagt iemand anders": 1,
+      "klikt weg": 2
+     },
+     "bezwaren": [
+      "digitaal",
+      "vertrouwen",
+      "prijs"
+     ],
+     "citaten": [
+      "P35-a: Een vast bekend gezicht, dat vind ik fijn. Maar die app moet mijn zoon dan maar doen.",
+      "P35-b: Weer een app en weer een abonnement. Nee, daar heb ik vandaag geen zin in.",
+      "P35-c: Bovenin onbeperkt, onderin maximaal twee. Dat vind ik gewoon niet netjes, en ik zit al krap."
+     ]
+    },
+    "P40": {
+     "naam": "Ria van den Heuvel",
+     "kansgroep": false,
+     "gewicht_pct": 2.7,
+     "n": 3,
+     "intentie_gem": 2.33,
+     "intentie_std": 0.94,
+     "scores_gem": {
+      "begrip": 5.33,
+      "relevantie": 4.33,
+      "aantrekkelijkheid": 3.67,
+      "vertrouwen": 2.67,
+      "intentie": 2.33
+     },
+     "gedrag": {
+      "klikt weg": 1,
+      "bewaart voor later": 1,
+      "deelt met iemand": 1
+     },
+     "bezwaren": [
+      "vertrouwen",
+      "opzegbaarheid",
+      "digitaal"
+     ],
+     "citaten": [
+      "P40-a: Bovenaan staat onbeperkt en onderaan staat twee per maand. Dan weet ik het wel.",
+      "P40-b: Een vaste klusser is fijn, maar een jaar vastzitten terwijl ik aan het bezuinigen ben, nee.",
+      "P40-c: Een vast bekend gezicht, dat is mooi. Maar ik wil bellen, niet een app uitzoeken."
+     ]
+    },
+    "P42": {
+     "naam": "Bep Wesselink",
+     "kansgroep": false,
+     "gewicht_pct": 2.2,
+     "n": 3,
+     "intentie_gem": 1.67,
+     "intentie_std": 0.94,
+     "scores_gem": {
+      "begrip": 4.67,
+      "relevantie": 3.33,
+      "aantrekkelijkheid": 3,
+      "vertrouwen": 3,
+      "intentie": 1.67
+     },
+     "gedrag": {
+      "zoekt een alternatief": 1,
+      "vraagt iemand anders": 1,
+      "klikt weg": 1
+     },
+     "bezwaren": [
+      "prijs",
+      "digitaal",
+      "prijs"
+     ],
+     "citaten": [
+      "P42-a: Onbeperkt staat er groot, twee klusjes staat er klein. Aduh, dat is 180 euro per jaar.",
+      "P42-b: Een vaste meneer die gewoon komt, dat zou fijn zijn. Maar alleen een app? Mijn dochter kijkt wel.",
+      "P42-c: Weer een abonnement. Op de soos doet een man het voor een kop koffie."
+     ]
+    },
+    "P45": {
+     "naam": "Corrie Nijland",
+     "kansgroep": false,
+     "gewicht_pct": 1.8,
+     "n": 4,
+     "intentie_gem": 1.5,
+     "intentie_std": 0.5,
+     "scores_gem": {
+      "begrip": 4,
+      "relevantie": 2.5,
+      "aantrekkelijkheid": 3,
+      "vertrouwen": 2.25,
+      "intentie": 1.5
+     },
+     "gedrag": {
+      "negeert": 1,
+      "klikt weg": 1,
+      "bewaart voor later": 1,
+      "vraagt iemand anders": 1
+     },
+     "bezwaren": [
+      "relevantie",
+      "alternatief",
+      "opzegbaarheid",
+      "vertrouwen"
+     ],
+     "citaten": [
+      "P45-a: Ik wacht niet op een klusjesman, Gerrit van hiernaast komt gewoon. Dat moet mijn zoon maar bekijken.",
+      "P45-b: De diaconie hangt mijn lamp op voor een kop koffie, daar hoef ik geen app en geen jaar voor.",
+      "P45-c: Onbeperkt bovenaan, twee per maand onderaan, en een jaar vast. Dat klopt niet met elkaar.",
+      "P45-d: Een vast gezicht is mooi, maar wat is gescreend? Ik vraag het eerst aan de thuiszorg."
+     ]
+    },
+    "P47": {
+     "naam": "Els Bruinsma",
+     "kansgroep": false,
+     "gewicht_pct": 3.8,
+     "n": 3,
+     "intentie_gem": 1.67,
+     "intentie_std": 0.47,
+     "scores_gem": {
+      "begrip": 5,
+      "relevantie": 2.67,
+      "aantrekkelijkheid": 3.33,
+      "vertrouwen": 2.67,
+      "intentie": 1.67
+     },
+     "gedrag": {
+      "klikt weg": 2,
+      "deelt met iemand": 1
+     },
+     "bezwaren": [
+      "vertrouwen",
+      "prijs",
+      "vertrouwen"
+     ],
+     "citaten": [
+      "P47-a: Onbeperkt bovenaan, twee per maand in de kleine letters. Dan wil ik eerst weten wie dit zijn.",
+      "P47-b: Voor mijn buurvrouw die alleen is misschien iets, voor mij nu niet met die energienota.",
+      "P47-c: Weer zo'n dienst met een app en een euro, maar geen gezicht. Dat heb ik al eens gehad."
+     ]
+    },
+    "P31": {
+     "naam": "Annemarie Kok",
+     "kansgroep": false,
+     "gewicht_pct": 2.2,
+     "n": 3,
+     "intentie_gem": 1.67,
+     "intentie_std": 0.47,
+     "scores_gem": {
+      "begrip": 5.33,
+      "relevantie": 2.67,
+      "aantrekkelijkheid": 3.33,
+      "vertrouwen": 3,
+      "intentie": 1.67
+     },
+     "gedrag": {
+      "klikt weg": 1,
+      "negeert": 1,
+      "bewaart voor later": 1
+     },
+     "bezwaren": [
+      "relevantie",
+      "vertrouwen",
+      "toegankelijkheid"
+     ],
+     "citaten": [
+      "P31-a: Helder kopje, maar 'download de app' voor een lamp? Ik ga liever naar een concert.",
+      "P31-b: 'Onbeperkt' bovenaan, 'maximaal 2 klusjes' onderaan: dan vertrouw ik de rest ook niet meer.",
+      "P31-c: Sympathiek idee, maar wie dit het hardst nodig heeft, kan die app niet installeren."
+     ]
+    },
+    "P13": {
+     "naam": "Anouk Hendriks",
+     "kansgroep": false,
+     "gewicht_pct": 2.0,
+     "n": 3,
+     "intentie_gem": 3,
+     "intentie_std": 0.82,
+     "scores_gem": {
+      "begrip": 5.33,
+      "relevantie": 4.67,
+      "aantrekkelijkheid": 4.33,
+      "vertrouwen": 3.33,
+      "intentie": 3
+     },
+     "gedrag": {
+      "bewaart voor later": 1,
+      "klikt weg": 1,
+      "vraagt iemand anders": 1
+     },
+     "bezwaren": [
+      "gemak",
+      "opzegbaarheid",
+      "toegankelijkheid"
+     ],
+     "citaten": [
+      "P13-a: Klinkt lekker, maar eerst een app en een account? Dat ligt morgen nog steeds hier.",
+      "P13-b: Onbeperkt bovenaan, twee per maand onderaan. Dan denk ik: wat verzwijg je nog meer?",
+      "P13-c: Voor mam is dit eigenlijk beter dan voor mij, maar kan ik het dan voor haar regelen?"
+     ]
+    },
+    "P16": {
+     "naam": "Jeroen Smit",
+     "kansgroep": false,
+     "gewicht_pct": 2.4,
+     "n": 3,
+     "intentie_gem": 2,
+     "intentie_std": 0.82,
+     "scores_gem": {
+      "begrip": 5.33,
+      "relevantie": 3,
+      "aantrekkelijkheid": 3.67,
+      "vertrouwen": 3.33,
+      "intentie": 2
+     },
+     "gedrag": {
+      "klikt weg": 1,
+      "deelt met iemand": 1,
+      "negeert": 1
+     },
+     "bezwaren": [
+      "opzegbaarheid",
+      "alternatief",
+      "vertrouwen"
+     ],
+     "citaten": [
+      "P16-a: Onbeperkt in de kop, twee per maand in de kleine letters: dat beledigt mijn intelligentie.",
+      "P16-b: Klinkt als mijn eigen klusser, maar dan met een app erbij. Even aan mijn vrouw laten zien.",
+      "P16-c: Wie zit hierachter? Zolang dat niet in twee zinnen duidelijk is, ga ik het niet uitzoeken."
+     ]
+    },
+    "P06": {
+     "naam": "Sanne de Groot",
+     "kansgroep": false,
+     "gewicht_pct": 2.7,
+     "n": 3,
+     "intentie_gem": 2.33,
+     "intentie_std": 0.47,
+     "scores_gem": {
+      "begrip": 5,
+      "relevantie": 3.33,
+      "aantrekkelijkheid": 4,
+      "vertrouwen": 2.67,
+      "intentie": 2.33
+     },
+     "gedrag": {
+      "bewaart voor later": 1,
+      "klikt weg": 1,
+      "negeert": 1
+     },
+     "bezwaren": [
+      "vertrouwen",
+      "opzegbaarheid",
+      "prijs"
+     ],
+     "citaten": [
+      "P06-a: Bovenaan onbeperkt, onderaan maximaal twee per maand. Dan lees ik de rest ook met een schuin oog.",
+      "P06-b: Wij doen lampen zelf, en een jaar vooruit geloven in een nieuw bedrijf, dat doe ik niet.",
+      "P06-c: Leuke kop, herkenbaar rijtje ergernissen, maar niet deze maand en wij hebben al een handige buurman."
+     ]
+    },
+    "P39": {
+     "naam": "Henk Groothuis",
+     "kansgroep": false,
+     "gewicht_pct": 2.8,
+     "n": 4,
+     "intentie_gem": 1.25,
+     "intentie_std": 0.43,
+     "scores_gem": {
+      "begrip": 4.25,
+      "relevantie": 2,
+      "aantrekkelijkheid": 2.5,
+      "vertrouwen": 2.25,
+      "intentie": 1.25
+     },
+     "gedrag": {
+      "klikt weg": 3,
+      "vraagt iemand anders": 1
+     },
+     "bezwaren": [
+      "vertrouwen",
+      "vertrouwen",
+      "digitaal",
+      "prijs"
+     ],
+     "citaten": [
+      "P39-a: Bovenaan onbeperkt, onderaan maximaal twee. Zo begin je niet tegen een klant.",
+      "P39-b: Eén euro groot bovenaan, jaarabonnement in de kleine lettertjes. Daar is de buurman ook ingelopen.",
+      "P39-c: Voor mijn zus in Apeldoorn zou dit wat zijn, maar die heeft niet eens een smartphone.",
+      "P39-d: Weer iets per maand. Ik ben net alles aan het schrappen, weg ermee."
+     ]
+    },
+    "K10": {
+     "naam": "Nel Hoogendoorn",
+     "kansgroep": true,
+     "gewicht_pct": 0.9,
+     "n": 3,
+     "intentie_gem": 2.33,
+     "intentie_std": 0.47,
+     "scores_gem": {
+      "begrip": 4.33,
+      "relevantie": 3.67,
+      "aantrekkelijkheid": 3.33,
+      "vertrouwen": 2.33,
+      "intentie": 2.33
+     },
+     "gedrag": {
+      "vraagt iemand anders": 1,
+      "klikt weg": 1,
+      "bewaart voor later": 1
+     },
+     "bezwaren": [
+      "opzegbaarheid",
+      "vertrouwen",
+      "digitaal"
+     ],
+     "citaten": [
+      "K10-a: Boven staat onbeperkt, onderaan maximaal twee per maand. Dat leg ik op de stapel voor Marjan.",
+      "K10-b: Weer een app, weer een jaar vast, en wie belt er als hij niet komt?",
+      "K10-c: Dat vaste gezicht is fijn, maar de app en het afrekenen, dat wordt toch weer Marjan."
+     ]
+    },
+    "K06": {
+     "naam": "Johan Wubbels",
+     "kansgroep": true,
+     "gewicht_pct": 1.2,
+     "n": 3,
+     "intentie_gem": 1.67,
+     "intentie_std": 0.94,
+     "scores_gem": {
+      "begrip": 4.67,
+      "relevantie": 2.67,
+      "aantrekkelijkheid": 3,
+      "vertrouwen": 3,
+      "intentie": 1.67
+     },
+     "gedrag": {
+      "vraagt iemand anders": 1,
+      "zoekt een alternatief": 1,
+      "negeert": 1
+     },
+     "bezwaren": [
+      "digitaal",
+      "vertrouwen",
+      "prijs"
+     ],
+     "citaten": [
+      "K06-a: Vaste kerel, bekend gezicht, dat is mooi. Maar die app en dat account, daar heb ik mijn dochter voor.",
+      "K06-b: Onbeperkt bovenaan, twee per maand in de kleine lettertjes. Dan hoef ik de rest niet meer te horen.",
+      "K06-c: Weer een abonnement erbij. Ik ben ze juist aan het weggooien. Wat kost 't los?"
+     ]
+    },
+    "K12": {
+     "naam": "Jasper Hoek",
+     "kansgroep": true,
+     "gewicht_pct": 0.6,
+     "n": 3,
+     "intentie_gem": 1,
+     "intentie_std": 0.0,
+     "scores_gem": {
+      "begrip": 5,
+      "relevantie": 2.33,
+      "aantrekkelijkheid": 2.33,
+      "vertrouwen": 2.33,
+      "intentie": 1
+     },
+     "gedrag": {
+      "klikt weg": 2,
+      "negeert": 1
+     },
+     "bezwaren": [
+      "prijs",
+      "privacy",
+      "digitaal"
+     ],
+     "citaten": [
+      "K12-a: Veertien vijfennegentig per maand erbij, terwijl ik net alles eraf aan het strepen ben. Nee.",
+      "K12-b: Onbeperkt bovenaan, maximaal twee onderaan. En een foto van mijn huis in hun app. Nee, ik heb Henk al.",
+      "K12-c: Groot 'onbeperkt', klein 'maximaal twee'. Groot 'één euro', klein 'jaarabonnement'. Dat zegt me genoeg over dit bedrijf."
+     ]
+    }
+   },
+   "kansgroep_vs_hoofdgroep": {
+    "kansgroep": {
+     "begrip": 4.67,
+     "relevantie": 2.89,
+     "aantrekkelijkheid": 2.89,
+     "vertrouwen": 2.55,
+     "intentie": 1.67
+    },
+    "hoofdgroep": {
+     "begrip": 4.87,
+     "relevantie": 3.17,
+     "aantrekkelijkheid": 3.41,
+     "vertrouwen": 2.82,
+     "intentie": 1.95
+    }
+   },
+   "sterkste_personas": [
+    [
+     "P13",
+     "Anouk Hendriks",
+     3
+    ],
+    [
+     "P35",
+     "Hennie Bosman",
+     2.33
+    ],
+    [
+     "P40",
+     "Ria van den Heuvel",
+     2.33
+    ]
+   ],
+   "zwakste_personas": [
+    [
+     "K12",
+     "Jasper Hoek",
+     1
+    ],
+    [
+     "P39",
+     "Henk Groothuis",
+     1.25
+    ],
+    [
+     "P45",
+     "Corrie Nijland",
+     1.5
+    ]
+   ],
+   "verbeterideeen": [
+    "P30-a: Haal het woord 'onbeperkt' weg en zet het jaarbedrag en het maximum van 2 klusjes gewoon bovenaan bij de prijs.",
+    "P30-b: Zet er wie de ondernemer is, waar hij zit, en een paar echte ervaringen van klanten uit Apeldoorn bij, met naam en plaats.",
+    "P30-c: Zet er in één zin bij dat je het ook voor je ouders kunt afsluiten, en bied ook een manier om te melden zonder app, bijvoorbeeld bellen.",
+    "P30-d: Maak een aparte pagina 'voorwaarden en wie wij zijn' met de opzegregels, de verzekeraar, de schaderegeling en de naam van de eigenaar, en verwijs daar bovenaan naar.",
+    "P35-a: Zet een telefoonnummer of WhatsApp-nummer naast de app als tweede manier om een klusje te melden.",
+    "P35-b: Laat bovenaan een echte klusser met naam en foto zien in plaats van meteen 'Download de app', dan voelt het als mensen en niet als een abonnementenfabriek.",
+    "P35-c: Haal het woord 'onbeperkt' weg en zet '2 klusjes per maand' en 'jaarabonnement' gewoon groot bij de prijs, niet in de kleine lettertjes.",
+    "P40-a: Haal het woord 'onbeperkt' weg en zet gewoon eerlijk bovenaan: twee klusjes per maand, jaarabonnement.",
+    "P40-b: Bied naast het jaarabonnement een losse optie aan, bijvoorbeeld een strippenkaart voor vijf klusjes, voor mensen die niet elke maand iets hebben.",
+    "P40-c: Zet een telefoonnummer en de naam en foto van de klusser op de pagina, zodat je ook zonder app lid kunt worden.",
+    "P42-a: Haal 'onbeperkt' uit de kop als het maximaal 2 per maand is, en zet 'jaarabonnement' en het maximum bovenaan bij de prijs in plaats van in de kleine letters.",
+    "P42-b: Voeg een telefoonnummer toe voor aanmelden en klusjes melden, en laat een echte klant met naam en foto vertellen hoe het ging.",
+    "P42-c: Bied naast het abonnement een losse strippenkaart aan, bijvoorbeeld drie klusjes voor een vast bedrag zonder maandelijkse last.",
+    "P45-a: Zet in de kop met grote letters wie er aan de deur komt en wat het kost, en laat 'de app' weg voor mensen die iemand voor zich laten bellen.",
+    "P45-b: Bied een manier om te bellen in plaats van een app, en zeg eerlijk 'twee klusjes per maand' in plaats van 'onbeperkt'.",
+    "P45-c: Haal 'onbeperkt' weg en zet de twee klusjes per maand en het jaarcontract gewoon bovenaan in gewone letters, en zeg hoe je materiaal betaalt als je geen pinpas hebt.",
+    "P45-d: Laat de vaste klusser eerst met naam en foto kennismaken en zeg wie de screening doet, en bied een telefoonnummer voor wie geen app heeft.",
+    "P47-a: Haal 'onbeperkt' weg en zet gewoon 'tot 2 klusjes per maand' bovenaan, met daaronder wie het bedrijf is en waar het gevestigd is.",
+    "P47-b: Zet een rekenvoorbeeld op de pagina: wat kost het per jaar, wat kost een losse klusjesman, en voeg een variant zonder jaarcontract toe.",
+    "P47-c: Laat de echte buurtklussers zien met naam en foto, en schrap de zin over senioren die het 'liever aan een ander overlaten'.",
+    "P31-a: Zet naast 'Download de app' ook een telefoonnummer of een korte webpagina om een klusje aan te melden, zodat je niet meteen een app hoeft te installeren.",
+    "P31-b: Schrap 'onbeperkt' en 'fair use', schrijf 'twee klusjes per maand' in de kop en voeg een korte alinea toe over wie de klussers zijn en hoe zij betaald worden.",
+    "P31-c: Voeg een aanmeldmogelijkheid per telefoon toe en herschrijf 'Voor wie?' zonder de neerbuigende zin over senioren, in gewoon Nederlands zonder 'fair use' en 'smart home'.",
+    "P13-a: Zet naast 'Download de app' een knop 'Meld je klusje via WhatsApp' zodat de eerste stap in een halve minuut klaar is.",
+    "P13-b: Haal 'onbeperkt' weg en schrijf eerlijk '2 klusjes per maand', en zet het jaarabonnement in de kop in plaats van in de kleine letters.",
+    "P13-c: Voeg een blokje toe 'Voor uw ouders regelen': kind meldt en betaalt in de app, materiaal via de factuur, klusser met VOG.",
+    "P16-a: Vervang 'onbeperkt' door 'twee klusjes per maand' in de kop en maak het lidmaatschap direct maandelijks opzegbaar.",
+    "P16-b: Zet bovenaan wie de klussers zijn en laat één echte klant uit Apeldoorn aan het woord, zodat het meer is dan een app.",
+    "P16-c: Voeg een blok 'Wie zijn wij' toe met de oprichter, KvK-nummer, hoe de screening werkt en een telefonische route naast de app.",
+    "P06-a: Haal het woord 'onbeperkt' weg en zet de fair-use-regel en de jaarprijs (179 euro) gewoon bovenaan naast de maandprijs.",
+    "P06-b: Vervang het jaarabonnement door een maandabonnement met een 48-uursgarantie en zet 'twee klusjes per maand' als eerlijke belofte in de kop.",
+    "P06-c: Bied naast het abonnement een 'probeer één klusje'-optie aan zonder app en zonder jaarverplichting.",
+    "P39-a: Haal 'onbeperkt' uit de kop, zet 'tot 2 klusjes per maand' er eerlijk boven en zet de naam en het vak van de vaste klusser op de pagina.",
+    "P39-b: Zet 'jaarabonnement van €14,95 per maand' direct naast de aanbieding van 1 euro en zet bedrijfsnaam, adres en telefoonnummer in de kop.",
+    "P39-c: Bied naast de app een telefoonnummer en de mogelijkheid dat een familielid het lidmaatschap voor een ouder afsluit en klusjes doorgeeft.",
+    "P39-d: Bied ook een losse variant per klus aan, zodat mensen zonder abonnement kunnen proberen of hij echt binnen twee dagen komt.",
+    "K10-a: Haal het woord 'onbeperkt' weg of zet het maximum van 2 klusjes per maand direct bij de belofte, niet in de kleine lettertjes.",
+    "K10-b: Zet een telefoonnummer en een naam van de klusser of oprichter op de pagina, en bied naast de app een 'bellen of appen' route voor familie die het voor een ouder regelt.",
+    "K10-c: Maak een aparte 'voor uw ouder' variant: kind meldt en betaalt, klusser belt de bewoner vooraf en stuurt na afloop een foto en bericht aan het kind, materiaal op de maandfactuur in plaats van ter plekke afrekenen.",
+    "K06-a: Zet er een telefoonnummer en WhatsApp bij naast de app, en schrijf de jaarprijs gewoon uit: 179 euro per jaar.",
+    "K06-b: Haal 'onbeperkt' weg en zet gewoon bovenaan: 2 klusjes per maand, en maak een variant zonder app voor ouderen die je voor een ander kunt regelen.",
+    "K06-c: Bied ook een losse klus aan zonder abonnement, bijvoorbeeld 25 euro per keer, dan kun je het eerst één keer proberen.",
+    "K12-a: Zet naast het abonnement een 'los klusje voor X euro'-optie en een telefoonnummer, zodat je niet meteen aan een jaar vastzit.",
+    "K12-b: Vervang 'onbeperkt' door 'twee klusjes per maand' in de hoofdtekst en voeg een regel toe over wat er met foto's en accountgegevens gebeurt.",
+    "K12-c: Haal 'onbeperkt' weg, zet 'twee klusjes per maand, jaarcontract' in de kop en bied een telefoonnummer als volwaardig alternatief voor de app."
+   ],
+   "triggers": [
+    "P30-a: Een losse strippenkaart of een maandabonnement zonder jaarverplichting, zodat ik het eerst een paar keer kan proberen.",
+    "P30-b: Ervaringen van mensen uit de buurt, een naam en gezicht achter het bedrijf en een positief oordeel van de Consumentenbond of ANWB.",
+    "P30-c: Als het duidelijk voor je ouders geregeld kan worden, dus dat wij betalen en de klusser bij mijn schoonmoeder in Apeldoorn langsgaat.",
+    "P30-d: Maandelijks opzegbaar vanaf het begin, een vaste prijs die het eerste twee jaar niet stijgt, en duidelijke voorwaarden over verzekering en schade.",
+    "P35-a: Als ik gewoon kon bellen of appen en Ans zou zeggen dat het echt goed bevalt, zou ik het proberen.",
+    "P35-b: Als een collega of mijn dochter zou zeggen dat ze zelf een nette klusser van hen over de vloer hebben gehad.",
+    "P35-c: Als ik per klusje kon betalen, of het per maand kon opzeggen, en als 'onbeperkt' gewoon eerlijk klopt met wat er onderaan staat.",
+    "P40-a: Als de KBO of de kerk erachter zou staan en het per klusje te betalen was in plaats van een jaar vooruit.",
+    "P40-b: Als ik het per maand kon opzeggen of kon proberen zonder meteen een jaar vast te zitten, en de eerste klus goed bevalt.",
+    "P40-c: Een telefoonnummer waar iemand opneemt, en een bekende uit het dorp die zegt dat de klusser netjes werk levert.",
+    "P42-a: Losse klusjes betalen zonder jaarcontract, of een lagere seniorenprijs die de dochter uitrekent en goedkoper vindt dan de corporatie.",
+    "P42-b: Een telefoonnummer om een klusje te melden, en een bekende uit de flat of de soos die zegt dat de klusser echt komt.",
+    "P42-c: Iemand van de soos die het al heeft en zegt dat het goedkoper is dan losse klusjesmannen, of een strippenkaart zonder maandbedrag.",
+    "P45-a: Als haar dochter of de buurman zou zeggen dat ze het zelf gebruiken en dat het goed bevalt.",
+    "P45-b: Als het via de kerk of de dorpsvereniging zou lopen met iemand die ze al van gezicht kent.",
+    "P45-c: Als het per maand opzegbaar was en de klusser iemand uit het dorp was die ze al kent.",
+    "P45-d: Als de thuiszorg of de huisarts het aanraadt en de klusser zich vooraf komt voorstellen met een pasje.",
+    "P47-a: Een duidelijke naam en adres van de ondernemer, de klusser met foto, en één eerlijk verhaal over wat je precies krijgt voor je geld.",
+    "P47-b: Een losse optie per klusje of maandelijks opzegbaar vanaf het begin, zodat ik het eerst een paar keer kan proberen.",
+    "P47-c: Een foto en naam van de vaste klusser uit mijn wijk en een garantie dat hij echt binnen 48 uur komt, anders je geld terug.",
+    "P31-a: Als het aanbod los per klusje te bestellen was, zonder app en zonder abonnement, zou ik het onthouden voor het moment dat mijn man het niet meer kan.",
+    "P31-b: Een eerlijke tekst die gewoon zegt 'twee klusjes per maand' en uitlegt hoe de klusser netjes betaald wordt, dan wil ik het nog eens naast mijn huidige klusser leggen.",
+    "P31-c: Als aanmelden ook telefonisch kan en het jaarcontract een maandcontract wordt, zou ik het voor mijn buurvrouw regelen en zelf meedoen.",
+    "P13-a: Als ik nu met één tik via WhatsApp mijn eerste klusje kon melden en de app later mocht regelen.",
+    "P13-b: Maandelijks opzegbaar vanaf dag één en een paar echte reviews van mensen uit de buurt bij de klusser.",
+    "P13-c: Een duidelijke optie 'regel het voor je ouders', met melden en betalen door mij en VOG van de klusser erbij.",
+    "P16-a: Vanaf dag één maandelijks opzegbaar en eerlijk 'twee klusjes per maand' in de kop, dan overweeg ik het voor mijn ouders.",
+    "P16-b: Als mijn vrouw of die collega bevestigt dat de klusser echt binnen 48 uur staat en ook wifi en smart home snapt.",
+    "P16-c: Een concreet bedrijf met naam, KvK en uitleg van de screening, plus een aanmeldroute zonder app voor mijn moeder.",
+    "P06-a: Een eerlijke kop met '2 klusjes per maand' en een rekenvoorbeeld van de totale jaarkosten inclusief een gemiddeld klusje.",
+    "P06-b: Maandelijks opzegbaar vanaf het begin, plus een concrete garantie zoals 'komt hij niet binnen 48 uur, dan is die maand gratis'.",
+    "P06-c: Een losse optie zonder abonnement, bijvoorbeeld één klusje voor een vast bedrag, om het eens uit te proberen als het beter uitkomt.",
+    "P39-a: Een naam en foto van de klusser met zijn vakachtergrond, en een telefoonnummer waar iemand opneemt.",
+    "P39-b: Een echte naam, een adres in Apeldoorn en een telefoonnummer bovenaan, en de jaarverplichting gewoon naast de prijs.",
+    "P39-c: Als je een klusje ook gewoon kunt bellen of doorgeven aan een vast nummer, en ik het voor mijn zus kan regelen.",
+    "P39-d: Alleen betalen als hij echt komt, zonder abonnement, en een bekende naam uit de buurt erachter.",
+    "K10-a: Als Marjan het zou lezen en zou zeggen dat het haar echt ritjes scheelt en dat je zo weer van het abonnement af kunt.",
+    "K10-b: Een telefoonnummer waar je een echt mens krijgt, en het abonnement op naam van de dochter met het adres van moeder.",
+    "K10-c: Als Marjan het op haar naam kan zetten, de klusser van tevoren belt met Nel en Marjan achteraf een berichtje krijgt dat het gedaan is, met maandelijks opzeggen vanaf het begin.",
+    "K06-a: Als Henk of zijn zwager zegt dat de kerel gewoon komt en netjes werkt, en ik kan gewoon bellen of appen in plaats van een app.",
+    "K06-b: Als het gewoon los per klus kon, zonder jaar vast, en moeder kon bellen in plaats van een app, dan wil ik het voor haar wel proberen.",
+    "K06-c: Als een buurman het heeft en zegt dat de kerel gewoon komt en het werkt, en het niet een heel jaar vast zit.",
+    "K12-a: Een losse prijs per klusje die ik kan bellen en contant afrekenen, zonder abonnement en zonder app.",
+    "K12-b: Een telefoonnummer of e-mailadres om een klusje te melden en een korte, eerlijke uitleg van welke gegevens ze bewaren en waarom.",
+    "K12-c: Een route zonder app of account (bellen of mailen), eerlijke voorwaarden in de hoofdtekst en een naam, adres en privacyverklaring op de pagina."
+   ]
+  }
+ }
+}

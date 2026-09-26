@@ -22,6 +22,9 @@ DREMPELS = {
     # Positiviteit: gewogen aandeel varianten met intentie >= 5. Een nieuw aanbod dat door meer dan 65%
     # 'gekocht' zou worden, is in een echt panel zeldzaam. Geldt per object; bij meerdere objecten alleen als alle objecten erboven zitten.
     "max_aandeel_positief": 0.65, "max_gem_begrip": 6.3,
+    # Negativiteit (spiegelbeeld): als bij alle objecten minder dan 5% positief is, kan het materiaal echt slecht
+    # zijn óf heeft het panel overgecorrigeerd. Dit is een waarschuwing, geen reden tot herhalen.
+    "min_aandeel_positief": 0.05,
     # Gelijkvormigheid tussen persona's: aandeel paren (van verschillende persona's) met Jaccard-overlap
     # van inhoudswoorden >= 0,35. Boven 5% praten de persona's elkaar na. Ook: één bezwaar-categorie > 70%.
     "jaccard_gelijk": 0.35, "max_aandeel_gelijke_paren": 0.05, "max_aandeel_een_bezwaar": 0.70,
@@ -162,6 +165,8 @@ def main():
     ok = not (pos and all(v > DREMPELS["max_aandeel_positief"] for v in pos.values()))
     checks.append({"controle": "positiviteit", "ok": ok, "waarde": pos, "drempel": DREMPELS["max_aandeel_positief"], "toelichting": "gewogen aandeel intentie >= 5 per object; faalt als alle objecten erboven zitten"})
     if not ok: herhaal |= set(pids_all)
+    okn = not (pos and all(v < DREMPELS["min_aandeel_positief"] for v in pos.values()))
+    checks.append({"controle": "negativiteit_waarschuwing", "ok": True, "waarschuwing": not okn, "waarde": pos, "drempel": DREMPELS["min_aandeel_positief"], "toelichting": "alleen een waarschuwing: bij alle objecten minder dan 5% positief. Controleer of het materiaal een objectieve fout bevat die iedereen raakt (dan is het echt) en benoem het in samenvatting en rapport; geen herhaling nodig."})
     okb = not (begrip and all(v > DREMPELS["max_gem_begrip"] for v in begrip.values()))
     checks.append({"controle": "begrip_te_hoog", "ok": okb, "waarde": begrip, "drempel": DREMPELS["max_gem_begrip"], "toelichting": "gewogen gemiddeld begrip per object; bijna niemand snapt alles"})
     # 3 gelijkvormigheid tussen persona's
@@ -185,6 +190,7 @@ def main():
     checks.append({"controle": "volledigheid", "ok": ok, "waarde": {"ontbrekend": len(ontbrekend), "dubbel": len(dubbel), "fouten": len(fouten)}, "drempel": 0, "toelichting": f"ontbrekend: {ontbrekend[:10]}; dubbel: {dubbel[:5]}; fouten: {fouten[:5]}"})
     if not ok: herhaal |= {v.split("-")[0] for v, _ in ontbrekend} | {v.split("-")[0] for v, _ in dubbel}
     status = "ok" if all(c["ok"] for c in checks) else "herhalen"
+    if status == "ok" and any(c.get("waarschuwing") for c in checks): status = "ok_met_waarschuwing"
     real = {"ronde": a.ronde, "status": status, "controles": checks, "herhalen_personas": sorted(herhaal), "advies": ("Geen actie nodig." if status == "ok" else "Draai generate_variants.py --alleen <ids> --intensiteit 2, bouw de prompts opnieuw en laat die persona's opnieuw reageren; verwijder eerst hun oude jsonl.")}
     json.dump(agg, open(os.path.join(rdir, "aggregatie.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     json.dump(real, open(os.path.join(rdir, "realisme.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
@@ -223,7 +229,7 @@ def van_westendorp(prijzen):
 def markdown(agg, real, R, gewicht):
     L = [f"# Ronde {agg['ronde']}: {agg['titel']}", "", f"Records: {agg['n_records']}, varianten: {agg['n_varianten']}. Realisme: **{real['status']}**", ""]
     for c in real["controles"]:
-        L.append(f"- {'OK' if c['ok'] else 'FAALT'} {c['controle']}: {c['waarde']} (drempel {c['drempel']}). {c['toelichting']}")
+        L.append(f"- {'WAARSCHUWING' if c.get('waarschuwing') else ('OK' if c['ok'] else 'FAALT')} {c['controle']}: {c['waarde']} (drempel {c['drempel']}). {c['toelichting']}")
     if real["herhalen_personas"]: L.append(f"- Opnieuw draaien: {real['herhalen_personas']}")
     for o, d in agg["objecten"].items():
         L += ["", f"## Object `{o}` (n={d['n']})", "", "| score | gewogen | ongewogen |", "|---|---|---|"]
