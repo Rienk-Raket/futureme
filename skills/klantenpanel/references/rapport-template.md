@@ -46,4 +46,4 @@ Vaste inhoud, in eigen woorden aangepast aan deze run:
 - Wat de gebruiker moet doen voordat hij investeert: de genoemde toetsen bij echte mensen, met een succescriterium dat hij zelf vooraf kiest.
 
 ## Herleidbaarheid
-Lijst van bestanden in de runmap waarop dit rapport steunt: `intake.md`, `selectie.json`, `varianten.json`, `ronde-1..4/reacties/*.jsonl`, `ronde-1..4/aggregatie.json`, `ronde-1..4/realisme.json`, `ronde-1..4/samenvatting.md`.
+Lijst van bestanden in de runmap waarop dit rapport steunt: `intake.md`, `selectie.json`, `varianten.json`, `ronde-1..4/reacties/*.jsonl`, `ronde-1..4/aggregatie.json`, `ronde-1..4/realisme.json`, `ronde-1..4/samenvatting.md`, `ronde-4/segmenten.json` (met de gebruikte segmentindeling), en eventuele gearchiveerde pogingen.

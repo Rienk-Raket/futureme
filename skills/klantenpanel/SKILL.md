@@ -22,7 +22,9 @@ Kernkeuze: **rekenwerk in scripts, oordeel in het model.** Varianten genereren, 
 | `scripts/generate_variants.py` | 3-4 varianten per persona met vaste seed; `--alleen` en `--intensiteit 2` voor herhaling. |
 | `scripts/build_prompt.py` | Subagent-opdracht per persona en ronde. |
 | `scripts/aggregate_round.py` | Aggregatie (gewogen en ongewogen), Van Westendorp, voorkeuren, realisme-controles. Exitcode 2 = herhalen. |
+| `scripts/segmenten.py` | Gewogen en ongewogen cijfers per zelfgekozen segment (groep persona's) voor het rapport. |
 | `scripts/validate_personas.py` | Alleen nodig als je de bibliotheek aanpast. |
+| `scripts/selftest.py` | Zelftest van alle scripts; draai hem na elke wijziging aan scripts of bibliotheek. |
 
 Alle scripts zijn pure Python 3, zonder externe pakketten. Roep ze aan met een absoluut pad naar de skillmap. Alles wat een run produceert staat in één runmap (standaard `./klantenpanel-runs/<datum>-<naam>/`), zodat het eindrapport herleidbaar is tot losse panelreacties en een run later vergeleken kan worden.
 
@@ -111,9 +113,15 @@ Lees bij het verbeteren de losse reacties (`ronde-N/reacties/*.jsonl` of de cita
 
 ## Stap 5: Eindrapport
 
-Schrijf `$RUN/eindrapport.md` volgens `references/rapport-template.md` en geef de gebruiker het pad en de kern in het gesprek. Regels die het rapport bruikbaar maken:
+Bereken eerst de segmentcijfers voor de laatste ronde. Kies segmenten die bij de beslissing passen (bijvoorbeeld leeftijdsgroepen, wie zelf klust, wie krap zit) en noteer welke persona's erin zitten:
 
-- Elke bewering over een segment verwijst naar cijfers uit `aggregatie.json` (gewogen én ongewogen) of naar variant-ids en citaten. Schrijf niet "ouderen haken af" maar "de drie 75-plus-persona's scoren intentie 1,7 tot 2,5 (ronde 4, concept 2); P45-b: '...'."
+```bash
+python3 <skill>/scripts/segmenten.py --run $RUN --ronde 4 --segment "55-plus=P30,P35,P40" --segment "gezinnen=P13,P16"
+```
+
+Schrijf daarna `$RUN/eindrapport.md` volgens `references/rapport-template.md` en geef de gebruiker het pad en de kern in het gesprek. Regels die het rapport bruikbaar maken:
+
+- Elke bewering over een segment verwijst naar cijfers uit `aggregatie.json` of `segmenten.json` (gewogen én ongewogen) of naar variant-ids en citaten. Tel je iets met een zoekregel ("27 van de 45 noemen per klus betalen"), noem dan de zoekregel, zodat het na te rekenen is. Reken elk getal dat je zelf opschrijft na met een script voordat het in het rapport komt. Schrijf niet "ouderen haken af" maar "de drie 75-plus-persona's scoren intentie 1,7 tot 2,5 (ronde 4, concept 2); P45-b: '...'."
 - Per concept: wat er anders is dan het origineel en waarom, sterkste en zwakste segmenten (gewogen naar bevolking én ongewogen per persona), gevaren en bezwaren, kansen (ook uit kansgroepen), representatieve citaten, en wat de gebruiker als volgende stap bij echte mensen moet toetsen.
 - Sluit af met een aanbeveling (welk concept, voor wie, tegen welke prijs, eerste stap) en een betrouwbaarheidsparagraaf die zegt wat een synthetisch panel wel en niet kan: het vindt begripsproblemen, bezwaren, taal- en toegankelijkheidsdrempels en kansen; het voorspelt geen conversie, geen marktaandeel en geen betalingsbereidheid in euro's, en alle panelleden komen uit hetzelfde model en dezelfde persona-tekst.
 
