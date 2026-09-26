@@ -50,7 +50,7 @@ def main():
     for o in objecten:
         pad = os.path.join(run, o["bestand"])
         mat.append(f"### Object `{o['id']}`: {o.get('titel', o['id'])}\n\n{open(pad, encoding='utf-8').read().strip()}\n")
-    materiaal = "## Materiaal\n\n" + ("Er zijn meerdere objecten; reageer per variant op elk object en geef daarna je voorkeur.\n\n" if len(objecten) > 1 else "") + "\n".join(mat)
+    materiaal = "## Materiaal\n\n" + (f"Er zijn {len(objecten)} objecten. Schrijf per variant één regel per object; de reactie per object mag dan 2 tot 4 zinnen zijn (in plaats van 4 tot 8), zolang je concreet verwijst naar wat in dat object anders is. Geef daarna je voorkeur.\n\n" if len(objecten) > 1 else "") + "\n".join(mat)
     vragen = "\n".join(f"{i+1}. {v}" for i, v in enumerate(R["vragen"] + opzet.get("vragen_extra", [])))
     context = ("## Context van de opdrachtgever\n\n" + opzet["context"].strip()) if opzet.get("context") else ""
     # schema

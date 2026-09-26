@@ -1,0 +1,68 @@
+{
+ "ronde": 2,
+ "status": "ok",
+ "controles": [
+  {
+   "controle": "spreiding_binnen_persona",
+   "ok": true,
+   "waarde": 0.29,
+   "drempel": 0.5,
+   "toelichting": "persona's zonder spreiding in intentie (std < 0.5): ['K12', 'P06', 'P13', 'P47']"
+  },
+  {
+   "controle": "positiviteit",
+   "ok": true,
+   "waarde": {
+    "v1": 0.079
+   },
+   "drempel": 0.65,
+   "toelichting": "gewogen aandeel intentie >= 5 per object; faalt als alle objecten erboven zitten"
+  },
+  {
+   "controle": "negativiteit_waarschuwing",
+   "ok": true,
+   "waarschuwing": false,
+   "waarde": {
+    "v1": 0.079
+   },
+   "drempel": 0.05,
+   "toelichting": "alleen een waarschuwing: bij alle objecten minder dan 5% positief. Controleer of het materiaal een objectieve fout bevat die iedereen raakt (dan is het echt) en benoem het in samenvatting en rapport; geen herhaling nodig."
+  },
+  {
+   "controle": "begrip_te_hoog",
+   "ok": true,
+   "waarde": {},
+   "drempel": 6.3,
+   "toelichting": "gewogen gemiddeld begrip per object; bijna niemand snapt alles"
+  },
+  {
+   "controle": "gelijkvormigheid_tussen_personas",
+   "ok": true,
+   "waarde": 0.0,
+   "drempel": 0.05,
+   "toelichting": "aandeel paren van verschillende persona's met woordoverlap >= 0.35; meest betrokken: []"
+  },
+  {
+   "controle": "een_bezwaar_domineert",
+   "ok": true,
+   "waarde": {
+    "v1": 0.363
+   },
+   "drempel": 0.7,
+   "toelichting": "gewogen aandeel van de grootste bezwaar-categorie per object"
+  },
+  {
+   "controle": "volledigheid",
+   "ok": true,
+   "waarde": {
+    "ontbrekend": 0,
+    "dubbel": 0,
+    "fouten": 0
+   },
+   "drempel": 0,
+   "toelichting": "ontbrekend: []; dubbel: []; fouten: []"
+  }
+ ],
+ "herhalen_personas": [],
+ "advies": "Geen actie nodig."
+}
