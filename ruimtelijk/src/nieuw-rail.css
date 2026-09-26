@@ -13,20 +13,6 @@
 .nw-slot .knop3d.breed .bal3d{transition:right .45s cubic-bezier(.22,1,.36,1),top .45s cubic-bezier(.22,1,.36,1),transform .45s}
 .nw-rail:not(.open) .nw-slot .knop3d.breed .bal3d{right:6px;top:8px;transform:none}
 
-.nw-hint{position:absolute;z-index:2;left:calc(var(--nw-strook) + 14px);right:0;top:0;height:92px;
-  display:flex;align-items:center;gap:12px;padding:0 14px;border-radius:19px;text-align:left;color:var(--muted);
-  opacity:calc(1 - var(--nw-p) * 2.2);transition:opacity .3s}
-.nw-rail.open .nw-hint{pointer-events:none}
-.nw-hinttekst{display:flex;flex-direction:column;gap:1px}
-.nw-hinttekst b{font-size:calc(16px * var(--t));font-weight:750;color:var(--text);letter-spacing:-.01em}
-.nw-hinttekst small{font-size:calc(12.5px * var(--t))}
-.nw-pijlen{display:flex;gap:1px}
-.nw-pijlen i{width:12px;height:12px;border-top:2.6px solid currentColor;border-right:2.6px solid currentColor;transform:rotate(45deg);border-radius:2px;
-  opacity:.25;animation:nw-pijl 1.6s ease-in-out infinite}
-.nw-pijlen i:nth-child(2){animation-delay:.18s}
-.nw-pijlen i:nth-child(3){animation-delay:.36s}
-@keyframes nw-pijl{0%,100%{opacity:.2}35%{opacity:1;color:var(--accent)}}
 @media (prefers-reduced-motion:reduce){
   .nw-slot{transition-duration:.01s;transition-delay:0s}
-  .nw-pijlen i{animation:none;opacity:.7}
 }

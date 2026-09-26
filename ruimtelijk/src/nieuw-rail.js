@@ -24,10 +24,6 @@ let nwGepiept = false;
     const knoppen = h.slice(a + merk.length, b).split(/(?=<button class="knop3d)/).map(s => s.trim()).filter(s => s.startsWith("<button"));
     const open = V.nwOpen;
     const rail = `<div class="nw-rail${open ? " open" : ""}" style="--nw-p:${open ? 1 : 0}">
-      <button class="nw-hint" data-act="nw-wissel" aria-expanded="${open}" aria-label="Namen van de knoppen tonen">
-        <span class="nw-pijlen" aria-hidden="true"><i></i><i></i><i></i></span>
-        <span class="nw-hinttekst"><b>Veeg naar rechts</b><small>voor de namen</small></span>
-      </button>
       ${knoppen.map((k, n) => `<div class="nw-slot" style="--i:${n}">${k.replace('class="knop3d"', 'class="knop3d breed"')}</div>`).join("")}
     </div>`;
     return h.slice(0, a) + rail + h.slice(b + 6);
@@ -41,8 +37,6 @@ function nwZet(open, rail) {
   if (!rail) return;
   rail.classList.toggle("open", V.nwOpen);
   rail.style.setProperty("--nw-p", V.nwOpen ? 1 : 0);
-  const h = rail.querySelector(".nw-hint");
-  if (h) h.setAttribute("aria-expanded", V.nwOpen);
   if (was !== V.nwOpen) tril(6);
 }
 
@@ -88,10 +82,6 @@ function nwZet(open, rail) {
     if (Date.now() - klikStop < 350 && e.target.closest && e.target.closest(".nw-rail")) { e.stopPropagation(); e.preventDefault(); }
   }, true);
 }
-document.addEventListener("click", e => {
-  const el = e.target.closest && e.target.closest('[data-act="nw-wissel"]');
-  if (el) nwZet(!V.nwOpen);
-});
 
 /* Eén keer per sessie even laten zien dat de rail uitschuift. */
 RT_NA.push(() => {
