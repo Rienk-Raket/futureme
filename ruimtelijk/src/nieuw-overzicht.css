@@ -53,3 +53,58 @@ html[data-retro="1"] .nwo-statkop{font-family:var(--pixel);font-weight:400;font-
 .nwo-rij small{font-size:calc(11px * var(--t));color:var(--faint)}
 .nwo-rij b{font-size:calc(14px * var(--t));font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--text)}
 .nwo-naar{display:inline-flex;align-items:center;gap:4px;margin-top:8px;font-size:calc(12.5px * var(--t));font-weight:650;color:var(--accent);min-height:32px}
+
+/* 67. Analyse van de geopende statistiek */
+.nwo-analyse{border-top:1px solid var(--line);padding:10px 12px 4px;display:flex;flex-direction:column;gap:10px}
+.nwo-filters{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.nwo-kies{display:flex;flex-direction:column;gap:2px;min-width:0}
+.nwo-kies.breed{grid-column:1 / -1}
+.nwo-kies span{font-size:calc(10.5px * var(--t));font-weight:700;color:var(--muted);letter-spacing:.02em}
+html[data-retro="1"] .nwo-kies span{font-family:var(--pixel);font-weight:400;font-size:calc(7.5px * var(--t))}
+.nwo-kies select{appearance:none;-webkit-appearance:none;width:100%;min-width:0;height:34px;border-radius:10px;border:1.5px solid var(--line);padding:0 24px 0 9px;
+  background:var(--card2) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5l3 3 3-3' fill='none' stroke='%23888' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 7px center/12px;
+  color:var(--text);font:inherit;font-size:calc(12.5px * var(--t));font-weight:600;text-overflow:ellipsis;cursor:pointer}
+.nwo-kies select:focus{outline:none;border-color:var(--accent)}
+.nwo-tegels{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.nwo-tegels>div{background:var(--card2);border-radius:12px;padding:8px 10px;display:flex;flex-direction:column;gap:1px;min-width:0}
+.nwo-tegels span{font-size:calc(10.5px * var(--t));color:var(--muted);font-weight:650}
+.nwo-tegels b{font-size:calc(16px * var(--t));font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nwo-tegels b.lang{font-size:calc(13.5px * var(--t))}
+.nwo-tegels small{font-size:calc(10.5px * var(--t));color:var(--faint);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nwo-tegels small.op{color:var(--green)}
+.nwo-tegels small.af{color:var(--red)}
+.nwo-tip{font-size:calc(12px * var(--t));color:var(--muted);min-height:18px}
+.nwo-tip b{color:var(--text)}
+.nwo-grafiek{width:100%;height:auto;display:block;overflow:visible;touch-action:pan-y}
+.nwo-grid{stroke:var(--line);stroke-width:1}
+.nwo-grid.nul{stroke:var(--line2)}
+.nwo-as{font-size:9px;fill:var(--faint);font-variant-numeric:tabular-nums}
+.nwo-staaf{fill:var(--nwo-0);transition:opacity .15s}
+.nwo-staaf.neg{fill:var(--nwo-1)}
+.nwo-staaf.dim{opacity:.35}
+.nwo-lijn{fill:none;stroke:var(--nwo-0);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.nwo-vlak{fill:var(--nwo-0);opacity:.12}
+.nwo-punt{fill:var(--nwo-0);stroke:var(--card);stroke-width:2}
+.nwo-raak{fill:transparent;cursor:pointer}
+.nwo-leegdiagram{padding:22px 8px;text-align:center;font-size:calc(12.5px * var(--t));color:var(--muted);background:var(--card2);border-radius:12px}
+.nwo-balken{display:flex;flex-direction:column;gap:8px}
+.nwo-balkkop{display:flex;justify-content:space-between;gap:8px;font-size:calc(12.5px * var(--t));margin-bottom:3px}
+.nwo-balkkop span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text)}
+.nwo-balkkop b{font-variant-numeric:tabular-nums;white-space:nowrap}
+.nwo-balkspoor{display:block;height:8px;border-radius:4px;background:var(--card2);overflow:hidden}
+.nwo-balkspoor i{display:block;height:100%;border-radius:4px;background:var(--nwo-0)}
+.nwo-stapel{display:flex;gap:2px;height:16px;border-radius:6px;overflow:hidden;background:var(--card)}
+.nwo-stapel i{display:block;min-width:3px}
+.nwo-verdeling{margin-top:2px;border-top:0}
+.nwo-verdeling .nwo-lr{min-height:32px}
+.nwo-verdeling small{font-weight:600;color:var(--muted);margin-left:3px}
+.nwo-tabel{width:100%;border-collapse:collapse;font-size:calc(12.5px * var(--t));font-variant-numeric:tabular-nums}
+.nwo-tabel th{text-align:left;font-size:calc(10.5px * var(--t));color:var(--muted);font-weight:700;padding:4px 4px 6px;border-bottom:1px solid var(--line2)}
+.nwo-tabel td{padding:6px 4px;border-bottom:1px solid var(--line);color:var(--text)}
+.nwo-tabel th:not(:first-child),.nwo-tabel td:not(:first-child){text-align:right;white-space:nowrap}
+.nwo-tabel tr.nul td{color:var(--faint)}
+.nwo-tabel tfoot td{font-weight:800;border-bottom:0}
+.nwo-analyse .nwo-tabel{display:block;max-height:280px;overflow-y:auto}
+.nwo-analyse .nwo-tabel thead,.nwo-analyse .nwo-tabel tbody,.nwo-analyse .nwo-tabel tfoot{display:table;width:100%;table-layout:fixed}
+.nwo-tabel td:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nwo-rijenkop{font-size:calc(10.5px * var(--t));font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);padding:10px 0 2px}

@@ -75,7 +75,7 @@ marker = "/* Alles is geladen — de app kan starten. */"
 assert html.count(marker) == 1, "startmarker niet gevonden"
 i = html.index(marker)
 j = html.rfind("<script>", 0, i)
-blokken = "".join(f"<script>\n{lees(naam)}\n</script>\n" for naam in ("sh-theorie.js", "sh-modellen.js", "sh-scrum.js", "sh-dashboard.js", "ruimte.js", "hobbyskills.js", "hs-sjablonen.js", "mm-bron.js", "koppelingen.js", "eigen-categorieen.js", "fin-vast.js", "wishlist.js", "nieuw-rail.js", "nieuw-overzicht.js", "mm-export.js", "retro.js", "incasso-bellen.js", "tijdlijn-rust.js"))
+blokken = "".join(f"<script>\n{lees(naam)}\n</script>\n" for naam in ("sh-theorie.js", "sh-modellen.js", "sh-scrum.js", "sh-dashboard.js", "ruimte.js", "hobbyskills.js", "hs-sjablonen.js", "mm-bron.js", "koppelingen.js", "eigen-categorieen.js", "fin-vast.js", "wishlist.js", "nieuw-rail.js", "nieuw-overzicht.js", "nieuw-analyse.js", "mm-export.js", "retro.js", "incasso-bellen.js", "tijdlijn-rust.js"))
 html = html[:j] + blokken + html[j:]
 
 UIT.write_text(html, encoding="utf-8")

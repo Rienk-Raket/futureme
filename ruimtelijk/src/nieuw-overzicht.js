@@ -169,14 +169,14 @@ function nwoThemas() {
   return T;
 }
 function nwoStatistieken() {
-  const open = new Set(inst("nwoOpen", []) || []);
+  const open = inst("nwoOpen1", null);
   return `<div class="nwo-stats"><div class="nwo-statkop">Statistieken</div>${nwoThemas().map(t => {
-    const o = open.has(t.id);
-    return `<div class="nwo-thema${o ? " open" : ""}">
+    const o = open === t.id;
+    return `<div class="nwo-thema${o ? " open" : ""}" data-thema-id="${t.id}">
       <button class="nwo-themakop" data-act="nwo-klap" data-id="${t.id}" aria-expanded="${o}">
         <span class="nwo-ico" aria-hidden="true">${t.ico}</span><span class="nwo-tn"><b>${esc(t.naam)}</b><small>${esc(t.samenvatting)}</small></span>
         ${ico("pijlr", `width:14px;height:14px;flex:0 0 auto;color:var(--faint);transform:rotate(${o ? 90 : 0}deg);transition:transform .2s`)}</button>
-      ${o ? `<div class="nwo-rijen">${t.rijen.map(x => `<div class="nwo-rij"><span>${esc(x.label)}${x.sub ? `<small>${esc(x.sub)}</small>` : ""}</span><b>${esc(x.waarde)}</b></div>`).join("")}
+      ${o ? `${typeof nwoAnalyse === "function" ? nwoAnalyse(t.id) : ""}<div class="nwo-rijen"><div class="nwo-rijenkop">Kerncijfers</div>${t.rijen.map(x => `<div class="nwo-rij"><span>${esc(x.label)}${x.sub ? `<small>${esc(x.sub)}</small>` : ""}</span><b>${esc(x.waarde)}</b></div>`).join("")}
         <button class="nwo-naar" data-act="ga" data-view="${t.view}">Naar ${esc(t.naam.toLowerCase())} ${ico("pijlr", "width:12px;height:12px")}</button></div>` : ""}
     </div>`;
   }).join("")}</div>`;
@@ -210,9 +210,11 @@ document.addEventListener("click", async e => {
   const act = el.dataset.act;
   if (act === "nwo-maat") { V.nwoMaat = el.dataset.m; V.nwoSeg = null; nwoHerteken(); }
   else if (act === "nwo-klap") {
-    const open = new Set(inst("nwoOpen", []) || []), id = el.dataset.id;
-    open.has(id) ? open.delete(id) : open.add(id);
-    await zetInst("nwoOpen", [...open]); nwoHerteken();
+    // Eén statistiek tegelijk open
+    const id = el.dataset.id, nu = inst("nwoOpen1", null) === id ? null : id;
+    await zetInst("nwoOpen1", nu); nwoHerteken();
+    if (nu) requestAnimationFrame(() => { const t = document.querySelector(`.nwo-thema[data-thema-id="${nu}"]`), sch = $("#scherm");
+      if (t && sch) { const r = t.getBoundingClientRect(), top = sch.getBoundingClientRect().top; if (r.top < top + 70) sch.scrollBy({ top: r.top - top - 80, behavior: "smooth" }); } });
   } else if (act === "nwo-hustle") ga("sh", el.dataset.id);
 });
 /* Uitgeklapt: het overzicht is niet bereikbaar voor tikken of voorlezen. */
