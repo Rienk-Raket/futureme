@@ -7,7 +7,9 @@
    ========================================================================== */
 V.ibOpen = V.ibOpen || false;
 V.ibActief = V.ibActief || null;
-const IB = { d: 62, gap: 10, bezig: false };
+const IB = { d: 34, gap: 9, bezig: false };
+/** Alleen het bedrag, compact: 845 · 13,99 · 1.200 */
+const ibKortBedrag = n => { const [h, c] = (Math.round(n * 100) / 100).toFixed(2).split("."); const hh = h.replace(/\B(?=(\d{3})+(?!\d))/g, "."); return c === "00" ? hh : hh + "," + c; };
 
 function ibLijst() {
   const v = vandaagISO();
@@ -59,9 +61,9 @@ function ibPlaatsen(el, n) {
 const ibKortDag = iso => { const d = parseISO(iso); return ["zo", "ma", "di", "wo", "do", "vr", "za"][d.getDay()] + " " + d.getDate(); };
 function ibBelHTML(x, i) {
   const i0 = x.incasso, dagen = dagVerschil(x.datum, vandaagISO());
-  const bedrag = eur(i0.bedrag), lang = bedrag.length > 8;
+  const bedrag = eur(i0.bedrag);
   return `<button class="ib-bel${dagen <= 2 ? " snel" : ""}" data-ib-bel="${i}" data-id="${i0.id}" aria-label="${esc(i0.naam)}, ${esc(bedrag)}, ${esc(datumLabel(x.datum))}">
-    <span class="ib-binnen"><span class="ib-bedrag${lang ? " lang" : ""}">${esc(bedrag)}</span><span class="ib-wanneer">${esc(dagen <= 0 ? "vandaag" : dagen === 1 ? "morgen" : ibKortDag(x.datum))}</span></span>
+    <span class="ib-binnen"><span class="ib-bedrag${ibKortBedrag(i0.bedrag).length > 5 ? " lang" : ""}">${esc(ibKortBedrag(i0.bedrag))}</span></span>
   </button>`;
 }
 function ibInfoHTML(x) {
@@ -87,7 +89,7 @@ function ibTeken(el, pop) {
   el.style.setProperty("--boven", p.boven + "px");
   el.style.setProperty("--onder", p.onder + "px");
   veld.innerHTML = lijst.map(ibBelHTML).join("") +
-    `<button class="ib-bel alle" data-act="fin" data-m="incasso" aria-label="Alle incasso's"><span class="ib-binnen"><span class="ib-bedrag">Alle</span><span class="ib-wanneer">incasso's</span></span></button>`;
+    `<button class="ib-bel alle" data-act="fin" data-m="incasso" aria-label="Alle incasso's"><span class="ib-binnen"><span class="ib-bedrag">Alle</span></span></button>`;
   [...veld.children].forEach((b, i) => {
     const { x, y } = p.pos[i];
     b.style.left = x + "px"; b.style.top = y + "px";
@@ -95,8 +97,8 @@ function ibTeken(el, pop) {
     b.style.setProperty("--fy", (p.knopMidden.y - y - IB.d / 2) + "px");
     b.style.setProperty("--zweef", (3.6 + (i * 37 % 23) / 10) + "s");
     b.style.setProperty("--fase", (-(i * 53 % 40) / 10) + "s");
-    b.style.setProperty("--zx", ((i % 3) - 1) * 3 + "px");
-    b.style.setProperty("--zy", -(4 + i % 3 * 2) + "px");
+    b.style.setProperty("--zx", ((i % 3) - 1) * 1.6 + "px");
+    b.style.setProperty("--zy", -(2 + i % 3) + "px");
     if (pop && !stil) { b.classList.add("pop"); b.style.animationDelay = (i * 95) + "ms"; setTimeout(() => { b.classList.remove("pop"); b.style.animationDelay = ""; if (i % 3 === 0) tril(3); }, 520 + i * 95); }
   });
   if (V.ibActief) { const b = veld.querySelector(`[data-id="${CSS.escape(V.ibActief)}"]`); if (b) ibOpenBel(el, b, true); else V.ibActief = null; }
@@ -113,7 +115,7 @@ function ibOpenBel(el, b, direct) {
   info.style.width = breed + "px";
   const hoog = info.scrollHeight;
   const l = Math.max(0, Math.min(W - breed, oud.l + IB.d / 2 - breed / 2));
-  const t = Math.max(0, oud.t + IB.d / 2 - 40);
+  const t = Math.max(0, oud.t + IB.d / 2 - 30);
   if (direct) b.classList.add("zonder-overgang");
   b.classList.add("open"); veld.classList.add("focus");
   b.style.left = l + "px"; b.style.top = t + "px"; b.style.width = breed + "px"; b.style.height = hoog + "px";
