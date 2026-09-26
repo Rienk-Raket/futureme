@@ -2,7 +2,7 @@
 """Bouwt de hoofd-index.html: de basis-app (basis/index.html) plus de ruimtelijke
 laag, HobbySkills en de koppelingen uit src/. Alles blijft één bestand zonder
 externe bronnen. Gebruik: python3 ruimtelijk/bouw.py [pad-naar-basis-index.html]"""
-import base64, pathlib, sys
+import base64, json, pathlib, sys
 
 HIER = pathlib.Path(__file__).resolve().parent
 SRC = HIER / "src"
@@ -46,7 +46,8 @@ vervang('shles: (typeof vwShLes === "function" ? vwShLes : vwStart)',
         '    ankerbronnen: (typeof vwAnkerBronnen === "function" ? vwAnkerBronnen : vwStart),\n'
         '    profiel: (typeof vwProfiel === "function" ? vwProfiel : vwStart),\n'
         '    huishouden: (typeof vwHuishouden === "function" ? vwHuishouden : vwStart),\n'
-        '    hhlijst: (typeof vwHhLijst === "function" ? vwHhLijst : vwStart)')
+        '    hhlijst: (typeof vwHhLijst === "function" ? vwHhLijst : vwStart),\n'
+        '    hhwaarom: (typeof vwHhWaarom === "function" ? vwHhWaarom : vwStart)')
 
 # 3b. Categorieën: terugvallen op "overig" op naam, niet op positie (ruimte voor eigen categorieën).
 vervang("(CATEGORIEEN.find(c => c[0] === k) || CATEGORIEEN[6])", '(CATEGORIEEN.find(c => c[0] === k) || CATEGORIEEN.find(c => c[0] === "overig"))', 2)
@@ -121,8 +122,25 @@ marker = "/* Alles is geladen — de app kan starten. */"
 assert html.count(marker) == 1, "startmarker niet gevonden"
 i = html.index(marker)
 j = html.rfind("<script>", 0, i)
-blokken = "".join(f"<script>\n{lees(naam)}\n</script>\n" for naam in ("sh-theorie.js", "sh-modellen.js", "sh-scrum.js", "sh-dashboard.js", "ruimte.js", "hobbyskills.js", "hs-sjablonen.js", "mm-bron.js", "koppelingen.js", "eigen-categorieen.js", "fin-vast.js", "wishlist.js", "sh-ideeen.js", "anker-data.js", "anker-speler.js", "anker-schermen.js", "anker-koppelingen.js", "voortgang-data.js", "voortgang.js", "profiel.js", "huishouden-data.js", "huishouden.js", "huishouden-sessie.js", "nieuw-rail.js", "nieuw-overzicht.js", "nieuw-analyse.js", "mm-export.js", "retro.js", "incasso-bellen.js", "tijdlijn-rust.js"))
+# 6a. Kennisbank: kennis/huishouden.json wordt FM_KENNIS in de app (dezelfde bron als de webpagina).
+KENNIS_PAD = HIER.parent / "kennis" / "huishouden.json"
+kennis = json.loads(KENNIS_PAD.read_text(encoding="utf-8"))
+for sleutel in ("meta", "richtingen", "aanpak", "vragen", "tips", "huishouden", "onderbouwing", "bronnen"):
+    assert sleutel in kennis, f"kennisbank mist '{sleutel}'"
+kennis_js = "const FM_KENNIS = " + json.dumps(kennis, ensure_ascii=False).replace("</", "<\\/") + ";"
+blokken = f"<script>\n\"use strict\";\n// Kennisbank (gegenereerd uit kennis/huishouden.json, niet met de hand aanpassen)\n{kennis_js}\n</script>\n" + "".join(f"<script>\n{lees(naam)}\n</script>\n" for naam in ("sh-theorie.js", "sh-modellen.js", "sh-scrum.js", "sh-dashboard.js", "ruimte.js", "hobbyskills.js", "hs-sjablonen.js", "mm-bron.js", "koppelingen.js", "eigen-categorieen.js", "fin-vast.js", "wishlist.js", "sh-ideeen.js", "anker-data.js", "anker-speler.js", "anker-schermen.js", "anker-koppelingen.js", "voortgang-data.js", "voortgang.js", "profiel.js", "huishouden-data.js", "huishouden.js", "huishouden-sessie.js", "nieuw-rail.js", "nieuw-overzicht.js", "nieuw-analyse.js", "mm-export.js", "retro.js", "incasso-bellen.js", "tijdlijn-rust.js"))
 html = html[:j] + blokken + html[j:]
 
 UIT.write_text(html, encoding="utf-8")
 print(f"Gebouwd: {UIT} ({len(html.encode('utf-8')) // 1024} KB)")
+
+# 7. Kennisbank-webpagina: kennis/pagina.html (inhoud) krijgt een volledige HTML-omhulling als
+#    kennis/index.html, zodat hij los te openen is naast huishouden.json (bijv. via GitHub Pages).
+PAGINA = HIER.parent / "kennis" / "pagina.html"
+if PAGINA.exists():
+    (HIER.parent / "kennis" / "index.html").write_text(
+        '<!doctype html>\n<html lang="nl">\n<head>\n<meta charset="utf-8">\n'
+        '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
+        '<!-- Gegenereerd door ruimtelijk/bouw.py uit kennis/pagina.html; niet met de hand aanpassen. -->\n'
+        '</head>\n<body>\n' + PAGINA.read_text(encoding="utf-8") + '\n</body>\n</html>\n', encoding="utf-8")
+    print("Kennispagina: kennis/index.html")

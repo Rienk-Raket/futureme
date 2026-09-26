@@ -34,19 +34,16 @@ S.hh_sessies = S.hh_sessies || [];
 
 /* ---------- 77.2 Schatten: hoe lang en hoe zwaar? ----------
    Eerste schatting op trefwoorden; daarna leert de app van je eigen tijden. */
-const HH_SCHATTING = [
-  [/oven/i, 15], [/koelkast|vriezer/i, 12], [/ramen|raam/i, 12], [/douche|bad\b|badkuip/i, 10], [/bed (verschonen|opmaken)|verschonen/i, 10],
-  [/stofzuig/i, 12], [/dweil/i, 10], [/vouw/i, 10], [/ophang/i, 8], [/afwas|vaat(?!wasser)/i, 10], [/stof/i, 8], [/opruim/i, 8],
-  [/vaatwasser/i, 5], [/kookplaat|fornuis|gasfornuis/i, 5], [/wc|toilet/i, 6], [/veeg|vegen/i, 5], [/aanrecht/i, 4], [/gootsteen|wastafel|kraan/i, 4],
-  [/spiegel/i, 2], [/afval|vuilnis|prullenbak|container/i, 2], [/planten/i, 3], [/handdoek/i, 2], [/was (draaien|aanzetten|in)/i, 3], [/bank|kussens/i, 4]
-];
-const HH_ZWAAR = /stofzuig|dweil|ramen|raam|douche|badkuip|\bbad\b|oven|koelkast|bed verschonen|verschonen|vloer/i;
-const HH_LICHT = /spiegel|afval|vuilnis|prullenbak|planten|handdoek|was draaien|kussens|terugleggen/i;
+// Schattingen, zwaarte en tips komen uit de kennisbank (FM_KENNIS.huishouden).
+const HH_K = FM_KENNIS.huishouden;
+const HH_SCHATTING = HH_K.schattingen.map(([patroon, min]) => [new RegExp(patroon, "i"), min]);
+const HH_ZWAAR = new RegExp(HH_K.zwaar, "i");
+const HH_LICHT = new RegExp(HH_K.licht, "i");
 function hhSchat(tekst) {
   const m = String(tekst).match(/(\d+)\s*(min|m\b|minuten)/i);
   if (m) return Math.max(1, Math.min(120, +m[1]));
   const k = HH_SCHATTING.find(([r]) => r.test(tekst));
-  return k ? k[1] : 5;
+  return k ? k[1] : HH_K.standaardMin;
 }
 const hhZwaarte = tekst => HH_ZWAAR.test(tekst) ? 2 : HH_LICHT.test(tekst) ? 0 : 1;
 const hhSleutel = tekst => String(tekst).toLowerCase().replace(/\(.*?\)|\d+\s*(min|m|minuten)\b/g, "").replace(/[^a-zà-ÿ ]/g, " ").replace(/\s+/g, " ").trim();
@@ -60,58 +57,30 @@ function hhKalibratie(tekst) {
     if (r.status !== "gedaan" || !r.sec || r.soort === "pauze" || hhSleutel(r.tekst || "") !== k || !r.basisMin) continue;
     echt += r.sec / 60; basis += r.basisMin; n++;
   }
-  if (n < 2 || !basis) return { factor: 1, n };
-  return { factor: Math.max(.5, Math.min(3, echt / basis)), n };
+  const kal = HH_K.kalibratie;
+  if (n < kal.minMetingen || !basis) return { factor: 1, n };
+  return { factor: Math.max(kal.minFactor, Math.min(kal.maxFactor, echt / basis)), n };
 }
 
 /* ---------- 77.3 Tips per taak ----------
    Praktisch en kort. De tip bij "inwerken" maakt gebruik van wachttijd:
    middel laten inwerken terwijl je iets anders doet. */
-const HH_TIPS = [
-  [/wc|toilet/i, "Eerst middel in de pot, laten inwerken, intussen de bril en buitenkant."],
-  [/douche|badkuip|\bbad\b/i, "Spray eerst en laat het inwerken terwijl je iets anders doet."],
-  [/stofzuig/i, "Begin in de verste hoek en werk naar de deur toe."],
-  [/dweil/i, "Werk van achter naar de deur, zodat je niet over nat loopt."],
-  [/stof/i, "Van boven naar beneden: wat valt, zuig je daarna op."],
-  [/afwas|vaat(?!wasser)/i, "Eerst alles verzamelen, dan pas wassen. Glazen eerst, pannen laatst."],
-  [/opruim|terugleggen/i, "Neem een wasmand mee: alles wat hier niet hoort gaat erin."],
-  [/ramen|raam|spiegel/i, "Niet in de volle zon, dan krijg je strepen."],
-  [/bed|verschonen/i, "Hoeslaken eerst, diagonaal de hoeken om."],
-  [/aanrecht/i, "Eerst leegmaken, dan afnemen. Een leeg aanrecht voelt al half klaar."],
-  [/oven/i, "Laat een ovenreiniger inwerken en doe intussen de kookplaat."],
-  [/afval|vuilnis|prullenbak/i, "Neem meteen een nieuwe zak mee naar de prullenbak."],
-  [/was/i, "Zet een wekker voor als de was klaar is, anders blijft hij staan."]
-];
-const HH_PRIKKEL = /wc|toilet|douche|oven|badkuip|\bbad\b|ramen|dweil|kookplaat|middel/i;
+const HH_TIPS = HH_K.taakTips.map(([patroon, tip]) => [new RegExp(patroon, "i"), tip]);
+const HH_PRIKKEL = new RegExp(HH_K.prikkel, "i");
 function hhTip(tekst, aanpak, eerste) {
   const t = (HH_TIPS.find(([r]) => r.test(tekst)) || [])[1] || "";
   const r = aanpak.richting;
-  if ((r === "autisme" || r === "audhd") && HH_PRIKKEL.test(tekst)) return (t ? t + " " : "") + "Geurvrij middel of handschoenen als het te veel is.";
-  if (eerste && (r === "adhd" || r === "audhd")) return "Alleen deze. Niet aan het geheel denken." + (t ? " " + t : "");
-  if (r === "energie" && hhZwaarte(tekst) === 2) return (t ? t + " " : "") + "Mag zittend of in twee keer.";
+  const rt = HH_K.richtingTips;
+  if ((r === "autisme" || r === "audhd") && HH_PRIKKEL.test(tekst)) return (t ? t + " " : "") + rt.prikkel;
+  if (eerste && (r === "adhd" || r === "audhd")) return rt.eersteKlus + (t ? " " + t : "");
+  if (r === "energie" && hhZwaarte(tekst) === 2) return (t ? t + " " : "") + rt.zwaarEnergie;
   return t;
 }
 
 /* ---------- 77.4 Startlijsten ----------
    "Reset in 5 dingen" volgt een bekende aanpak voor wie overweldigd raakt:
    afval, afwas, was, dingen met een plek, dingen zonder plek. */
-const HH_STARTLIJSTEN = [
-  { sleutel: "reset", naam: "Reset in 5 dingen", emoji: "⚡", ritme: 1, taken: [
-    ["Overal", "Afval weggooien", 3, "moet"], ["Overal", "Afwas verzamelen naar de keuken", 4, "moet"], ["Overal", "Wasgoed naar de wasmand", 3, "normaal"],
-    ["Overal", "Dingen met een vaste plek terugleggen", 6, "normaal"], ["Overal", "Dingen zonder plek in één bak", 3, "bonus"]] },
-  { sleutel: "keuken", naam: "Keuken", emoji: "🍳", ritme: 3, taken: [
-    ["Keuken", "Aanrecht leegmaken", 3, "moet"], ["Keuken", "Vaatwasser uitruimen", 5, "moet"], ["Keuken", "Vaatwasser inruimen", 5, "moet"], ["Keuken", "Aanrecht afnemen", 3, "normaal"],
-    ["Keuken", "Kookplaat schoonmaken", 5, "normaal"], ["Keuken", "Gootsteen schoonmaken", 3, "normaal"], ["Keuken", "Vuilnis wegbrengen", 2, "moet"], ["Keuken", "Vloer vegen", 5, "bonus"]] },
-  { sleutel: "badkamer", naam: "Badkamer", emoji: "🛁", ritme: 7, taken: [
-    ["Badkamer", "Wastafel en kraan", 4, "moet"], ["Badkamer", "Spiegel", 2, "normaal"], ["Badkamer", "Wc schoonmaken", 6, "moet"], ["Badkamer", "Douche schoonmaken", 10, "normaal"],
-    ["Badkamer", "Handdoeken verwisselen", 2, "normaal"], ["Badkamer", "Vloer dweilen", 6, "bonus"]] },
-  { sleutel: "week", naam: "Weekschoonmaak", emoji: "🏠", ritme: 7, taken: [
-    ["Woonkamer", "Opruimen", 8, "moet"], ["Woonkamer", "Stof afnemen", 8, "normaal"], ["Woonkamer", "Stofzuigen", 12, "moet"],
-    ["Slaapkamer", "Bed verschonen", 10, "normaal"], ["Slaapkamer", "Opruimen", 5, "normaal"],
-    ["Keuken", "Aanrecht en kookplaat", 8, "moet"], ["Keuken", "Vuilnis wegbrengen", 2, "moet"],
-    ["Badkamer", "Wc schoonmaken", 6, "moet"], ["Badkamer", "Wastafel en spiegel", 5, "normaal"],
-    ["Hal", "Schoenen en jassen opruimen", 3, "bonus"], ["Overal", "Vloeren dweilen", 15, "bonus"]] }
-];
+const HH_STARTLIJSTEN = HH_K.startlijsten;
 function hhVanStart(s) {
   const nu = new Date().toISOString();
   return { id: uid(), naam: s.naam, emoji: s.emoji, ritme: s.ritme, bron: { soort: "start", id: s.sleutel }, gemaakt: nu, bijgewerkt: nu, laatstGedaan: null,
@@ -235,10 +204,10 @@ function hhMaakPlan(lijst, beschikbaar, opties) {
   return { items: metPauzes, werkMin, pauzeMin, totaal: werkMin + pauzeMin, cap, buffer, buiten, notities, richting: a.richting };
 }
 function hhPauzeTip(a) {
-  if (a.richting === "energie" || a.extraEnergie) return "Echt rusten: zitten of liggen, ogen dicht. Niet je telefoon.";
-  if (a.richting === "autisme" || a.richting === "audhd") return "Even prikkelarm: zachter licht, stilte of oordoppen.";
-  if (a.richting === "adhd") return "Water drinken en even bewegen. Blijf in de buurt, de timer loopt.";
-  return "Even zitten, water drinken.";
+  const pt = HH_K.pauzeTips;
+  if (a.richting === "energie" || a.extraEnergie) return pt.energie;
+  if (a.richting === "autisme" || a.richting === "audhd") return pt.autisme;
+  return pt[a.richting] || pt.geen;
 }
 
 /* ---------- 77.7 Ritme: wat is aan de beurt? ---------- */

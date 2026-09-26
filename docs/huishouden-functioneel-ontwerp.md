@@ -2,6 +2,8 @@
 
 **FutureMe · versie 1.0 · 26 september 2026 · status: gebouwd en getest**
 
+> **Leidende bron:** de inhoud van dit document staat ook gestructureerd in `kennis/huishouden.json`. De app leest dat bestand bij het bouwen in (als `FM_KENNIS`) en de deelbare webpagina (`kennis/index.html`) toont het. Pas bij wijzigingen eerst het JSON-bestand aan.
+
 | | |
 |---|---|
 | Product | FutureMe, een Nederlandstalige, persoonlijke PWA die offline werkt en alles in één `index.html` houdt |

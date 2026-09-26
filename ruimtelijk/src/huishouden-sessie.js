@@ -22,10 +22,7 @@ const HHS = { a: null, raf: 0 };
 const hhsRustig = () => inst("rust", false) || (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
 const hhsMagGeluid = () => inst("hhGeluid", true) && !inst("rust", false) && !(typeof mfInst === "function" && mfInst().prikkelarm);
 const hhsTijd = s => { s = Math.max(0, Math.round(s)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; };
-const HHS_TESS = [
-  "Ik ben er nog. Jij ook?", "Rustig tempo is ook een tempo.", "Eén ding tegelijk. Dit ding.",
-  "Even ademhalen mag.", "Je bent al begonnen. Dat was het moeilijkste.", "Ik werk gewoon met je mee."
-];
+const HHS_TESS = FM_KENNIS.huishouden.meewerker.zinnen;
 
 /* ---------- 79.1 Starten ---------- */
 function hhSessieStart(lijst, plan, opties) {
@@ -140,7 +137,7 @@ function hhsTik(dt) {
     // Meewerker: af en toe een rustig zinnetje (niet voorgelezen, alleen zichtbaar).
     if (inst("hhMeewerker", true) && it.soort === "taak") {
       A.tessTel += dt;
-      if (A.tessTel > 150) { A.tessTel = 0; const r = document.querySelector("#hh-sessie .hhs-tessregel"); if (r) { r.textContent = HHS_TESS[Math.floor(Math.random() * HHS_TESS.length)]; r.classList.remove("puls"); void r.offsetWidth; r.classList.add("puls"); } }
+      if (A.tessTel > FM_KENNIS.huishouden.meewerker.elkeSec) { A.tessTel = 0; const r = document.querySelector("#hh-sessie .hhs-tessregel"); if (r) { r.textContent = HHS_TESS[Math.floor(Math.random() * HHS_TESS.length)]; r.classList.remove("puls"); void r.offsetWidth; r.classList.add("puls"); } }
     }
   }
   // Helderheid volgt het aantal gedane klussen, vloeiend.

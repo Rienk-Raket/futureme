@@ -47,35 +47,20 @@ function pfGewicht() {
    S = prikkels, voorspelbaarheid, wisselen (autisme-kenmerken)
    E = energie (energiebeperking, zoals burn-out of ME/CVS)
    Antwoord 0–4: nooit, zelden, soms, vaak, heel vaak. */
-const PF_VRAGEN = [
-  ["A", "Ik stel klussen uit, ook als ik ze belangrijk vind, omdat beginnen zwaar voelt."],
-  ["A", "Midden in een klus raak ik afgeleid en maak ik hem niet af."],
-  ["A", "Ik schat verkeerd in hoe lang iets duurt, of ik kom te laat."],
-  ["A", "Saaie, herhalende taken maken me onrustig; ik zoek snel iets nieuws."],
-  ["S", "Geluid, geur, licht of texturen (zoals schoonmaakmiddel) zijn me snel te veel."],
-  ["S", "Onverwachte veranderingen in mijn planning brengen me flink van slag."],
-  ["S", "Wisselen van de ene taak naar de andere kost me veel moeite."],
-  ["S", "Ik doe dingen het liefst op een vaste manier en in een vaste volgorde."],
-  ["E", "Na een gewone inspanning ben ik uren of dagen uitgeput."],
-  ["E", "Ik moet mijn energie per dag zuinig verdelen om niet in te storten."]
-];
-const PF_SCHAAL = ["Nooit", "Zelden", "Soms", "Vaak", "Heel vaak"];
-const PF_RICHTINGEN = {
-  adhd: { naam: "ADHD-kenmerken", kort: "Aandacht en beginnen", ico: "⚡", uitleg: "Beginnen, afleiding en tijd zijn het lastigst. Korte blokken, snel succes en zichtbare tijd helpen." },
-  autisme: { naam: "Autisme-kenmerken", kort: "Voorspelbaarheid en prikkels", ico: "🧩", uitleg: "Voorspelbaarheid, prikkels en wisselen kosten energie. Een vaste volgorde, vooraf alles zien en een seintje voor een wissel helpen." },
-  audhd: { naam: "ADHD- én autisme-kenmerken", kort: "Beide", ico: "🔀", uitleg: "Zowel beginnen en afleiding als prikkels en wisselen. Korte blokken in een vaste volgorde, met een seintje voor elke wissel." },
-  energie: { naam: "Weinig energie", kort: "Energie verdelen", ico: "🔋", uitleg: "Je energie is beperkt. Kleine porties, vaak rust en zwaar werk verdelen (pacing) helpen." },
-  geen: { naam: "Geen duidelijke richting", kort: "Algemeen", ico: "🌿", uitleg: "Geen uitgesproken richting. Je krijgt de standaardaanpak, die je altijd kunt aanpassen." }
-};
+// Vragen, schaal en richtingen komen uit de kennisbank (kennis/huishouden.json → FM_KENNIS).
+const PF_VRAGEN = FM_KENNIS.vragen.lijst;
+const PF_SCHAAL = FM_KENNIS.vragen.schaal;
+const PF_RICHTINGEN = FM_KENNIS.richtingen;
 function pfUitslag(antwoorden) {
   const som = d => PF_VRAGEN.reduce((a, [dim], i) => a + (dim === d ? (+antwoorden[i] || 0) : 0), 0);
   const A = som("A") / 16, Sx = som("S") / 16, E = som("E") / 8;
+  const d = FM_KENNIS.vragen.drempels;
   let richting = "geen";
-  if (A >= .56 && Sx >= .56) richting = "audhd";
-  else if (A >= .5 && A >= Sx) richting = "adhd";
-  else if (Sx >= .5) richting = "autisme";
-  else if (E >= .62) richting = "energie";
-  return { A, S: Sx, E, richting, energie: E >= .62 };
+  if (A >= d.beide && Sx >= d.beide) richting = "audhd";
+  else if (A >= d.enkel && A >= Sx) richting = "adhd";
+  else if (Sx >= d.enkel) richting = "autisme";
+  else if (E >= d.energie) richting = "energie";
+  return { A, S: Sx, E, richting, energie: E >= d.energie };
 }
 /* De richting die telt: handmatig gekozen gaat voor de vragenlijst. */
 function pfRichting() {
@@ -96,59 +81,18 @@ function pfRichting() {
    - afkoelUur    : wishlist-afkoelperiode (uren) voor aankopen boven € 50
    - maxSessie    : langste aangeraden sessie in minuten (null = geen)
    - ankerProfiel : bijpassend profiel in Anker */
-const ND_AANPAK = {
-  adhd:    { blokMax: 10, pauzeElke: 25, pauzeMin: 5, buffer: 1.25, volgorde: "snelsucces", wisselSein: false, variatie: true, afkoelUur: 72, maxSessie: null, ankerProfiel: "anders" },
-  autisme: { blokMax: 15, pauzeElke: 30, pauzeMin: 5, buffer: 1.2, volgorde: "vast", wisselSein: true, variatie: false, afkoelUur: 24, maxSessie: null, ankerProfiel: "anders" },
-  audhd:   { blokMax: 10, pauzeElke: 25, pauzeMin: 5, buffer: 1.3, volgorde: "vast", wisselSein: true, variatie: false, afkoelUur: 72, maxSessie: null, ankerProfiel: "anders" },
-  energie: { blokMax: 8, pauzeElke: 15, pauzeMin: 8, buffer: 1.3, volgorde: "zwaarEerst", wisselSein: false, variatie: false, afkoelUur: 24, maxSessie: 45, ankerProfiel: "energie" },
-  geen:    { blokMax: 20, pauzeElke: 45, pauzeMin: 5, buffer: 1.15, volgorde: "vast", wisselSein: false, variatie: false, afkoelUur: 24, maxSessie: null, ankerProfiel: null }
-};
+const ND_AANPAK = FM_KENNIS.aanpak;
 function ndAanpak() {
   const r = pfRichting(), a = Object.assign({ richting: r }, ND_AANPAK[r] || ND_AANPAK.geen);
   // Lage energie naast een andere richting: kortere sessies en langere pauzes.
-  if (r !== "energie" && pfProfiel().nd.energie) Object.assign(a, { pauzeElke: Math.min(a.pauzeElke, 20), pauzeMin: Math.max(a.pauzeMin, 8), maxSessie: 60, extraEnergie: true });
+  const ev = FM_KENNIS.energieVlag;
+  if (r !== "energie" && pfProfiel().nd.energie) Object.assign(a, { pauzeElke: Math.min(a.pauzeElke, ev.pauzeElkeMax), pauzeMin: Math.max(a.pauzeMin, ev.pauzeMinMin), maxSessie: ev.maxSessie, extraEnergie: true });
   return a;
 }
 
 /* ---------- 76.4 Handvatten per plek in de app ----------
    Korte, concrete tips per richting. Altijd één zin, geen labels in koppen. */
-const ND_TIPS = {
-  taken: {
-    adhd: "Begin met iets van 2 minuten. Beginnen is het moeilijkste deel; daarna gaat het vaak vanzelf.",
-    autisme: "Schrijf bij elke taak de eerste concrete stap. Dan weet je precies wat er gebeurt.",
-    audhd: "Zet de eerste stap erbij en begin met iets kleins. Plan geen twee wissels vlak na elkaar.",
-    energie: "Kies vandaag maximaal drie taken. Wat niet lukt, schuift gewoon door.",
-    geen: "Maak er een als-dan-plan van: “Als ik koffie heb, dan begin ik aan …”."
-  },
-  planning: {
-    adhd: "Plan 25% extra tijd en zet een vertrekwekker, niet alleen een afspraakwekker.",
-    autisme: "Zet overgangen in je agenda: een blok van 10 minuten tussen afspraken.",
-    audhd: "Plan 30% extra tijd en een rustblok na elke afspraak.",
-    energie: "Houd na een drukke afspraak een rustblok vrij (pacing).",
-    geen: "Plan wat buffer tussen afspraken; dingen duren vaak langer dan je denkt."
-  },
-  sidehustle: {
-    adhd: "Werk aan één side hustle tegelijk en knip het werk in blokken van 25 minuten.",
-    autisme: "Kies een vast moment in de week voor je side hustle; dat maakt het voorspelbaar.",
-    audhd: "Eén hustle tegelijk, op een vast moment, in korte blokken.",
-    energie: "Houd je side hustle klein: één kleine stap per keer, alleen op goede dagen.",
-    geen: "Zet elke week één concrete volgende stap."
-  },
-  wishlist: {
-    adhd: "Afkoelen: wacht 72 uur voor je iets boven € 50 koopt. Impulsen zakken vaak weg.",
-    autisme: "Vergelijk op vaste punten (prijs, gebruik, prikkels) en beslis op een vast moment.",
-    audhd: "Wacht 72 uur en vergelijk op vaste punten voor je iets boven € 50 koopt.",
-    energie: "Vraag bij elke wens: bespaart dit energie? Dan telt dat mee.",
-    geen: "Slaap er een nacht over bij grotere aankopen."
-  },
-  huishouden: {
-    adhd: "Korte blokken, snel succes eerst, en de tijd zichtbaar. Muziek of een podcast helpt.",
-    autisme: "Vaste volgorde per ruimte, alles vooraf te zien, en een seintje voor elke wissel.",
-    audhd: "Korte blokken in een vaste volgorde, met een seintje voor elke wissel.",
-    energie: "Kleine porties, zwaar werk vroeg, en echte rust in de pauzes.",
-    geen: "Werk per ruimte en neem op tijd pauze."
-  }
-};
+const ND_TIPS = FM_KENNIS.tips;
 function ndTip(plek) {
   const r = pfRichting(), t = ND_TIPS[plek];
   return t ? (t[r] || t.geen) : "";
@@ -189,7 +133,8 @@ function vwProfiel() {
     ${uit ? `<div class="pf-scores" aria-label="Uitkomst van de vragen">${[["Aandacht en beginnen", uit.A], ["Prikkels en voorspelbaarheid", uit.S], ["Energie", uit.E]].map(([n, v]) => `<div class="pf-score"><span>${n}</span><i><b style="width:${Math.round(v * 100)}%"></b></i><small>${Math.round(v * 100)}%</small></div>`).join("")}
       <p class="pf-klein">Ingevuld: ${esc(datumLabel(nd.datum).toLowerCase())}.</p></div>` : ""}
     <button class="knop breed ${uit ? "rand" : "primair"}" data-act="pf-vragen">${uit ? "Vragen opnieuw invullen" : "Tien vragen beantwoorden"}</button>
-    <p class="pf-let"><b>Geen diagnose.</b> Dit is zelfreflectie om handvatten te kiezen, geen test. Herken je veel? Praat met je huisarts; die kan verwijzen voor een echte beoordeling.</p>`);
+    <p class="pf-let"><b>Geen diagnose.</b> ${esc(FM_KENNIS.vragen.geenDiagnose)}</p>
+    <button class="knop breed rand" data-act="ga" data-view="hhwaarom">Waarom deze aanpak? Onderbouwing en bronnen</button>`);
   h += sectie2("app", "In de app", inst("ndTips", true) ? "Tips staan aan" : "Tips staan uit", `
     <ul class="schakels">${typeof mfSchakel === "function" ? "" : ""}
       <li class="schakel"><span class="tekst"><b>Tips per onderdeel</b><small>Eén korte tip bovenaan Persoonlijk, Komend, Side Hustle, Wishlist en Huishouden.</small></span>
@@ -205,7 +150,7 @@ function pfAanpakLijst() {
     ${rij("Langste werkblok", a.blokMax + " min")}
     ${rij("Pauze", `${a.pauzeMin} min na elke ${a.pauzeElke} min`)}
     ${rij("Extra tijd bij plannen", "+" + Math.round((a.buffer - 1) * 100) + "%")}
-    ${rij("Volgorde", { snelsucces: "Snel succes eerst", vast: "Vaste volgorde per ruimte", zwaarEerst: "Zwaar werk vroeg, dan licht" }[a.volgorde])}
+    ${rij("Volgorde", FM_KENNIS.volgordeNamen[a.volgorde])}
     ${rij("Seintje voor een wissel", a.wisselSein ? "Ja" : "Nee")}
     ${a.maxSessie ? rij("Langste sessie", a.maxSessie + " min") : ""}
     ${rij("Afkoelen bij aankopen > € 50", a.afkoelUur + " uur")}</ul>`;

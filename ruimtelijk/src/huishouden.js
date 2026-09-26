@@ -12,7 +12,7 @@
    ========================================================================== */
 
 V.hh = V.hh || { samenvatting: null };
-const HH_TIJDEN = [5, 10, 15, 20, 30, 45, 60, 90];
+const HH_TIJDEN = FM_KENNIS.huishouden.tijden;
 const HH_PRIO = { moet: ["Moet", "!"], normaal: ["Normaal", ""], bonus: ["Bonus", "+"] };
 
 /* ---------- 78.1 Startpagina ---------- */
@@ -58,6 +58,7 @@ function vwHuishouden() {
         <button class="toggle" data-act="hh-inst" data-k="hhMeewerker" aria-pressed="${inst("hhMeewerker", true)}" aria-label="Meewerker Tess"></button></li>
       <li class="schakel"><span class="tekst"><b>Geluid en trillen</b><small>Zacht seintje als de tijd om is. Rust en Prikkelarm zetten dit uit.</small></span>
         <button class="toggle" data-act="hh-inst" data-k="hhGeluid" aria-pressed="${inst("hhGeluid", true)}" aria-label="Geluid en trillen"></button></li></ul></div>`;
+  h += `<button class="card hh-waaromknop" data-act="ga" data-view="hhwaarom"><span aria-hidden="true">📚</span><span><b>Waarom werkt het zo?</b><small>Onderbouwing, aanpak per richting en bronnen</small></span>${ico("pijlr", "width:16px;height:16px;color:var(--faint)")}</button>`;
   return `<div class="hh">${h}</div>`;
 }
 function hhGeleerd() {
@@ -187,6 +188,32 @@ function hhStartlijstenBlad() {
   });
 }
 
+/* ---------- 78.5b Waarom zo? (uit de kennisbank) ----------
+   Alles op dit scherm komt uit FM_KENNIS (kennis/huishouden.json): dezelfde
+   bron als de deelbare webpagina. Past iemand de kennisbank aan, dan past
+   ook de app zich bij de volgende build aan. */
+function vwHhWaarom() {
+  const K = FM_KENNIS, r = typeof pfRichting === "function" ? pfRichting() : "geen", f = V.hhWaaromFilter || "alle";
+  const bron = nr => K.bronnen.find(b => b.nr === nr);
+  const bronLink = nr => { const b = bron(nr); if (!b) return ""; const kort = esc(b.tekst.split(").")[0] + ")"); return b.url ? `<a href="${esc(b.url)}" target="_blank" rel="noopener">${kort}</a>` : kort; };
+  const sterktes = [...new Set(K.onderbouwing.map(o => o.sterkte))];
+  const lijst = K.onderbouwing.filter(o => f === "alle" || o.sterkte === f);
+  const kol = ["blokMax", "pauzeElke", "pauzeMin", "buffer", "volgorde", "maxSessie"];
+  const waarde = (k, v) => k === "buffer" ? "+" + Math.round((v - 1) * 100) + "%" : k === "volgorde" ? K.volgordeNamen[v] : v == null ? "—" : v + " min";
+  return `<div class="hh hh-waarom">
+    <div class="card card-pad"><p class="hh-lead">${esc(K.doel.oplossing)}</p>
+      <p class="hh-uitleg">Kennisbank versie ${esc(K.meta.versie)} · ${esc(datumLabel(K.meta.datum))}${K.meta.webpagina ? ` · <a href="${esc(K.meta.webpagina)}" target="_blank" rel="noopener">Open de deelbare webpagina</a>` : ""}</p></div>
+    ${sectie("Uitgangspunten")}<div class="card hh-principes">${K.principes.map(([t, u]) => `<div class="hh-rij stil"><span class="hh-rijt"><b>${esc(t)}</b><small>${esc(u)}</small></span></div>`).join("")}</div>
+    ${sectie("Aanpak per richting")}<div class="card hh-tabelwrap"><table class="hh-tabel"><thead><tr><th>Richting</th><th>Blok</th><th>Pauze na</th><th>Pauze</th><th>Buffer</th><th>Volgorde</th><th>Max.</th></tr></thead><tbody>
+      ${Object.entries(K.aanpak).map(([k, a]) => `<tr${k === r ? ' class="jij"' : ""}><th>${K.richtingen[k].ico} ${esc(K.richtingen[k].kort)}${k === r ? " <small>(jij)</small>" : ""}</th>${kol.map(c => `<td>${esc(String(waarde(c, a[c])))}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
+    ${sectie("Onderbouwing")}<div class="hh-filters" role="group" aria-label="Filter op sterkte van het bewijs">${[["alle", "Alles"]].concat(sterktes.map(s => [s, K.sterktes[s]])).map(([k, n]) => `<button class="hh-filter" data-act="hh-waarom-filter" data-w="${k}" aria-pressed="${f === k}">${esc(n)}</button>`).join("")}</div>
+    <div class="hh-bewijs">${lijst.map(o => `<article class="card hh-bewijskaart"><div class="hh-bewijskop"><b>${esc(o.id)}</b><span class="hh-sterkte s-${o.sterkte}">${esc(K.sterktes[o.sterkte])}</span></div>
+      <p>${esc(o.bevinding)}</p><p class="hh-keuze"><b>In de app:</b> ${esc(o.keuze)}</p><p class="hh-uitleg">${esc(o.kanttekening)} · ${bronLink(o.bron)}${o.bron2 ? " · " + bronLink(o.bron2) : ""}</p></article>`).join("")}</div>
+    ${sectie("Bronnen")}<ol class="card card-pad hh-bronnen">${K.bronnen.map(b => `<li>${b.url ? `<a href="${esc(b.url)}" target="_blank" rel="noopener">${esc(b.tekst)}</a>` : esc(b.tekst)}</li>`).join("")}</ol>
+  </div>`;
+}
+Object.defineProperty(KOPPEN, "hhwaarom", { get: () => ["Waarom zo?", () => "Onderbouwing uit de kennisbank"], configurable: true, enumerable: true });
+
 /* ---------- 78.6 Tikken ---------- */
 async function hhTaakWijzig(l, id, w) {
   const x = JSON.parse(JSON.stringify(l)), t = x.taken.find(t => t.id === id); if (!t) return;
@@ -210,6 +237,7 @@ document.addEventListener("click", async e => {
     case "hh-startlijsten": hhStartlijstenBlad(); break;
     case "hh-nieuwelijst": bladVraag("Nieuwe schoonmaaklijst", "", "Bv. Zaterdagochtend", async naam => { if (!naam) return; const l = { id: uid(), naam, emoji: "🧽", ritme: 7, bron: { soort: "eigen" }, taken: [], gemaakt: new Date().toISOString() }; await bewaar("hh_lijsten", l); ga("hhlijst", l.id); }); break;
     case "hh-samen-weg": V.hh.samenvatting = null; teken(); break;
+    case "hh-waarom-filter": V.hhWaaromFilter = el.dataset.w; teken(); break;
     case "hh-inst": await zetInst(el.dataset.k, !inst(el.dataset.k, true)); teken(); break;
     case "hh-taak": { const l = vind("hh_lijsten", V.param); if (l) await hhTaakWijzig(l, id, el.dataset.w); break; }
     case "hh-taak-plus": {

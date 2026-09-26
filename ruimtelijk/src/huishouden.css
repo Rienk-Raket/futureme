@@ -226,3 +226,31 @@ html.hhs-open,html.hhs-open body{overflow:hidden}
 .hhs-aria{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media (max-height:700px){.hhs-titel{font-size:22px}.hhs-klok{font-size:42px}.hhs-tesswrap{max-height:30vh}}
 @media (prefers-reduced-motion:reduce){#hh-sessie{transition:none}.hhs-kaart.verdwijn{transition:none}}
+
+/* 78.5b Waarom zo? */
+.hh-waaromknop{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px 14px;margin-top:12px}
+.hh-waaromknop>span:first-child{font-size:22px}
+.hh-waaromknop>span:nth-child(2){flex:1;display:flex;flex-direction:column}
+.hh-waaromknop small{font-size:12px;color:var(--muted)}
+.hh-lead{margin:0;font-size:calc(15px * var(--t));line-height:1.5}
+.hh-waarom a{color:var(--accent);font-weight:650}
+.hh-tabelwrap{overflow-x:auto;padding:4px 0}
+.hh-tabel{border-collapse:collapse;width:100%;min-width:520px;font-size:calc(12.5px * var(--t))}
+.hh-tabel th,.hh-tabel td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap;font-variant-numeric:tabular-nums}
+.hh-tabel thead th{color:var(--muted);font-weight:650;font-size:calc(11.5px * var(--t))}
+.hh-tabel tr.jij{background:color-mix(in srgb,#0e7490 10%,transparent)}
+.hh-tabel tr.jij th small{color:var(--muted);font-weight:500}
+.hh-filters{display:flex;gap:6px;overflow-x:auto;margin:0 0 8px;padding-bottom:2px}
+.hh-filter{flex:0 0 auto;min-height:36px;padding:0 12px;border-radius:99px;background:var(--card);box-shadow:var(--shadow);font-size:calc(12.5px * var(--t));font-weight:650}
+.hh-filter[aria-pressed="true"]{background:#0e7490;color:#fff}
+.hh-bewijs{display:flex;flex-direction:column;gap:8px}
+.hh-bewijskaart{padding:12px 14px}
+.hh-bewijskaart p{margin:6px 0 0;font-size:calc(13.5px * var(--t));line-height:1.45}
+.hh-bewijskop{display:flex;justify-content:space-between;align-items:center}
+.hh-keuze{padding:8px 10px;border-radius:10px;background:var(--card2)}
+.hh-sterkte{font-size:calc(11px * var(--t));font-weight:750;padding:3px 9px;border-radius:99px;border:1.5px solid currentColor}
+.hh-sterkte.s-sterk{color:#15803d}.hh-sterkte.s-redelijk{color:#0e7490}.hh-sterkte.s-matig{color:#b45309}.hh-sterkte.s-zwak{color:#b91c1c}.hh-sterkte.s-praktijk,.hh-sterkte.s-principe{color:var(--muted)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .hh-sterkte.s-sterk{color:#4ade80}:root:not([data-theme="light"]) .hh-sterkte.s-redelijk{color:#67e8f9}:root:not([data-theme="light"]) .hh-sterkte.s-matig{color:#fbbf24}:root:not([data-theme="light"]) .hh-sterkte.s-zwak{color:#f87171}}
+:root[data-theme="dark"] .hh-sterkte.s-sterk{color:#4ade80}:root[data-theme="dark"] .hh-sterkte.s-redelijk{color:#67e8f9}:root[data-theme="dark"] .hh-sterkte.s-matig{color:#fbbf24}:root[data-theme="dark"] .hh-sterkte.s-zwak{color:#f87171}
+.hh-bronnen{margin:0;padding-left:34px;font-size:calc(12.5px * var(--t));line-height:1.5}
+.hh-bronnen li{margin-bottom:6px}
