@@ -36,6 +36,8 @@ function nwoMetingen(thema) {
       tijd("uren", "Uren gewerkt", "uur", "som", f => S.tijdlog.filter(l => l.shId && (!f || l.shId === f)).map(l => ({ d: l.datum, v: l.seconden / 3600 })), { filters: hustles }),
       cat("omzetper", "Omzet per side hustle", "eur", (van, tot) => nwoGroep(S.sh_geld.filter(g => g.soort === "in" && nwoIn(g.datum, van, tot)), g => shNaam(g.shId), g => g.bedrag / 100)),
       cat("urenper", "Uren per side hustle", "uur", (van, tot) => nwoGroep(S.tijdlog.filter(l => l.shId && nwoIn(l.datum, van, tot)), l => shNaam(l.shId), l => l.seconden / 3600)),
+      tijd("ideeen", "Ideeën toegevoegd", "aantal", "som", () => S.sh_ideeen.filter(x => x.gemaakt).map(x => ({ d: x.gemaakt.slice(0, 10), v: 1 }))),
+      cat("ideestatus", "Ideeën per status", "aantal", () => nwoGroep(S.sh_ideeen, x => (SHI_STATUS[x.status] || SHI_STATUS.open)[0], () => 1), { periodeloos: true }),
       cat("checkper", "Checklist klaar per side hustle", "pct", () => S.sh_hustles.filter(h => !h.gearchiveerd).map(h => { const c = shVan("sh_checks", h.id).filter(x => x.status !== "nvt"); return { label: h.naam, v: c.length ? c.filter(x => x.status === "klaar").length / c.length * 100 : 0 }; }), { periodeloos: true, geenDeel: true })
     ];
     case "taken": {

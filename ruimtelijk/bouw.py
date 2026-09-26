@@ -28,7 +28,8 @@ vervang('shles: (typeof vwShLes === "function" ? vwShLes : vwStart)',
         '    hobbyskills: (typeof vwHobbySkills === "function" ? vwHobbySkills : vwStart),\n'
         '    hobbyskill: (typeof vwHobbySkill === "function" ? vwHobbySkill : vwStart),\n'
         '    wishlist: (typeof vwWishlist === "function" ? vwWishlist : vwStart),\n'
-        '    wens: (typeof vwWens === "function" ? vwWens : vwStart)')
+        '    wens: (typeof vwWens === "function" ? vwWens : vwStart),\n'
+        '    shideeen: (typeof vwShIdeeen === "function" ? vwShIdeeen : vwStart)')
 
 # 3b. Categorieën: terugvallen op "overig" op naam, niet op positie (ruimte voor eigen categorieën).
 vervang("(CATEGORIEEN.find(c => c[0] === k) || CATEGORIEEN[6])", '(CATEGORIEEN.find(c => c[0] === k) || CATEGORIEEN.find(c => c[0] === "overig"))', 2)
@@ -67,7 +68,7 @@ ILL_WL = ('<symbol id="ill-wishlist" viewBox="0 0 100 80"><g fill="none" stroke=
 vervang('<symbol id="ill-persoonlijk"', ILL + '\n' + ILL_WL + '\n<symbol id="ill-persoonlijk"')
 
 # 5. Stijl: achteraan in het bestaande <style>-blok.
-css = "\n\n" + lees("ruimte.css") + "\n\n" + lees("hobbyskills.css") + "\n\n" + lees("sh-tabs.css") + "\n\n" + lees("eigen-categorieen.css") + "\n\n" + lees("fin-vast.css") + "\n\n" + lees("wishlist.css") + "\n\n" + lees("nieuw-rail.css") + "\n\n" + lees("mm-export.css") + "\n\n" + lees("retro.css").replace("__PIXELFONT__", base64.b64encode((HIER / "fonts" / "press-start-2p.woff2").read_bytes()).decode()) + "\n\n" + lees("incasso-bellen.css") + "\n\n" + lees("nieuw-overzicht.css") + "\n"
+css = "\n\n" + lees("ruimte.css") + "\n\n" + lees("hobbyskills.css") + "\n\n" + lees("sh-tabs.css") + "\n\n" + lees("eigen-categorieen.css") + "\n\n" + lees("fin-vast.css") + "\n\n" + lees("wishlist.css") + "\n\n" + lees("nieuw-rail.css") + "\n\n" + lees("mm-export.css") + "\n\n" + lees("retro.css").replace("__PIXELFONT__", base64.b64encode((HIER / "fonts" / "press-start-2p.woff2").read_bytes()).decode()) + "\n\n" + lees("incasso-bellen.css") + "\n\n" + lees("nieuw-overzicht.css") + "\n\n" + lees("sh-ideeen.css") + "\n"
 vervang('</style>\n</head>', css + '</style>\n</head>')
 
 # 6. Scripts: vlak vóór het blok dat start() aanroept.
@@ -75,7 +76,7 @@ marker = "/* Alles is geladen — de app kan starten. */"
 assert html.count(marker) == 1, "startmarker niet gevonden"
 i = html.index(marker)
 j = html.rfind("<script>", 0, i)
-blokken = "".join(f"<script>\n{lees(naam)}\n</script>\n" for naam in ("sh-theorie.js", "sh-modellen.js", "sh-scrum.js", "sh-dashboard.js", "ruimte.js", "hobbyskills.js", "hs-sjablonen.js", "mm-bron.js", "koppelingen.js", "eigen-categorieen.js", "fin-vast.js", "wishlist.js", "nieuw-rail.js", "nieuw-overzicht.js", "nieuw-analyse.js", "mm-export.js", "retro.js", "incasso-bellen.js", "tijdlijn-rust.js"))
+blokken = "".join(f"<script>\n{lees(naam)}\n</script>\n" for naam in ("sh-theorie.js", "sh-modellen.js", "sh-scrum.js", "sh-dashboard.js", "ruimte.js", "hobbyskills.js", "hs-sjablonen.js", "mm-bron.js", "koppelingen.js", "eigen-categorieen.js", "fin-vast.js", "wishlist.js", "sh-ideeen.js", "nieuw-rail.js", "nieuw-overzicht.js", "nieuw-analyse.js", "mm-export.js", "retro.js", "incasso-bellen.js", "tijdlijn-rust.js"))
 html = html[:j] + blokken + html[j:]
 
 UIT.write_text(html, encoding="utf-8")

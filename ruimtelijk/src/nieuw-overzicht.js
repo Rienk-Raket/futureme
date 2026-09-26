@@ -87,8 +87,9 @@ function nwoThemas() {
     r("Kaarten op het bord", n(kaarten.length), `${S.sh_sprints.filter(s => s.status === "actief").length} lopende sprint(s) · ${S.sh_sprints.filter(s => s.status === "afgerond").length} afgerond`),
     r("Uren (30 dagen)", (Math.round(shUren * 10) / 10).toString().replace(".", ",")),
     r("Omzet totaal", eur(geldIn)), r("Kosten totaal", eur(geldUit)), r("Resultaat", eur(geldIn - geldUit)),
+    r("Ideeën in de ideeënbank", n(S.sh_ideeen.filter(x => x.status === "open" || x.status === "onderzoek").length), `${S.sh_ideeen.filter(x => x.status === "gestart").length} gestart · ${S.sh_ideeen.length} in totaal`),
     r("Klanten en leads", n(S.sh_klanten.filter(k => act.some(h => h.id === k.shId)).length)), r("Experimenten", n(S.sh_experimenten.filter(x => act.some(h => h.id === x.shId)).length))
-  ].filter(x => act.length || x.label === "Side hustles"));
+  ].filter(x => act.length || x.label === "Side hustles" || x.label === "Ideeën in de ideeënbank"));
 
   // Taken en projecten
   const open = typeof openTaken === "function" ? openTaken() : S.taken.filter(t => !t.af);
