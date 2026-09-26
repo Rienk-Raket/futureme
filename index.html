@@ -2740,6 +2740,192 @@ html[data-retro="1"] .nwo-kies span{font-family:var(--pixel);font-weight:400;fon
 .shi-stapnieuw{display:flex;gap:8px;margin-top:10px}
 .shi-stapnieuw .invoer{flex:1;min-width:0}
 
+
+/* === SECTIE 73: ANKER – VORMGEVING ===
+   Volgt de variabelen en onderdelen van de app. Tikdoelen minimaal 48px.
+   Lettergrootte: .mf-l-normaal / .mf-l-groot / .mf-l-extra (--mf-f). */
+.mf-l-normaal{--mf-f:1}
+.mf-l-groot{--mf-f:1.18}
+.mf-l-extra{--mf-f:1.38}
+.mf-scherm{font-size:calc(15px * var(--t) * var(--mf-f,1));line-height:1.5}
+.mf-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.mf-titel{font-size:calc(22px * var(--t) * var(--mf-f,1));font-weight:800;letter-spacing:-.01em;margin:6px 2px 6px;line-height:1.25}
+.mf-vet{font-weight:700;margin:0 2px 14px}
+.mf-kop3{font-size:calc(15px * var(--t) * var(--mf-f,1));font-weight:750;margin:18px 2px 8px}
+.mf-klein{font-size:calc(13px * var(--t) * var(--mf-f,1));color:var(--muted);margin:6px 2px}
+.mf-voet{font-size:calc(12.5px * var(--t) * var(--mf-f,1));color:var(--muted);margin:16px 2px;text-align:center}
+.mf-link{color:var(--accent);font-weight:650;min-height:48px;padding:0 2px;text-decoration:underline;text-underline-offset:3px}
+.mf-blok p{margin:0 0 8px}
+.mf-blok p:last-child{margin-bottom:0}
+.mf-blok .mf-kop3{margin-top:0}
+.mf-verder{margin-top:6px}
+/* De grote knop: één tik naar rust */
+.mf-snelknop{display:flex;align-items:center;justify-content:center;width:100%;min-height:72px;border-radius:20px;margin:6px 0 10px;
+  background:#2f6d94;color:#fff;font-size:calc(18px * var(--t) * var(--mf-f,1));font-weight:750;box-shadow:0 6px 0 0 #1f4d69,0 10px 20px -6px rgba(47,109,148,.5);
+  transition:transform .1s,box-shadow .1s}
+.mf-snelknop:active{transform:translateY(4px);box-shadow:0 2px 0 0 #1f4d69}
+.mf-rij{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mf-rij .knop{min-height:48px}
+.mf-profielchip{display:block;margin:12px auto 0;min-height:48px;padding:0 16px;border-radius:999px;background:var(--card2);color:var(--text);font-weight:600;font-size:calc(13.5px * var(--t) * var(--mf-f,1))}
+.mf-week{text-align:center;color:var(--muted);margin:6px 0 4px;font-size:calc(13.5px * var(--t) * var(--mf-f,1))}
+/* Profielen */
+.mf-profielen{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.mf-profiel{display:flex;flex-direction:column;gap:2px;width:100%;text-align:left;min-height:56px;padding:12px 14px;border-radius:16px;border:2px solid var(--line);background:var(--card)}
+.mf-profiel b{font-size:calc(15px * var(--t) * var(--mf-f,1))}
+.mf-profiel span{color:var(--muted);font-size:calc(13px * var(--t) * var(--mf-f,1))}
+.mf-profiel.aan,.mf-profiel[aria-pressed="true"]{border-color:#2f6d94;background:color-mix(in srgb,#2f6d94 9%,var(--card))}
+.mf-overslaan{min-height:48px}
+/* Oefeningkaarten */
+.mf-oefenlijst{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.mf-oef{background:var(--card);border-radius:16px;box-shadow:var(--shadow);display:flex;align-items:stretch;overflow:hidden}
+.mf-oefhoofd{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;text-align:left;padding:12px 10px 12px 14px;min-height:64px}
+.mf-oefhoofd b{font-size:calc(15.5px * var(--t) * var(--mf-f,1))}
+.mf-oefwat{font-size:calc(13.5px * var(--t) * var(--mf-f,1));color:var(--text)}
+.mf-oefmeta{font-size:calc(12.5px * var(--t) * var(--mf-f,1));color:var(--muted)}
+.mf-oefknoppen{display:flex;align-items:center;gap:2px;padding:0 6px 0 0;flex-wrap:wrap;justify-content:flex-end;max-width:52%}
+.mf-duur,.mf-fav{min-width:48px;min-height:48px;border-radius:12px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
+.mf-duur{background:var(--card2);min-width:44px;margin:2px}
+.mf-fav{font-size:22px;color:#b7791f}
+.mf-fav[aria-pressed="false"]{color:var(--faint)}
+/* Menu en programma */
+.mf-menu{list-style:none;margin:14px 0 0;padding:0;background:var(--card);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+.mf-menu button{display:flex;align-items:center;gap:12px;width:100%;min-height:52px;padding:0 14px;text-align:left;border-bottom:1px solid var(--line);font-size:calc(15px * var(--t) * var(--mf-f,1))}
+.mf-menu li:last-child button{border-bottom:0}
+.mf-menu svg{width:20px;height:20px;color:var(--muted);flex:0 0 auto}
+.mf-prog .knop{min-height:48px;margin:4px 0 10px}
+.mf-prog p{margin:0 0 10px}
+.mf-progdagen{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+.mf-progdagen li{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:calc(13.5px * var(--t) * var(--mf-f,1))}
+.mf-progdagen li>span:first-child{width:24px;height:24px;border-radius:50%;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex:0 0 auto}
+.mf-progdagen li.af>span:first-child{background:#2f6d94;color:#fff}
+.mf-progdagen li.nu{color:var(--text);font-weight:700}
+.mf-progdagen li.nu>span:first-child{border:2px solid #2f6d94;background:transparent}
+/* Help me kiezen */
+.mf-vraag{border:0;margin:0 0 14px;padding:0}
+.mf-vraag legend{font-weight:700;margin:0 2px 8px;padding:0;font-size:calc(15px * var(--t) * var(--mf-f,1))}
+.mf-chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.mf-chip{min-height:48px;min-width:48px;padding:0 14px;border-radius:14px;border:2px solid var(--line);background:var(--card);font-weight:650}
+.mf-chip[aria-pressed="true"]{border-color:#2f6d94;background:color-mix(in srgb,#2f6d94 12%,var(--card))}
+.mf-sla{color:var(--muted)}
+/* Jouw ervaring */
+.mf-tegels{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mf-tegels li{background:var(--card);border-radius:14px;box-shadow:var(--shadow);padding:12px 8px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px}
+.mf-tegels b{font-size:calc(20px * var(--t) * var(--mf-f,1));font-variant-numeric:tabular-nums}
+.mf-tegels span{font-size:calc(11.5px * var(--t) * var(--mf-f,1));color:var(--muted);line-height:1.3}
+.mf-top{margin:0;padding-left:22px}
+.mf-top li{padding:6px 0;border-bottom:1px solid var(--line)}
+.mf-top li span{display:inline-block;min-width:60%}
+.mf-legenda{list-style:none;margin:0 2px 8px;padding:0;display:flex;gap:14px;font-size:calc(12px * var(--t));color:var(--muted)}
+.mf-legenda i,.mf-vbalk i{display:inline-block}
+.mf-legenda i{width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.mf-legenda i.b,.mf-vbalk i.b{background:#2f6d94}
+.mf-legenda i.h,.mf-vbalk i.h{background:var(--line2)}
+.mf-legenda i.r,.mf-vbalk i.r{background:#c2692d}
+.mf-verdeling{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.mf-verdeling li{display:flex;flex-direction:column;gap:3px}
+.mf-vnaam{font-weight:650}
+.mf-vbalk{display:flex;gap:2px;height:12px;border-radius:5px;overflow:hidden;background:var(--card)}
+.mf-vbalk i{height:100%}
+.mf-vtekst{font-size:calc(12.5px * var(--t) * var(--mf-f,1));color:var(--muted)}
+/* Instellingen */
+.mf-schakels{list-style:none;padding:0 14px}
+.mf-schakels .schakel{min-height:56px}
+.mf-schakels .toggle{min-width:52px;min-height:32px}
+.mf-uitgezet{opacity:.5}
+.mf-veld{display:flex;flex-direction:column;gap:6px;margin:0 0 10px}
+.mf-veld>span{font-weight:650;font-size:calc(13.5px * var(--t) * var(--mf-f,1))}
+.mf-seg button{min-height:48px}
+.mf-herinneringen{list-style:none;padding:0 6px 0 14px}
+.mf-herinneringen li{display:flex;align-items:center;justify-content:space-between;min-height:52px;border-bottom:1px solid var(--line)}
+.mf-herinneringen li:last-child{border-bottom:0}
+.mf-herinneringen .icon-btn{min-width:48px;min-height:48px}
+.mf-nieuweherinnering .knop{min-height:48px}
+.mf-veilig a{color:var(--accent);font-weight:700}
+.mf-bronnen{padding-left:22px}
+.mf-bronnen li{margin:0 0 14px}
+.mf-bronnen li>b{display:block}
+.mf-bronnen p{margin:4px 0}
+.mf-wel,.mf-niet{font-weight:700}
+/* Knoppen in Rookvrij, Financieel en Werk */
+.mf-pauzeknop{display:flex;align-items:center;gap:12px;width:100%;min-height:56px;padding:10px 14px;margin:10px 0;border-radius:16px;background:var(--card);box-shadow:var(--shadow);text-align:left}
+.mf-pauzeknop b{display:block;font-size:calc(15px * var(--t))}
+.mf-pauzeknop small{color:var(--muted);font-size:calc(12.5px * var(--t))}
+.mf-pauzeicoon{width:36px;height:36px;border-radius:50%;background:color-mix(in srgb,#2f6d94 14%,transparent);display:flex;align-items:center;justify-content:center;font-size:18px;flex:0 0 auto}
+.mf-tegel{-webkit-touch-callout:none;user-select:none;-webkit-user-select:none}
+
+/* ---------- De sessiespeler (over de hele app heen) ---------- */
+html.mf-sessie-open,html.mf-sessie-open body{overflow:hidden}
+.mf-speler{position:fixed;inset:0;z-index:95;background:var(--bg);color:var(--text);display:flex;flex-direction:column;
+  padding:calc(var(--safe-t, 0px) + 8px) 16px calc(env(safe-area-inset-bottom, 0px) + 14px);font-size:calc(17px * var(--mf-f,1));overscroll-behavior:contain;touch-action:manipulation}
+.mf-kop{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:56px}
+.mf-kopnaam{font-weight:700;color:var(--muted);font-size:calc(14px * var(--mf-f,1));min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mf-stop{min-width:72px;min-height:48px;padding:0 16px;border-radius:14px;background:var(--card);border:2px solid var(--line2);font-weight:750;color:var(--text);flex:0 0 auto}
+.mf-voortgang{height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin:6px 0 0}
+.mf-voortgang i{display:block;height:100%;width:0;background:#2f6d94;transition:width .2s linear}
+.mf-stil .mf-voortgang i{transition:none}
+.mf-midden{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;min-height:0;text-align:center}
+.mf-stap{font-size:calc(24px * var(--mf-f,1));font-weight:700;line-height:1.35;margin:0;max-width:22em;min-height:2.7em;display:flex;align-items:center;justify-content:center}
+.mf-onder{display:flex;align-items:center;gap:10px}
+.mf-tijd{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--muted);font-weight:650}
+.mf-knop{min-height:52px;min-width:52px;padding:0 18px;border-radius:16px;background:var(--card);border:2px solid var(--line);font-weight:700;font-size:calc(16px * var(--mf-f,1));color:var(--text)}
+.mf-knop.hoofd{background:#2f6d94;border-color:#2f6d94;color:#fff}
+.mf-knop.groot{min-height:88px;width:min(100%,340px);font-size:calc(19px * var(--mf-f,1))}
+.mf-knop[aria-pressed="true"]{border-color:#2f6d94}
+.mf-knoppen{display:flex;flex-direction:column;gap:10px;width:100%;max-width:360px;margin:8px auto 0}
+/* Ademcirkel: schaalt met transform (animatie uit = geen overgang, alleen tekst) */
+.mf-adem{display:flex;flex-direction:column;align-items:center;gap:14px}
+.mf-cirkel{width:min(62vw,250px);aspect-ratio:1;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle at 50% 40%,color-mix(in srgb,#5fa8d3 55%,var(--card)),color-mix(in srgb,#2f6d94 70%,var(--card)));
+  box-shadow:0 0 0 10px color-mix(in srgb,#2f6d94 12%,transparent);transform:scale(.55);transition-property:transform;transition-timing-function:ease-in-out}
+.mf-cirkelwoord{color:#fff;font-weight:800;font-size:calc(22px * var(--mf-f,1));text-shadow:0 1px 2px rgba(0,0,0,.25)}
+.mf-ademtekst{display:none;flex-direction:column;align-items:center}
+.mf-ademwoord{font-size:calc(40px * var(--mf-f,1));font-weight:800}
+.mf-ademtel{font-size:calc(22px * var(--mf-f,1));color:var(--muted);font-variant-numeric:tabular-nums}
+.mf-stil .mf-cirkel{display:none}
+.mf-stil .mf-ademtekst{display:flex}
+.mf-pauze .mf-cirkel{transition-duration:0s !important}
+/* Teller, labels, keuzes, schuif */
+.mf-teller{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%}
+.mf-telgetal{font-size:calc(72px * var(--mf-f,1));font-weight:800;font-variant-numeric:tabular-nums;line-height:1}
+.mf-labels,.mf-keuzes{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:420px}
+.mf-label{min-height:56px;min-width:96px;padding:6px 14px;border-radius:16px;background:var(--card);border:2px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center}
+.mf-label b{font-size:calc(16px * var(--mf-f,1))}
+.mf-labeltel{font-size:calc(13px * var(--mf-f,1));color:var(--muted);font-variant-numeric:tabular-nums}
+.mf-kies{min-height:48px;padding:0 16px;border-radius:14px;background:var(--card);border:2px solid var(--line);font-weight:650;font-size:calc(15px * var(--mf-f,1))}
+.mf-kies[aria-pressed="true"]{border-color:#2f6d94;background:color-mix(in srgb,#2f6d94 14%,var(--card))}
+.mf-schuif{width:min(100%,360px)}
+.mf-schuif input{width:100%;height:48px;accent-color:#2f6d94}
+.mf-schuifwaarden{display:flex;justify-content:space-between;align-items:center;color:var(--muted)}
+.mf-schuifnu{font-size:calc(26px * var(--mf-f,1));color:var(--text)}
+.mf-hint{color:var(--muted);font-size:calc(15px * var(--mf-f,1))}
+.mf-stapvak,.mf-golfvak{display:flex;flex-direction:column;align-items:center;gap:12px;width:100%}
+/* Voorscherm, afronding en tips */
+.mf-voor{flex:1;display:flex;flex-direction:column;justify-content:center;gap:12px;overflow-y:auto;padding:10px 0}
+.mf-voortitel{font-size:calc(24px * var(--mf-f,1));margin:0;text-align:center}
+.mf-voortekst{text-align:center;margin:0 auto;max-width:28em;color:var(--text)}
+.mf-keuzelijst{list-style:none;margin:0 auto;padding:0;display:flex;flex-direction:column;gap:8px;width:100%;max-width:360px}
+.mf-keuzelijst.drie{flex-direction:row}
+.mf-keuzelijst.drie li{flex:1}
+.mf-keuze{width:100%;min-height:56px;border-radius:16px;border:2px solid var(--line);background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:8px 10px}
+.mf-keuze span{color:var(--muted);font-size:calc(14px * var(--mf-f,1))}
+.mf-keuze.aan,.mf-keuze[aria-pressed="true"]{border-color:#2f6d94;background:color-mix(in srgb,#2f6d94 12%,var(--card))}
+.mf-notitielabel{font-size:calc(14px * var(--mf-f,1));color:var(--muted);margin:4px auto 0;max-width:360px;width:100%}
+.mf-notitie{width:100%;max-width:360px;margin:0 auto;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--text);font:inherit;padding:10px 12px;min-height:56px}
+.mf-deel{margin:4px auto 0;min-height:48px;color:var(--accent);font-weight:650}
+.mf-uitkomst{background:var(--card);border-radius:16px;padding:12px 14px;max-width:360px;width:100%;margin:0 auto}
+.mf-uitkomst ul{list-style:none;margin:6px 0;padding:0}
+.mf-uitkomst li{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--line)}
+.mf-golf{width:100%;height:auto}
+.mf-golfas{stroke:var(--line2);stroke-width:1}
+.mf-golflijn{fill:none;stroke:#2f6d94;stroke-width:2.5;stroke-linejoin:round}
+.mf-golfpunt{fill:#2f6d94;stroke:var(--card);stroke-width:2}
+.mf-golf text{font-size:11px;font-weight:700;fill:var(--text)}
+.mf-kaartje{background:var(--card);border-radius:16px;padding:14px;max-width:360px;width:100%;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+.mf-kaartje p{margin:0}
+.mf-kaartje.zacht{background:color-mix(in srgb,#2f6d94 10%,var(--card))}
+@media (prefers-reduced-motion:reduce){.mf-cirkel{transition:none !important}.mf-snelknop{transition:none}}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .mf-snelknop{background:#3a7ca5;box-shadow:0 6px 0 0 #1f4d69}}
+
 </style>
 </head>
 <body>
@@ -2933,6 +3119,14 @@ html[data-retro="1"] .nwo-kies span{font-family:var(--pixel);font-weight:400;fon
   <path d="M37 25s-3-12-11-12a5.5 5.5 0 0 0 0 11zM37 25s3-12 11-12a5.5 5.5 0 0 1 0 11z" stroke-opacity=".9"/>
   <path d="M80 34c-2.5-5-11-5-11 2 0 6 11 12 11 12s11-6 11-12c0-7-8.5-7-11-2z" fill="currentColor" fill-opacity=".92" stroke="none"/>
   <path d="M86 6l1.6 4.4L92 12l-4.4 1.6L86 18l-1.6-4.4L80 12l4.4-1.6z" fill="currentColor" fill-opacity=".8" stroke="none"/>
+</g></symbol>
+<symbol id="ill-anker" viewBox="0 0 100 80"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="46" cy="14" r="6" stroke-opacity=".9"/>
+  <path d="M46 20v42M34 32h24" stroke-opacity=".9"/>
+  <path d="M22 46c2 12 12 18 24 18s22-6 24-18" stroke-opacity=".9"/>
+  <path d="M16 50l6-5 5 6M76 50l-6-5-5 6" stroke-opacity=".8"/>
+  <path d="M8 74c6-4 12-4 18 0s12 4 18 0 12-4 18 0 12 4 18 0 8-3 12-1" stroke-opacity=".45"/>
+  <circle cx="82" cy="18" r="9" fill="currentColor" fill-opacity=".2" stroke-opacity=".6"/>
 </g></symbol>
 <symbol id="ill-persoonlijk" viewBox="0 0 100 80"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
   <path d="M14 40L40 18l26 22" stroke-opacity=".8"/>
@@ -3135,7 +3329,7 @@ function secTekst(sec) {
 /* ==========================================================================
    3. Opslag — IndexedDB
    ========================================================================== */
-const DB_NAAM = "futureme", DB_VERSIE = 9;
+const DB_NAAM = "futureme", DB_VERSIE = 10;
 const WINKELS = {
   taken: "id", projecten: "id", labels: "id", afspraken: "id", checklists: "id",
   gewoontes: "id", gewoontelog: "id", dagboek: "id", tijdlog: "id",
@@ -3156,7 +3350,11 @@ function openDB() {
     v.onupgradeneeded = e => {
       const d = e.target.result;
       for (const [naam, sleutel] of Object.entries(WINKELS))
-        if (!d.objectStoreNames.contains(naam)) d.createObjectStore(naam, { keyPath: sleutel });
+        if (!d.objectStoreNames.contains(naam)) {
+          const opt = (typeof DB_OPTIES === "object" && DB_OPTIES[naam]) || null;
+          const st = d.createObjectStore(naam, opt ? { keyPath: opt.keyPath, autoIncrement: !!opt.autoIncrement } : { keyPath: sleutel });
+          if (opt && opt.indexen) opt.indexen.forEach(([n, k]) => st.createIndex(n, k));
+        }
     };
     v.onsuccess = () => res(v.result);
     v.onerror = () => rej(v.error);
@@ -3933,7 +4131,14 @@ function teken() {
     hobbyskill: (typeof vwHobbySkill === "function" ? vwHobbySkill : vwStart),
     wishlist: (typeof vwWishlist === "function" ? vwWishlist : vwStart),
     wens: (typeof vwWens === "function" ? vwWens : vwStart),
-    shideeen: (typeof vwShIdeeen === "function" ? vwShIdeeen : vwStart)
+    shideeen: (typeof vwShIdeeen === "function" ? vwShIdeeen : vwStart),
+    anker: (typeof vwAnker === "function" ? vwAnker : vwStart),
+    ankerintro: (typeof vwAnkerIntro === "function" ? vwAnkerIntro : vwStart),
+    ankerkies: (typeof vwAnkerKies === "function" ? vwAnkerKies : vwStart),
+    ankerhelp: (typeof vwAnkerHelp === "function" ? vwAnkerHelp : vwStart),
+    ankerervaring: (typeof vwAnkerErvaring === "function" ? vwAnkerErvaring : vwStart),
+    ankerinst: (typeof vwAnkerInst === "function" ? vwAnkerInst : vwStart),
+    ankerbronnen: (typeof vwAnkerBronnen === "function" ? vwAnkerBronnen : vwStart)
   }[V.view] || vwVandaag;
   $("#scherm").innerHTML = fn();
   naTekenen();
@@ -20571,6 +20776,1189 @@ RT_NA.push(() => {
   if (s) s.onchange = async () => { await zetInst("shiSort", s.value); teken(); };
 });
 if (typeof VERWANT === "object") VERWANT.shideeen = [["sidehustles", "Side hustles"], ["mindmap", "Mindmap"]];
+
+</script>
+<script>
+"use strict";
+// === SECTIE 69: ANKER – GEGEVENS, OEFENINGEN EN REGELS ===
+/* ==========================================================================
+   Anker: korte adem- en aandachtsoefeningen voor een vol hoofd.
+   Deze sectie bevat alleen gegevens en rekenwerk, geen schermen:
+   - de drie nieuwe opslagplekken (stores) in IndexedDB;
+   - de instellingen van Anker (één record 'main');
+   - de vaste lijst met oefeningen (MF_OEFENINGEN);
+   - de regels voor voorstellen ("Help me kiezen") en het 7-dagenprogramma.
+   Het voorvoegsel "mf" staat voor mindfulness; zo botst niets met de rest.
+   ========================================================================== */
+
+/* ---------- 69.1 Opslag: drie nieuwe stores ----------
+   WINKELS is de lijst met stores van de hele app. Staat een store daar in,
+   dan maakt de database-upgrade hem aan (alleen als hij nog niet bestaat),
+   laadt de app hem bij het starten en gaat hij mee in back-up en import.
+   mf_sessies heeft een oplopend nummer als sleutel en een index op datum;
+   die extra opties staan in DB_OPTIES (de upgrade leest die uit). */
+WINKELS.mf_sessies = "id";
+WINKELS.mf_instellingen = "sleutel";
+WINKELS.mf_programma = "id";
+const DB_OPTIES = {
+  mf_sessies: { keyPath: "id", autoIncrement: true, indexen: [["datum", "datum"]] }
+};
+S.mf_sessies = S.mf_sessies || [];
+S.mf_instellingen = S.mf_instellingen || [];
+S.mf_programma = S.mf_programma || [];
+
+/* Een sessie opslaan. Nieuwe sessies hebben nog geen id: de database geeft
+   dan zelf het volgende nummer, en dat zetten we terug op het object. */
+function mfSessieOpslaan(sessie) {
+  return new Promise((klaar, fout) => {
+    try {
+      const t = db.transaction("mf_sessies", "readwrite");
+      const verzoek = t.objectStore("mf_sessies").put(sessie);
+      verzoek.onsuccess = () => { sessie.id = verzoek.result; };
+      t.oncomplete = () => {
+        const i = S.mf_sessies.findIndex(x => x.id === sessie.id);
+        if (i >= 0) S.mf_sessies[i] = sessie; else S.mf_sessies.push(sessie);
+        klaar(sessie);
+      };
+      t.onerror = () => fout(t.error);
+    } catch (e) { fout(e); }
+  });
+}
+
+/* ---------- 69.2 Instellingen ----------
+   Eén record met sleutel 'main'. Ontbreekt een veld (bijvoorbeeld na een
+   update), dan vullen we het aan met de standaardwaarde. */
+const MF_STANDAARD = {
+  sleutel: "main",
+  profiel: null,              // "volhoofd" | "anders" | "energie" | null
+  prikkelarm: false,          // zet geluid, tonen, stem, animatie en trilling in één keer uit
+  geluid: true,               // zachte gong aan begin en eind
+  ademtonen: false,           // hoge toon bij inademen, lage bij uitademen
+  stem: false,                // voorleesstem (Nederlands)
+  animatie: true,             // ademcirkel die groeit en krimpt
+  trilling: true,             // korte trilling (werkt niet op iPhone; dan gebeurt er niets)
+  ademIn: 4, ademUit: 6,      // seconden, voor "Lange uitademing"
+  lettergrootte: "normaal",   // "normaal" | "groot" | "extra"
+  introGezien: false,
+  bodyscanGezien: false,      // waarschuwing bij de eerste bodyscan al getoond?
+  mildKeuze: "neutraal",      // laatste keuze bij "Mild zijn voor jezelf"
+  favorieten: [],
+  koppelingen: { roken: false, werk: false, financieel: false, gewoonte: false, logboek: true },
+  herinneringen: []           // [{ id, tijd: "08:30", dagen: [1,2,3,4,5] }]
+};
+function mfInst() {
+  const r = S.mf_instellingen.find(x => x.sleutel === "main") || {};
+  const uit = Object.assign({}, MF_STANDAARD, r);
+  uit.koppelingen = Object.assign({}, MF_STANDAARD.koppelingen, r.koppelingen || {});
+  uit.favorieten = Array.isArray(uit.favorieten) ? uit.favorieten.slice() : [];
+  uit.herinneringen = Array.isArray(uit.herinneringen) ? uit.herinneringen.slice() : [];
+  return uit;
+}
+/* Wijzigingen direct opslaan (geen opslaanknop nodig). */
+async function mfInstZet(wijziging) {
+  const nieuw = Object.assign(mfInst(), wijziging, { sleutel: "main" });
+  S.mf_instellingen = [nieuw];
+  try { await idbZet("mf_instellingen", nieuw); } catch (e) { opslagFout(e); }
+  return nieuw;
+}
+const mfSysteemRustig = () => !!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
+/* Mag dit prikkeltje nu? Prikkelarm (in Anker of in de hele app) zet alles uit.
+   Animatie staat ook uit als het toestel om minder beweging vraagt. */
+function mfMag(soort) {
+  const s = mfInst();
+  if (s.prikkelarm || inst("rust", false)) return false;
+  if (soort === "animatie" && mfSysteemRustig()) return false;
+  return !!s[soort];
+}
+
+/* ---------- 69.3 De oefeningen ----------
+   Staan vast in de code, niet in de database. Per oefening:
+   id, naam, categorie, varianten (minuten), focus, beweging, inspanning,
+   waarom, stappen, alsHetNietLukt (id van een alternatief), type en
+   'wat': één zin wat je doet (voor de kaartjes in "Kies zelf").
+   Type "adem": het ademritme herhaalt tot de tijd om is.
+   Type "stappen": de stappen worden verdeeld over de gekozen tijd. */
+const MF_CATEGORIEEN = ["Ademen", "Kijken en bewegen", "Gedachten en gevoel", "Mild zijn"];
+const MF_OEFENINGEN = [
+  { id: "A1", naam: "Twee keer in, lang uit", categorie: "Ademen", varianten: [1, 3, 5], focus: "adem", beweging: false, inspanning: "geen", type: "adem",
+    waarom: "Een lange uitademing remt je stresssysteem snel af.",
+    wat: "Twee keer inademen, dan lang uitblazen.",
+    stappen: ["Adem in door je neus.", "Adem er nog een klein beetje bij.", "Blaas langzaam uit door je mond."],
+    ritme: [{ fase: "in", sec: 2, stap: 0, woord: "In" }, { fase: "bij", sec: 1, stap: 1, woord: "Nog iets in" }, { fase: "uit", sec: 6, stap: 2, woord: "Uit" }],
+    alsHetNietLukt: "Z4" },
+  { id: "A2", naam: "Lange uitademing", categorie: "Ademen", varianten: [1, 3, 5], focus: "adem", beweging: false, inspanning: "geen", type: "adem",
+    waarom: "Langer uit dan in helpt je lichaam naar rust.",
+    wat: "Rustig in, langer uit. Het tempo stel je zelf in.",
+    stappen: ["Adem in en tel mee.", "Adem langer uit dan je inademde."],
+    ritme: "instellingen",   // ademIn en ademUit komen uit de instellingen
+    alsHetNietLukt: "Z1" },
+  { id: "A3", naam: "Ademtellen", categorie: "Ademen", varianten: [3, 5], focus: "adem", beweging: false, inspanning: "geen", type: "teller",
+    waarom: "Tellen geeft je aandacht een concreet houvast.",
+    wat: "Tik bij elke uitademing en tel tot 10.",
+    stappen: ["Adem rustig in en uit.", "Tik bij elke uitademing.", "Na 10 begin je weer bij 1."],
+    alsHetNietLukt: "Z5" },
+  { id: "A4", naam: "Adempauze in 3 stappen", categorie: "Ademen", varianten: [3], focus: "gedachten", beweging: false, inspanning: "geen", type: "stappen",
+    waarom: "Een korte pauze tussen twee dingen in.",
+    wat: "Opmerken, adem, dan je hele lichaam.",
+    stappen: ["Stap 1: Wat merk je nu? Gedachten, gevoel, lichaam.", "Stap 2: Richt je aandacht alleen op je adem.", "Stap 3: Merk je hele lichaam op, van top tot teen."],
+    alsHetNietLukt: "Z1" },
+  { id: "Z1", naam: "5-4-3-2-1", categorie: "Kijken en bewegen", varianten: [2, 4], focus: "extern", beweging: false, inspanning: "geen", type: "stappen",
+    waarom: "Aandacht naar buiten helpt bij te veel prikkels.",
+    wat: "Noem wat je ziet, voelt, hoort, ruikt en proeft.",
+    stappen: ["Noem 5 dingen die je ziet.", "Noem 4 dingen die je voelt.", "Noem 3 dingen die je hoort.", "Noem 2 dingen die je ruikt.", "Noem 1 ding dat je proeft."],
+    alsHetNietLukt: "Z4" },
+  { id: "Z2", naam: "Rustig lopen", categorie: "Kijken en bewegen", varianten: [3, 5, 10], focus: "extern", beweging: true, inspanning: "licht", type: "stappen",
+    waarom: "Bewegen mag. Lopen is ook oefenen.",
+    wat: "Loop in je eigen tempo en voel je voeten.",
+    stappen: ["Loop in je eigen tempo.", "Voel je voeten de grond raken.", "Merk op wat je ziet, zonder te stoppen.", "Dwaal je af? Terug naar je voeten."],
+    alsHetNietLukt: "Z4" },
+  { id: "Z3", naam: "Korte bodyscan", categorie: "Kijken en bewegen", varianten: [3, 6], focus: "lichaam", beweging: false, inspanning: "geen", type: "stappen",
+    waarom: "Spanning opmerken maakt loslaten makkelijker.",
+    wat: "Voeten, handen, schouders: wat merk je?",
+    stappen: ["Voel je voeten. Wat merk je?", "Voel je handen. Warm, koud, tintelend?", "Voel je schouders. Mogen ze iets zakken?"],
+    optIn: "Deze oefening richt je aandacht op je lichaam. Dat kan soms onprettig voelen. Je kunt elke plek overslaan. Stoppen mag altijd.",
+    overslaan: true,
+    alsHetNietLukt: "Z1" },
+  { id: "Z4", naam: "Handen drukken", categorie: "Kijken en bewegen", varianten: [1, 2], focus: "lichaam", beweging: false, inspanning: "geen", type: "stappen",
+    waarom: "Stevige druk geeft je lichaam snel houvast.",
+    wat: "Druk je handen en voeten stevig aan en laat los.",
+    stappen: ["Druk je handpalmen 5 tellen stevig tegen elkaar.", "Laat los.", "Druk je voeten stevig in de grond.", "Laat los. Herhaal."],
+    alsHetNietLukt: "Z1" },
+  { id: "Z5", naam: "Iets boeiends bekijken", categorie: "Kijken en bewegen", varianten: [3, 5], focus: "extern", beweging: false, inspanning: "geen", type: "stappen",
+    waarom: "Iets wat je boeit is een sterk anker.",
+    wat: "Bekijk een voorwerp dat je interessant vindt.",
+    stappen: ["Pak iets wat je interessant vindt.", "Bekijk de vorm en de kleuren.", "Zoek een detail dat je nog niet zag.", "Dwaal je af? Kijk weer naar het object."],
+    alsHetNietLukt: "A1" },
+  { id: "G1", naam: "Stop-minuut", categorie: "Gedachten en gevoel", varianten: [1], focus: "gedachten", beweging: false, inspanning: "geen", type: "stappen",
+    waarom: "Eén minuut ruimte voor je een keuze maakt.",
+    wat: "Stoppen, één keer ademen, dan bewust kiezen.",
+    stappen: ["Stop wat je doet.", "Adem één keer rustig in en uit.", "Kijk: wat wil ik nu echt?", "Ga verder met een bewuste keuze."],
+    alsHetNietLukt: "A1" },
+  { id: "G2", naam: "Gedachten een naam geven", categorie: "Gedachten en gevoel", varianten: [3, 5], focus: "gedachten", beweging: false, inspanning: "geen", type: "labels",
+    waarom: "Gedachten benoemen maakt ze minder dwingend.",
+    wat: "Tik het soort gedachte en ga terug naar je adem.",
+    stappen: ["Adem rustig.", "Komt er een gedachte? Tik het soort.", "Ga terug naar je adem."],
+    labels: ["plannen", "zorgen", "herinneren", "oordelen", "anders"],
+    alsHetNietLukt: "Z1" },
+  { id: "G3", naam: "Trek laten wegzakken", categorie: "Gedachten en gevoel", varianten: [3, 5], focus: "lichaam", beweging: false, inspanning: "geen", type: "golf",
+    waarom: "Trek zwelt aan en zakt weer af, ook zonder toe te geven.",
+    wat: "Kijk hoe sterk de trek is en adem mee.",
+    stappen: ["Hoe sterk is de trek nu? 0 tot 10.", "Waar voel je de trek in je lichaam?", "Adem mee. Je hoeft niets te doen.", "Merk op of de trek verandert.", "Hoe sterk is hij nu?"],
+    meetStappen: { 0: "begin", 3: "midden", 4: "eind" },
+    alsHetNietLukt: "A1" },
+  { id: "G4", naam: "Gevoel benoemen", categorie: "Gedachten en gevoel", varianten: [2], focus: "lichaam", beweging: false, inspanning: "geen", type: "stappen",
+    waarom: "Een woord voor een gevoel maakt het beter hanteerbaar.",
+    wat: "Kies waar je iets voelt en welk woord past.",
+    stappen: ["Waar in je lichaam voel je iets?", "Welk woord past het best?", "Adem rustig. Het gevoel mag er zijn."],
+    keuzes: { 0: ["hoofd", "keel", "borst", "buik", "handen", "benen"], 1: ["onrustig", "boos", "verdrietig", "bang", "moe", "blij", "leeg", "overprikkeld", "weet ik niet"] },
+    alsHetNietLukt: "Z1" },
+  { id: "V1", naam: "Mild zijn voor jezelf", categorie: "Mild zijn", varianten: [2, 4], focus: "gedachten", beweging: false, inspanning: "geen", type: "stappen",
+    waarom: "Vriendelijk tegen jezelf praten verzacht een lastig moment.",
+    wat: "Drie zinnen voor een lastig moment, neutraal of warm.",
+    uitleg: "Mild zijn kan eerst oud ongemak oproepen. Dat is normaal. Kies gerust neutraal.",
+    stappen: ["Dit is nu lastig.", "Iedereen heeft soms lastige momenten.", "Wat heb ik nu nodig?"],
+    stappenWarm: ["Dit doet pijn en dat mag.", "Ik ben niet de enige die dit voelt.", "Mag ik mild zijn voor mezelf."],
+    warmHint: "Leg je hand op je borst, als je wilt.",
+    alsHetNietLukt: "Z4" }
+];
+const mfOef = id => MF_OEFENINGEN.find(o => o.id === id) || null;
+const mfRustigLabel = o => o.inspanning === "geen" ? "rustig zitten of liggen" : "";
+/* Standaardduur: de eerste variant van 3 minuten of langer (anders de langste). */
+const mfStandaardMin = o => o.varianten.find(m => m >= 3) || o.varianten[o.varianten.length - 1];
+function mfDuurTekst(o) {
+  const v = o.varianten;
+  return v.length === 1 ? `${v[0]} min` : `${v.slice(0, -1).join(", ")} of ${v[v.length - 1]} min`;
+}
+
+/* ---------- 69.4 Sessies tellen (zonder streaks) ---------- */
+const mfDatum = s => String(s.datum || "").slice(0, 10);
+function mfSessiesVan(van, tot) { return S.mf_sessies.filter(s => mfDatum(s) >= van && mfDatum(s) <= tot); }
+function mfDezeWeek() { const v = vandaagISO(); return mfSessiesVan(weekStart(v), v); }
+/* Twee keer op rij "onrustiger" bij dezelfde oefening? (alleen sessies met een meting tellen) */
+function mfTweeKeerOnrustiger(oefId) {
+  const l = S.mf_sessies.filter(s => s.oefeningId === oefId && s.nameting).sort((a, b) => String(a.datum).localeCompare(String(b.datum)));
+  return l.length >= 2 && l.slice(-2).every(s => s.nameting === "onrustiger");
+}
+function mfOnrustigInZevenDagen() {
+  const v = vandaagISO();
+  return mfSessiesVan(plusDagen(v, -6), v).filter(s => s.nameting === "onrustiger").length;
+}
+
+/* ---------- 69.5 Voorstellen ("Help me kiezen") ----------
+   Alleen vaste regels, geen AI. Niets start vanzelf: dit geeft alleen een lijst.
+   antwoorden: { drukte: 1-5 | null, energie: 1-5 | null, tijd: 1|3|5|10 | null } */
+function mfVoorstellen(antwoorden) {
+  const a = antwoorden || {}, s = mfInst(), profiel = s.profiel;
+  let lijst = MF_OEFENINGEN.slice();
+  const weinigEnergie = profiel === "energie" || (a.energie != null && a.energie <= 2);
+  const veelDrukte = a.drukte != null && a.drukte >= 4;
+  // Weinig energie: alleen rustig zitten of liggen, uit deze vier.
+  if (weinigEnergie) lijst = lijst.filter(o => ["A2", "Z4", "A1", "V1"].includes(o.id));
+  // Druk hoofd: alleen aandacht naar buiten of bewegen, uit deze vier.
+  if (veelDrukte) lijst = lijst.filter(o => ["Z1", "Z4", "Z2", "A1"].includes(o.id));
+  // Bij profiel "weinig energie" nooit Rustig lopen.
+  if (profiel === "energie") lijst = lijst.filter(o => o.id !== "Z2");
+  if (!lijst.length) lijst = [mfOef("A1"), mfOef("Z4")];
+  // Past het in de tijd die je hebt?
+  if (a.tijd) { const past = lijst.filter(o => o.varianten.some(m => m <= a.tijd)); if (past.length) lijst = past; }
+  // Volgorde: bij "mijn brein werkt anders" eerst naar buiten of bewegen, met weinig stappen.
+  const punten = o => {
+    let p = 0;
+    if (profiel === "anders" && (o.focus === "extern" || o.beweging)) p += 3;
+    if (profiel === "anders" && o.stappen.length <= 4) p += 1;
+    if (s.favorieten.includes(o.id)) p += 1;
+    if (mfTweeKeerOnrustiger(o.id)) p -= 100;   // twee keer onrustiger: onderaan
+    return p;
+  };
+  return lijst.map((o, i) => ({ o, p: punten(o), i })).sort((x, y) => y.p - x.p || x.i - y.i).map(x => x.o);
+}
+/* Welke duur kies je bij een voorstel? De langste variant die in je tijd past. */
+function mfMinVoor(o, tijd) {
+  if (!tijd) return mfStandaardMin(o);
+  const past = o.varianten.filter(m => m <= tijd);
+  return past.length ? past[past.length - 1] : o.varianten[0];
+}
+/* Het doel volgt uit de antwoorden (er komt geen aparte vraag voor). */
+function mfDoel(a) {
+  if (!a) return null;
+  if (a.energie != null && a.energie <= 2) return "opladen";
+  if (a.drukte != null && a.drukte >= 4) return "prikkels dempen";
+  if (a.drukte == null && a.energie == null) return null;
+  return "landen";
+}
+
+/* ---------- 69.6 Programma "7 dagen landen" ----------
+   Een gemiste dag schuift gewoon door; er is geen einddatum. */
+const MF_PROGRAMMA = ["A1", "Z1", "A3", "Z2", "G2", "V1", "A4"];
+function mfProgrammaDagen() { return MF_PROGRAMMA.map(id => id === "Z2" && mfInst().profiel === "energie" ? "Z4" : id); }
+const mfProgramma = () => S.mf_programma.find(p => p.id === "landen7") || null;
+async function mfProgrammaZet(p) {
+  const i = S.mf_programma.findIndex(x => x.id === p.id);
+  if (i >= 0) S.mf_programma[i] = p; else S.mf_programma.push(p);
+  try { await idbZet("mf_programma", p); } catch (e) { opslagFout(e); }
+}
+async function mfProgrammaStart() {
+  await mfProgrammaZet({ id: "landen7", gestart: new Date().toISOString(), voltooideDagen: [], huidigeDag: 0 });
+}
+/* Na een sessie uit het programma: dag afvinken en doorschuiven. */
+async function mfProgrammaVerder(oefId) {
+  const p = mfProgramma(); if (!p) return;
+  const dagen = mfProgrammaDagen();
+  if (p.huidigeDag > 6 || dagen[p.huidigeDag] !== oefId) return;
+  p.voltooideDagen = (p.voltooideDagen || []).concat(oefId);
+  p.huidigeDag = Math.min(7, (p.huidigeDag || 0) + 1);
+  await mfProgrammaZet(p);
+}
+
+/* ---------- 69.7 Teksten die letterlijk zo moeten blijven ---------- */
+const MF_TEKST = {
+  introTitel: "Anker — even landen",
+  introRegel: "Gratis, zonder reclame, niets verlaat je telefoon. Geen wondermiddel, wel een goed begin.",
+  snelknop: "● 1 minuut rustig ademen",
+  profielVraag: "Wat past bij jou? (kies één, altijd te wijzigen)",
+  profielen: [
+    ["volhoofd", "Gewoon een vol hoofd", "drukke week, lange dag, veel malen."],
+    ["anders", "Mijn brein werkt anders", "bijvoorbeeld ADHD, autisme of snel overprikkeld. Kortere stappen, meer beweging, minder stilte."],
+    ["energie", "Weinig energie", "bijvoorbeeld burn-out of ME/CVS. Alleen oefeningen 'rustig zitten of liggen'."]
+  ],
+  zoWerktHet: "1–10 minuten, één zin per stap. Anker stelt voor, jij beslist. Stoppen mag altijd. Met schermlezer krijg je precies dezelfde oefeningen.",
+  bewijs: "Korte mindfulness helpt volwassenen met ADHD of autisme gemiddeld bij stress en piekeren — ongeveer even goed als andere hulp, niet bij iedereen. Voor energieziekten is weinig onderzoek.",
+  gratis: "FutureMe is een persoonlijk project. Er is geen reclame, geen abonnement en er komt geen upgrade. Er valt aan jou niets te verdienen.",
+  voetregel: "Geen behandeling. Houden klachten aan? Praat met je huisarts of behandelaar."
+};
+const MF_PROFIELNAAM = { volhoofd: "vol hoofd", anders: "mijn brein werkt anders", energie: "weinig energie" };
+const MF_BRONNEN = [
+  ["Radboudumc (Janssen e.a., 2019)", "120 volwassenen met ADHD, 8 weken groepstraining.", "Minder ADHD-klachten, milder voor zichzelf.", "Grote verbetering van plannen en organiseren direct na de training."],
+  ["Meta-analyse volwassenen met ADHD (2025)", "10 studies.", "Aandacht verbetert.", "Beter dan andere psychologische hulp; veel studies zijn klein."],
+  ["Tilburg University (Spek e.a., 2013)", "42 autistische volwassenen, 9 weken.", "Minder angst, somberheid en piekeren.", "Vergelijking met een andere behandeling."],
+  ["Canada (Lunsky e.a., 2025)", "63 autistische volwassenen, 6 weken online met korte oefeningen.", "Minder stress, milder voor zichzelf.", "Betere lichaamswaarneming."],
+  ["VK (Gaigg e.a., 2020)", "54 autistische volwassenen, zelfhulp online.", "Bij ruim 3 op 4 minder angst.", "Groot onderzoek; kleine groep."],
+  ["Stanford (Balban e.a., 2023)", "114 volwassenen, 5 minuten per dag.", "Lange uitademing verbeterde de stemming het meest.", "Specifiek onderzocht bij ADHD of autisme."]
+];
+const MF_BRON_SLOT = "Oefenen kan soms ongemakkelijk voelen. Dat komt vaker voor bij wie het al zwaar heeft. Stoppen mag altijd.";
+
+</script>
+<script>
+"use strict";
+// === SECTIE 70: ANKER – SESSIESPELER ===
+/* ==========================================================================
+   De speler legt een scherm over de app heen (geen scrollen tijdens een
+   sessie). Bovenaan rechts staat altijd een grote Stop-knop.
+   Wat de speler doet, hangt af van het type oefening:
+   - adem     : ademcirkel (of tekst als animatie uit staat) die het ritme volgt;
+   - stappen  : één stapzin tegelijk, verdeeld over de tijd, met "Volgende";
+   - teller   : tikken bij elke uitademing, 1 tot en met 10;
+   - labels   : knoppen om het soort gedachte te tellen;
+   - golf     : schuifjes voor hoe sterk de trek is (begin, midden, eind).
+   Prikkels (geluid, ademtonen, stem, animatie, trilling) gaan alleen aan als
+   de instellingen dat toestaan (zie mfMag in sectie 69).
+   ========================================================================== */
+const MFS = { actief: null, audio: null, wakeLock: null, timer: 0 };
+
+/* ---------- 70.1 Geluid: zachte tonen met Web Audio (geen audiobestanden) ---------- */
+function mfAudio() {
+  try {
+    if (!MFS.audio) { const C = window.AudioContext || window.webkitAudioContext; if (!C) return null; MFS.audio = new C(); }
+    if (MFS.audio.state === "suspended") MFS.audio.resume();
+    return MFS.audio;
+  } catch (e) { return null; }
+}
+/* Eén sinustoon die zacht opkomt en weer wegzakt (geen harde klik). */
+function mfToon(freq, duur, volume) {
+  const ctx = mfAudio(); if (!ctx) return;
+  const t0 = ctx.currentTime, osc = ctx.createOscillator(), g = ctx.createGain();
+  osc.type = "sine"; osc.frequency.value = freq;
+  const top = volume || .05, op = Math.min(.35, duur / 3), af = Math.min(.6, duur / 2.5);
+  g.gain.setValueAtTime(0, t0);
+  g.gain.linearRampToValueAtTime(top, t0 + op);
+  g.gain.setValueAtTime(top, t0 + Math.max(op, duur - af));
+  g.gain.linearRampToValueAtTime(0, t0 + duur);
+  osc.connect(g).connect(ctx.destination);
+  osc.start(t0); osc.stop(t0 + duur + .05);
+}
+/* Een zachte gong: een paar tonen die langzaam uitsterven. */
+function mfGong() {
+  if (!mfMag("geluid")) return;
+  const ctx = mfAudio(); if (!ctx) return;
+  const t0 = ctx.currentTime;
+  [[196, .09], [392, .035], [588, .018]].forEach(([f, v]) => {
+    const osc = ctx.createOscillator(), g = ctx.createGain();
+    osc.type = "sine"; osc.frequency.value = f;
+    g.gain.setValueAtTime(0, t0); g.gain.linearRampToValueAtTime(v, t0 + .02); g.gain.exponentialRampToValueAtTime(.0001, t0 + 3.8);
+    osc.connect(g).connect(ctx.destination); osc.start(t0); osc.stop(t0 + 4);
+  });
+}
+/* ---------- 70.2 Stem, trilling en scherm aan houden ---------- */
+function mfZeg(tekst) {
+  if (!mfMag("stem") || !("speechSynthesis" in window)) return;
+  try {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(tekst);
+    u.lang = "nl-NL"; u.rate = .92;
+    const stem = speechSynthesis.getVoices().find(v => /^nl/i.test(v.lang));
+    if (stem) u.voice = stem;
+    speechSynthesis.speak(u);
+  } catch (e) { /* geen stem beschikbaar: niets aan de hand */ }
+}
+/* iPhone kent navigator.vibrate niet; dan doen we gewoon niets (geen foutmelding). */
+function mfTril(ms) { if (mfMag("trilling") && typeof navigator.vibrate === "function") { try { navigator.vibrate(ms); } catch (e) {} } }
+async function mfSchermAan() {
+  try { if ("wakeLock" in navigator && !MFS.wakeLock) { MFS.wakeLock = await navigator.wakeLock.request("screen"); MFS.wakeLock.addEventListener("release", () => { MFS.wakeLock = null; }); } }
+  catch (e) { MFS.wakeLock = null; }
+}
+function mfSchermVrij() { try { if (MFS.wakeLock) MFS.wakeLock.release(); } catch (e) {} MFS.wakeLock = null; }
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && MFS.actief && !MFS.actief.gepauzeerd) mfSchermAan(); });
+
+/* ---------- 70.3 Voorleesregel voor schermlezers ----------
+   Een onzichtbare regel met aria-live. Alles wat we daarin zetten, lezen
+   VoiceOver en TalkBack voor: "In", "Uit" en elke nieuwe stap. */
+function mfMeld(tekst) {
+  const r = document.getElementById("mf-aria"); if (!r) return;
+  r.textContent = "";
+  setTimeout(() => { r.textContent = tekst; }, 30);
+}
+
+/* ---------- 70.4 Starten ----------
+   opties: { min, bron, checkin } — niets vraagt eerst iets, behalve:
+   - de bodyscan de eerste keer (korte waarschuwing, jij kiest "Begin");
+   - "Mild zijn voor jezelf" (kies neutraal of warm). */
+function mfStart(id, opties) {
+  opties = opties || {};
+  const o = mfOef(id); if (!o) return;
+  const min = opties.min && o.varianten.includes(+opties.min) ? +opties.min : (opties.min ? +opties.min : mfStandaardMin(o));
+  mfAudio();   // audio moet binnen een tik worden aangezet (iPhone)
+  if (typeof bladSluit === "function" && $("#blad") && $("#blad").classList.contains("open")) bladSluit();
+  const s = mfInst();
+  if (o.optIn && !s.bodyscanGezien && !opties.akkoord) return mfVoorscherm(o, min, opties, "optin");
+  if (o.stappenWarm && !opties.stijl) return mfVoorscherm(o, min, opties, "mild");
+  mfBegin(o, min, opties);
+}
+function mfOverlay(inhoud, label) {
+  let el = document.getElementById("mf-speler");
+  if (!el) {
+    el = document.createElement("div");
+    el.id = "mf-speler";
+    el.setAttribute("role", "dialog"); el.setAttribute("aria-modal", "true");
+    document.body.appendChild(el);
+    document.documentElement.classList.add("mf-sessie-open");
+  }
+  el.className = "mf-speler mf-l-" + mfInst().lettergrootte + (mfMag("animatie") ? "" : " mf-stil");
+  el.setAttribute("aria-label", label);
+  el.innerHTML = inhoud + `<div id="mf-aria" class="mf-sr" aria-live="polite" aria-atomic="true"></div>`;
+  return el;
+}
+function mfSluitOverlay() {
+  const el = document.getElementById("mf-speler");
+  if (el) el.remove();
+  document.documentElement.classList.remove("mf-sessie-open");
+  MFS.actief = null;
+  clearInterval(MFS.timer);
+  mfSchermVrij();
+  try { if ("speechSynthesis" in window) speechSynthesis.cancel(); } catch (e) {}
+  if (typeof teken === "function") teken();
+}
+function mfVoorscherm(o, min, opties, soort) {
+  const stop = `<button class="mf-stop" data-mf="sluit" aria-label="Sluiten">Sluiten</button>`;
+  let midden;
+  if (soort === "optin") midden = `<h2 class="mf-voortitel">${esc(o.naam)}</h2><p class="mf-voortekst">${esc(o.optIn)}</p>
+      <div class="mf-knoppen"><button class="mf-knop hoofd" data-mf="optin-ja">Begin</button><button class="mf-knop" data-mf="sluit">Liever niet</button></div>`;
+  else {
+    const keuze = mfInst().mildKeuze || "neutraal";
+    midden = `<h2 class="mf-voortitel">${esc(o.naam)}</h2><p class="mf-voortekst">${esc(o.uitleg)}</p>
+      <ul class="mf-keuzelijst" role="list">
+        <li><button class="mf-keuze${keuze === "neutraal" ? " aan" : ""}" data-mf="mild" data-stijl="neutraal"><b>Neutraal</b><span>${esc(o.stappen[0])}</span></button></li>
+        <li><button class="mf-keuze${keuze === "warm" ? " aan" : ""}" data-mf="mild" data-stijl="warm"><b>Warm</b><span>${esc(o.stappenWarm[0])}</span></button></li></ul>`;
+  }
+  mfOverlay(`<div class="mf-kop"><span class="mf-kopnaam">${esc(o.naam)}</span>${stop}</div><div class="mf-voor">${midden}</div>`, o.naam);
+  MFS.voor = { o, min, opties };
+  setTimeout(() => { const b = document.querySelector("#mf-speler .mf-voor button"); if (b) b.focus(); }, 50);
+}
+
+/* ---------- 70.5 De sessie zelf ---------- */
+function mfBegin(o, min, opties) {
+  const s = mfInst();
+  const stappen = o.stappenWarm && opties.stijl === "warm" ? o.stappenWarm : o.stappen;
+  const A = MFS.actief = {
+    o, min, opties, stappen, totaal: min * 60,
+    verstreken: 0, laatste: performance.now(), gepauzeerd: false,
+    stap: 0, stapStart: 0, fase: -1, tel: 1, labels: {}, golf: {}, keuzes: {},
+    ritme: o.ritme === "instellingen"
+      ? [{ fase: "in", sec: s.ademIn, stap: 0, woord: "In" }, { fase: "uit", sec: s.ademUit, stap: 1, woord: "Uit" }]
+      : o.ritme || null,
+    gestart: new Date().toISOString()
+  };
+  const typeHTML = {
+    adem: () => `<div class="mf-adem" aria-hidden="true"><div class="mf-cirkel"><span class="mf-cirkelwoord"></span></div><div class="mf-ademtekst"><b class="mf-ademwoord"></b><span class="mf-ademtel"></span></div></div>`,
+    teller: () => `<div class="mf-teller"><div class="mf-telgetal" aria-hidden="true">1</div>
+      <button class="mf-knop hoofd groot" data-mf="tel">Tik bij je uitademing</button><button class="mf-knop" data-mf="afgedwaald">Ik dwaalde af</button></div>`,
+    labels: () => `<ul class="mf-labels" role="list">${o.labels.map(l => `<li><button class="mf-label" data-mf="label" data-l="${l}"><b>${l}</b><span class="mf-labeltel" aria-hidden="true">0</span></button></li>`).join("")}</ul>`,
+    golf: () => `<div class="mf-golfvak"></div>`,
+    stappen: () => `<div class="mf-stapvak"></div>`
+  }[o.type] || (() => "");
+  mfOverlay(`
+    <div class="mf-kop"><span class="mf-kopnaam">${esc(o.naam)} · ${min} min</span>
+      <button class="mf-stop" data-mf="stop" aria-label="Stop de oefening">Stop</button></div>
+    <div class="mf-voortgang" role="progressbar" aria-label="Voortgang" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div>
+    <div class="mf-midden">
+      <p class="mf-stap" id="mf-stap"></p>
+      ${typeHTML()}
+    </div>
+    <div class="mf-onder">
+      <button class="mf-knop" data-mf="pauze" aria-pressed="false">Pauze</button>
+      ${o.type === "stappen" || o.type === "golf" ? `<button class="mf-knop" data-mf="volgende">${o.overslaan ? "Sla over" : "Volgende"}</button>` : ""}
+      <span class="mf-tijd" aria-hidden="true"></span>
+    </div>`, `Oefening: ${o.naam}, ${min} minuten`);
+  mfGong();
+  mfSchermAan();
+  mfTril(40);
+  mfToonStap(0, true);
+  if (o.type === "adem") mfAdemFase(0);
+  clearInterval(MFS.timer);
+  MFS.timer = setInterval(mfTik, 200);
+  setTimeout(() => { const b = document.querySelector("#mf-speler .mf-stop"); if (b) b.focus(); }, 60);
+}
+/* De klok: telt alleen door als je niet gepauzeerd bent. */
+function mfTik() {
+  const A = MFS.actief; if (!A) return;
+  const nu = performance.now();
+  if (!A.gepauzeerd) A.verstreken += (nu - A.laatste) / 1000;
+  A.laatste = nu;
+  const pct = Math.min(100, A.verstreken / A.totaal * 100);
+  const balk = document.querySelector("#mf-speler .mf-voortgang");
+  if (balk) { balk.firstElementChild.style.width = pct + "%"; balk.setAttribute("aria-valuenow", Math.round(pct)); }
+  const rest = Math.max(0, Math.ceil(A.totaal - A.verstreken)), t = document.querySelector("#mf-speler .mf-tijd");
+  if (t) t.textContent = `${Math.floor(rest / 60)}:${String(rest % 60).padStart(2, "0")}`;
+  if (A.gepauzeerd) return;
+  if (A.o.type === "adem") mfAdemTik();
+  else if (A.o.type === "stappen" || A.o.type === "golf") {
+    const stapDuur = A.totaal / A.stappen.length;
+    if (A.stap < A.stappen.length - 1 && A.verstreken - A.stapStart >= stapDuur) mfToonStap(A.stap + 1);
+  } else if (A.o.type === "labels") {
+    // De drie zinnen komen om de beurt terug, elke 20 seconden.
+    const i = Math.floor(A.verstreken / 20) % A.stappen.length;
+    if (i !== A.stap) mfToonStap(i);
+  }
+  if (A.verstreken >= A.totaal) mfKlaar(false);
+}
+function mfToonStap(i, eerste) {
+  const A = MFS.actief; if (!A) return;
+  A.stap = i; A.stapStart = A.verstreken;
+  const tekst = A.stappen[i] || "";
+  const p = document.getElementById("mf-stap");
+  if (p && A.o.type !== "adem") p.textContent = tekst;
+  if (A.o.type === "adem" && p && eerste) p.textContent = A.o.waarom;
+  if (A.o.type !== "adem") { mfMeld(tekst); mfZeg(tekst); if (!eerste) mfTril(25); }
+  // Extra's per stap: keuzes (gevoel benoemen), schuifjes (trek), warm-hint (mild zijn)
+  const vak = document.querySelector("#mf-speler .mf-stapvak, #mf-speler .mf-golfvak");
+  if (vak) {
+    let h = "";
+    const k = A.o.keuzes && A.o.keuzes[i];
+    if (k) h += `<ul class="mf-keuzes" role="list" aria-label="Kies wat past">${k.map(w => `<li><button class="mf-kies" data-mf="kies" data-w="${esc(w)}" aria-pressed="${A.keuzes[i] === w}">${esc(w)}</button></li>`).join("")}</ul>`;
+    const meet = A.o.meetStappen && A.o.meetStappen[i];
+    if (meet) {
+      const w = A.golf[meet] != null ? A.golf[meet] : 5;
+      h += `<div class="mf-schuif"><input type="range" min="0" max="10" step="1" value="${w}" data-mf-golf="${meet}" aria-label="Hoe sterk is de trek? 0 tot 10" aria-valuetext="${w} van 10">
+        <div class="mf-schuifwaarden" aria-hidden="true"><span>0</span><b class="mf-schuifnu">${w}</b><span>10</span></div></div>`;
+      if (A.golf[meet] == null) A.golf[meet] = w;
+    }
+    if (A.o.stappenWarm && A.opties.stijl === "warm" && i === A.stappen.length - 1) h += `<p class="mf-hint">${esc(A.o.warmHint)}</p>`;
+    vak.innerHTML = h;
+    const vol = document.querySelector('#mf-speler [data-mf="volgende"]');
+    if (vol) vol.textContent = i >= A.stappen.length - 1 ? "Klaar" : (A.o.overslaan ? "Sla over" : "Volgende");
+  }
+}
+/* ---------- Ademritme ---------- */
+function mfAdemTik() {
+  const A = MFS.actief, r = A.ritme, cyclus = r.reduce((a, f) => a + f.sec, 0);
+  let t = A.verstreken % cyclus, i = 0;
+  while (i < r.length - 1 && t >= r[i].sec) { t -= r[i].sec; i++; }
+  if (i !== A.fase) mfAdemFase(i);
+  const tel = document.querySelector("#mf-speler .mf-ademtel");
+  if (tel) tel.textContent = `${Math.max(1, Math.ceil(r[i].sec - t))}`;
+}
+function mfAdemFase(i) {
+  const A = MFS.actief, f = A.ritme[i];
+  A.fase = i;
+  const cirkel = document.querySelector("#mf-speler .mf-cirkel");
+  if (cirkel) {
+    // Groeien bij inademen, krimpen bij uitademen. De overgang duurt precies zo lang als de fase.
+    cirkel.style.transitionDuration = mfMag("animatie") ? f.sec + "s" : "0s";
+    cirkel.style.transform = `scale(${f.fase === "uit" ? .55 : f.fase === "bij" ? 1.08 : 1})`;
+  }
+  const woord = document.querySelector("#mf-speler .mf-ademwoord"), cw = document.querySelector("#mf-speler .mf-cirkelwoord");
+  if (woord) woord.textContent = f.woord;
+  if (cw) cw.textContent = f.woord;
+  const p = document.getElementById("mf-stap");
+  if (p && A.verstreken > 1) p.textContent = A.stappen[f.stap] || "";
+  mfMeld(f.woord);
+  mfZeg(f.woord);
+  if (mfMag("ademtonen")) mfToon(f.fase === "uit" ? 330 : f.fase === "bij" ? 587 : 523, f.sec, .045);
+  mfTril(f.fase === "uit" ? 15 : 30);
+}
+
+/* ---------- 70.6 Klaar of gestopt ----------
+   Ook stoppen telt als geldige sessie: we slaan hem op met afgebroken: true. */
+async function mfKlaar(afgebroken) {
+  const A = MFS.actief; if (!A || A.klaar) return;
+  A.klaar = true;
+  clearInterval(MFS.timer);
+  mfSchermVrij();
+  try { if ("speechSynthesis" in window) speechSynthesis.cancel(); } catch (e) {}
+  if (!afgebroken) { mfGong(); mfTril(60); }
+  const sessie = {
+    datum: new Date().toISOString(), oefeningId: A.o.id, variantMin: A.min,
+    duurSec: Math.round(Math.min(A.verstreken, A.totaal)), afgebroken: !!afgebroken,
+    checkin: A.opties.checkin || null, nameting: null, notitie: "", bron: A.opties.bron || "anker"
+  };
+  // Extra uitkomsten per type (alleen op dit toestel)
+  if (A.o.type === "labels") sessie.labels = A.labels;
+  if (A.o.type === "golf") sessie.golf = A.golf;
+  if (A.o.keuzes) sessie.keuzes = A.keuzes;
+  if (A.o.stappenWarm) sessie.stijl = A.opties.stijl || "neutraal";
+  try { await mfSessieOpslaan(sessie); } catch (e) { opslagFout(e); }
+  if (A.opties.bron === "programma") await mfProgrammaVerder(A.o.id);
+  A.sessie = sessie;
+  if (typeof mfNaSessie === "function") mfNaSessie(sessie, "opgeslagen");
+  if (afgebroken) mfGestoptScherm(A); else mfAfronding(A);
+}
+function mfGestoptScherm(A) {
+  const z4 = mfOef("Z4");
+  mfOverlay(`<div class="mf-kop"><span class="mf-kopnaam">${esc(A.o.naam)}</span><button class="mf-stop" data-mf="sluit" aria-label="Sluiten">Sluiten</button></div>
+    <div class="mf-voor"><h2 class="mf-voortitel">Gestopt. Dat telt ook.</h2>
+      <p class="mf-voortekst">Je moment is opgeslagen. Wil je iets korts met je handen proberen?</p>
+      <div class="mf-knoppen">${A.o.id !== "Z4" ? `<button class="mf-knop hoofd" data-mf="start" data-id="Z4" data-min="1">${esc(z4.naam)} · 1 min</button>` : ""}
+        <button class="mf-knop" data-mf="sluit">Klaar</button></div></div>`, "Oefening gestopt");
+  mfMeld("Gestopt. Je moment is opgeslagen.");
+  if (typeof mfNaSessie === "function") mfNaSessie(A.sessie, "klaar");
+  setTimeout(() => { const b = document.querySelector("#mf-speler .mf-voor button"); if (b) b.focus(); }, 60);
+}
+/* Afronding: "Hoe is het nu?" (overslaan mag). */
+function mfAfronding(A) {
+  let extra = "";
+  if (A.o.type === "labels") {
+    const tot = Object.values(A.labels).reduce((a, n) => a + n, 0);
+    extra = `<div class="mf-uitkomst"><b>Jouw gedachten</b><ul role="list">${A.o.labels.map(l => `<li><span>${l}</span><b>${A.labels[l] || 0}</b></li>`).join("")}</ul>
+      <p class="mf-klein">${tot ? `${tot} keer een gedachte opgemerkt. Opmerken is precies de oefening.` : "Geen gedachten getikt. Ook goed."}</p></div>`;
+  }
+  if (A.o.type === "golf") extra = mfGolfHTML(A.golf);
+  if (A.o.keuzes && Object.keys(A.keuzes).length) extra = `<div class="mf-uitkomst"><b>Wat je koos</b><p>${Object.values(A.keuzes).map(esc).join(" · ")}</p></div>`;
+  mfOverlay(`<div class="mf-kop"><span class="mf-kopnaam">${esc(A.o.naam)}</span><button class="mf-stop" data-mf="sluit" aria-label="Sluiten">Sluiten</button></div>
+    <div class="mf-voor mf-af">
+      <h2 class="mf-voortitel">Klaar. Hoe is het nu?</h2>
+      ${extra}
+      <ul class="mf-keuzelijst drie" role="list">
+        ${[["beter", "Beter"], ["hetzelfde", "Hetzelfde"], ["onrustiger", "Onrustiger"]].map(([k, n]) => `<li><button class="mf-keuze" data-mf="na" data-w="${k}" aria-pressed="false"><b>${n}</b></button></li>`).join("")}</ul>
+      <label class="mf-notitielabel" for="mf-notitie">Notitie (mag leeg blijven)</label>
+      <textarea id="mf-notitie" class="mf-notitie" rows="2"></textarea>
+      <div class="mf-knoppen"><button class="mf-knop hoofd" data-mf="na-opslaan">Opslaan</button><button class="mf-knop" data-mf="na-over">Overslaan</button></div>
+      <button class="mf-deel" data-mf="deel" data-id="${A.o.id}">Deel deze oefening</button>
+    </div>`, "Oefening klaar");
+  mfMeld("Klaar. Hoe is het nu? Kies beter, hetzelfde of onrustiger. Of sla over.");
+  setTimeout(() => { const b = document.querySelector('#mf-speler [data-mf="na"]'); if (b) b.focus(); }, 60);
+}
+/* Golfgrafiek met tekstalternatief (voor schermlezers en zonder kijken). */
+function mfGolfHTML(g) {
+  const pts = [["begin", "Begin"], ["midden", "Midden"], ["eind", "Eind"]].filter(([k]) => g[k] != null);
+  if (!pts.length) return "";
+  const W = 240, H = 90, x = i => 16 + i * ((W - 32) / Math.max(1, pts.length - 1)), y = v => H - 14 - v / 10 * (H - 28);
+  const lijn = pts.map(([k], i) => `${i ? "L" : "M"}${x(i).toFixed(1)} ${y(g[k]).toFixed(1)}`).join(" ");
+  const tekst = pts.map(([k, n]) => `${n} ${g[k]}`).join(", ");
+  return `<div class="mf-uitkomst"><b>Hoe sterk was de trek?</b>
+    <svg class="mf-golf" viewBox="0 0 ${W} ${H}" role="img" aria-label="Trek van 0 tot 10: ${tekst}">
+      <line x1="16" x2="${W - 16}" y1="${H - 14}" y2="${H - 14}" class="mf-golfas"/>
+      <path d="${lijn}" class="mf-golflijn"/>${pts.map(([k, n], i) => `<circle cx="${x(i).toFixed(1)}" cy="${y(g[k]).toFixed(1)}" r="5" class="mf-golfpunt"/><text x="${x(i).toFixed(1)}" y="${(y(g[k]) - 9).toFixed(1)}" text-anchor="middle">${g[k]}</text>`).join("")}</svg>
+    <p class="mf-klein">${esc(tekst)} (van 0 tot 10).</p></div>`;
+}
+async function mfNaOpslaan(overslaan) {
+  const A = MFS.actief; if (!A || !A.sessie) { mfSluitOverlay(); return; }
+  const gekozen = document.querySelector('#mf-speler [data-mf="na"][aria-pressed="true"]');
+  if (!overslaan) {
+    A.sessie.nameting = gekozen ? gekozen.dataset.w : null;
+    A.sessie.notitie = ((document.getElementById("mf-notitie") || {}).value || "").trim();
+    try { await mfSessieOpslaan(A.sessie); } catch (e) { opslagFout(e); }
+  }
+  if (typeof mfNaSessie === "function") mfNaSessie(A.sessie, "klaar");
+  // Past de oefening nu niet? Bied een alternatief aan (niets start vanzelf).
+  const kaarten = [];
+  if (A.sessie.nameting === "onrustiger" && mfTweeKeerOnrustiger(A.o.id)) {
+    const alt = mfOef(A.o.alsHetNietLukt);
+    kaarten.push(`<div class="mf-kaartje"><p>Deze oefening lijkt nu niet te passen. Wil je er een proberen met aandacht naar buiten?</p>
+      <button class="mf-knop hoofd" data-mf="start" data-id="${alt.id}" data-min="${alt.varianten[0]}">${esc(alt.naam)} · ${alt.varianten[0]} min</button></div>`);
+  }
+  if (A.sessie.nameting === "onrustiger" && mfOnrustigInZevenDagen() >= 5) kaarten.push(`<div class="mf-kaartje zacht"><p>Je voelde je de afgelopen week vaker onrustiger na een oefening. Praat erover met je huisarts of behandelaar. Dat mag altijd.</p></div>`);
+  if (!kaarten.length) { mfSluitOverlay(); toast(overslaan ? "Moment opgeslagen" : "Opgeslagen"); return; }
+  mfOverlay(`<div class="mf-kop"><span class="mf-kopnaam">${esc(A.o.naam)}</span><button class="mf-stop" data-mf="sluit" aria-label="Sluiten">Sluiten</button></div>
+    <div class="mf-voor">${kaarten.join("")}<div class="mf-knoppen"><button class="mf-knop" data-mf="sluit">Klaar</button></div></div>`, "Advies");
+  mfMeld(kaarten.length > 1 ? "Er zijn twee tips." : "Er is een tip.");
+}
+
+/* ---------- 70.7 Delen: alleen een vaste tekst, nooit persoonlijke gegevens ---------- */
+async function mfDeel(oefId) {
+  const o = oefId ? mfOef(oefId) : null;
+  let tekst = "Anker is een onderdeel van FutureMe: korte adem- en aandachtsoefeningen voor een vol hoofd. Gratis, zonder reclame, niets verlaat je telefoon.";
+  if (o) tekst += `\n\n${o.naam} (${mfDuurTekst(o)}):\n` + (o.type === "adem" && o.ritme === "instellingen" ? ["Adem 4 tellen in.", "Adem 6 tellen uit.", "Herhaal rustig."] : o.stappen).map((s, i) => `${i + 1}. ${s}`).join("\n");
+  try {
+    if (navigator.share) { await navigator.share({ title: "Anker", text: tekst }); return; }
+  } catch (e) { if (e && e.name === "AbortError") return; }
+  try { await navigator.clipboard.writeText(tekst); toast("Tekst gekopieerd"); }
+  catch (e) { toast("Delen lukt hier niet"); }
+}
+
+/* ---------- 70.8 Tikken in de speler ---------- */
+document.addEventListener("click", e => {
+  const el = e.target.closest && e.target.closest("#mf-speler [data-mf]");
+  if (!el) return;
+  const A = MFS.actief, wat = el.dataset.mf;
+  switch (wat) {
+    case "stop": if (A) mfKlaar(true); else mfSluitOverlay(); break;
+    case "sluit": if (A && A.sessie && typeof mfNaSessie === "function") mfNaSessie(A.sessie, "klaar"); mfSluitOverlay(); break;
+    case "pauze": {
+      if (!A) break;
+      A.gepauzeerd = !A.gepauzeerd;
+      el.setAttribute("aria-pressed", String(A.gepauzeerd));
+      el.textContent = A.gepauzeerd ? "Verder" : "Pauze";
+      document.getElementById("mf-speler").classList.toggle("mf-pauze", A.gepauzeerd);
+      mfMeld(A.gepauzeerd ? "Gepauzeerd" : "Verder");
+      if (A.gepauzeerd) { mfSchermVrij(); try { speechSynthesis.cancel(); } catch (x) {} } else { mfSchermAan(); if (A.o.type === "adem") mfAdemFase(A.fase < 0 ? 0 : A.fase); }
+      break;
+    }
+    case "volgende": if (A) { if (A.stap >= A.stappen.length - 1) mfKlaar(false); else mfToonStap(A.stap + 1); } break;
+    case "tel": {
+      if (!A) break;
+      A.tel = A.tel >= 10 ? 1 : A.tel + 1;
+      document.querySelector("#mf-speler .mf-telgetal").textContent = A.tel;
+      mfMeld(String(A.tel)); mfTril(15);
+      break;
+    }
+    case "afgedwaald": {
+      if (!A) break;
+      A.tel = 1;
+      document.querySelector("#mf-speler .mf-telgetal").textContent = "1";
+      document.getElementById("mf-stap").textContent = "Opgemerkt. Terug naar 1.";
+      mfMeld("Opgemerkt. Terug naar 1.");
+      break;
+    }
+    case "label": {
+      if (!A) break;
+      const l = el.dataset.l; A.labels[l] = (A.labels[l] || 0) + 1;
+      el.querySelector(".mf-labeltel").textContent = A.labels[l];
+      mfMeld(`${l}: ${A.labels[l]}`); mfTril(15);
+      break;
+    }
+    case "kies": {
+      if (!A) break;
+      A.keuzes[A.stap] = el.dataset.w;
+      el.closest("ul").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b === el)));
+      mfMeld("Gekozen: " + el.dataset.w);
+      break;
+    }
+    case "optin-ja": { const v = MFS.voor; mfInstZet({ bodyscanGezien: true }); mfBegin(v.o, v.min, Object.assign({}, v.opties, { akkoord: true })); break; }
+    case "mild": { const v = MFS.voor; mfInstZet({ mildKeuze: el.dataset.stijl }); mfBegin(v.o, v.min, Object.assign({}, v.opties, { stijl: el.dataset.stijl })); break; }
+    case "na": el.closest("ul").querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b === el))); break;
+    case "na-opslaan": mfNaOpslaan(false); break;
+    case "na-over": mfNaOpslaan(true); break;
+    case "deel": mfDeel(el.dataset.id); break;
+    case "start": { const id = el.dataset.id, min = +el.dataset.min; mfSluitOverlay(); setTimeout(() => mfStart(id, { min, bron: "anker" }), 60); break; }
+  }
+});
+document.addEventListener("input", e => {
+  const r = e.target.closest && e.target.closest("#mf-speler [data-mf-golf]");
+  if (!r || !MFS.actief) return;
+  MFS.actief.golf[r.dataset.mfGolf] = +r.value;
+  r.setAttribute("aria-valuetext", r.value + " van 10");
+  const nu = document.querySelector("#mf-speler .mf-schuifnu"); if (nu) nu.textContent = r.value;
+});
+/* Escape = stoppen (toetsenbord). */
+document.addEventListener("keydown", e => {
+  if (e.key !== "Escape" || !document.getElementById("mf-speler")) return;
+  e.preventDefault();
+  const A = MFS.actief;
+  if (A && !A.klaar) mfKlaar(true);
+  else { if (A && A.sessie && typeof mfNaSessie === "function") mfNaSessie(A.sessie, "klaar"); mfSluitOverlay(); }
+});
+
+</script>
+<script>
+"use strict";
+// === SECTIE 71: ANKER – SCHERMEN ===
+/* ==========================================================================
+   Alle schermen van Anker. Elk scherm is een functie die HTML teruggeeft;
+   de app zet die in beeld via teken() (zoals alle andere schermen).
+   Schermnamen: anker (home, of de intro als die nog niet gezien is),
+   ankerintro, ankerkies, ankerhelp, ankerervaring, ankerinst, ankerbronnen.
+   Knoppen hebben data-act="mf-…"; die worden onderaan afgehandeld.
+   ========================================================================== */
+V.mfHelp = V.mfHelp || { drukte: null, energie: null, tijd: null };
+V.mfVerras = V.mfVerras || null;
+
+/* Titels in de kopbalk */
+[["anker", "Anker", () => "Even landen"], ["ankerintro", "Anker", () => "Even landen"], ["ankerkies", "Kies zelf", () => "Alle oefeningen"],
+ ["ankerhelp", "Help me kiezen", () => "Drie vragen, alles mag je overslaan"], ["ankerervaring", "Jouw ervaring", () => "Alleen op dit toestel"],
+ ["ankerinst", "Anker-instellingen", () => "Wijzigingen worden direct bewaard"], ["ankerbronnen", "Bronnen", () => "In gewone taal"]]
+  .forEach(([view, titel, onder]) => Object.defineProperty(KOPPEN, view, { get: () => [titel, onder], configurable: true, enumerable: true }));
+
+const mfScherm = inhoud => `<div class="mf-scherm mf-l-${mfInst().lettergrootte}">${inhoud}</div>`;
+function mfWeekMomenten() { return mfDezeWeek().length; }
+
+/* ---------- 71.1 Introscherm (eerste keer, later via instellingen) ---------- */
+function mfIntroHTML() {
+  const s = mfInst();
+  return mfScherm(`
+    <h2 class="mf-titel">${esc(MF_TEKST.introTitel)}</h2>
+    <p class="mf-vet">${esc(MF_TEKST.introRegel)}</p>
+    <button class="mf-snelknop" data-act="mf-start" data-id="A1" data-min="1" data-bron="snelstart">${esc(MF_TEKST.snelknop)}</button>
+    <div class="mf-rij"><button class="knop rand mf-klein" data-act="mf-ga" data-view="ankerkies">Kies zelf</button>
+      <button class="knop rand mf-klein" data-act="mf-ga" data-view="ankerhelp">Help me kiezen</button></div>
+    <h3 class="mf-kop3">${esc(MF_TEKST.profielVraag)}</h3>
+    ${mfProfielLijst(s.profiel, true)}
+    <div class="card card-pad mf-blok"><h3 class="mf-kop3">Zo werkt het</h3><p>${esc(MF_TEKST.zoWerktHet)}</p></div>
+    <div class="card card-pad mf-blok"><h3 class="mf-kop3">Eerlijk over het bewijs</h3><p>${esc(MF_TEKST.bewijs)}</p>
+      <button class="mf-link" data-act="mf-ga" data-view="ankerbronnen">Bronnen in gewone taal</button></div>
+    <div class="card card-pad mf-blok"><h3 class="mf-kop3">Waarom gratis?</h3><p>${esc(MF_TEKST.gratis)}</p></div>
+    <p class="mf-voet">${esc(MF_TEKST.voetregel)}</p>
+    <button class="knop breed primair mf-verder" data-act="mf-intro-klaar">Verder</button>`);
+}
+/* Profielkeuze als lijst (geen diagnoselabels in de koppen). */
+function mfProfielLijst(huidig, metOverslaan) {
+  const rijen = MF_TEKST.profielen.map(([k, kop, uitleg]) => `<li><button class="mf-profiel${huidig === k ? " aan" : ""}" data-act="mf-profiel-kies" data-p="${k}" aria-pressed="${huidig === k}">
+    <b>${esc(kop)}</b><span>${esc(uitleg)}</span></button></li>`);
+  if (metOverslaan) rijen.push(`<li><button class="mf-profiel mf-overslaan${huidig == null ? " aan" : ""}" data-act="mf-profiel-kies" data-p="" aria-pressed="${huidig == null}"><b>Sla over</b></button></li>`);
+  return `<ul class="mf-profielen" role="list">${rijen.join("")}</ul>`;
+}
+
+/* ---------- 71.2 Anker-home ---------- */
+function vwAnker() {
+  const s = mfInst();
+  if (!s.introGezien) return mfIntroHTML();
+  const week = mfDezeWeek(), minuten = Math.round(week.reduce((a, x) => a + (x.duurSec || 0), 0) / 60);
+  const fav = s.favorieten.map(mfOef).filter(Boolean).filter(o => !(s.profiel === "energie" && o.id === "Z2"));
+  let h = `<button class="mf-snelknop" data-act="mf-start" data-id="A1" data-min="1" data-bron="anker">${esc(MF_TEKST.snelknop)}</button>
+    <div class="mf-rij"><button class="knop rand" data-act="mf-ga" data-view="ankerkies">Kies zelf</button>
+      <button class="knop rand" data-act="mf-ga" data-view="ankerhelp">Help me kiezen</button></div>
+    <button class="mf-profielchip" data-act="mf-profiel" aria-label="Profiel wijzigen">Profiel: ${esc(s.profiel ? MF_PROFIELNAAM[s.profiel] : "niet gekozen")} · wijzig</button>
+    <p class="mf-week">Deze week: ${week.length} ${week.length === 1 ? "moment" : "momenten"}${week.length ? `, ${minuten} ${minuten === 1 ? "minuut" : "minuten"}` : ""}</p>`;
+  if (fav.length) h += `<h3 class="mf-kop3">Favorieten</h3><ul class="mf-oefenlijst" role="list">${fav.map(o => mfOefKaart(o)).join("")}</ul>`;
+  h += mfProgrammaKaart();
+  h += `<ul class="mf-menu" role="list">
+    <li><button data-act="mf-ga" data-view="ankerervaring">${ico("grafiek")}<span>Jouw ervaring</span></button></li>
+    <li><button data-act="mf-ga" data-view="ankerinst">${ico("instel")}<span>Instellingen</span></button></li>
+    <li><button data-act="mf-ga" data-view="ankerbronnen">${ico("boek")}<span>Bronnen in gewone taal</span></button></li>
+    <li><button data-act="mf-deel">${ico("deel")}<span>Deel Anker</span></button></li></ul>
+    <p class="mf-voet">${esc(MF_TEKST.voetregel)}</p>`;
+  return mfScherm(h);
+}
+function vwAnkerIntro() { return mfIntroHTML(); }
+
+/* Een kaartje voor één oefening: tik = starten met de standaardduur. */
+function mfOefKaart(o, opties) {
+  opties = opties || {};
+  const s = mfInst(), min = opties.min || mfStandaardMin(o), fav = s.favorieten.includes(o.id), label = mfRustigLabel(o);
+  const bron = opties.bron || "anker", checkin = opties.checkin ? ` data-checkin="1"` : "";
+  return `<li class="mf-oef">
+    <button class="mf-oefhoofd" data-act="mf-start" data-id="${o.id}" data-min="${min}" data-bron="${bron}"${checkin} aria-label="Start ${esc(o.naam)}, ${min} ${min === 1 ? "minuut" : "minuten"}">
+      <b>${esc(o.naam)}</b><span class="mf-oefwat">${esc(o.wat)}</span>
+      <span class="mf-oefmeta">${opties.min ? `${min} min` : esc(mfDuurTekst(o))}${label ? ` · ${label}` : o.beweging ? " · bewegen" : ""}</span></button>
+    <div class="mf-oefknoppen">
+      ${!opties.min && o.varianten.length > 1 ? o.varianten.map(m => `<button class="mf-duur" data-act="mf-start" data-id="${o.id}" data-min="${m}" data-bron="${bron}" aria-label="Start ${esc(o.naam)}, ${m} minuten">${m}′</button>`).join("") : ""}
+      <button class="mf-fav" data-act="mf-fav" data-id="${o.id}" aria-pressed="${fav}" aria-label="${fav ? "Uit favorieten halen" : "Bewaar als favoriet"}: ${esc(o.naam)}">${fav ? "★" : "☆"}</button>
+    </div></li>`;
+}
+
+/* ---------- 71.3 Kies zelf: vier groepen ---------- */
+function vwAnkerKies() {
+  const s = mfInst();
+  let h = "";
+  MF_CATEGORIEEN.forEach(cat => {
+    let lijst = MF_OEFENINGEN.filter(o => o.categorie === cat);
+    const verborgen = s.profiel === "energie" ? lijst.filter(o => o.inspanning !== "geen") : [];
+    lijst = lijst.filter(o => !verborgen.includes(o));
+    h += `<h3 class="mf-kop3">${esc(cat)}</h3><ul class="mf-oefenlijst" role="list">${lijst.map(o => mfOefKaart(o)).join("")}</ul>`;
+    if (verborgen.length) h += `<p class="mf-klein">${verborgen.map(o => esc(o.naam)).join(", ")} staat uit door je profiel. <button class="mf-link" data-act="mf-profiel">Profiel wijzigen</button></p>`;
+  });
+  return mfScherm(h);
+}
+
+/* ---------- 71.4 Help me kiezen (drie vragen, alles overslaanbaar) ---------- */
+function vwAnkerHelp() {
+  const a = V.mfHelp;
+  const vraag = (k, titel, opties) => `<fieldset class="mf-vraag"><legend>${titel}</legend><ul class="mf-chips" role="list">
+    ${opties.map(([w, n]) => `<li><button class="mf-chip" data-act="mf-help" data-k="${k}" data-w="${w}" aria-pressed="${String(a[k]) === String(w)}">${n}</button></li>`).join("")}
+    <li><button class="mf-chip mf-sla" data-act="mf-help" data-k="${k}" data-w="" aria-pressed="${a[k] === null}">Sla over</button></li></ul></fieldset>`;
+  let h = vraag("drukte", "Hoe druk is je hoofd?", [[1, "1 rustig"], [2, "2"], [3, "3"], [4, "4"], [5, "5 heel druk"]])
+    + vraag("energie", "Hoeveel energie heb je?", [[1, "1 heel weinig"], [2, "2"], [3, "3"], [4, "4"], [5, "5 veel"]])
+    + vraag("tijd", "Hoeveel tijd heb je?", [[1, "1 min"], [3, "3 min"], [5, "5 min"], [10, "10 min"]]);
+  const voorstel = mfVoorstellen(a), top = voorstel.slice(0, 3);
+  h += `<h3 class="mf-kop3">Dit past nu misschien</h3><p class="mf-klein">Anker stelt voor, jij beslist. Niets start vanzelf.</p>
+    <ul class="mf-oefenlijst" role="list">${top.map(o => mfOefKaart(o, { min: mfMinVoor(o, a.tijd), checkin: true })).join("")}</ul>`;
+  const verras = V.mfVerras && mfOef(V.mfVerras);
+  if (verras && voorstel.includes(verras) && !top.includes(verras)) h += `<h3 class="mf-kop3">Verrassing</h3><ul class="mf-oefenlijst" role="list">${mfOefKaart(verras, { min: mfMinVoor(verras, a.tijd), checkin: true })}</ul>`;
+  if (voorstel.length > top.length) h += `<button class="knop breed rand" data-act="mf-verras">Verras me</button>`;
+  return mfScherm(h);
+}
+const mfCheckin = () => {
+  const a = V.mfHelp;
+  if (a.drukte == null && a.energie == null && a.tijd == null) return null;
+  return { energie: a.energie, prikkels: a.drukte, doel: mfDoel(a) };
+};
+
+/* ---------- 71.5 Programma "7 dagen landen" ---------- */
+function mfProgrammaKaart() {
+  const p = mfProgramma(), dagen = mfProgrammaDagen();
+  if (!p) return `<div class="card card-pad mf-prog"><h3 class="mf-kop3">7 dagen landen</h3>
+    <p>Elke dag één korte oefening, 3 tot 5 minuten. Een dag missen is geen probleem: je gaat gewoon verder waar je was.</p>
+    <button class="knop rand" data-act="mf-prog-start">Begin met dag 1</button></div>`;
+  const nu = Math.min(p.huidigeDag || 0, 7);
+  const lijst = `<ol class="mf-progdagen">${dagen.map((id, i) => `<li class="${i < nu ? "af" : i === nu ? "nu" : ""}"><span>${i < nu ? "✓" : i + 1}</span>${esc(mfOef(id).naam)}${i < nu ? '<span class="mf-sr"> (gedaan)</span>' : ""}</li>`).join("")}</ol>`;
+  if (nu >= 7) return `<div class="card card-pad mf-prog"><h3 class="mf-kop3">7 dagen landen</h3><p>Je hebt alle zeven oefeningen gedaan.</p>${lijst}
+    <button class="knop rand" data-act="mf-prog-opnieuw">Opnieuw beginnen</button></div>`;
+  const o = mfOef(dagen[nu]), min = mfStandaardMin(o);
+  return `<div class="card card-pad mf-prog"><h3 class="mf-kop3">7 dagen landen · dag ${nu + 1} van 7</h3>
+    <button class="knop breed primair" data-act="mf-start" data-id="${o.id}" data-min="${min}" data-bron="programma">${esc(o.naam)} · ${min} min</button>${lijst}</div>`;
+}
+
+/* ---------- 71.6 Jouw ervaring (geen streaks, geen vergelijking met anderen) ---------- */
+function vwAnkerErvaring() {
+  const v = vandaagISO(), week = mfDezeWeek(), minuten = Math.round(week.reduce((a, x) => a + (x.duurSec || 0), 0) / 60);
+  const dagenMet = new Set(week.map(mfDatum)).size;
+  const tel = new Map(); S.mf_sessies.forEach(x => tel.set(x.oefeningId, (tel.get(x.oefeningId) || 0) + 1));
+  const top = [...tel].sort((a, b) => b[1] - a[1]).slice(0, 3);
+  let h = `<ul class="mf-tegels" role="list">
+    <li><b>${week.length}</b><span>${week.length === 1 ? "moment" : "momenten"} deze week</span></li>
+    <li><b>${minuten}</b><span>${minuten === 1 ? "minuut" : "minuten"} deze week</span></li>
+    <li><b>${dagenMet} van 7</b><span>dagen met een moment</span></li></ul>`;
+  if (!S.mf_sessies.length) return mfScherm(h + `<p class="mf-klein">Nog geen momenten. Alles wat je doet, blijft op dit toestel.</p>`);
+  h += `<h3 class="mf-kop3">Wat je het vaakst deed</h3><ol class="mf-top">${top.map(([id, n]) => `<li><span>${esc((mfOef(id) || { naam: id }).naam)}</span><b>${n}×</b></li>`).join("")}</ol>`;
+  // Per oefening: beter, hetzelfde, onrustiger (alleen sessies waar je iets koos)
+  const per = MF_OEFENINGEN.map(o => {
+    const l = S.mf_sessies.filter(x => x.oefeningId === o.id && x.nameting);
+    return { o, b: l.filter(x => x.nameting === "beter").length, h: l.filter(x => x.nameting === "hetzelfde").length, r: l.filter(x => x.nameting === "onrustiger").length, n: l.length };
+  }).filter(x => x.n);
+  if (per.length) h += `<h3 class="mf-kop3">Hoe het daarna was</h3>
+    <ul class="mf-legenda" role="list" aria-hidden="true"><li><i class="b"></i>beter</li><li><i class="h"></i>hetzelfde</li><li><i class="r"></i>onrustiger</li></ul>
+    <ul class="mf-verdeling" role="list">${per.map(x => `<li><span class="mf-vnaam">${esc(x.o.naam)}</span>
+      <span class="mf-vbalk" aria-hidden="true">${x.b ? `<i class="b" style="flex:${x.b}"></i>` : ""}${x.h ? `<i class="h" style="flex:${x.h}"></i>` : ""}${x.r ? `<i class="r" style="flex:${x.r}"></i>` : ""}</span>
+      <span class="mf-vtekst">Beter ${x.b}, hetzelfde ${x.h}, onrustiger ${x.r}</span></li>`).join("")}</ul>`;
+  if (mfOnrustigInZevenDagen() >= 5) h += `<div class="card card-pad mf-blok"><p>Je voelde je de afgelopen week vaker onrustiger na een oefening. Praat erover met je huisarts of behandelaar. Dat mag altijd.</p></div>`;
+  h += `<p class="mf-klein">Stoppen telt ook als moment. Er is geen reeks om vol te houden.</p>`;
+  return mfScherm(h);
+}
+
+/* ---------- 71.7 Instellingen ---------- */
+function mfSchakel(sleutel, titel, uitleg, aan, uit) {
+  return `<li class="schakel${uit ? " mf-uitgezet" : ""}"><span class="tekst"><b>${esc(titel)}</b>${uitleg ? `<small>${esc(uitleg)}</small>` : ""}</span>
+    <button class="toggle" data-act="mf-inst" data-k="${sleutel}" aria-pressed="${!!aan}" aria-label="${esc(titel)}"></button></li>`;
+}
+function vwAnkerInst() {
+  const s = mfInst(), arm = s.prikkelarm || inst("rust", false);
+  const seg = (k, waarde, opties) => `<div class="segment mf-seg" role="group">${opties.map(([w, n]) => `<button data-act="mf-zet" data-k="${k}" data-w="${w}" aria-pressed="${String(waarde) === String(w)}">${n}</button>`).join("")}</div>`;
+  const mindful = mfMindfulGewoonte();
+  let h = `<h3 class="mf-kop3">Profiel</h3>${mfProfielLijst(s.profiel, true)}
+    <h3 class="mf-kop3">Prikkels</h3>
+    <ul class="card mf-schakels" role="list">
+      ${mfSchakel("prikkelarm", "Prikkelarm", "Zet geluid, ademtonen, stem, animatie en trilling in één keer uit.", s.prikkelarm)}
+      ${mfSchakel("geluid", "Gong", "Zachte gong aan het begin en eind.", s.geluid, arm)}
+      ${mfSchakel("ademtonen", "Ademtonen", "Hoge toon bij inademen, lage toon bij uitademen.", s.ademtonen, arm)}
+      ${mfSchakel("stem", "Voorleesstem", "Een stem leest elke stap voor.", s.stem, arm)}
+      ${mfSchakel("animatie", "Animatie", "Ademcirkel die groeit en krimpt.", s.animatie, arm || mfSysteemRustig())}
+      ${mfSchakel("trilling", "Trilling", "Korte trilling bij elke stap. Werkt niet op iPhone.", s.trilling, arm)}
+    </ul>
+    ${inst("rust", false) ? `<p class="mf-klein">De prikkelarme modus van de app staat aan. Daardoor staan deze prikkels in Anker ook uit.</p>` : ""}
+    ${mfSysteemRustig() ? `<p class="mf-klein">Je toestel vraagt om minder beweging. Daarom staat de animatie uit.</p>` : ""}
+    <h3 class="mf-kop3">Ademtempo bij "Lange uitademing"</h3>
+    <div class="mf-veld"><span>Inademen</span>${seg("ademIn", s.ademIn, [[3, "3 s"], [4, "4 s"], [5, "5 s"], [6, "6 s"]])}</div>
+    <div class="mf-veld"><span>Uitademen</span>${seg("ademUit", s.ademUit, [[3, "3 s"], [4, "4 s"], [5, "5 s"], [6, "6 s"]])}</div>
+    ${s.ademUit <= s.ademIn ? `<p class="mf-klein">Tip: maak uitademen langer dan inademen.</p>` : ""}
+    <h3 class="mf-kop3">Lettergrootte</h3>
+    ${seg("lettergrootte", s.lettergrootte, [["normaal", "Normaal"], ["groot", "Groot"], ["extra", "Extra groot"]])}
+    <h3 class="mf-kop3">Koppelingen met de rest van de app</h3>
+    <p class="mf-klein">Staan standaard uit. Pas als je ze aanzet, zie je ze op die plek.</p>
+    <ul class="card mf-schakels" role="list">
+      ${mfSchakel("kop.logboek", "Logboek", "Elk moment als regel in je logboek.", s.koppelingen.logboek)}
+      ${mfSchakel("kop.gewoonte", "Gewoonte afvinken", "Vinkt de gewoonte “Mindful moment” af na een moment van minstens 1 minuut.", s.koppelingen.gewoonte)}
+      ${mfSchakel("kop.roken", "Rookvrij", "Knop “Even pauze” bij Rookvrij.", s.koppelingen.roken)}
+      ${mfSchakel("kop.financieel", "Financieel", "Knop “Even pauze” bij Financieel.", s.koppelingen.financieel)}
+      ${mfSchakel("kop.werk", "Werk", "Knop “Focus-start” bij Werk.", s.koppelingen.werk)}
+    </ul>
+    ${s.koppelingen.gewoonte && !mindful ? `<div class="card card-pad mf-blok"><p>Er is nog geen gewoonte “Mindful moment”.</p><button class="knop rand" data-act="mf-gewoonte-maak">Gewoonte aanmaken</button></div>` : ""}
+    <h3 class="mf-kop3">Herinneringen</h3>
+    <p class="mf-klein">Wordt een terugkerende afspraak in je agenda van de app.</p>
+    ${s.herinneringen.length ? `<ul class="card mf-herinneringen" role="list">${s.herinneringen.map(r => `<li><span>${esc(r.tijd)} · ${esc(mfDagenTekst(r.dagen))}</span>
+      <button class="icon-btn" data-act="mf-herinnering-weg" data-id="${r.id}" aria-label="Herinnering ${esc(r.tijd)} verwijderen">${ico("prullenbak")}</button></li>`).join("")}</ul>` : ""}
+    <div class="card card-pad mf-nieuweherinnering">
+      <label class="mf-veld"><span>Tijd</span><input class="invoer" type="time" id="mf-her-tijd" value="08:30"></label>
+      <fieldset class="mf-vraag"><legend>Dagen</legend><ul class="mf-chips" role="list">${["ma", "di", "wo", "do", "vr", "za", "zo"].map((d, i) => `<li><button class="mf-chip" data-act="mf-her-dag" data-d="${(i + 1) % 7}" aria-pressed="${i < 5}">${d}</button></li>`).join("")}</ul></fieldset>
+      <button class="knop rand" data-act="mf-herinnering-plus">Herinnering toevoegen</button></div>
+    <h3 class="mf-kop3">Meer</h3>
+    <ul class="mf-menu" role="list">
+      <li><button data-act="mf-ga" data-view="ankerintro">${ico("vraag")}<span>Intro opnieuw bekijken</span></button></li>
+      <li><button data-act="mf-ga" data-view="ankerbronnen">${ico("boek")}<span>Bronnen in gewone taal</span></button></li></ul>
+    <div class="card card-pad mf-blok"><h3 class="mf-kop3">Waarom gratis?</h3><p>${esc(MF_TEKST.gratis)} Alles wat je in Anker doet, blijft op dit toestel.</p></div>
+    <div class="card card-pad mf-blok mf-veilig"><h3 class="mf-kop3">Als het niet goed gaat</h3>
+      <p>Anker is geen behandeling. Houden klachten aan? Praat met je huisarts of behandelaar.</p>
+      <p>’s Avonds, ’s nachts en in het weekend: bel de huisartsenpost.</p>
+      <p>Denk je aan zelfmoord? Bel 113 Zelfmoordpreventie: <a href="tel:08000113">0800-0113</a> (gratis, dag en nacht).</p>
+      <p>Bij direct gevaar: bel <a href="tel:112">112</a>.</p></div>`;
+  return mfScherm(h);
+}
+function mfDagenTekst(d) {
+  if (!d || !d.length || d.length === 7) return "elke dag";
+  const n = ["zo", "ma", "di", "wo", "do", "vr", "za"];
+  if ([1, 2, 3, 4, 5].every(x => d.includes(x)) && d.length === 5) return "werkdagen";
+  return d.slice().sort((a, b) => ((a + 6) % 7) - ((b + 6) % 7)).map(x => n[x]).join(", ");
+}
+
+/* ---------- 71.8 Bronnen in gewone taal ---------- */
+function vwAnkerBronnen() {
+  return mfScherm(`<p>${esc(MF_TEKST.bewijs)}</p>
+    <ol class="mf-bronnen">${MF_BRONNEN.map(([wie, wat, wel, niet]) => `<li><b>${esc(wie)}</b><span class="mf-klein">${esc(wat)}</span>
+      <p><span class="mf-wel">Wat het laat zien:</span> ${esc(wel)}</p><p><span class="mf-niet">Wat niet:</span> ${esc(niet)}</p></li>`).join("")}</ol>
+    <p class="mf-vet">${esc(MF_BRON_SLOT)}</p>
+    <p class="mf-voet">${esc(MF_TEKST.voetregel)}</p>`);
+}
+
+/* ---------- 71.9 Tikken op de Anker-schermen ---------- */
+async function mfProfielBlad() {
+  bladOpen("Profiel", `<p class="mf-klein" style="margin-top:0">${esc(MF_TEKST.profielVraag)}</p>${mfProfielLijst(mfInst().profiel, true)}`);
+}
+document.addEventListener("click", async e => {
+  const el = e.target.closest && e.target.closest("[data-act^='mf-']");
+  if (!el || el.closest("#mf-speler")) return;
+  const act = el.dataset.act;
+  switch (act) {
+    case "mf-start": {
+      const checkin = el.dataset.checkin ? mfCheckin() : null;
+      if (!mfInst().introGezien) await mfInstZet({ introGezien: true });
+      mfStart(el.dataset.id, { min: +el.dataset.min || null, bron: el.dataset.bron || "anker", checkin });
+      break;
+    }
+    case "mf-ga":
+      if (V.view === "anker" && !mfInst().introGezien && el.dataset.view !== "ankerbronnen") await mfInstZet({ introGezien: true });
+      ga(el.dataset.view);
+      break;
+    case "mf-intro-klaar": await mfInstZet({ introGezien: true }); if (V.view === "anker") teken(); else ga("anker"); break;
+    case "mf-profiel": mfProfielBlad(); break;
+    case "mf-profiel-kies": {
+      const p = el.dataset.p || null;
+      await mfInstZet({ profiel: p });
+      el.closest("ul").querySelectorAll("button").forEach(b => { const aan = (b.dataset.p || null) === p; b.setAttribute("aria-pressed", String(aan)); b.classList.toggle("aan", aan); });
+      if ($("#blad").classList.contains("open") && el.closest("#blad")) { bladSluit(); teken(); }
+      else if (V.view !== "anker" || mfInst().introGezien) teken();
+      toast(p ? "Profiel: " + MF_PROFIELNAAM[p] : "Geen profiel gekozen");
+      break;
+    }
+    case "mf-fav": {
+      const s = mfInst(), id = el.dataset.id, f = s.favorieten.includes(id) ? s.favorieten.filter(x => x !== id) : s.favorieten.concat(id);
+      await mfInstZet({ favorieten: f }); teken(); break;
+    }
+    case "mf-help": {
+      const k = el.dataset.k, w = el.dataset.w;
+      V.mfHelp[k] = w === "" ? null : +w; V.mfVerras = null; teken(); break;
+    }
+    case "mf-verras": {
+      const l = mfVoorstellen(V.mfHelp).slice(3);
+      if (l.length) { V.mfVerras = l[Math.floor(Math.random() * l.length)].id; teken(); }
+      break;
+    }
+    case "mf-prog-start": case "mf-prog-opnieuw": await mfProgrammaStart(); teken(); toast("7 dagen landen: dag 1 staat klaar"); break;
+    case "mf-deel": mfDeel(null); break;
+    case "mf-inst": {
+      const k = el.dataset.k, s = mfInst();
+      if (k.startsWith("kop.")) { const kk = k.slice(4); await mfInstZet({ koppelingen: Object.assign({}, s.koppelingen, { [kk]: !s.koppelingen[kk] }) }); }
+      else await mfInstZet({ [k]: !s[k] });
+      teken(); break;
+    }
+    case "mf-zet": {
+      const k = el.dataset.k, w = el.dataset.w;
+      await mfInstZet({ [k]: /^\d+$/.test(w) ? +w : w }); teken(); break;
+    }
+    case "mf-her-dag": el.setAttribute("aria-pressed", String(el.getAttribute("aria-pressed") !== "true")); break;
+    case "mf-herinnering-plus": {
+      const tijd = ($("#mf-her-tijd") || {}).value || "08:30";
+      const dagen = [...document.querySelectorAll('[data-act="mf-her-dag"][aria-pressed="true"]')].map(b => +b.dataset.d);
+      await mfHerinneringMaak(tijd, dagen); teken(); break;
+    }
+    case "mf-herinnering-weg": await mfHerinneringWeg(el.dataset.id); teken(); break;
+    case "mf-gewoonte-maak": await mfMindfulMaak(); teken(); break;
+  }
+});
+
+</script>
+<script>
+"use strict";
+// === SECTIE 72: ANKER – STARTTEGEL EN KOPPELINGEN ===
+/* ==========================================================================
+   Hoe Anker aansluit op de rest van de app:
+   - een tegel op het startscherm (Nieuw). Tikken opent Anker; 0,5 seconde
+     ingedrukt houden start meteen 1 minuut rustig ademen;
+   - Logboek (standaard aan): elk moment wordt een regel;
+   - Gewoonte (standaard uit): vinkt "Mindful moment" af;
+   - Rookvrij, Financieel en Werk (standaard uit, en onzichtbaar tot je ze
+     aanzet): een knop voor een korte oefening;
+   - Herinneringen: terugkerende afspraken via de bestaande afsprakenfunctie.
+   Back-up en import nemen de nieuwe stores vanzelf mee (zie sectie 69.1).
+   ========================================================================== */
+
+/* ---------- 72.1 Starttegel ---------- */
+{
+  const _start = vwStart;
+  vwStart = function () {
+    const h = _start();
+    const n = mfWeekMomenten();
+    const tegel = catKnop({ view: "anker", ill: "anker", naam: "Anker", uitleg: `Deze week: ${n} ${n === 1 ? "moment" : "momenten"}`, kleur: "#3a7ca5" })
+      .replace('class="knop3d breed"', 'class="knop3d breed mf-tegel" aria-description="Houd ingedrukt om meteen 1 minuut rustig te ademen"');
+    // Direct na Gezondheid; lukt dat niet, dan achteraan in het raster.
+    const i = h.indexOf('data-view="gezondheid"'), j = i < 0 ? -1 : h.indexOf("</button>", i);
+    if (j >= 0) return h.slice(0, j + 9) + tegel + h.slice(j + 9);
+    const k = h.indexOf('<div class="startgrid">');
+    return k < 0 ? h : h.slice(0, k + 23) + tegel + h.slice(k + 23);
+  };
+}
+/* Lang indrukken (500 ms) = direct starten, zonder vragen. */
+{
+  let timer = 0, start = null, gestart = 0;
+  document.addEventListener("pointerdown", e => {
+    const t = e.target.closest && e.target.closest(".mf-tegel");
+    if (!t || (e.pointerType === "mouse" && e.button !== 0)) return;
+    start = { x: e.clientX, y: e.clientY };
+    clearTimeout(timer);
+    timer = setTimeout(async () => {
+      start = null; gestart = Date.now();
+      if (!mfInst().introGezien) await mfInstZet({ introGezien: true });
+      if (typeof tril === "function") tril(20);
+      mfStart("A1", { min: 1, bron: "snelstart" });
+    }, 500);
+  }, { passive: true });
+  const stop = () => { clearTimeout(timer); start = null; };
+  document.addEventListener("pointermove", e => { if (start && (Math.abs(e.clientX - start.x) > 10 || Math.abs(e.clientY - start.y) > 10)) stop(); }, { passive: true });
+  document.addEventListener("pointerup", stop, { passive: true });
+  document.addEventListener("pointercancel", stop, { passive: true });
+  // Na een lange druk mag de "tik" die volgt Anker-home niet openen.
+  document.addEventListener("click", e => {
+    if (Date.now() - gestart < 800 && e.target.closest && e.target.closest(".mf-tegel")) { e.preventDefault(); e.stopPropagation(); }
+  }, true);
+  document.addEventListener("contextmenu", e => { if (e.target.closest && e.target.closest(".mf-tegel")) e.preventDefault(); });
+}
+/* In het Meer-scherm ook te vinden */
+{
+  const _meer = vwMeer;
+  vwMeer = function () {
+    const h = _meer();
+    const kaart = `<button class="menu-kaart" data-act="ga" data-view="anker">${ico("hart")}<span class="nm">Anker</span><span class="ds">Even landen</span></button>`;
+    const i = h.indexOf('data-view="gezondheid"'), j = i < 0 ? -1 : h.indexOf("</button>", i);
+    return j < 0 ? h : h.slice(0, j + 9) + kaart + h.slice(j + 9);
+  };
+}
+if (typeof VERWANT === "object") {
+  VERWANT.anker = [["gezondheid", "Gezondheid"], ["persoonlijk", "Persoonlijk"]];
+  VERWANT_ICO.anker = "hart";
+}
+
+/* ---------- 72.2 Na een sessie: logboek en gewoonte ----------
+   Wordt aangeroepen als de sessie echt klaar is (na de meting, overslaan of
+   sluiten). Elke sessie maar één keer. */
+const MF_GEMELD = new Set();
+if (typeof TL_SOORTEN === "object") TL_SOORTEN.anker = ["Anker", "#3a7ca5"];
+if (typeof LOGFILTERS !== "undefined" && Array.isArray(LOGFILTERS)) LOGFILTERS.push(["anker", "Anker"]);
+async function mfNaSessie(sessie, fase) {
+  if (fase !== "klaar" || !sessie || sessie.id == null || MF_GEMELD.has(sessie.id)) return;
+  MF_GEMELD.add(sessie.id);
+  const s = mfInst(), o = mfOef(sessie.oefeningId);
+  if (s.koppelingen.logboek && o) {
+    const min = Math.max(1, Math.round((sessie.duurSec || 0) / 60));
+    const na = sessie.afgebroken ? "gestopt" : (sessie.nameting || "geen meting");
+    await logGebeurtenis("anker", `Anker: ${o.naam}, ${min} min, ${na}${sessie.notitie ? " — " + sessie.notitie : ""}`, String(sessie.id));
+  }
+  if (s.koppelingen.gewoonte && (sessie.duurSec || 0) >= 60) {
+    const g = mfMindfulGewoonte(), d = vandaagISO();
+    if (g && !gewoonteAf(g.id, d)) await bewaar("gewoontelog", { id: g.id + "|" + d, gewoonteId: g.id, datum: d, ts: new Date().toISOString() });
+  }
+}
+const mfMindfulGewoonte = () => S.gewoontes.find(g => !g.archief && String(g.naam || "").trim().toLowerCase() === "mindful moment") || null;
+async function mfMindfulMaak() {
+  if (mfMindfulGewoonte()) { toast("Die gewoonte bestaat al"); return; }
+  await bewaar("gewoontes", { id: uid(), naam: "Mindful moment", dagen: [], kleur: "#3a7ca5", gemaakt: new Date().toISOString(), archief: false });
+  toast("Gewoonte “Mindful moment” aangemaakt");
+}
+
+/* ---------- 72.3 Knoppen in Rookvrij, Financieel en Werk (alleen als aangezet) ---------- */
+function mfPauzeKnop(id, min, bron, titel) {
+  const o = mfOef(id);
+  return `<button class="mf-pauzeknop" data-act="mf-start" data-id="${id}" data-min="${min}" data-bron="${bron}">
+    <span class="mf-pauzeicoon" aria-hidden="true">⚓</span><span><b>${titel}</b><small>${esc(o.naam)} · ${min} min</small></span></button>`;
+}
+{
+  const _roken = vwRoken;
+  vwRoken = function () { const h = _roken(); return mfInst().koppelingen.roken ? mfPauzeKnop("G3", 3, "roken", "Even pauze") + h : h; };
+  const _fin = vwFinancieel;
+  vwFinancieel = function () { const h = _fin(); return mfInst().koppelingen.financieel ? mfPauzeKnop("G1", 1, "financieel", "Even pauze") + h : h; };
+  const _werk = vwWerk;
+  vwWerk = function () { const h = _werk(); return mfInst().koppelingen.werk ? mfPauzeKnop("A4", 3, "werk", "Focus-start") + h : h; };
+}
+
+/* ---------- 72.4 Herinneringen via de afsprakenfunctie ---------- */
+async function mfHerinneringMaak(tijd, dagen) {
+  if (!/^\d{2}:\d{2}$/.test(tijd)) { toast("Kies een tijd"); return; }
+  const id = uid();
+  const herhaal = !dagen.length || dagen.length === 7 ? { soort: "dag", elke: 1 } : { soort: "week", elke: 1, dagen: dagen.slice().sort() };
+  const a = {
+    id: uid(), soort: "gesprek", titel: "Anker: even landen", datum: eersteHerhaalDatum(herhaal), totDatum: "", tijd, eindTijd: "", deadline: "",
+    plek: "", personen: [], voorbereiding: "Een kort moment voor jezelf. Open FutureMe en kies Anker.", notities: "", uitkomst: "",
+    gemaakt: new Date().toISOString(), herhaal, mfHerinnering: id
+  };
+  await bewaar("afspraken", a);
+  if (typeof reeksNaOpslaan === "function") await reeksNaOpslaan("afspraken", a, null);
+  const s = mfInst();
+  await mfInstZet({ herinneringen: s.herinneringen.concat({ id, tijd, dagen: herhaal.dagen || [0, 1, 2, 3, 4, 5, 6] }) });
+  toast(`Herinnering om ${tijd} staat in je afspraken`);
+}
+async function mfHerinneringWeg(id) {
+  const v = vandaagISO();
+  // Toekomstige afspraken van deze herinnering weghalen; wat al geweest is, blijft staan.
+  for (const a of S.afspraken.filter(a => a.mfHerinnering === id && (a.datum || "") >= v)) await verwijder("afspraken", a.id);
+  const s = mfInst();
+  await mfInstZet({ herinneringen: s.herinneringen.filter(r => r.id !== id) });
+  toast("Herinnering verwijderd");
+}
 
 </script>
 <script>

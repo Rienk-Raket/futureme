@@ -20,7 +20,14 @@ def vervang(oud, nieuw, n=1):
 
 
 # 1. Opslag: nieuwe winkel (hs_items) vraagt een hogere databaseversie.
-vervang('const DB_NAAM = "futureme", DB_VERSIE = 7;', 'const DB_NAAM = "futureme", DB_VERSIE = 9;')  # 8: hs_items, 9: wl_items
+vervang('const DB_NAAM = "futureme", DB_VERSIE = 7;', 'const DB_NAAM = "futureme", DB_VERSIE = 10;')  # 8: hs_items, 9: wl_items, 10: Anker (mf_*)
+# 1b. Stores met extra opties (oplopende sleutel, indexen) uit DB_OPTIES; bestaande stores blijven ongemoeid.
+vervang('if (!d.objectStoreNames.contains(naam)) d.createObjectStore(naam, { keyPath: sleutel });',
+        'if (!d.objectStoreNames.contains(naam)) {\n'
+        '          const opt = (typeof DB_OPTIES === "object" && DB_OPTIES[naam]) || null;\n'
+        '          const st = d.createObjectStore(naam, opt ? { keyPath: opt.keyPath, autoIncrement: !!opt.autoIncrement } : { keyPath: sleutel });\n'
+        '          if (opt && opt.indexen) opt.indexen.forEach(([n, k]) => st.createIndex(n, k));\n'
+        '        }')
 
 # 2. Views van HobbySkills in de tekenkaart.
 vervang('shles: (typeof vwShLes === "function" ? vwShLes : vwStart)',
@@ -29,7 +36,14 @@ vervang('shles: (typeof vwShLes === "function" ? vwShLes : vwStart)',
         '    hobbyskill: (typeof vwHobbySkill === "function" ? vwHobbySkill : vwStart),\n'
         '    wishlist: (typeof vwWishlist === "function" ? vwWishlist : vwStart),\n'
         '    wens: (typeof vwWens === "function" ? vwWens : vwStart),\n'
-        '    shideeen: (typeof vwShIdeeen === "function" ? vwShIdeeen : vwStart)')
+        '    shideeen: (typeof vwShIdeeen === "function" ? vwShIdeeen : vwStart),\n'
+        '    anker: (typeof vwAnker === "function" ? vwAnker : vwStart),\n'
+        '    ankerintro: (typeof vwAnkerIntro === "function" ? vwAnkerIntro : vwStart),\n'
+        '    ankerkies: (typeof vwAnkerKies === "function" ? vwAnkerKies : vwStart),\n'
+        '    ankerhelp: (typeof vwAnkerHelp === "function" ? vwAnkerHelp : vwStart),\n'
+        '    ankerervaring: (typeof vwAnkerErvaring === "function" ? vwAnkerErvaring : vwStart),\n'
+        '    ankerinst: (typeof vwAnkerInst === "function" ? vwAnkerInst : vwStart),\n'
+        '    ankerbronnen: (typeof vwAnkerBronnen === "function" ? vwAnkerBronnen : vwStart)')
 
 # 3b. Categorieën: terugvallen op "overig" op naam, niet op positie (ruimte voor eigen categorieën).
 vervang("(CATEGORIEEN.find(c => c[0] === k) || CATEGORIEEN[6])", '(CATEGORIEEN.find(c => c[0] === k) || CATEGORIEEN.find(c => c[0] === "overig"))', 2)
@@ -65,10 +79,18 @@ ILL_WL = ('<symbol id="ill-wishlist" viewBox="0 0 100 80"><g fill="none" stroke=
           '  <path d="M80 34c-2.5-5-11-5-11 2 0 6 11 12 11 12s11-6 11-12c0-7-8.5-7-11-2z" fill="currentColor" fill-opacity=".92" stroke="none"/>\n'
           '  <path d="M86 6l1.6 4.4L92 12l-4.4 1.6L86 18l-1.6-4.4L80 12l4.4-1.6z" fill="currentColor" fill-opacity=".8" stroke="none"/>\n'
           '</g></symbol>')
-vervang('<symbol id="ill-persoonlijk"', ILL + '\n' + ILL_WL + '\n<symbol id="ill-persoonlijk"')
+ILL_ANKER = ('<symbol id="ill-anker" viewBox="0 0 100 80"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">\n'
+             '  <circle cx="46" cy="14" r="6" stroke-opacity=".9"/>\n'
+             '  <path d="M46 20v42M34 32h24" stroke-opacity=".9"/>\n'
+             '  <path d="M22 46c2 12 12 18 24 18s22-6 24-18" stroke-opacity=".9"/>\n'
+             '  <path d="M16 50l6-5 5 6M76 50l-6-5-5 6" stroke-opacity=".8"/>\n'
+             '  <path d="M8 74c6-4 12-4 18 0s12 4 18 0 12-4 18 0 12 4 18 0 8-3 12-1" stroke-opacity=".45"/>\n'
+             '  <circle cx="82" cy="18" r="9" fill="currentColor" fill-opacity=".2" stroke-opacity=".6"/>\n'
+             '</g></symbol>')
+vervang('<symbol id="ill-persoonlijk"', ILL + '\n' + ILL_WL + '\n' + ILL_ANKER + '\n<symbol id="ill-persoonlijk"')
 
 # 5. Stijl: achteraan in het bestaande <style>-blok.
-css = "\n\n" + lees("ruimte.css") + "\n\n" + lees("hobbyskills.css") + "\n\n" + lees("sh-tabs.css") + "\n\n" + lees("eigen-categorieen.css") + "\n\n" + lees("fin-vast.css") + "\n\n" + lees("wishlist.css") + "\n\n" + lees("nieuw-rail.css") + "\n\n" + lees("mm-export.css") + "\n\n" + lees("retro.css").replace("__PIXELFONT__", base64.b64encode((HIER / "fonts" / "press-start-2p.woff2").read_bytes()).decode()) + "\n\n" + lees("incasso-bellen.css") + "\n\n" + lees("nieuw-overzicht.css") + "\n\n" + lees("sh-ideeen.css") + "\n"
+css = "\n\n" + lees("ruimte.css") + "\n\n" + lees("hobbyskills.css") + "\n\n" + lees("sh-tabs.css") + "\n\n" + lees("eigen-categorieen.css") + "\n\n" + lees("fin-vast.css") + "\n\n" + lees("wishlist.css") + "\n\n" + lees("nieuw-rail.css") + "\n\n" + lees("mm-export.css") + "\n\n" + lees("retro.css").replace("__PIXELFONT__", base64.b64encode((HIER / "fonts" / "press-start-2p.woff2").read_bytes()).decode()) + "\n\n" + lees("incasso-bellen.css") + "\n\n" + lees("nieuw-overzicht.css") + "\n\n" + lees("sh-ideeen.css") + "\n\n" + lees("anker.css") + "\n"
 vervang('</style>\n</head>', css + '</style>\n</head>')
 
 # 6. Scripts: vlak vóór het blok dat start() aanroept.
@@ -76,7 +98,7 @@ marker = "/* Alles is geladen — de app kan starten. */"
 assert html.count(marker) == 1, "startmarker niet gevonden"
 i = html.index(marker)
 j = html.rfind("<script>", 0, i)
-blokken = "".join(f"<script>\n{lees(naam)}\n</script>\n" for naam in ("sh-theorie.js", "sh-modellen.js", "sh-scrum.js", "sh-dashboard.js", "ruimte.js", "hobbyskills.js", "hs-sjablonen.js", "mm-bron.js", "koppelingen.js", "eigen-categorieen.js", "fin-vast.js", "wishlist.js", "sh-ideeen.js", "nieuw-rail.js", "nieuw-overzicht.js", "nieuw-analyse.js", "mm-export.js", "retro.js", "incasso-bellen.js", "tijdlijn-rust.js"))
+blokken = "".join(f"<script>\n{lees(naam)}\n</script>\n" for naam in ("sh-theorie.js", "sh-modellen.js", "sh-scrum.js", "sh-dashboard.js", "ruimte.js", "hobbyskills.js", "hs-sjablonen.js", "mm-bron.js", "koppelingen.js", "eigen-categorieen.js", "fin-vast.js", "wishlist.js", "sh-ideeen.js", "anker-data.js", "anker-speler.js", "anker-schermen.js", "anker-koppelingen.js", "nieuw-rail.js", "nieuw-overzicht.js", "nieuw-analyse.js", "mm-export.js", "retro.js", "incasso-bellen.js", "tijdlijn-rust.js"))
 html = html[:j] + blokken + html[j:]
 
 UIT.write_text(html, encoding="utf-8")
