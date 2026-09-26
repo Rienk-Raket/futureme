@@ -14,7 +14,7 @@ Het origineel werd begrepen maar vrijwel unaniem afgewezen. De gewogen intentie 
 
 Na vier rondes wint per klus betalen bij bijna elke groep. Concept 1 haalt 66,9% gewogen voorkeur, maar ook het winnende concept wordt vooral "bewaard voor later" (47,6%). Het panel zegt dus: duidelijk en eerlijk, maar niet urgent zolang er niets kapot is.
 
-Het grootste risico is dat de dienst concurreert met de gratis buurman, de vrijwilliger of de eigen klusjesman. Daarnaast moet de belofte "binnen twee werkdagen of gratis" vanaf dag één worden waargemaakt.
+Het grootste bezwaar tegen concept 1 is vertrouwen (31,5%): wie eerder is teleurgesteld, gelooft "binnen twee werkdagen of gratis" pas na een eerste keer. Het tweede bezwaar is het alternatief (27,9%): de gratis buurman, de vrijwilliger of de eigen klusjesman. Mijn inschatting is dat dat tweede het grootste zakelijke risico is, omdat een betere belofte er niets aan verandert.
 
 Toets eerst bij echte mensen hoeveel klussen werkelijk binnen 30 minuten passen, en of mantelzorgers de kaart voor hun ouder kopen.
 
@@ -37,13 +37,13 @@ Toets eerst bij echte mensen hoeveel klussen werkelijk binnen 30 minuten passen,
 | K06 | Johan Wubbels | 1,2 | kansgroep: laaggeletterd | 3 |
 | K12 | Jasper Hoek | 0,6 | kansgroep: weigert apps en accounts | 3 |
 
-Samen vertegenwoordigen deze persona's 29,7% van de volwassen bevolking. De selectie dekt binnen de doelgroep verschillen in leeftijd, inkomen, opleiding, regio en digitale vaardigheid. Ze legt ook drie drempels bloot die bij een klusdienst voor 55-plussers voor de hand liggen: wie beslist, wie kan lezen, en wie geen app wil. Bronnen: `selectie.json` en `varianten.json`.
+Samen hebben deze persona's een bevolkingsgewicht van 29,7% (`selectie.json`, `som_gewicht_pct`; zie `references/bronnen.md` van de skill voor wat de gewichten betekenen). De selectie dekt binnen de doelgroep verschillen in leeftijd, inkomen, opleiding, regio en digitale vaardigheid. Ze legt ook drie drempels bloot die bij een klusdienst voor 55-plussers voor de hand liggen: wie beslist, wie kan lezen, en wie geen app wil. Bronnen: `selectie.json` en `varianten.json`.
 
 ## Wat het panel vond per ronde
 
 - **Ronde 1: eerste indruk van het origineel** (`ronde-1/samenvatting.md`). Het origineel werd begrepen (gewogen begrip 4,87), maar de intentie was 1,91 en het vertrouwen 2,78. Van de reacties was 95,6% negatief en 0% positief. De bezwaren: vertrouwen 32,6%, prijs 20,8%, opzegbaarheid 15,6% en digitaal 13,0%. Alle veertien persona's noemden de tegenstrijdigheid tussen "onbeperkt" en "maximaal 2" (20 van de 45 varianten; zoekwoord "onbeperkt" in reactie, bezwaar, citaat of verbeteridee). De realisme-controle gaf een waarschuwing voor negativiteit, maar die is verklaarbaar door deze objectieve fout in de pagina. Aanpassing: versie v1 met een eerlijke prijs, maandelijks opzeggen, bellen of WhatsApp, "wie wij zijn" en een blok "voor uw ouders".
-- **Ronde 2: waarde, prijs en bezwaren van v1** (`ronde-2/samenvatting.md`). De eerste poging is gearchiveerd, omdat een fout in de opzet iedereen buiten Apeldoorn buitenspel zette. In de herhaling steeg het vertrouwen naar 4,21 en de intentie naar 2,58. Het grootste bezwaar werd prijs (36%): betalen voor klusjes die vervallen. Het Van Westendorp-bereik lag rond €7 tot €12 per maand, met een mediaan "te duur" van €22,50. Zevenentwintig van de 45 varianten noemden betalen per klus als alternatief. Aanpassing: drie richtingen, namelijk A per klus, B voor uw ouders en C Klusbuffer.
-- **Ronde 3: vijf versies vergeleken** (`ronde-3/samenvatting.md`). A won met 58,8% gewogen voorkeur en intentie 3,32. Het origineel eindigde met intentie 1,08 en 100% negatief. B werkte voor mantelzorgers (P13, K10, P45) en voor niemand anders. Het woord "Klusbuffer" werd niet begrepen. Aanpassing: drie concepten voor de eindtoets.
+- **Ronde 2: waarde, prijs en bezwaren van v1** (`ronde-2/samenvatting.md`). De eerste poging is gearchiveerd, omdat een fout in de opzet iedereen buiten Apeldoorn buitenspel zette. In de herhaling steeg het vertrouwen naar 4,21 en de intentie naar 2,58. Het grootste bezwaar werd prijs (36%): betalen voor klusjes die vervallen. Het Van Westendorp-bereik lag rond €7 tot €12 per maand, met een mediaan "te duur" van €22,50. Zevenentwintig van de 45 varianten noemden betalen per klus in hun alternatief of verbeteridee (zoekregel in `ronde-2/samenvatting.md`; inclusief enkele die nu al per keer betalen). Aanpassing: drie richtingen, namelijk A per klus, B voor uw ouders en C Klusbuffer.
+- **Ronde 3: vijf versies vergeleken** (`ronde-3/samenvatting.md`). A won met 58,8% gewogen voorkeur en intentie 3,32. Het origineel eindigde met intentie 1,08 en 100% negatief. B had alleen bij P13, K10 en P45 de hoogste intentie. Daarnaast kozen P30-c (voor zijn moeder) en P39-c (voor zijn zus) B, dus ook mensen die iets voor een familielid regelen. Voor de rest was B niet relevant. Het woord "Klusbuffer" werd niet begrepen. Aanpassing: drie concepten voor de eindtoets.
 - **Ronde 4: eindtoets van drie concepten** (`ronde-4/samenvatting.md`, `ronde-4/segmenten.md`). De cijfers staan hieronder. De realisme-controle is in alle rondes doorlopen, en een herhaling van persona's met sterkere variantkenmerken was niet nodig.
 
 ## Concept 1: Klusser per keer
@@ -53,9 +53,9 @@ Samen vertegenwoordigen deze persona's 29,7% van de volwassen bevolking. De sele
   - Er is geen abonnement meer. "Geen nieuwe vaste last" was in ronde 3 de meest genoemde reden om A te kiezen (K06-c, K10-a, P06-c, P16-a, P35-c, P39-b, P39-d, P40-b, P42-c, P47-b).
   - De prijs is €25 in plaats van €29. In ronde 3 was "€29 voor een lampje" het grootste bezwaar tegen A (42,7%; P40-c, P16-a, P35-b). De wensprijs voor een losse klus lag in ronde 2 meestal tussen €20 en €30.
   - Meerwerk heeft een plafond: nooit meer dan vooraf afgesproken. De €12 per kwartier in ronde 3 schrikte af (P30-b, P35-c, P42-a).
-  - De factuur kan naar familie en aan de deur betalen is niet nodig (K10-a, K10-c, P45-d in ronde 3). Er staan voorbeeldklussen bij, begin- en eindtijd op de factuur, avond en zaterdag, en een adres (P06-b, P31-a, P47-a, P39-b in ronde 3).
+  - De factuur kan naar familie en aan de deur betalen is niet nodig (K10-a, K10-c, P45-d in ronde 3). Er staan voorbeeldklussen bij (P30-a, P35-b in ronde 3), begin- en eindtijd op de factuur (P47-a), avond en zaterdag (P06-b, P31-a) en een adres (P39-b).
 - **Sterkste en zwakste segmenten.**
-  - Gewogen naar bevolking (`ronde-4/segmenten.json`, intentie): zelfstandige 55-plussers 3,20 (69,1% voorkeur), krap budget 3,04, kansgroepen 3,19 (88,9% voorkeur), tweeverdieners en gezinnen 2,84, zelfklussers 2,47. Alleen bij "75-plus of via familie" (P45, K10) verliest het van Concept 2: 2,83 tegenover 3,28.
+  - Gewogen naar bevolking (`ronde-4/segmenten.json`, intentie): zelfstandige 55-plussers 3,20 (69,1% voorkeur), krap budget 3,04, kansgroepen 3,19 (88,9% voorkeur), tweeverdieners en gezinnen 2,84, zelfklussers 2,47. Alleen bij "75-plus of via familie" (P45, K10) heeft Concept 2 een hogere intentie: 3,28 tegenover 2,83. Op voorkeur wint concept 1 ook daar: 55,6% tegenover 44,4%.
   - Ongewogen per persona: het sterkst bij K10 Nel/Marjan (4,0), P35 Hennie (3,67), P40 Ria (3,67) en P47 Els (3,67). Het zwakst bij P45 Corrie (2,25), P06 Sanne (2,33) en P39 Henk (2,5).
   - Concept 1 heeft bij 11 van de 14 persona's de hoogste of gedeeld hoogste intentie. Bij P06 Sanne staat het gelijk met concept 2.
 - **Gevaren en bezwaren.**
@@ -92,7 +92,7 @@ Samen vertegenwoordigen deze persona's 29,7% van de volwassen bevolking. De sele
   - Afspraken kunnen alleen via de contactpersoon lopen. Bellen met een ouder met dementie of slecht gehoor werkt niet (P13-a, P13-c, K10-b, K10-c).
   - Het eerste bezoek is samen met familie mogelijk (K06-b, P30-c, P45-d).
 - **Sterkste en zwakste segmenten.**
-  - Gewogen: dit concept wint alleen bij "75-plus of via familie" (P45, K10), met intentie 3,28 en 44,4% voorkeur. Bij zelfstandige 55-plussers scoort het 1,86 en bij zelfklussers 1,91.
+  - Gewogen: dit concept heeft alleen bij "75-plus of via familie" (P45, K10) de hoogste intentie: 3,28 tegenover 2,83 voor concept 1. Op voorkeur wint ook daar concept 1, met 55,6% tegenover 44,4%. Bij zelfstandige 55-plussers scoort het 1,86 en bij zelfklussers 1,91.
   - Ongewogen per persona: het sterkst bij K10 Nel/Marjan (4,33) en P13 Anouk (4,0). Het zwakst bij P16 Jeroen (1,0), K12 Jasper (1,33) en P47 Els (1,33).
   - Het haalt de hoogste losse scores van de hele eindtoets: K10-b en P13-c geven intentie 6 en melden zich aan voor de kennismaking.
   - Tegelijk zetten 19 van de 45 varianten het bij "nooit".
@@ -102,7 +102,7 @@ Samen vertegenwoordigen deze persona's 29,7% van de volwassen bevolking. De sele
   - *Privacy.* Wat gaat er naar familie, en worden er foto's gemaakt (K12-b, K12-c "Een klusser die aan mijn kind rapporteert wat hij in mijn huis deed")? P31-c merkt op dat juist dit concept voor de kwetsbaarste klanten de dunste voorwaarden heeft.
   - *De verkeerde lezer.* De oudere legt het weg voordat de beslisser het ziet (K10-a, P16-a).
 - **Kansen.**
-  - Spreek de kinderen van 45 tot 65 aan als kopers, via hun eigen kanalen (P16-b, P31-b, P42-a, P45-a, P47-a).
+  - Spreek de volwassen kinderen aan als kopers, via hun eigen kanalen (P16-b, P31-b, P42-a, P45-a, P47-a). P31-b noemt "kinderen van zestig met ouders van in de tachtig"; de precieze leeftijdsgroep is een aanname die je bij echte mensen toetst.
   - Deel kosten tussen broers en zussen met één betaalverzoek (P13-c, P06-b, K06-b).
   - Maak een regeling voor beginnende dementie waarin alles via de contactpersoon loopt (K10-c).
   - Bied een tijdelijke variant na een ziekenhuisopname (P39-a).
@@ -151,9 +151,11 @@ Samen vertegenwoordigen deze persona's 29,7% van de volwassen bevolking. De sele
 
 | concept | intentie gewogen | intentie ongewogen | voorkeur gewogen | voorkeur ongewogen | nooit | sterkste persona's | zwakste persona's | grootste risico |
 |---|---|---|---|---|---|---|---|---|
-| 1 Klusser per keer | 3,06 | 3,07 | 66,9% | 31 | 1 | K10, P35, P40 | P45, P06, P39 | niet urgent; gratis buurman of vrijwilliger |
+| 1 Klusser per keer | 3,06 | 3,07 | 66,9% | 31 | 1 | K10, P35, P40 | P45, P06, P39 | vertrouwen in de garantie (31,5%); gratis buurman of vrijwilliger (27,9%); niet urgent |
 | 2 Samen geregeld | 2,09 | 2,21 | 26,1% | 12 | 19 | K10, P13, P45 | P16, K12, P47 | voelt als betutteling voor wie zelf regelt |
 | 3 Klussen sparen | 1,55 | 1,48 | 7,0% | 2 | 25 | P16, P47, P35 | K12, P06, P45 | eigen rekensom wijst naar per keer |
+
+"Intentie ongewogen" is het gemiddelde van de persona-gemiddelden, zodat elke persona één keer telt. Over de 45 varianten zonder weging is het 3,02, 2,20 en 1,47. Bij sterkste en zwakste persona's staan gelijke scores niet allemaal in de tabel: bij concept 1 staan P39 en P30 gelijk (2,5), en bij concept 3 staan P35, P31 en P40 gelijk (1,67).
 
 Gewogen en ongewogen wijzen hier dezelfde kant op. Het verschil zit in de spreiding: Concept 2 is gemiddeld zwak, maar bij een kleine groep het sterkste van allemaal. Die groep bestaat uit mantelzorgers en ouderen die het via familie regelen: K10 Nel/Marjan, P13 Anouk en P45 Corrie, samen 4,7% gewicht. Wie alleen naar het gewogen gemiddelde kijkt, mist die groep. Wie alleen naar die groep kijkt, bouwt een product dat de meeste 55-plussers afstoot.
 
@@ -171,13 +173,13 @@ Gewogen en ongewogen wijzen hier dezelfde kant op. Het verschil zit in de spreid
 
 ## Betrouwbaarheid: wat dit panel wel en niet kan zeggen
 
-- **Wat een synthetisch panel is.** Alle 45 panelleden komen uit hetzelfde taalmodel en uit dezelfde persona-teksten. Zo'n panel is goed in het vinden van begripsproblemen, tegenstrijdigheden, bezwaren, taal- en toegankelijkheidsdrempels, en verschillen tussen groepen.
+- **Wat een synthetisch panel is.** Deze paragraaf is algemene methodische kennis over synthetische panels en komt niet uit de runmap. Alle 45 panelleden komen uit hetzelfde taalmodel en uit dezelfde persona-teksten. Zo'n panel is goed in het vinden van begripsproblemen, tegenstrijdigheden, bezwaren, taal- en toegankelijkheidsdrempels, en verschillen tussen groepen.
 - **Welke bevindingen objectief kloppen.** Twee soorten bevindingen zijn in de tekst zelf na te lezen en hangen dus niet af van het panel:
   - de tegenstrijdigheid tussen "onbeperkt" en "maximaal 2";
   - de rekenfout in Concept 3 en de privacyzin die botst met de bewaarplicht.
 - **Wat het panel niet meet.** Het meet geen conversie, marktaandeel of werkelijke betalingsbereidheid. Synthetische panelleden hebben geen portemonnee, en zeggen "ik bewaar het voor later" zonder dat dat iets kost.
 - **Hoe je de cijfers leest.** De intentiescores zijn relatief bruikbaar (A beter dan B), niet absoluut (3,06 betekent niet dat 30% koopt). Het Van Westendorp-bereik uit ronde 2 is een richting, geen prijsadvies.
-- **Wat de gewichten doen.** De gewichten zorgen dat grote groepen zwaarder meetellen. Ze maken het panel niet representatief voor Apeldoorn: de 14 persona's staan voor 29,7% van de Nederlandse volwassen bevolking, niet voor de lokale markt.
+- **Wat de gewichten doen.** De gewichten zorgen dat grote groepen zwaarder meetellen. Ze maken het panel niet representatief voor Apeldoorn: de 14 persona's hebben samen een bevolkingsgewicht van 29,7% van de Nederlandse volwassen bevolking, niet van de lokale markt.
 - **Realisme-controles.** In alle vier de rondes zijn de controles doorlopen:
   - spreiding binnen persona's, positiviteit, gelijkvormigheid tussen persona's, één dominant bezwaar en volledigheid;
   - ronde 1 gaf een waarschuwing voor negativiteit, die verklaarbaar is door de objectieve fout in het origineel;

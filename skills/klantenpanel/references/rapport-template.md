@@ -33,7 +33,7 @@ Per ronde drie tot zes regels met de kerncijfers (gewogen intentie en verdeling,
 (zelfde opbouw; bij vijf concepten ook 4 en 5)
 
 ## Vergelijking van de concepten
-Tabel: concept, gewogen intentie, ongewogen intentie, voorkeur gewogen %, voorkeur ongewogen aantal, aantal "nooit", sterkste persona's, zwakste persona's, grootste risico. Eén alinea over wat de gewogen en ongewogen uitkomst verschillend laten zien.
+Tabel: concept, gewogen intentie, ongewogen intentie (vermeld dat dit het gemiddelde van de persona-gemiddelden is), voorkeur gewogen %, voorkeur ongewogen aantal, aantal "nooit", sterkste persona's, zwakste persona's, grootste risico. Eén alinea over wat de gewogen en ongewogen uitkomst verschillend laten zien. Let op: een concept kan in een segment winnen op intentie en tegelijk verliezen op voorkeur; noem dan beide. Vermeld gelijke scores bij sterkste en zwakste persona's.
 
 ## Aanbeveling
 Welk concept, voor wie, tegen welke prijs, via welk kanaal, en de goedkoopste eerste stap bij echte klanten. Noem ook wat de gebruiker níet moet doen op basis van dit panel.

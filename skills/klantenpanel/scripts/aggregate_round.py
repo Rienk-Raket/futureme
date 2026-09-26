@@ -193,6 +193,15 @@ def main():
     if status == "ok" and any(c.get("waarschuwing") for c in checks): status = "ok_met_waarschuwing"
     real = {"ronde": a.ronde, "status": status, "controles": checks, "herhalen_personas": sorted(herhaal), "advies": ("Geen actie nodig." if status == "ok" else "Draai generate_variants.py --alleen <ids> --intensiteit 2, bouw de prompts opnieuw en laat die persona's opnieuw reageren; verwijder eerst hun oude jsonl.")}
     json.dump(agg, open(os.path.join(rdir, "aggregatie.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    rj = os.path.join(run, "run.json")
+    if os.path.exists(rj):
+        rundoc = json.load(open(rj, encoding="utf-8"))
+        klaar = set(rundoc.get("rondes_klaar", []))
+        if status != "herhalen": klaar.add(a.ronde)
+        else: klaar.discard(a.ronde)
+        rundoc["rondes_klaar"] = sorted(klaar)
+        rundoc["status"] = f"ronde {a.ronde}: {status}"
+        json.dump(rundoc, open(rj, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     json.dump(real, open(os.path.join(rdir, "realisme.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     open(os.path.join(rdir, "aggregatie.md"), "w", encoding="utf-8").write(markdown(agg, real, R, gewicht))
     print(open(os.path.join(rdir, "aggregatie.md"), encoding="utf-8").read())
