@@ -2408,22 +2408,8 @@ h1#titel.tweeregels.breek{overflow-wrap:anywhere}
 .nw-slot .knop3d.breed .bal3d{transition:right .45s cubic-bezier(.22,1,.36,1),top .45s cubic-bezier(.22,1,.36,1),transform .45s}
 .nw-rail:not(.open) .nw-slot .knop3d.breed .bal3d{right:6px;top:8px;transform:none}
 
-.nw-hint{position:absolute;z-index:2;left:calc(var(--nw-strook) + 14px);right:0;top:0;height:92px;
-  display:flex;align-items:center;gap:12px;padding:0 14px;border-radius:19px;text-align:left;color:var(--muted);
-  opacity:calc(1 - var(--nw-p) * 2.2);transition:opacity .3s}
-.nw-rail.open .nw-hint{pointer-events:none}
-.nw-hinttekst{display:flex;flex-direction:column;gap:1px}
-.nw-hinttekst b{font-size:calc(16px * var(--t));font-weight:750;color:var(--text);letter-spacing:-.01em}
-.nw-hinttekst small{font-size:calc(12.5px * var(--t))}
-.nw-pijlen{display:flex;gap:1px}
-.nw-pijlen i{width:12px;height:12px;border-top:2.6px solid currentColor;border-right:2.6px solid currentColor;transform:rotate(45deg);border-radius:2px;
-  opacity:.25;animation:nw-pijl 1.6s ease-in-out infinite}
-.nw-pijlen i:nth-child(2){animation-delay:.18s}
-.nw-pijlen i:nth-child(3){animation-delay:.36s}
-@keyframes nw-pijl{0%,100%{opacity:.2}35%{opacity:1;color:var(--accent)}}
 @media (prefers-reduced-motion:reduce){
   .nw-slot{transition-duration:.01s;transition-delay:0s}
-  .nw-pijlen i{animation:none;opacity:.7}
 }
 
 </style>
@@ -19962,10 +19948,6 @@ let nwGepiept = false;
     const knoppen = h.slice(a + merk.length, b).split(/(?=<button class="knop3d)/).map(s => s.trim()).filter(s => s.startsWith("<button"));
     const open = V.nwOpen;
     const rail = `<div class="nw-rail${open ? " open" : ""}" style="--nw-p:${open ? 1 : 0}">
-      <button class="nw-hint" data-act="nw-wissel" aria-expanded="${open}" aria-label="Namen van de knoppen tonen">
-        <span class="nw-pijlen" aria-hidden="true"><i></i><i></i><i></i></span>
-        <span class="nw-hinttekst"><b>Veeg naar rechts</b><small>voor de namen</small></span>
-      </button>
       ${knoppen.map((k, n) => `<div class="nw-slot" style="--i:${n}">${k.replace('class="knop3d"', 'class="knop3d breed"')}</div>`).join("")}
     </div>`;
     return h.slice(0, a) + rail + h.slice(b + 6);
@@ -19979,8 +19961,6 @@ function nwZet(open, rail) {
   if (!rail) return;
   rail.classList.toggle("open", V.nwOpen);
   rail.style.setProperty("--nw-p", V.nwOpen ? 1 : 0);
-  const h = rail.querySelector(".nw-hint");
-  if (h) h.setAttribute("aria-expanded", V.nwOpen);
   if (was !== V.nwOpen) tril(6);
 }
 
@@ -20026,10 +20006,6 @@ function nwZet(open, rail) {
     if (Date.now() - klikStop < 350 && e.target.closest && e.target.closest(".nw-rail")) { e.stopPropagation(); e.preventDefault(); }
   }, true);
 }
-document.addEventListener("click", e => {
-  const el = e.target.closest && e.target.closest('[data-act="nw-wissel"]');
-  if (el) nwZet(!V.nwOpen);
-});
 
 /* Eén keer per sessie even laten zien dat de rail uitschuift. */
 RT_NA.push(() => {
