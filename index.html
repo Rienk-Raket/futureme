@@ -2392,6 +2392,40 @@ h1#titel.tweeregels.breek{overflow-wrap:anywhere}
 .wl-belangkeuze button[aria-pressed="true"]{border-color:var(--bk);background:color-mix(in srgb,var(--bk) 12%,var(--card))}
 @media (max-width:360px){.wl-duim{width:52px;height:52px}.wl-kaart .wl-vink{width:40px}}
 
+
+/* 61. Nieuw als uitschuifbare rail */
+.nw-rail{--nw-p:0;--nw-strook:92px;position:relative;display:flex;flex-direction:column;gap:13px;margin:14px 0 4px;
+  touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.nw-slot{position:relative;z-index:1;
+  transform:translateX(calc((1 - var(--nw-p)) * (var(--nw-strook) - 100%)));
+  transition:transform .55s cubic-bezier(.22,1,.36,1) calc(var(--i) * 26ms);will-change:transform}
+.nw-rail.sleept .nw-slot{transition:none}
+.nw-rail.piep .nw-slot{transition-duration:.5s}
+.nw-slot>.knop3d{width:100%}
+.nw-slot .knop3d .tekst3d{opacity:calc(.15 + var(--nw-p) * .85);transition:opacity .4s}
+.nw-rail.sleept .nw-slot .knop3d .tekst3d{transition:none}
+/* Telling: ingeklapt boven de illustratie, uitgeklapt op de gewone plek. */
+.nw-slot .knop3d.breed .bal3d{transition:right .45s cubic-bezier(.22,1,.36,1),top .45s cubic-bezier(.22,1,.36,1),transform .45s}
+.nw-rail:not(.open) .nw-slot .knop3d.breed .bal3d{right:6px;top:8px;transform:none}
+
+.nw-hint{position:absolute;z-index:2;left:calc(var(--nw-strook) + 14px);right:0;top:0;height:92px;
+  display:flex;align-items:center;gap:12px;padding:0 14px;border-radius:19px;text-align:left;color:var(--muted);
+  opacity:calc(1 - var(--nw-p) * 2.2);transition:opacity .3s}
+.nw-rail.open .nw-hint{pointer-events:none}
+.nw-hinttekst{display:flex;flex-direction:column;gap:1px}
+.nw-hinttekst b{font-size:calc(16px * var(--t));font-weight:750;color:var(--text);letter-spacing:-.01em}
+.nw-hinttekst small{font-size:calc(12.5px * var(--t))}
+.nw-pijlen{display:flex;gap:1px}
+.nw-pijlen i{width:12px;height:12px;border-top:2.6px solid currentColor;border-right:2.6px solid currentColor;transform:rotate(45deg);border-radius:2px;
+  opacity:.25;animation:nw-pijl 1.6s ease-in-out infinite}
+.nw-pijlen i:nth-child(2){animation-delay:.18s}
+.nw-pijlen i:nth-child(3){animation-delay:.36s}
+@keyframes nw-pijl{0%,100%{opacity:.2}35%{opacity:1;color:var(--accent)}}
+@media (prefers-reduced-motion:reduce){
+  .nw-slot{transition-duration:.01s;transition-delay:0s}
+  .nw-pijlen i{animation:none;opacity:.7}
+}
+
 </style>
 </head>
 <body>
@@ -2577,6 +2611,14 @@ h1#titel.tweeregels.breek{overflow-wrap:anywhere}
   <rect x="56" y="20" width="14" height="54" rx="4" fill="currentColor" fill-opacity=".7" stroke-opacity=".9"/>
   <path d="M84 6l2.6 7.4 7.4 2.6-7.4 2.6L84 26l-2.6-7.4L74 16l7.4-2.6z" fill="currentColor" fill-opacity=".95" stroke="none"/>
   <path d="M14 30c10-6 20-4 28-12" stroke-opacity=".5"/>
+</g></symbol>
+<symbol id="ill-wishlist" viewBox="0 0 100 80"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="14" y="36" width="46" height="36" rx="5" fill="currentColor" fill-opacity=".18" stroke-opacity=".8"/>
+  <rect x="10" y="25" width="54" height="12" rx="4" fill="currentColor" fill-opacity=".4" stroke-opacity=".85"/>
+  <path d="M37 25v47" stroke-opacity=".7"/>
+  <path d="M37 25s-3-12-11-12a5.5 5.5 0 0 0 0 11zM37 25s3-12 11-12a5.5 5.5 0 0 1 0 11z" stroke-opacity=".9"/>
+  <path d="M80 34c-2.5-5-11-5-11 2 0 6 11 12 11 12s11-6 11-12c0-7-8.5-7-11-2z" fill="currentColor" fill-opacity=".92" stroke="none"/>
+  <path d="M86 6l1.6 4.4L92 12l-4.4 1.6L86 18l-1.6-4.4L80 12l4.4-1.6z" fill="currentColor" fill-opacity=".8" stroke="none"/>
 </g></symbol>
 <symbol id="ill-persoonlijk" viewBox="0 0 100 80"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
   <path d="M14 40L40 18l26 22" stroke-opacity=".8"/>
@@ -19891,6 +19933,116 @@ if (typeof VERWANT === "object") {
       ${ico("pijlr", "width:16px;height:16px;color:var(--line2)")}</button>`;
   };
 }
+
+</script>
+<script>
+"use strict";
+/* ==========================================================================
+   61. Nieuw (Vastleggen) als uitschuifbare rail
+   De knoppen staan standaard zo ver links uit beeld dat alleen de
+   illustratie zichtbaar is. Veeg naar rechts: de namen schuiven erbij.
+   Veeg naar links: weer ingeklapt. In beide standen werkt een tik gewoon.
+   Ook: de Wishlist-tegel, direct na Financieel.
+   ========================================================================== */
+const NW_STROOK = 92;           // zichtbare breedte (px) van een ingeklapte knop
+V.nwOpen = V.nwOpen || false;
+let nwGepiept = false;
+
+{
+  const _s = vwStart;
+  vwStart = function () {
+    let h = _s();
+    const wl = catKnop({ view: "wishlist", ill: "wishlist", naam: "Wishlist", uitleg: "Wat je wilt kopen, met koopcheck", kleur: "#db2777",
+      telling: typeof wlAlle === "function" ? (wlAlle("actief").length || "") : "" });
+    const i = h.indexOf('data-view="financieel"'), j = i < 0 ? -1 : h.indexOf("</button>", i);
+    if (j >= 0) h = h.slice(0, j + 9) + wl + h.slice(j + 9);
+    const merk = '<div class="startgrid">', a = h.indexOf(merk);
+    if (a < 0) return h;
+    const b = h.indexOf("</div>", a);
+    const knoppen = h.slice(a + merk.length, b).split(/(?=<button class="knop3d)/).map(s => s.trim()).filter(s => s.startsWith("<button"));
+    const open = V.nwOpen;
+    const rail = `<div class="nw-rail${open ? " open" : ""}" style="--nw-p:${open ? 1 : 0}">
+      <button class="nw-hint" data-act="nw-wissel" aria-expanded="${open}" aria-label="Namen van de knoppen tonen">
+        <span class="nw-pijlen" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="nw-hinttekst"><b>Veeg naar rechts</b><small>voor de namen</small></span>
+      </button>
+      ${knoppen.map((k, n) => `<div class="nw-slot" style="--i:${n}">${k.replace('class="knop3d"', 'class="knop3d breed"')}</div>`).join("")}
+    </div>`;
+    return h.slice(0, a) + rail + h.slice(b + 6);
+  };
+}
+
+function nwZet(open, rail) {
+  const was = V.nwOpen;
+  V.nwOpen = !!open;
+  rail = rail || $(".nw-rail");
+  if (!rail) return;
+  rail.classList.toggle("open", V.nwOpen);
+  rail.style.setProperty("--nw-p", V.nwOpen ? 1 : 0);
+  const h = rail.querySelector(".nw-hint");
+  if (h) h.setAttribute("aria-expanded", V.nwOpen);
+  if (was !== V.nwOpen) tril(6);
+}
+
+/* ---------- Vegen: de rail volgt de vinger, loslaten klikt naar open of dicht ---------- */
+{
+  let g = null, klikStop = 0;
+  const bereik = rail => { const s = rail.querySelector(".nw-slot"); return s ? Math.max(1, s.offsetWidth - NW_STROOK) : 1; };
+  document.addEventListener("pointerdown", e => {
+    const rail = e.target.closest && e.target.closest(".nw-rail");
+    if (!rail || (e.pointerType === "mouse" && e.button !== 0)) return;
+    const nu = performance.now();
+    g = { rail, id: e.pointerId, x: e.clientX, y: e.clientY, p0: V.nwOpen ? 1 : 0, p: V.nwOpen ? 1 : 0, richting: null, lx: e.clientX, lt: nu, vx: 0 };
+  }, { passive: true });
+  document.addEventListener("pointermove", e => {
+    if (!g || e.pointerId !== g.id) return;
+    const dx = e.clientX - g.x, dy = e.clientY - g.y;
+    if (!g.richting) {
+      if (Math.abs(dy) > 10 && Math.abs(dy) > Math.abs(dx)) { g = null; return; }
+      if (Math.abs(dx) < 10) return;
+      g.richting = "x";
+      g.rail.classList.add("sleept");
+      try { g.rail.setPointerCapture(e.pointerId); } catch (x) { /* niet erg */ }
+    }
+    const nu = performance.now();
+    g.vx = (e.clientX - g.lx) / Math.max(1, nu - g.lt); g.lx = e.clientX; g.lt = nu;
+    let p = g.p0 + dx / bereik(g.rail);
+    if (p < 0) p *= .25; else if (p > 1) p = 1 + (p - 1) * .25;   // elastisch voorbij de randen
+    g.p = p;
+    g.rail.style.setProperty("--nw-p", p.toFixed(4));
+  }, { passive: true });
+  const los = () => {
+    if (!g) return;
+    const r = g; g = null;
+    if (r.richting !== "x") return;
+    klikStop = Date.now();
+    r.rail.classList.remove("sleept");
+    nwZet(Math.abs(r.vx) > .35 ? r.vx > 0 : r.p > .5, r.rail);
+  };
+  document.addEventListener("pointerup", los);
+  document.addEventListener("pointercancel", los);
+  // Na een veeg geen klik laten doorgaan, anders navigeer je per ongeluk.
+  document.addEventListener("click", e => {
+    if (Date.now() - klikStop < 350 && e.target.closest && e.target.closest(".nw-rail")) { e.stopPropagation(); e.preventDefault(); }
+  }, true);
+}
+document.addEventListener("click", e => {
+  const el = e.target.closest && e.target.closest('[data-act="nw-wissel"]');
+  if (el) nwZet(!V.nwOpen);
+});
+
+/* Eén keer per sessie even laten zien dat de rail uitschuift. */
+RT_NA.push(() => {
+  if (V.view !== "start" || V.nwOpen || nwGepiept) return;
+  if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) { nwGepiept = true; return; }
+  nwGepiept = true;
+  setTimeout(() => {
+    const r = $(".nw-rail");
+    if (!r || V.nwOpen || r.classList.contains("sleept")) return;
+    r.classList.add("piep"); r.style.setProperty("--nw-p", .16);
+    setTimeout(() => { if (!V.nwOpen && !r.classList.contains("sleept")) r.style.setProperty("--nw-p", 0); setTimeout(() => r.classList.remove("piep"), 700); }, 520);
+  }, 650);
+});
 
 </script>
 <script>

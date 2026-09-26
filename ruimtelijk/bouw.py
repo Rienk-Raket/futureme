@@ -51,10 +51,18 @@ CADEAU = ('<symbol id="i-cadeau" viewBox="0 0 24 24" fill="none" stroke="current
           '<rect x="3.5" y="8.5" width="17" height="4.5" rx="1.2"/><path d="M5 13v6.5a1.5 1.5 0 0 0 1.5 1.5h11a1.5 1.5 0 0 0 1.5-1.5V13M12 8.5V21"/>'
           '<path d="M12 8.5S10.8 3.5 8 3.5a2.5 2.5 0 0 0 0 5h4zM12 8.5s1.2-5 4-5a2.5 2.5 0 0 1 0 5h-4z"/></symbol>')
 vervang('<symbol id="i-ster"', ICOON + '\n' + CADEAU + '\n<symbol id="i-ster"')
-vervang('<symbol id="ill-persoonlijk"', ILL + '\n<symbol id="ill-persoonlijk"')
+ILL_WL = ('<symbol id="ill-wishlist" viewBox="0 0 100 80"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">\n'
+          '  <rect x="14" y="36" width="46" height="36" rx="5" fill="currentColor" fill-opacity=".18" stroke-opacity=".8"/>\n'
+          '  <rect x="10" y="25" width="54" height="12" rx="4" fill="currentColor" fill-opacity=".4" stroke-opacity=".85"/>\n'
+          '  <path d="M37 25v47" stroke-opacity=".7"/>\n'
+          '  <path d="M37 25s-3-12-11-12a5.5 5.5 0 0 0 0 11zM37 25s3-12 11-12a5.5 5.5 0 0 1 0 11z" stroke-opacity=".9"/>\n'
+          '  <path d="M80 34c-2.5-5-11-5-11 2 0 6 11 12 11 12s11-6 11-12c0-7-8.5-7-11-2z" fill="currentColor" fill-opacity=".92" stroke="none"/>\n'
+          '  <path d="M86 6l1.6 4.4L92 12l-4.4 1.6L86 18l-1.6-4.4L80 12l4.4-1.6z" fill="currentColor" fill-opacity=".8" stroke="none"/>\n'
+          '</g></symbol>')
+vervang('<symbol id="ill-persoonlijk"', ILL + '\n' + ILL_WL + '\n<symbol id="ill-persoonlijk"')
 
 # 5. Stijl: achteraan in het bestaande <style>-blok.
-css = "\n\n" + lees("ruimte.css") + "\n\n" + lees("hobbyskills.css") + "\n\n" + lees("sh-tabs.css") + "\n\n" + lees("eigen-categorieen.css") + "\n\n" + lees("fin-vast.css") + "\n\n" + lees("wishlist.css") + "\n"
+css = "\n\n" + lees("ruimte.css") + "\n\n" + lees("hobbyskills.css") + "\n\n" + lees("sh-tabs.css") + "\n\n" + lees("eigen-categorieen.css") + "\n\n" + lees("fin-vast.css") + "\n\n" + lees("wishlist.css") + "\n\n" + lees("nieuw-rail.css") + "\n"
 vervang('</style>\n</head>', css + '</style>\n</head>')
 
 # 6. Scripts: vlak vóór het blok dat start() aanroept.
@@ -62,7 +70,7 @@ marker = "/* Alles is geladen — de app kan starten. */"
 assert html.count(marker) == 1, "startmarker niet gevonden"
 i = html.index(marker)
 j = html.rfind("<script>", 0, i)
-blokken = "".join(f"<script>\n{lees(naam)}\n</script>\n" for naam in ("sh-theorie.js", "sh-modellen.js", "sh-scrum.js", "sh-dashboard.js", "ruimte.js", "hobbyskills.js", "hs-sjablonen.js", "mm-bron.js", "koppelingen.js", "eigen-categorieen.js", "fin-vast.js", "wishlist.js"))
+blokken = "".join(f"<script>\n{lees(naam)}\n</script>\n" for naam in ("sh-theorie.js", "sh-modellen.js", "sh-scrum.js", "sh-dashboard.js", "ruimte.js", "hobbyskills.js", "hs-sjablonen.js", "mm-bron.js", "koppelingen.js", "eigen-categorieen.js", "fin-vast.js", "wishlist.js", "nieuw-rail.js"))
 html = html[:j] + blokken + html[j:]
 
 UIT.write_text(html, encoding="utf-8")
