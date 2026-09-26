@@ -3128,6 +3128,236 @@ html[data-retro="1"] .vg-sectie{font-family:var(--pixel);font-weight:400;font-si
 .vg-tien{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
 .vg-tien .keuze{justify-content:center;min-height:44px}
 
+
+/* 76. Profiel en tips per richting */
+.nd-tip{display:flex;align-items:center;gap:10px;margin:0 0 12px;padding:10px 8px 10px 14px;border-radius:16px;background:color-mix(in srgb,var(--accent) 9%,var(--card));box-shadow:var(--shadow);font-size:calc(13.5px * var(--t));line-height:1.4}
+.nd-ico{font-size:18px;flex:0 0 auto}
+.nd-tip>span:nth-child(2){flex:1;min-width:0}
+.nd-tipknop{flex:0 0 auto;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:var(--muted)}
+.nd-tipknop svg{width:16px;height:16px}
+.startgrid+.nd-tip,.werk-kop+.nd-tip{margin-top:12px}
+
+.pf{display:flex;flex-direction:column;gap:10px}
+.pf-kop{display:flex;align-items:center;gap:14px;padding:6px 2px 8px}
+.pf-kop b{display:block;font-size:calc(19px * var(--t))}
+.pf-kop span{font-size:calc(13px * var(--t));color:var(--muted)}
+.pf-avatar{width:58px;height:58px;border-radius:20px;display:grid;place-items:center;flex:0 0 auto;font-weight:800;font-size:26px;color:#fff;
+  background:linear-gradient(135deg,#0e7490,#4f46e5)}
+.pf-avatar.klein{width:40px;height:40px;border-radius:14px;font-size:18px}
+.pf-sectie{background:var(--card);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+.pf-sectie summary{display:flex;align-items:center;gap:10px;padding:14px 16px;min-height:60px;cursor:pointer;list-style:none}
+.pf-sectie summary::-webkit-details-marker{display:none}
+.pf-sectie summary>span{flex:1;display:flex;flex-direction:column}
+.pf-sectie summary b{font-size:calc(15px * var(--t))}
+.pf-sectie summary small{font-size:calc(12px * var(--t));color:var(--muted)}
+.pf-sectie summary svg{width:16px;height:16px;color:var(--faint);transition:transform .2s}
+.pf-sectie[open] summary svg{transform:rotate(90deg)}
+.pf-inhoud{padding:0 16px 14px;border-top:1px solid var(--line)}
+.pf-inhoud .veld{margin-top:12px}
+.pf-twee{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pf-klein{font-size:calc(12.5px * var(--t));color:var(--muted);margin:10px 0 0}
+.pf-let{font-size:calc(12.5px * var(--t));color:var(--muted);margin:12px 0 0;padding:10px 12px;border-radius:12px;background:var(--card2)}
+.pf-richting{margin:12px 0;padding:12px;border-radius:14px;background:var(--card2)}
+.pf-richting p{margin:4px 0 8px;font-size:calc(13px * var(--t));color:var(--muted)}
+.pf-aanpak{list-style:none;margin:0;padding:0}
+.pf-aanpak li{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-top:1px solid var(--line);font-size:calc(13px * var(--t))}
+.pf-aanpak li b{text-align:right}
+.pf-scores{margin:8px 0 12px}
+.pf-score{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) 40px;gap:8px;align-items:center;font-size:calc(12.5px * var(--t));padding:3px 0}
+.pf-score i{display:block;height:8px;border-radius:99px;background:var(--line)}
+.pf-score i b{display:block;height:100%;border-radius:99px;background:var(--accent)}
+.pf-score small{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+.pf-vragen{margin:0;padding-left:20px}
+.pf-vragen li{margin-bottom:16px}
+.pf-vragen p{margin:0 0 8px;font-size:15px}
+.pf-antw{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.pf-antw button{min-height:44px;border-radius:10px;background:var(--card2);font-size:11.5px;font-weight:650;color:var(--muted);padding:0 2px}
+.pf-antw button[aria-checked="true"]{background:var(--accent);color:#fff}
+.pf-instkaart{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px 14px;margin-bottom:6px}
+.pf-instt{flex:1;display:flex;flex-direction:column}
+.pf-instt small{font-size:12px;color:var(--muted)}
+
+/* 78. Huishouden */
+.hh{display:flex;flex-direction:column}
+.hh-kop{--kk:#0e7490}
+.hh-start{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:18px 16px;margin:12px 0 10px;border-radius:22px;color:#fff;
+  background:radial-gradient(120% 140% at 12% 10%,#155e75 0%,#0b1220 60%,#05070c 100%);box-shadow:0 10px 30px rgba(8,47,73,.35),inset 0 0 0 1px rgba(255,255,255,.08)}
+.hh-start b{display:block;font-size:calc(17px * var(--t))}
+.hh-start small{display:block;font-size:calc(12.5px * var(--t));opacity:.75}
+.hh-start>span:nth-child(2){flex:1}
+.hh-start svg{width:18px;height:18px;opacity:.8}
+.hh-startico{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:22px;background:rgba(255,255,255,.1);box-shadow:0 0 18px rgba(103,232,249,.45);color:#a5f3fc}
+.hh-snel{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px}
+.hh-snelknop{display:flex;flex-direction:column;align-items:flex-start;gap:1px;text-align:left;padding:12px 14px;border-radius:18px;background:var(--card);box-shadow:var(--shadow);min-height:84px}
+.hh-snelknop>span{font-size:22px}
+.hh-snelknop b{font-size:calc(14px * var(--t))}
+.hh-snelknop small{font-size:calc(11.5px * var(--t));color:var(--muted)}
+.hh-rij{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:10px 14px;min-height:58px;border-bottom:1px solid var(--line)}
+.hh-rij:last-child{border-bottom:0}
+.hh-rij[aria-disabled="true"]{opacity:.55}
+.hh-rij.stil{cursor:default}
+.hh-emoji{font-size:22px;width:30px;text-align:center;flex:0 0 auto}
+.hh-rijt{flex:1;min-width:0;display:flex;flex-direction:column}
+.hh-rijt b{font-size:calc(14.5px * var(--t))}
+.hh-rijt small{font-size:calc(12px * var(--t));color:var(--muted)}
+.hh-mini{flex:0 0 auto;font-size:calc(12.5px * var(--t));font-weight:750;color:var(--accent);padding:8px 12px;border-radius:12px;background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.hh-knoppen{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 4px}
+.hh-knoppen .knop{flex:1 1 auto}
+.hh-bol{display:inline-grid;place-items:center;min-width:20px;height:20px;border-radius:10px;background:var(--accent);color:#fff;font-size:11px;padding:0 5px;margin-left:4px}
+.hh-leeg p{margin:0;font-size:calc(13.5px * var(--t));color:var(--muted)}
+.hh-cijfers{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.hh-cijfer{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:12px;display:flex;flex-direction:column}
+.hh-cijfer b{font-size:calc(21px * var(--t));font-variant-numeric:tabular-nums;font-weight:800}
+.hh-cijfer span{font-size:calc(11.5px * var(--t));color:var(--muted)}
+.hh-uitleg{font-size:calc(12.5px * var(--t));color:var(--muted);margin:8px 0 0}
+.hh-geleerd{padding:4px 0 10px}
+.hh-geleerd .hh-uitleg{padding:0 14px}
+.hh-factor{font-weight:800;font-size:calc(13px * var(--t));font-variant-numeric:tabular-nums}
+.hh-factor.langer{color:#b45309}
+.hh-factor.korter{color:#15803d}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .hh-factor.langer{color:#fbbf24}:root:not([data-theme="light"]) .hh-factor.korter{color:#4ade80}}
+:root[data-theme="dark"] .hh-factor.langer{color:#fbbf24}
+:root[data-theme="dark"] .hh-factor.korter{color:#4ade80}
+.hh-link{color:var(--accent);font-weight:700}
+
+/* Samenvatting */
+.hh-samen{margin:12px 0 4px;padding:16px;border-radius:22px;color:#e6f6fb;background:radial-gradient(120% 140% at 85% 0%,#1e3a5f 0%,#0b1220 65%);box-shadow:0 10px 30px rgba(8,47,73,.3);
+  animation:hh-in .5s cubic-bezier(.22,1,.36,1)}
+@keyframes hh-in{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.hh-samen{animation:none}}
+.hh-samenkop{display:flex;align-items:center;gap:12px}
+.hh-samenkop>span{font-size:24px;color:#a5f3fc;text-shadow:0 0 14px #67e8f9}
+.hh-samenkop div{flex:1;display:flex;flex-direction:column}
+.hh-samenkop b{font-size:calc(17px * var(--t))}
+.hh-samenkop small{font-size:calc(12px * var(--t));opacity:.7}
+.hh-sluitx{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:inherit;background:rgba(255,255,255,.08)}
+.hh-sluitx svg{width:18px;height:18px}
+.hh-zin{margin:10px 0 12px;font-size:calc(14px * var(--t))}
+.hh-samen .hh-cijfer{background:rgba(255,255,255,.07);box-shadow:none;color:#fff}
+.hh-samen .hh-cijfer span,.hh-samen .hh-uitleg{color:rgba(230,246,251,.7)}
+.hh-details{margin-top:10px}
+.hh-details summary{min-height:40px;display:flex;align-items:center;font-weight:700;cursor:pointer}
+.hh-details ul{list-style:none;margin:0;padding:0}
+.hh-details li{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-top:1px solid rgba(255,255,255,.08);font-size:calc(13px * var(--t))}
+.hh-details li small{opacity:.7;white-space:nowrap}
+
+/* Lijst bewerken */
+.hh-lijstkop .veld{margin-bottom:10px}
+.hh-twee{display:grid;grid-template-columns:minmax(0,1fr) 90px;gap:10px}
+.hh-nieuw .hh-twee{grid-template-columns:minmax(0,1fr) auto}
+.hh-taken{padding:2px 0}
+.hh-taak{display:flex;align-items:center;gap:8px;padding:8px 8px 8px 12px;border-bottom:1px solid var(--line);min-height:56px}
+.hh-taak:last-child{border-bottom:0}
+.hh-taak.uit .hh-taakt{opacity:.45;text-decoration:line-through}
+.hh-mee{width:30px;height:30px;border-radius:9px;border:2px solid var(--line2);display:grid;place-items:center;font-weight:900;color:#fff;flex:0 0 auto}
+.hh-mee[aria-pressed="true"]{background:#0e7490;border-color:#0e7490}
+.hh-taakt{flex:1;min-width:0;display:flex;flex-direction:column}
+.hh-taakt b{font-size:calc(14px * var(--t));font-weight:600}
+.hh-taakt small{font-size:calc(11px * var(--t));color:var(--faint)}
+.hh-prio{flex:0 0 auto;min-height:32px;padding:0 9px;border-radius:9px;font-size:calc(11.5px * var(--t));font-weight:750;background:var(--card2);color:var(--muted)}
+.hh-prio.p-moet{background:color-mix(in srgb,#dc2626 14%,var(--card));color:#dc2626}
+.hh-prio.p-bonus{color:var(--faint)}
+.hh-min{display:flex;align-items:center;gap:2px;flex:0 0 auto}
+.hh-min button{width:32px;height:36px;border-radius:9px;background:var(--card2);font-weight:800}
+.hh-min b{min-width:30px;text-align:center;font-variant-numeric:tabular-nums;font-size:calc(13px * var(--t))}
+.hh-weg{width:32px;height:36px;display:grid;place-items:center;color:var(--faint);flex:0 0 auto}
+.hh-weg svg{width:15px;height:15px}
+.hh-clknop{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px 14px;margin-bottom:10px}
+.hh-clknop>span:first-child{font-size:22px}
+.hh-clknop>span:nth-child(2){flex:1;display:flex;flex-direction:column}
+.hh-clknop small{font-size:12px;color:var(--muted)}
+
+/* Onderblad: sessie klaarzetten */
+.hh-tijden,.hh-energie{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.hh-energie{grid-template-columns:repeat(5,1fr)}
+.hh-tijden .keuze,.hh-energie .keuze{justify-content:center;min-height:44px}
+.hh-energie .keuze{font-size:20px}
+.hh-plan{margin-top:6px;padding:12px;border-radius:16px;background:var(--card2)}
+.hh-plankop{display:flex;flex-direction:column;margin-bottom:6px}
+.hh-plankop small{font-size:12px;color:var(--muted)}
+.hh-noot{margin:6px 0;padding:8px 10px;border-radius:10px;background:color-mix(in srgb,var(--accent) 10%,transparent);font-size:12.5px}
+.hh-planlijst{margin:0;padding-left:22px}
+.hh-planlijst li{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid var(--line);font-size:14px}
+.hh-planlijst li:last-child{border-bottom:0}
+.hh-planlijst li span{flex:1;min-width:0}
+.hh-planlijst li small{color:var(--muted);font-size:11.5px}
+.hh-planlijst .hh-r{display:block}
+.hh-planlijst li.pauze{color:var(--muted);font-style:normal}
+.hh-planlijst b{font-variant-numeric:tabular-nums}
+.hh-importlijst{background:var(--card2);border-radius:14px;overflow:hidden}
+.hh-dobbel{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;padding:10px 0}
+.hh-dobbelsteen{font-size:54px;animation:hh-rol .7s cubic-bezier(.22,1,.36,1)}
+@keyframes hh-rol{from{transform:rotate(-200deg) scale(.4);opacity:0}to{transform:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.hh-dobbelsteen{animation:none}}
+.hh-dobbel b{font-size:19px}
+.hh-dobbel small{color:var(--muted)}
+
+/* 79. De sessie: een eigen, donkere wereld */
+html.hhs-open,html.hhs-open body{overflow:hidden}
+#hh-sessie{position:fixed;inset:0;z-index:95;display:flex;flex-direction:column;align-items:center;color:#f4f7fb;
+  background:radial-gradient(90% 60% at 50% 32%,#0c1a2b 0%,#05070c 70%,#000 100%);opacity:0;transition:opacity .4s;
+  padding:env(safe-area-inset-top) 16px calc(12px + env(safe-area-inset-bottom));font-family:inherit;touch-action:pan-y}
+#hh-sessie.zicht{opacity:1}
+#hh-sessie.weg{opacity:0}
+.hhs-kop{width:100%;max-width:520px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0 0}
+.hhs-lijst{font-size:14px;font-weight:650;opacity:.72;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hhs-stop{min-width:64px;min-height:48px;padding:0 16px;border-radius:14px;background:rgba(255,255,255,.08);color:#fff;font-weight:750;border:1px solid rgba(255,255,255,.14)}
+.hhs-stop.vraag{background:#b91c1c;border-color:#b91c1c}
+.hhs-tesswrap{position:relative;width:min(84vw,340px);flex:1 1 auto;min-height:170px;max-height:38vh;aspect-ratio:1}
+.hhs-tess{width:100%;height:100%;display:block}
+.hhs-flits{position:absolute;inset:-40vmax;pointer-events:none;background:radial-gradient(circle,#fff 0%,rgba(255,244,214,.9) 12%,rgba(255,255,255,0) 45%);opacity:0;transform:scale(.2)}
+.hhs-flits.aan{animation:hhs-flits 1.1s ease-out forwards}
+@keyframes hhs-flits{0%{opacity:0;transform:scale(.2)}12%{opacity:1}100%{opacity:0;transform:scale(1.4)}}
+.hhs-tessregel{min-height:20px;margin:0 0 6px;font-size:13px;letter-spacing:.02em;color:rgba(165,243,252,.75);text-align:center}
+.hhs-tessregel.puls{animation:hhs-regel 6s ease-in-out}
+@keyframes hhs-regel{0%{opacity:0}10%,80%{opacity:1}100%{opacity:.55}}
+
+/* Het kaartje: zwart, dikke witte rand, geborduurde steek aan de binnenkant */
+.hhs-stapel{position:relative;width:100%;max-width:440px;flex:0 0 auto}
+.hhs-kaart{position:relative;background:#050505;color:#fff;border-radius:26px;padding:22px 22px 18px;
+  border:4px solid #f5f5f2;
+  box-shadow:0 0 0 1px rgba(255,255,255,.25),0 22px 60px rgba(0,0,0,.65),0 0 40px rgba(103,232,249,.12);
+  outline:2.5px dashed rgba(250,250,245,.92);outline-offset:-13px;
+  background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.018) 0 2px,transparent 2px 5px),repeating-linear-gradient(-45deg,rgba(255,255,255,.018) 0 2px,transparent 2px 5px);
+  touch-action:pan-y;user-select:none;-webkit-user-select:none;will-change:transform}
+.hhs-kaart:focus{outline-color:#a5f3fc}
+.hhs-kaart.pauze{border-color:#cbd5e1;outline-color:rgba(203,213,225,.85)}
+.hhs-kaart.naar-gedaan{box-shadow:0 0 0 1px rgba(255,255,255,.25),0 22px 60px rgba(0,0,0,.65),0 0 50px rgba(74,222,128,.45)}
+.hhs-kaart.naar-later{box-shadow:0 0 0 1px rgba(255,255,255,.25),0 22px 60px rgba(0,0,0,.65),0 0 50px rgba(251,191,36,.4)}
+.hhs-kaart.verdwijn{transition:transform .6s cubic-bezier(.5,0,.75,0),opacity .5s;transform:scale(.6) translateY(-80px);opacity:0}
+.hhs-kaartkop{display:flex;justify-content:space-between;gap:10px;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.65;padding:2px 6px 0}
+.hhs-ruimte{max-width:55%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hhs-titel{margin:12px 6px 4px;font-size:26px;line-height:1.15;font-weight:800;letter-spacing:-.01em}
+.hhs-titel small{display:block;font-size:13px;font-weight:600;opacity:.6;letter-spacing:0;margin-top:4px}
+.hhs-duur{margin:0 6px;font-size:15px;opacity:.85}
+.hhs-duur b{font-size:22px}
+.hhs-duur small{opacity:.65}
+.hhs-tip{margin:10px 6px 0;font-size:14px;line-height:1.45;color:rgba(255,255,255,.78)}
+.hhs-luister{margin:8px 6px 0;font-size:14px;color:#a5f3fc}
+.hhs-sein{margin:10px 6px 0;padding:8px 12px;border-radius:12px;background:rgba(251,191,36,.14);color:#fde68a;font-size:14px;font-weight:650}
+.hhs-klok{margin:14px 6px 4px;font-size:52px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em;line-height:1}
+.hhs-kaart.om .hhs-klok{color:#fde68a}
+.hhs-balk{height:6px;margin:6px 6px 0;border-radius:99px;background:rgba(255,255,255,.12);overflow:hidden}
+.hhs-balk i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,#67e8f9,#fff)}
+.hhs-kaart.om .hhs-balk i{background:#fde68a}
+.hhs-knoppen{display:flex;gap:8px;margin:16px 4px 0;flex-wrap:wrap}
+.hhs-knop{flex:1 1 auto;min-height:54px;padding:0 18px;border-radius:16px;font-weight:800;font-size:16px;color:#fff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18)}
+.hhs-knop.hoofd{flex:2 1 auto;background:#fff;color:#050505;border-color:#fff;box-shadow:0 0 24px rgba(165,243,252,.35)}
+.hhs-knop:focus-visible,.hhs-stop:focus-visible{outline:3px solid #a5f3fc;outline-offset:2px}
+.hhs-veeg{margin:12px 0 0;text-align:center;font-size:12px;opacity:.45}
+.hhs-kaart:not(.loopt) .hhs-veeg{display:none}
+.hhs-onder{width:100%;max-width:440px;display:flex;justify-content:space-between;align-items:center;padding:12px 4px 0;font-size:13px;color:rgba(255,255,255,.6)}
+.hhs-gedaan{position:relative;display:flex;align-items:center;gap:8px;padding-left:34px;min-height:30px}
+.hhs-gedaan i{position:absolute;left:0;top:50%;width:22px;height:28px;border-radius:5px;border:2px solid rgba(255,255,255,.7);background:#050505;transform:translateY(-50%);opacity:0;transition:opacity .3s,transform .3s}
+.hhs-gedaan[data-n="1"] i:nth-child(1),.hhs-gedaan[data-n="2"] i:nth-child(-n+2),.hhs-gedaan[data-n="3"] i{opacity:1}
+.hhs-gedaan i:nth-child(2){transform:translate(3px,-54%) rotate(6deg)}
+.hhs-gedaan i:nth-child(3){transform:translate(6px,-58%) rotate(12deg)}
+.hhs-gedaan b{color:#fff;font-size:15px}
+.hhs-gedaan::after{content:"gedaan";font-size:13px}
+.hhs-aria{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (max-height:700px){.hhs-titel{font-size:22px}.hhs-klok{font-size:42px}.hhs-tesswrap{max-height:30vh}}
+@media (prefers-reduced-motion:reduce){#hh-sessie{transition:none}.hhs-kaart.verdwijn{transition:none}}
+
 </style>
 </head>
 <body>
@@ -3336,6 +3566,18 @@ html[data-retro="1"] .vg-sectie{font-family:var(--pixel);font-weight:400;font-si
   <circle cx="30" cy="46" r="3.5" fill="currentColor" stroke="none"/><circle cx="44" cy="54" r="3.5" fill="currentColor" stroke="none"/><circle cx="62" cy="34" r="3.5" fill="currentColor" stroke="none"/>
   <path d="M78 40V8" stroke-opacity=".9"/><path d="M78 9h14l-4 6 4 6H78" fill="currentColor" fill-opacity=".85" stroke-opacity=".9"/>
 </g></symbol>
+<symbol id="ill-huishouden" viewBox="0 0 100 80"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M6 70h88" stroke-opacity=".75"/>
+  <path d="M14 76h20M44 76h14M70 76h18" stroke-opacity=".35"/>
+  <path d="M74 6L50 50" stroke-opacity=".95"/>
+  <path d="M44 46l14 8-4 7-22 9c-3 1-5-2-3-4z" fill="currentColor" fill-opacity=".5" stroke-opacity=".95"/>
+  <path d="M33 66l3-6M39 67l3-6M45 66l3-6" stroke-opacity=".7"/>
+  <path d="M14 58c3-4 7-5 12-5M10 64c4-3 8-4 13-3" stroke-opacity=".45"/>
+  <path d="M78 52l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="currentColor" fill-opacity=".95" stroke="none"/>
+  <path d="M90 40l1.3 3.2 3.2 1.3-3.2 1.3L90 49l-1.3-3.2-3.2-1.3 3.2-1.3z" fill="currentColor" fill-opacity=".8" stroke="none"/>
+  <path d="M20 42l1 2.6 2.6 1-2.6 1L20 49l-1-2.4-2.6-1 2.6-1z" fill="currentColor" fill-opacity=".7" stroke="none"/>
+</g></symbol>
+<symbol id="i-bezem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M19 3l-7.5 9.5"/><path d="M10 11.5l4 2.5-1.6 2.6-6 3.2c-1 .5-1.9-.6-1.2-1.4z"/><path d="M3 21.5h18"/><path d="M18.5 16l.6 1.5 1.5.6-1.5.6-.6 1.5-.6-1.5-1.5-.6 1.5-.6z" fill="currentColor" stroke="none"/></symbol>
 <symbol id="ill-persoonlijk" viewBox="0 0 100 80"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
   <path d="M14 40L40 18l26 22" stroke-opacity=".8"/>
   <path d="M20 36v26h40V36" fill="currentColor" fill-opacity=".16" stroke-opacity=".75"/>
@@ -3537,7 +3779,7 @@ function secTekst(sec) {
 /* ==========================================================================
    3. Opslag — IndexedDB
    ========================================================================== */
-const DB_NAAM = "futureme", DB_VERSIE = 11;
+const DB_NAAM = "futureme", DB_VERSIE = 12;
 const WINKELS = {
   taken: "id", projecten: "id", labels: "id", afspraken: "id", checklists: "id",
   gewoontes: "id", gewoontelog: "id", dagboek: "id", tijdlog: "id",
@@ -4346,7 +4588,10 @@ function teken() {
     ankerhelp: (typeof vwAnkerHelp === "function" ? vwAnkerHelp : vwStart),
     ankerervaring: (typeof vwAnkerErvaring === "function" ? vwAnkerErvaring : vwStart),
     ankerinst: (typeof vwAnkerInst === "function" ? vwAnkerInst : vwStart),
-    ankerbronnen: (typeof vwAnkerBronnen === "function" ? vwAnkerBronnen : vwStart)
+    ankerbronnen: (typeof vwAnkerBronnen === "function" ? vwAnkerBronnen : vwStart),
+    profiel: (typeof vwProfiel === "function" ? vwProfiel : vwStart),
+    huishouden: (typeof vwHuishouden === "function" ? vwHuishouden : vwStart),
+    hhlijst: (typeof vwHhLijst === "function" ? vwHhLijst : vwStart)
   }[V.view] || vwVandaag;
   $("#scherm").innerHTML = fn();
   naTekenen();
@@ -23158,6 +23403,1235 @@ document.addEventListener("pointerover", e => { if (e.pointerType !== "mouse") r
 }
 if (typeof TL_SOORTEN === "object") TL_SOORTEN.voortgang = ["Voortgang", "#4f46e5"];
 if (typeof LOGFILTERS !== "undefined" && Array.isArray(LOGFILTERS)) LOGFILTERS.push(["voortgang", "Voortgang"]);
+
+</script>
+<script>
+"use strict";
+// === SECTIE 76: PROFIEL – WIE BEN JIJ, EN WELKE AANPAK PAST ===
+/* ==========================================================================
+   Het profiel beschrijft de gebruiker: naam, geboortedatum (leeftijd wordt
+   berekend), lengte, gewicht en een richting voor de aanpak. Die richting
+   komt uit tien zelfreflectievragen of wordt met de hand gekozen.
+
+   Belangrijk: de vragenlijst is GEEN test en geeft GEEN diagnose. Hij is
+   niet gevalideerd. Hij geeft alleen een richting voor handvatten (hoe klussen
+   worden ingedeeld, hoe lang blokken zijn, wanneer er pauze komt). Voor een
+   echte beoordeling verwijzen we naar de huisarts; gevalideerde screeners
+   zijn bijvoorbeeld de ASRS (ADHD) en de AQ-10 (autisme).
+
+   Opslag: één record in de bestaande instellingen (sleutel "profiel"), dus
+   geen nieuwe store. De richting stuurt ndAanpak(); andere modules lezen
+   alleen die functie.
+   ========================================================================== */
+
+/* ---------- 76.1 Gegevens ---------- */
+const PF_STANDAARD = { naam: "", geboortedatum: "", lengte: null, gewicht: null, nd: { antwoorden: [], richting: null, handmatig: null, energie: false, datum: null } };
+function pfProfiel() {
+  const p = inst("profiel", null) || {};
+  return Object.assign({}, PF_STANDAARD, p, { nd: Object.assign({}, PF_STANDAARD.nd, p.nd || {}) });
+}
+async function pfZet(veranderd) {
+  const p = Object.assign(pfProfiel(), veranderd);
+  await zetInst("profiel", p);
+  return p;
+}
+const pfNaam = () => (pfProfiel().naam || "").trim();
+function pfLeeftijd(gd) {
+  if (!gd) return null;
+  const g = new Date(gd + "T12:00:00"), n = new Date();
+  let l = n.getFullYear() - g.getFullYear();
+  if (n.getMonth() < g.getMonth() || (n.getMonth() === g.getMonth() && n.getDate() < g.getDate())) l--;
+  return l >= 0 && l < 130 ? l : null;
+}
+/* Gewicht: het profielveld, of anders de laatste meting uit Gezondheid. */
+function pfGewicht() {
+  const p = pfProfiel();
+  const laatste = (S.vs_gewicht || []).filter(g => g.kg).sort((a, b) => b.datum.localeCompare(a.datum))[0];
+  return laatste ? { kg: +laatste.kg, bron: "Gezondheid", datum: laatste.datum } : p.gewicht ? { kg: +p.gewicht, bron: "profiel" } : null;
+}
+
+/* ---------- 76.2 Tien vragen, drie dimensies ----------
+   A = aandacht, beginnen, tijd (ADHD-kenmerken)
+   S = prikkels, voorspelbaarheid, wisselen (autisme-kenmerken)
+   E = energie (energiebeperking, zoals burn-out of ME/CVS)
+   Antwoord 0–4: nooit, zelden, soms, vaak, heel vaak. */
+const PF_VRAGEN = [
+  ["A", "Ik stel klussen uit, ook als ik ze belangrijk vind, omdat beginnen zwaar voelt."],
+  ["A", "Midden in een klus raak ik afgeleid en maak ik hem niet af."],
+  ["A", "Ik schat verkeerd in hoe lang iets duurt, of ik kom te laat."],
+  ["A", "Saaie, herhalende taken maken me onrustig; ik zoek snel iets nieuws."],
+  ["S", "Geluid, geur, licht of texturen (zoals schoonmaakmiddel) zijn me snel te veel."],
+  ["S", "Onverwachte veranderingen in mijn planning brengen me flink van slag."],
+  ["S", "Wisselen van de ene taak naar de andere kost me veel moeite."],
+  ["S", "Ik doe dingen het liefst op een vaste manier en in een vaste volgorde."],
+  ["E", "Na een gewone inspanning ben ik uren of dagen uitgeput."],
+  ["E", "Ik moet mijn energie per dag zuinig verdelen om niet in te storten."]
+];
+const PF_SCHAAL = ["Nooit", "Zelden", "Soms", "Vaak", "Heel vaak"];
+const PF_RICHTINGEN = {
+  adhd: { naam: "ADHD-kenmerken", kort: "Aandacht en beginnen", ico: "⚡", uitleg: "Beginnen, afleiding en tijd zijn het lastigst. Korte blokken, snel succes en zichtbare tijd helpen." },
+  autisme: { naam: "Autisme-kenmerken", kort: "Voorspelbaarheid en prikkels", ico: "🧩", uitleg: "Voorspelbaarheid, prikkels en wisselen kosten energie. Een vaste volgorde, vooraf alles zien en een seintje voor een wissel helpen." },
+  audhd: { naam: "ADHD- én autisme-kenmerken", kort: "Beide", ico: "🔀", uitleg: "Zowel beginnen en afleiding als prikkels en wisselen. Korte blokken in een vaste volgorde, met een seintje voor elke wissel." },
+  energie: { naam: "Weinig energie", kort: "Energie verdelen", ico: "🔋", uitleg: "Je energie is beperkt. Kleine porties, vaak rust en zwaar werk verdelen (pacing) helpen." },
+  geen: { naam: "Geen duidelijke richting", kort: "Algemeen", ico: "🌿", uitleg: "Geen uitgesproken richting. Je krijgt de standaardaanpak, die je altijd kunt aanpassen." }
+};
+function pfUitslag(antwoorden) {
+  const som = d => PF_VRAGEN.reduce((a, [dim], i) => a + (dim === d ? (+antwoorden[i] || 0) : 0), 0);
+  const A = som("A") / 16, Sx = som("S") / 16, E = som("E") / 8;
+  let richting = "geen";
+  if (A >= .56 && Sx >= .56) richting = "audhd";
+  else if (A >= .5 && A >= Sx) richting = "adhd";
+  else if (Sx >= .5) richting = "autisme";
+  else if (E >= .62) richting = "energie";
+  return { A, S: Sx, E, richting, energie: E >= .62 };
+}
+/* De richting die telt: handmatig gekozen gaat voor de vragenlijst. */
+function pfRichting() {
+  const nd = pfProfiel().nd;
+  return nd.handmatig || nd.richting || "geen";
+}
+
+/* ---------- 76.3 De aanpak per richting ----------
+   Eén plek met alle knoppen waar andere modules aan draaien. Onderbouwing
+   staat in het functioneel ontwerp (docs/huishouden-functioneel-ontwerp.md).
+   - blokMax      : langste werkblok in minuten (daarna wordt een taak opgeknipt)
+   - pauzeElke    : na zoveel minuten werk een geplande pauze (systematische pauzes)
+   - pauzeMin     : lengte van die pauze
+   - buffer       : factor op de geschatte tijd (planning-fallacy, tijdsblindheid)
+   - volgorde     : "snelsucces" | "vast" | "zwaarEerst"
+   - wisselSein   : seintje 1 minuut voor een wissel (overgangen)
+   - variatie     : ruimtes afwisselen tegen verveling
+   - afkoelUur    : wishlist-afkoelperiode (uren) voor aankopen boven € 50
+   - maxSessie    : langste aangeraden sessie in minuten (null = geen)
+   - ankerProfiel : bijpassend profiel in Anker */
+const ND_AANPAK = {
+  adhd:    { blokMax: 10, pauzeElke: 25, pauzeMin: 5, buffer: 1.25, volgorde: "snelsucces", wisselSein: false, variatie: true, afkoelUur: 72, maxSessie: null, ankerProfiel: "anders" },
+  autisme: { blokMax: 15, pauzeElke: 30, pauzeMin: 5, buffer: 1.2, volgorde: "vast", wisselSein: true, variatie: false, afkoelUur: 24, maxSessie: null, ankerProfiel: "anders" },
+  audhd:   { blokMax: 10, pauzeElke: 25, pauzeMin: 5, buffer: 1.3, volgorde: "vast", wisselSein: true, variatie: false, afkoelUur: 72, maxSessie: null, ankerProfiel: "anders" },
+  energie: { blokMax: 8, pauzeElke: 15, pauzeMin: 8, buffer: 1.3, volgorde: "zwaarEerst", wisselSein: false, variatie: false, afkoelUur: 24, maxSessie: 45, ankerProfiel: "energie" },
+  geen:    { blokMax: 20, pauzeElke: 45, pauzeMin: 5, buffer: 1.15, volgorde: "vast", wisselSein: false, variatie: false, afkoelUur: 24, maxSessie: null, ankerProfiel: null }
+};
+function ndAanpak() {
+  const r = pfRichting(), a = Object.assign({ richting: r }, ND_AANPAK[r] || ND_AANPAK.geen);
+  // Lage energie naast een andere richting: kortere sessies en langere pauzes.
+  if (r !== "energie" && pfProfiel().nd.energie) Object.assign(a, { pauzeElke: Math.min(a.pauzeElke, 20), pauzeMin: Math.max(a.pauzeMin, 8), maxSessie: 60, extraEnergie: true });
+  return a;
+}
+
+/* ---------- 76.4 Handvatten per plek in de app ----------
+   Korte, concrete tips per richting. Altijd één zin, geen labels in koppen. */
+const ND_TIPS = {
+  taken: {
+    adhd: "Begin met iets van 2 minuten. Beginnen is het moeilijkste deel; daarna gaat het vaak vanzelf.",
+    autisme: "Schrijf bij elke taak de eerste concrete stap. Dan weet je precies wat er gebeurt.",
+    audhd: "Zet de eerste stap erbij en begin met iets kleins. Plan geen twee wissels vlak na elkaar.",
+    energie: "Kies vandaag maximaal drie taken. Wat niet lukt, schuift gewoon door.",
+    geen: "Maak er een als-dan-plan van: “Als ik koffie heb, dan begin ik aan …”."
+  },
+  planning: {
+    adhd: "Plan 25% extra tijd en zet een vertrekwekker, niet alleen een afspraakwekker.",
+    autisme: "Zet overgangen in je agenda: een blok van 10 minuten tussen afspraken.",
+    audhd: "Plan 30% extra tijd en een rustblok na elke afspraak.",
+    energie: "Houd na een drukke afspraak een rustblok vrij (pacing).",
+    geen: "Plan wat buffer tussen afspraken; dingen duren vaak langer dan je denkt."
+  },
+  sidehustle: {
+    adhd: "Werk aan één side hustle tegelijk en knip het werk in blokken van 25 minuten.",
+    autisme: "Kies een vast moment in de week voor je side hustle; dat maakt het voorspelbaar.",
+    audhd: "Eén hustle tegelijk, op een vast moment, in korte blokken.",
+    energie: "Houd je side hustle klein: één kleine stap per keer, alleen op goede dagen.",
+    geen: "Zet elke week één concrete volgende stap."
+  },
+  wishlist: {
+    adhd: "Afkoelen: wacht 72 uur voor je iets boven € 50 koopt. Impulsen zakken vaak weg.",
+    autisme: "Vergelijk op vaste punten (prijs, gebruik, prikkels) en beslis op een vast moment.",
+    audhd: "Wacht 72 uur en vergelijk op vaste punten voor je iets boven € 50 koopt.",
+    energie: "Vraag bij elke wens: bespaart dit energie? Dan telt dat mee.",
+    geen: "Slaap er een nacht over bij grotere aankopen."
+  },
+  huishouden: {
+    adhd: "Korte blokken, snel succes eerst, en de tijd zichtbaar. Muziek of een podcast helpt.",
+    autisme: "Vaste volgorde per ruimte, alles vooraf te zien, en een seintje voor elke wissel.",
+    audhd: "Korte blokken in een vaste volgorde, met een seintje voor elke wissel.",
+    energie: "Kleine porties, zwaar werk vroeg, en echte rust in de pauzes.",
+    geen: "Werk per ruimte en neem op tijd pauze."
+  }
+};
+function ndTip(plek) {
+  const r = pfRichting(), t = ND_TIPS[plek];
+  return t ? (t[r] || t.geen) : "";
+}
+function ndTipKaart(plek) {
+  const tip = ndTip(plek), r = pfRichting();
+  if (!tip || !inst("ndTips", true)) return "";
+  const rr = PF_RICHTINGEN[r] || PF_RICHTINGEN.geen;
+  return `<div class="nd-tip" role="note"><span class="nd-ico" aria-hidden="true">${rr.ico}</span><span>${esc(tip)}</span>
+    <button class="nd-tipknop" data-act="ga" data-view="profiel" aria-label="Aanpak aanpassen in je profiel">${ico("pijlr")}</button></div>`;
+}
+
+/* ---------- 76.5 Scherm: Profiel ----------
+   Uitklapbare secties (details/summary), zodat het rustig blijft. */
+function vwProfiel() {
+  const p = pfProfiel(), l = pfLeeftijd(p.geboortedatum), gw = pfGewicht(), r = pfRichting(), rr = PF_RICHTINGEN[r];
+  const bmi = gw && p.lengte ? gw.kg / Math.pow(p.lengte / 100, 2) : null;
+  const open = V.pfOpen || "over";
+  const sectie2 = (id, titel, sub, inhoud) => `<details class="pf-sectie" data-pf="${id}"${open === id ? " open" : ""}><summary><span><b>${titel}</b><small>${esc(sub)}</small></span>${ico("pijlr")}</summary><div class="pf-inhoud">${inhoud}</div></details>`;
+  let h = `<div class="pf-kop"><div class="pf-avatar" aria-hidden="true">${esc((p.naam || "?").trim().slice(0, 1).toUpperCase() || "?")}</div>
+    <div><b>${esc(p.naam || "Jouw profiel")}</b><span>${[l != null ? l + " jaar" : "", rr ? rr.ico + " " + rr.kort : ""].filter(Boolean).join(" · ") || "Vul in wat je wilt; alles is optioneel"}</span></div></div>`;
+  h += sectie2("over", "Over jou", [p.naam, l != null ? l + " jaar" : ""].filter(Boolean).join(" · ") || "Naam en geboortedatum", `
+    <div class="veld"><label for="pf-naam">Naam</label><input class="invoer" id="pf-naam" value="${esc(p.naam)}" maxlength="40" autocomplete="given-name" placeholder="Hoe mag de app je noemen?"></div>
+    <div class="veld"><label for="pf-gd">Geboortedatum</label><input class="invoer" id="pf-gd" type="date" value="${esc(p.geboortedatum)}" max="${vandaagISO()}"></div>
+    <p class="pf-klein">${l != null ? `Leeftijd: <b>${l} jaar</b>` : "Je leeftijd wordt berekend uit je geboortedatum."}</p>`);
+  h += sectie2("lichaam", "Lichaam", [p.lengte ? p.lengte + " cm" : "", gw ? nwoGetal(gw.kg, 1) + " kg" : ""].filter(Boolean).join(" · ") || "Lengte en gewicht", `
+    <div class="pf-twee"><div class="veld"><label for="pf-lengte">Lengte (cm)</label><input class="invoer" id="pf-lengte" type="number" inputmode="numeric" min="50" max="250" value="${p.lengte || ""}"></div>
+      <div class="veld"><label for="pf-gewicht">Gewicht (kg)</label><input class="invoer" id="pf-gewicht" type="number" inputmode="decimal" step="0.1" min="20" max="400" value="${p.gewicht || ""}"></div></div>
+    ${gw && gw.bron === "Gezondheid" ? `<p class="pf-klein">Laatste meting in Gezondheid: <b>${nwoGetal(gw.kg, 1)} kg</b> (${esc(datumLabel(gw.datum))}). Die gebruikt de app voor berekeningen.</p>` : ""}
+    ${bmi ? `<p class="pf-klein">BMI: <b>${nwoGetal(bmi, 1)}</b>. Een BMI zegt weinig over één persoon; zie het als ruwe indicatie.</p>` : ""}`);
+  const nd = p.nd, uit = nd.antwoorden.length === 10 ? pfUitslag(nd.antwoorden) : null;
+  h += sectie2("aanpak", "Aanpak die bij je past", rr ? rr.ico + " " + rr.naam : "Nog niet gekozen", `
+    <p class="pf-klein">De app past de indeling van klussen, taken, planning, side hustles en wishlist-afwegingen aan op de richting die bij je past. Kies zelf, of beantwoord tien korte vragen.</p>
+    <div class="veld"><label for="pf-richting">Mijn richting</label><select class="invoer" id="pf-richting">
+      <option value=""${!nd.handmatig ? " selected" : ""}>${nd.richting ? "Uit de vragen: " + esc(PF_RICHTINGEN[nd.richting].naam) : "Nog niet gekozen (algemeen)"}</option>
+      ${Object.entries(PF_RICHTINGEN).map(([k, v]) => `<option value="${k}"${nd.handmatig === k ? " selected" : ""}>${v.ico} ${esc(v.naam)}</option>`).join("")}</select></div>
+    ${rr ? `<div class="pf-richting"><b>${rr.ico} ${esc(rr.naam)}</b><p>${esc(rr.uitleg)}</p>${pfAanpakLijst()}</div>` : ""}
+    ${uit ? `<div class="pf-scores" aria-label="Uitkomst van de vragen">${[["Aandacht en beginnen", uit.A], ["Prikkels en voorspelbaarheid", uit.S], ["Energie", uit.E]].map(([n, v]) => `<div class="pf-score"><span>${n}</span><i><b style="width:${Math.round(v * 100)}%"></b></i><small>${Math.round(v * 100)}%</small></div>`).join("")}
+      <p class="pf-klein">Ingevuld: ${esc(datumLabel(nd.datum).toLowerCase())}.</p></div>` : ""}
+    <button class="knop breed ${uit ? "rand" : "primair"}" data-act="pf-vragen">${uit ? "Vragen opnieuw invullen" : "Tien vragen beantwoorden"}</button>
+    <p class="pf-let"><b>Geen diagnose.</b> Dit is zelfreflectie om handvatten te kiezen, geen test. Herken je veel? Praat met je huisarts; die kan verwijzen voor een echte beoordeling.</p>`);
+  h += sectie2("app", "In de app", inst("ndTips", true) ? "Tips staan aan" : "Tips staan uit", `
+    <ul class="schakels">${typeof mfSchakel === "function" ? "" : ""}
+      <li class="schakel"><span class="tekst"><b>Tips per onderdeel</b><small>Eén korte tip bovenaan Persoonlijk, Komend, Side Hustle, Wishlist en Huishouden.</small></span>
+      <button class="toggle" data-act="pf-tips" aria-pressed="${inst("ndTips", true)}" aria-label="Tips per onderdeel"></button></li></ul>
+    <p class="pf-klein">Alles blijft op dit toestel. Je profiel gaat mee in je back-up.</p>`);
+  return `<div class="pf">${h}</div>`;
+}
+function pfAanpakLijst() {
+  const a = ndAanpak();
+  const rij = (n, w) => `<li><span>${n}</span><b>${w}</b></li>`;
+  return `<ul class="pf-aanpak">
+    ${rij("Langste werkblok", a.blokMax + " min")}
+    ${rij("Pauze", `${a.pauzeMin} min na elke ${a.pauzeElke} min`)}
+    ${rij("Extra tijd bij plannen", "+" + Math.round((a.buffer - 1) * 100) + "%")}
+    ${rij("Volgorde", { snelsucces: "Snel succes eerst", vast: "Vaste volgorde per ruimte", zwaarEerst: "Zwaar werk vroeg, dan licht" }[a.volgorde])}
+    ${rij("Seintje voor een wissel", a.wisselSein ? "Ja" : "Nee")}
+    ${a.maxSessie ? rij("Langste sessie", a.maxSessie + " min") : ""}
+    ${rij("Afkoelen bij aankopen > € 50", a.afkoelUur + " uur")}</ul>`;
+}
+/* De vragen in een onderblad, één scherm, grote tikdoelen. */
+function pfVragenBlad() {
+  const ant = pfProfiel().nd.antwoorden.slice();
+  const inhoud = `<p class="pf-klein" style="margin-top:0">Hoe vaak herken je dit bij jezelf, de laatste maanden? Er is geen goed of fout.</p>
+    <ol class="pf-vragen">${PF_VRAGEN.map(([, v], i) => `<li><p>${esc(v)}</p><div class="pf-antw" role="radiogroup" aria-label="Vraag ${i + 1}">${PF_SCHAAL.map((s, w) => `<button role="radio" data-pfv="${i}" data-w="${w}" aria-checked="${ant[i] === w}">${s}</button>`).join("")}</div></li>`).join("")}</ol>`;
+  bladOpen("Tien vragen", inhoud, `<button class="knop breed primair" id="pf-v-ok">Bekijk mijn richting</button>`);
+  $("#bladinhoud").addEventListener("click", e => {
+    const b = e.target.closest("[data-pfv]"); if (!b) return;
+    const i = +b.dataset.pfv; ant[i] = +b.dataset.w;
+    $$(`#bladinhoud [data-pfv="${i}"]`).forEach(x => x.setAttribute("aria-checked", String(x === b)));
+    const vol = b.closest("li").nextElementSibling; if (vol && ant[i + 1] == null) vol.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  });
+  $("#pf-v-ok").onclick = async () => {
+    const leeg = PF_VRAGEN.findIndex((_, i) => ant[i] == null);
+    if (leeg >= 0) { toast(`Vraag ${leeg + 1} is nog leeg`); return; }
+    const u = pfUitslag(ant), p = pfProfiel();
+    await pfZet({ nd: Object.assign({}, p.nd, { antwoorden: ant, richting: u.richting, energie: u.energie, datum: vandaagISO() }) });
+    await pfSyncAnker();
+    bladSluit(); V.pfOpen = "aanpak"; teken();
+    toast("Richting: " + PF_RICHTINGEN[pfRichting()].naam);
+  };
+}
+/* Anker krijgt een passend profiel, maar alleen als je daar nog niets koos. */
+async function pfSyncAnker() {
+  if (typeof mfInst !== "function") return;
+  const a = ndAanpak();
+  if (!mfInst().profiel && a.ankerProfiel) await mfInstZet({ profiel: a.ankerProfiel });
+}
+
+/* ---------- 76.6 Tikken en typen ---------- */
+document.addEventListener("click", async e => {
+  const el = e.target.closest && e.target.closest("[data-act^='pf-']");
+  if (!el) return;
+  if (el.dataset.act === "pf-vragen") pfVragenBlad();
+  else if (el.dataset.act === "pf-tips") { await zetInst("ndTips", !inst("ndTips", true)); V.pfOpen = "app"; teken(); }
+});
+document.addEventListener("change", async e => {
+  const t = e.target; if (!t || !t.id || !t.id.startsWith("pf-") || V.view !== "profiel") return;
+  const p = pfProfiel();
+  if (t.id === "pf-naam") await pfZet({ naam: t.value.trim().slice(0, 40) });
+  else if (t.id === "pf-gd") await pfZet({ geboortedatum: t.value });
+  else if (t.id === "pf-lengte") await pfZet({ lengte: t.value ? Math.round(+t.value) : null });
+  else if (t.id === "pf-gewicht") await pfZet({ gewicht: t.value ? Math.round(+t.value * 10) / 10 : null });
+  else if (t.id === "pf-richting") { await pfZet({ nd: Object.assign({}, p.nd, { handmatig: t.value || null }) }); await pfSyncAnker(); V.pfOpen = "aanpak"; }
+  else return;
+  V.pfOpen = V.pfOpen || "over";
+  const d = t.closest("details"); if (d) V.pfOpen = d.dataset.pf;
+  teken(); toast("Opgeslagen");
+});
+document.addEventListener("toggle", e => { const d = e.target; if (d && d.classList && d.classList.contains("pf-sectie") && d.open) V.pfOpen = d.dataset.pf; }, true);
+
+/* ---------- 76.7 Ingangen en app-brede aanpassingen ---------- */
+Object.defineProperty(KOPPEN, "profiel", { get: () => ["Profiel", () => "Wie je bent en wat bij je past"], configurable: true, enumerable: true });
+/* De begroeting op de landingspagina krijgt je naam: "Goedemorgen Kas". */
+{
+  const _groet = groet;
+  groet = function () { const n = pfNaam(); return n ? `${_groet()} ${n.split(/\s+/)[0]}` : _groet(); };
+}
+/* Profiel bovenaan de instellingen. */
+{
+  const _inst = vwInstellingen;
+  vwInstellingen = function () {
+    const p = pfProfiel(), rr = PF_RICHTINGEN[pfRichting()], l = pfLeeftijd(p.geboortedatum);
+    return `${sectie("Profiel")}<button class="card pf-instkaart" data-act="ga" data-view="profiel">
+      <span class="pf-avatar klein" aria-hidden="true">${esc((p.naam || "?").slice(0, 1).toUpperCase())}</span>
+      <span class="pf-instt"><b>${esc(p.naam || "Stel je profiel in")}</b><small>${[l != null ? l + " jaar" : "", rr.ico + " " + rr.naam].filter(Boolean).join(" · ")}</small></span>${ico("pijlr", "width:16px;height:16px;color:var(--faint)")}</button>` + _inst();
+  };
+}
+/* Tips bovenaan de plekken waar de aanpak het meest verschil maakt. */
+{
+  // voor: tekst waar de tip vóór moet komen; niet gevonden = bovenaan.
+  const wrap = (naam, plek, voor) => {
+    if (typeof window[naam] !== "function") return;
+    const oud = window[naam];
+    window[naam] = function () { const h = oud.apply(this, arguments); const tip = ndTipKaart(plek); if (!tip) return h;
+      const i = voor ? h.indexOf(voor) : -1;
+      return i >= 0 ? h.slice(0, i) + tip + h.slice(i) : tip + h; };
+  };
+  wrap("vwPersoonlijk", "taken", '<div class="startgrid">');
+  wrap("vwKomend", "planning");
+  wrap("vwSideHustles", "sidehustle");
+  wrap("vwWishlist", "wishlist");
+}
+
+</script>
+<script>
+"use strict";
+// === SECTIE 77: HUISHOUDEN – GEGEVENS, SCHATTING EN PLANNER ===
+/* ==========================================================================
+   Huishouden helpt vooral wie moeilijk begint, snel is afgeleid of tijd
+   slecht inschat. De kern is de planner: gegeven een schoonmaaklijst en de
+   tijd die je hebt, maakt hij behapbare kaartjes met geplande pauzes, in een
+   volgorde die past bij je profielrichting (sectie 76, ndAanpak()).
+
+   Waarom zo (kort; de volledige onderbouwing staat in het functioneel
+   ontwerp, docs/huishouden-functioneel-ontwerp.md):
+   - één kaartje tegelijk en een kleine eerste stap: beginnen (taakinitiatie)
+     is bij ADHD vaak het grootste obstakel;
+   - tijd zichtbaar en een buffer op elke schatting: tijdsperceptie wijkt af
+     (Zheng e.a., 2022) en iedereen onderschat (planning-fallacy, Buehler
+     e.a., 1994);
+   - vaste, geplande pauzes: minder vermoeidheid en afleiding dan zelf
+     gekozen pauzes (Biwer e.a., 2023);
+   - vaste volgorde en een seintje voor een wissel bij autisme-kenmerken:
+     voorspelbaarheid en visuele schema's (reviews over visuele
+     activiteitsschema's);
+   - kleine porties en zwaar werk vroeg bij weinig energie (pacing).
+   - persoonlijke kalibratie: na elke sessie leert de app hoe lang jóuw
+     taken echt duren, zodat de volgende planning beter klopt.
+
+   Opslag (DB_VERSIE 12): hh_lijsten en hh_sessies. Bestaande stores blijven.
+   ========================================================================== */
+
+/* ---------- 77.1 Opslag ---------- */
+WINKELS.hh_lijsten = "id";
+WINKELS.hh_sessies = "id";
+DB_OPTIES.hh_sessies = { keyPath: "id", indexen: [["datum", "datum"]] };
+S.hh_lijsten = S.hh_lijsten || [];
+S.hh_sessies = S.hh_sessies || [];
+
+/* ---------- 77.2 Schatten: hoe lang en hoe zwaar? ----------
+   Eerste schatting op trefwoorden; daarna leert de app van je eigen tijden. */
+const HH_SCHATTING = [
+  [/oven/i, 15], [/koelkast|vriezer/i, 12], [/ramen|raam/i, 12], [/douche|bad\b|badkuip/i, 10], [/bed (verschonen|opmaken)|verschonen/i, 10],
+  [/stofzuig/i, 12], [/dweil/i, 10], [/vouw/i, 10], [/ophang/i, 8], [/afwas|vaat(?!wasser)/i, 10], [/stof/i, 8], [/opruim/i, 8],
+  [/vaatwasser/i, 5], [/kookplaat|fornuis|gasfornuis/i, 5], [/wc|toilet/i, 6], [/veeg|vegen/i, 5], [/aanrecht/i, 4], [/gootsteen|wastafel|kraan/i, 4],
+  [/spiegel/i, 2], [/afval|vuilnis|prullenbak|container/i, 2], [/planten/i, 3], [/handdoek/i, 2], [/was (draaien|aanzetten|in)/i, 3], [/bank|kussens/i, 4]
+];
+const HH_ZWAAR = /stofzuig|dweil|ramen|raam|douche|badkuip|\bbad\b|oven|koelkast|bed verschonen|verschonen|vloer/i;
+const HH_LICHT = /spiegel|afval|vuilnis|prullenbak|planten|handdoek|was draaien|kussens|terugleggen/i;
+function hhSchat(tekst) {
+  const m = String(tekst).match(/(\d+)\s*(min|m\b|minuten)/i);
+  if (m) return Math.max(1, Math.min(120, +m[1]));
+  const k = HH_SCHATTING.find(([r]) => r.test(tekst));
+  return k ? k[1] : 5;
+}
+const hhZwaarte = tekst => HH_ZWAAR.test(tekst) ? 2 : HH_LICHT.test(tekst) ? 0 : 1;
+const hhSleutel = tekst => String(tekst).toLowerCase().replace(/\(.*?\)|\d+\s*(min|m|minuten)\b/g, "").replace(/[^a-zà-ÿ ]/g, " ").replace(/\s+/g, " ").trim();
+
+/* Persoonlijke kalibratie: werkelijke tijd gedeeld door de basisschatting,
+   over je eerdere sessies. Pas vanaf twee metingen, en begrensd. */
+function hhKalibratie(tekst) {
+  const k = hhSleutel(tekst);
+  let echt = 0, basis = 0, n = 0;
+  for (const s of S.hh_sessies) for (const r of s.resultaat || []) {
+    if (r.status !== "gedaan" || !r.sec || r.soort === "pauze" || hhSleutel(r.tekst || "") !== k || !r.basisMin) continue;
+    echt += r.sec / 60; basis += r.basisMin; n++;
+  }
+  if (n < 2 || !basis) return { factor: 1, n };
+  return { factor: Math.max(.5, Math.min(3, echt / basis)), n };
+}
+
+/* ---------- 77.3 Tips per taak ----------
+   Praktisch en kort. De tip bij "inwerken" maakt gebruik van wachttijd:
+   middel laten inwerken terwijl je iets anders doet. */
+const HH_TIPS = [
+  [/wc|toilet/i, "Eerst middel in de pot, laten inwerken, intussen de bril en buitenkant."],
+  [/douche|badkuip|\bbad\b/i, "Spray eerst en laat het inwerken terwijl je iets anders doet."],
+  [/stofzuig/i, "Begin in de verste hoek en werk naar de deur toe."],
+  [/dweil/i, "Werk van achter naar de deur, zodat je niet over nat loopt."],
+  [/stof/i, "Van boven naar beneden: wat valt, zuig je daarna op."],
+  [/afwas|vaat(?!wasser)/i, "Eerst alles verzamelen, dan pas wassen. Glazen eerst, pannen laatst."],
+  [/opruim|terugleggen/i, "Neem een wasmand mee: alles wat hier niet hoort gaat erin."],
+  [/ramen|raam|spiegel/i, "Niet in de volle zon, dan krijg je strepen."],
+  [/bed|verschonen/i, "Hoeslaken eerst, diagonaal de hoeken om."],
+  [/aanrecht/i, "Eerst leegmaken, dan afnemen. Een leeg aanrecht voelt al half klaar."],
+  [/oven/i, "Laat een ovenreiniger inwerken en doe intussen de kookplaat."],
+  [/afval|vuilnis|prullenbak/i, "Neem meteen een nieuwe zak mee naar de prullenbak."],
+  [/was/i, "Zet een wekker voor als de was klaar is, anders blijft hij staan."]
+];
+const HH_PRIKKEL = /wc|toilet|douche|oven|badkuip|\bbad\b|ramen|dweil|kookplaat|middel/i;
+function hhTip(tekst, aanpak, eerste) {
+  const t = (HH_TIPS.find(([r]) => r.test(tekst)) || [])[1] || "";
+  const r = aanpak.richting;
+  if ((r === "autisme" || r === "audhd") && HH_PRIKKEL.test(tekst)) return (t ? t + " " : "") + "Geurvrij middel of handschoenen als het te veel is.";
+  if (eerste && (r === "adhd" || r === "audhd")) return "Alleen deze. Niet aan het geheel denken." + (t ? " " + t : "");
+  if (r === "energie" && hhZwaarte(tekst) === 2) return (t ? t + " " : "") + "Mag zittend of in twee keer.";
+  return t;
+}
+
+/* ---------- 77.4 Startlijsten ----------
+   "Reset in 5 dingen" volgt een bekende aanpak voor wie overweldigd raakt:
+   afval, afwas, was, dingen met een plek, dingen zonder plek. */
+const HH_STARTLIJSTEN = [
+  { sleutel: "reset", naam: "Reset in 5 dingen", emoji: "⚡", ritme: 1, taken: [
+    ["Overal", "Afval weggooien", 3, "moet"], ["Overal", "Afwas verzamelen naar de keuken", 4, "moet"], ["Overal", "Wasgoed naar de wasmand", 3, "normaal"],
+    ["Overal", "Dingen met een vaste plek terugleggen", 6, "normaal"], ["Overal", "Dingen zonder plek in één bak", 3, "bonus"]] },
+  { sleutel: "keuken", naam: "Keuken", emoji: "🍳", ritme: 3, taken: [
+    ["Keuken", "Aanrecht leegmaken", 3, "moet"], ["Keuken", "Vaatwasser uitruimen", 5, "moet"], ["Keuken", "Vaatwasser inruimen", 5, "moet"], ["Keuken", "Aanrecht afnemen", 3, "normaal"],
+    ["Keuken", "Kookplaat schoonmaken", 5, "normaal"], ["Keuken", "Gootsteen schoonmaken", 3, "normaal"], ["Keuken", "Vuilnis wegbrengen", 2, "moet"], ["Keuken", "Vloer vegen", 5, "bonus"]] },
+  { sleutel: "badkamer", naam: "Badkamer", emoji: "🛁", ritme: 7, taken: [
+    ["Badkamer", "Wastafel en kraan", 4, "moet"], ["Badkamer", "Spiegel", 2, "normaal"], ["Badkamer", "Wc schoonmaken", 6, "moet"], ["Badkamer", "Douche schoonmaken", 10, "normaal"],
+    ["Badkamer", "Handdoeken verwisselen", 2, "normaal"], ["Badkamer", "Vloer dweilen", 6, "bonus"]] },
+  { sleutel: "week", naam: "Weekschoonmaak", emoji: "🏠", ritme: 7, taken: [
+    ["Woonkamer", "Opruimen", 8, "moet"], ["Woonkamer", "Stof afnemen", 8, "normaal"], ["Woonkamer", "Stofzuigen", 12, "moet"],
+    ["Slaapkamer", "Bed verschonen", 10, "normaal"], ["Slaapkamer", "Opruimen", 5, "normaal"],
+    ["Keuken", "Aanrecht en kookplaat", 8, "moet"], ["Keuken", "Vuilnis wegbrengen", 2, "moet"],
+    ["Badkamer", "Wc schoonmaken", 6, "moet"], ["Badkamer", "Wastafel en spiegel", 5, "normaal"],
+    ["Hal", "Schoenen en jassen opruimen", 3, "bonus"], ["Overal", "Vloeren dweilen", 15, "bonus"]] }
+];
+function hhVanStart(s) {
+  const nu = new Date().toISOString();
+  return { id: uid(), naam: s.naam, emoji: s.emoji, ritme: s.ritme, bron: { soort: "start", id: s.sleutel }, gemaakt: nu, bijgewerkt: nu, laatstGedaan: null,
+    taken: s.taken.map(([ruimte, tekst, min, prio]) => ({ id: uid(), ruimte, tekst, min, zwaar: hhZwaarte(tekst), prio, uit: false })) };
+}
+
+/* ---------- 77.5 Import uit Checklists ----------
+   Alleen sjablonen waarvan de naam met "Schoonmaken" begint. Kopjes in de
+   checklist (# Keuken of -- Keuken) worden ruimtes. In de tekst mag een
+   duur staan ("Oven (15 min)"), een ! voor moet, of (bonus). */
+const hhIsSchoonmaakSjabloon = c => !!c && c.sjabloon && /^\s*schoonmaken/i.test(c.naam || "");
+const hhSjablonen = () => S.checklists.filter(hhIsSchoonmaakSjabloon);
+const hhLijstNaam = naam => String(naam).replace(/^\s*schoonmaken\s*[-–—:·|]*\s*/i, "").trim() || "Schoonmaken";
+function hhVanChecklist(c, bestaand) {
+  let ruimte = "Overal";
+  const oud = bestaand ? bestaand.taken : [];
+  const taken = [];
+  for (const it of c.items || []) {
+    const tekst0 = String(it.tekst || "").trim();
+    if (!tekst0) continue;
+    if (typeof clSectie === "function" && clSectie(it)) { ruimte = tekst0.replace(/^\s*(#+|--)\s*/, "").trim() || "Overal"; continue; }
+    const prio = /^!/.test(tekst0) ? "moet" : /\(bonus\)|^\?/i.test(tekst0) ? "bonus" : "normaal";
+    const tekst = tekst0.replace(/^[!?]\s*/, "").replace(/\s*\(bonus\)/i, "").replace(/\s*\(?\d+\s*(min|m|minuten)\)?\s*$/i, "").trim();
+    const vorig = oud.find(t => hhSleutel(t.tekst) === hhSleutel(tekst) && t.ruimte === ruimte);
+    taken.push(vorig ? Object.assign({}, vorig, { tekst }) : { id: uid(), ruimte, tekst, min: hhSchat(tekst0), zwaar: hhZwaarte(tekst), prio, uit: false });
+  }
+  const nu = new Date().toISOString();
+  return Object.assign({ id: uid(), emoji: "🧽", ritme: 7, gemaakt: nu, laatstGedaan: null }, bestaand || {},
+    { naam: hhLijstNaam(c.naam), bron: { soort: "checklist", id: c.id }, taken, bijgewerkt: nu });
+}
+async function hhImporteer(checklistId) {
+  const c = vind("checklists", checklistId);
+  if (!hhIsSchoonmaakSjabloon(c)) { toast("Alleen sjablonen die met “Schoonmaken” beginnen"); return null; }
+  const bestaand = S.hh_lijsten.find(l => l.bron && l.bron.soort === "checklist" && l.bron.id === c.id);
+  const l = hhVanChecklist(c, bestaand);
+  await bewaar("hh_lijsten", l);
+  toast(bestaand ? `“${l.naam}” bijgewerkt uit het sjabloon` : `“${l.naam}” staat in Huishouden`);
+  return l;
+}
+
+/* ---------- 77.6 De planner ----------
+   Invoer: lijst, beschikbare minuten, opties { energie 1–5, alleen: [taakIds] }.
+   Uitvoer: { items, werkMin, pauzeMin, totaal, cap, buiten, notities }.
+   Een item is { soort: "taak"|"pauze", tekst, ruimte, min, basisMin, deel, delen, tip, wissel }. */
+function hhMaakPlan(lijst, beschikbaar, opties) {
+  opties = opties || {};
+  const a = ndAanpak(), notities = [];
+  let buffer = a.buffer, cap = Math.max(1, +beschikbaar || 0);
+  if (a.maxSessie && cap > a.maxSessie) { notities.push(`Voor jouw aanpak is ${a.maxSessie} minuten achter elkaar genoeg. De rest schuift door naar een volgende keer.`); cap = a.maxSessie; }
+  const laag = opties.energie != null && opties.energie <= 2;
+  if (laag) { buffer += .1; notities.push("Weinig energie vandaag: zware klussen alleen als ze moeten, en wat meer tijd per klus."); }
+  let taken = (lijst.taken || []).filter(t => !t.uit && (!opties.alleen || opties.alleen.includes(t.id)));
+  if (laag) taken = taken.filter(t => t.zwaar < 2 || t.prio === "moet");
+  // Schatting met kalibratie, daarna de buffer.
+  const schat = t => { const k = hhKalibratie(t.tekst); return { basis: +t.min || hhSchat(t.tekst), factor: k.factor, n: k.n }; };
+  const kosten = w => { const werk = w * buffer; const pauzes = Math.max(0, Math.ceil(werk / a.pauzeElke) - 1); return werk + pauzes * a.pauzeMin; };
+  // Kiezen: eerst "moet", dan "normaal", dan "bonus"; binnen elke groep in lijstvolgorde.
+  const PRIO = { moet: 0, normaal: 1, bonus: 2 };
+  const kandidaten = taken.map((t, i) => Object.assign({ t, i }, schat(t))).sort((x, y) => (PRIO[x.t.prio] ?? 1) - (PRIO[y.t.prio] ?? 1) || x.i - y.i);
+  const gekozen = [], buiten = [];
+  let werk = 0;
+  // Snel succes: reserveer eerst de kortste klus (hooguit 5 min), ook als hij geen "moet" is.
+  // Beginnen is het moeilijkste deel; een klus die meteen af is, geeft vaart.
+  if (a.volgorde === "snelsucces") {
+    const kort = kandidaten.filter(k => k.basis * k.factor <= 5).sort((x, y) => x.basis * x.factor - y.basis * y.factor)[0];
+    if (kort) { const m = Math.max(1, Math.round(kort.basis * kort.factor)); if (kosten(m) <= cap + .01) { gekozen.push(Object.assign(kort, { m })); werk += m; kandidaten.splice(kandidaten.indexOf(kort), 1); } }
+  }
+  for (const k of kandidaten) {
+    const m = Math.max(1, Math.round(k.basis * k.factor));
+    if (kosten(werk + m) <= cap + .01) { gekozen.push(Object.assign(k, { m })); werk += m; } else buiten.push(k.t);
+  }
+  // Past er zelfs niets? Dan de kleinste taak in de tijd die er is: altijd iets om mee te beginnen.
+  if (!gekozen.length && kandidaten.length) {
+    const k = kandidaten.slice().sort((x, y) => x.basis - y.basis)[0];
+    gekozen.push(Object.assign(k, { m: Math.max(1, Math.min(Math.round(k.basis * k.factor), Math.floor(cap / buffer) || 1)) }));
+    buiten.splice(buiten.indexOf(k.t), 1);
+    notities.push("Er past maar één klus in deze tijd. Dat is genoeg om te beginnen.");
+  }
+  // Volgorde volgens de aanpak.
+  const ruimtes = [...new Set(gekozen.sort((x, y) => x.i - y.i).map(k => k.t.ruimte || "Overal"))];
+  const perRuimte = r => gekozen.filter(k => (k.t.ruimte || "Overal") === r).sort((x, y) => x.i - y.i);
+  let volgorde = [];
+  if (a.volgorde === "zwaarEerst") {
+    volgorde = gekozen.slice().sort((x, y) => y.t.zwaar - x.t.zwaar || ruimtes.indexOf(x.t.ruimte || "Overal") - ruimtes.indexOf(y.t.ruimte || "Overal") || x.i - y.i);
+  } else {
+    ruimtes.forEach(r => { let l = perRuimte(r); if (a.variatie) { const z = l.filter(k => k.t.zwaar === 2), rest = l.filter(k => k.t.zwaar !== 2); l = []; while (z.length || rest.length) { if (rest.length) l.push(rest.shift()); if (z.length) l.push(z.shift()); } } volgorde.push(...l); });
+    if (a.volgorde === "snelsucces") {
+      // Snel succes eerst: de kortste lichte klus vooraan, dan kom je in beweging.
+      const kort = volgorde.filter(k => k.m <= 3).sort((x, y) => x.m - y.m)[0] || volgorde.slice().sort((x, y) => x.m - y.m)[0];
+      if (kort) volgorde = [kort].concat(volgorde.filter(k => k !== kort));
+    }
+  }
+  // Opknippen: blokken van hooguit blokMax minuten (inclusief buffer).
+  const items = [];
+  volgorde.forEach(k => {
+    const totaal = Math.max(1, Math.round(k.m * buffer));
+    const delen = Math.max(1, Math.ceil(totaal / a.blokMax));
+    for (let d = 1; d <= delen; d++) {
+      const min = Math.round(totaal / delen) || 1;
+      items.push({ soort: "taak", taakId: k.t.id, tekst: k.t.tekst, ruimte: k.t.ruimte || "Overal", zwaar: k.t.zwaar, min, basisMin: k.basis / delen, deel: d, delen, geleerd: k.n >= 2 && Math.abs(k.factor - 1) > .1 ? k.factor : null });
+    }
+  });
+  // Pauzes invoegen na elke pauzeElke minuten werk, niet aan het eind.
+  const metPauzes = []; let acc = 0;
+  items.forEach((it, i) => {
+    metPauzes.push(it); acc += it.min;
+    if (acc >= a.pauzeElke && i < items.length - 1) { metPauzes.push({ soort: "pauze", tekst: "Pauze", min: a.pauzeMin, tip: hhPauzeTip(a) }); acc = 0; }
+  });
+  // Tips en wisselseintjes.
+  let eerste = true;
+  metPauzes.forEach((it, i) => {
+    if (it.soort !== "taak") return;
+    it.tip = hhTip(it.tekst, a, eerste); eerste = false;
+    const volgende = metPauzes.slice(i + 1).find(x => x.soort === "taak");
+    if (a.wisselSein && volgende && volgende.ruimte !== it.ruimte) it.wissel = volgende.ruimte;
+  });
+  // Afronden per kaartje kan het totaal net over de tijd duwen: haal dan minuten van de langste kaartjes af.
+  const som = () => metPauzes.reduce((s, x) => s + x.min, 0);
+  for (let n = 0; som() > cap && n < 200; n++) { const l = metPauzes.filter(x => x.soort === "taak" && x.min > 1).sort((x, y) => y.min - x.min)[0]; if (!l) break; l.min--; }
+  const werkMin = metPauzes.filter(x => x.soort === "taak").reduce((s, x) => s + x.min, 0), pauzeMin = metPauzes.filter(x => x.soort === "pauze").reduce((s, x) => s + x.min, 0);
+  return { items: metPauzes, werkMin, pauzeMin, totaal: werkMin + pauzeMin, cap, buffer, buiten, notities, richting: a.richting };
+}
+function hhPauzeTip(a) {
+  if (a.richting === "energie" || a.extraEnergie) return "Echt rusten: zitten of liggen, ogen dicht. Niet je telefoon.";
+  if (a.richting === "autisme" || a.richting === "audhd") return "Even prikkelarm: zachter licht, stilte of oordoppen.";
+  if (a.richting === "adhd") return "Water drinken en even bewegen. Blijf in de buurt, de timer loopt.";
+  return "Even zitten, water drinken.";
+}
+
+/* ---------- 77.7 Ritme: wat is aan de beurt? ---------- */
+function hhAanDeBeurt() {
+  const v = vandaagISO();
+  return S.hh_lijsten.filter(l => l.ritme).map(l => {
+    const laatst = l.laatstGedaan ? l.laatstGedaan.slice(0, 10) : null;
+    const dagen = laatst ? dagVerschil(v, laatst) : null;
+    return { l, dagen, te: dagen == null ? 1 : dagen / l.ritme };
+  }).sort((a, b) => b.te - a.te);
+}
+
+/* ---------- 77.8 Cijfers ---------- */
+function hhWeekCijfers() {
+  const ws = weekStart(vandaagISO());
+  const s = S.hh_sessies.filter(x => (x.datum || "") >= ws);
+  const taken = s.reduce((a, x) => a + (x.resultaat || []).filter(r => r.status === "gedaan" && r.soort !== "pauze").length, 0);
+  const min = s.reduce((a, x) => a + Math.round((x.werkSec || 0) / 60), 0);
+  return { sessies: s.length, taken, min };
+}
+/* In Voortgang als automatische bronnen (gebied Thuis en taken) en mijlpalen. */
+if (typeof vgAutoBronnen === "function") {
+  const _vg = vgAutoBronnen;
+  vgAutoBronnen = function () {
+    const uit = _vg();
+    uit.push({ id: "huishouden.minuten", naam: "Minuten schoongemaakt", eenheid: "min", agg: "som", gebied: "thuis", richting: "omhoog", data: () => S.hh_sessies.map(s => ({ d: s.datum, v: Math.round((s.werkSec || 0) / 60) })) });
+    uit.push({ id: "huishouden.taken", naam: "Huishoudklussen gedaan", eenheid: "aantal", agg: "som", gebied: "thuis", richting: "omhoog", data: () => S.hh_sessies.map(s => ({ d: s.datum, v: (s.resultaat || []).filter(r => r.status === "gedaan" && r.soort !== "pauze").length })) });
+    return uit;
+  };
+  if (typeof VG_MP_TEKST === "object") {
+    VG_MP_TEKST["huishouden.taken"] = n => `${nwoGetal(n)} ${n === 1 ? "huishoudklus" : "huishoudklussen"} gedaan`;
+    VG_MP_TEKST["huishouden.minuten"] = n => `${nwoGetal(n / 60)} uur schoongemaakt`;
+  }
+}
+
+</script>
+<script>
+"use strict";
+// === SECTIE 78: HUISHOUDEN – SCHERMEN ===
+/* ==========================================================================
+   Schermen:
+   - huishouden : startpagina met de grote startknop, "aan de beurt", snelle
+                  extra's (dobbelsteen, reset), je lijsten, import en cijfers.
+                  Na een sessie staat hier bovenaan de samenvatting.
+   - hhlijst    : één schoonmaaklijst bewerken (taken, ruimtes, minuten,
+                  zwaarte, prioriteit, ritme).
+   Onderbladen: sessie klaarzetten (lijst, tijd, energie, voorbeeld van het
+   plan), importeren uit Checklists, startlijsten toevoegen.
+   ========================================================================== */
+
+V.hh = V.hh || { samenvatting: null };
+const HH_TIJDEN = [5, 10, 15, 20, 30, 45, 60, 90];
+const HH_PRIO = { moet: ["Moet", "!"], normaal: ["Normaal", ""], bonus: ["Bonus", "+"] };
+
+/* ---------- 78.1 Startpagina ---------- */
+function vwHuishouden() {
+  const cijfers = hhWeekCijfers(), beurt = hhAanDeBeurt().filter(x => x.te >= .8).slice(0, 3), sj = hhSjablonen();
+  const nieuwSj = sj.filter(c => !S.hh_lijsten.some(l => l.bron && l.bron.soort === "checklist" && l.bron.id === c.id));
+  let h = `<div class="werk-kop hh-kop" style="--kk:#0e7490">
+    <svg class="ill" viewBox="0 0 100 80" aria-hidden="true"><use href="#ill-huishouden"/></svg>
+    <div class="ttl">Huishouden</div><div class="sub">Eén klus tegelijk, in de tijd die je hebt</div></div>`;
+  if (typeof ndTipKaart === "function") h += ndTipKaart("huishouden");
+  if (V.hh.samenvatting) h += hhSamenvattingHTML(vind("hh_sessies", V.hh.samenvatting));
+  h += `<button class="hh-start" data-act="hh-klaarzetten">
+    <span class="hh-startico" aria-hidden="true">✦</span><span><b>Start een schoonmaaksessie</b><small>Kies een lijst en hoeveel tijd je hebt</small></span>${ico("pijlr")}</button>
+    <div class="hh-snel">
+      <button class="hh-snelknop" data-act="hh-reset"><span aria-hidden="true">⚡</span><b>Reset in 5 min</b><small>Vijf dingen, snel resultaat</small></button>
+      <button class="hh-snelknop" data-act="hh-dobbel"><span aria-hidden="true">🎲</span><b>Gooi een klus</b><small>Eén klus van max. 5 min</small></button>
+    </div>`;
+  if (beurt.length) h += sectie("Aan de beurt") + `<div class="card hh-beurt">${beurt.map(({ l, dagen }) => `<button class="hh-rij" data-act="hh-klaarzetten" data-id="${l.id}">
+    <span class="hh-emoji" aria-hidden="true">${l.emoji || "🧽"}</span><span class="hh-rijt"><b>${esc(l.naam)}</b><small>${dagen == null ? "Nog nooit gedaan" : dagen === 0 ? "Vandaag gedaan" : `${dagen} ${dagen === 1 ? "dag" : "dagen"} geleden · elke ${l.ritme} ${l.ritme === 1 ? "dag" : "dagen"}`}</small></span>
+    <span class="hh-mini">Start</span></button>`).join("")}</div>`;
+  h += sectie("Mijn lijsten", S.hh_lijsten.length ? String(S.hh_lijsten.length) : "");
+  if (!S.hh_lijsten.length) h += `<div class="card card-pad hh-leeg"><p>Nog geen schoonmaaklijsten. Begin met een startlijst, of importeer een checklist-sjablonen die met <b>Schoonmaken</b> begint.</p></div>`;
+  else h += `<div class="card hh-lijsten">${S.hh_lijsten.slice().sort((a, b) => a.naam.localeCompare(b.naam)).map(l => { const aan = l.taken.filter(t => !t.uit);
+    return `<button class="hh-rij" data-act="ga" data-view="hhlijst" data-param="${l.id}"><span class="hh-emoji" aria-hidden="true">${l.emoji || "🧽"}</span>
+      <span class="hh-rijt"><b>${esc(l.naam)}</b><small>${aan.length} ${aan.length === 1 ? "klus" : "klussen"} · ± ${aan.reduce((s, t) => s + (+t.min || 0), 0)} min${l.bron && l.bron.soort === "checklist" ? " · uit Checklists" : ""}</small></span>${ico("pijlr", "width:16px;height:16px;color:var(--faint)")}</button>`; }).join("")}</div>`;
+  h += `<div class="hh-knoppen">
+    <button class="knop rand" data-act="hh-import">${ico("sjabloon")} Importeer uit Checklists${nieuwSj.length ? ` <span class="hh-bol">${nieuwSj.length}</span>` : ""}</button>
+    <button class="knop rand" data-act="hh-startlijsten">${ico("plus")} Startlijst</button>
+    <button class="knop rand" data-act="hh-nieuwelijst">${ico("pen")} Eigen lijst</button></div>`;
+  h += sectie("Deze week") + `<div class="hh-cijfers">
+    <div class="hh-cijfer"><b>${cijfers.sessies}</b><span>sessies</span></div>
+    <div class="hh-cijfer"><b>${cijfers.taken}</b><span>klussen</span></div>
+    <div class="hh-cijfer"><b>${cijfers.min}</b><span>minuten</span></div></div>`;
+  const geleerd = hhGeleerd();
+  if (geleerd.length) h += sectie("Wat de app over jouw tijd leerde") + `<div class="card hh-geleerd">${geleerd.map(g => `<div class="hh-rij stil"><span class="hh-rijt"><b>${esc(g.tekst)}</b><small>geschat ${g.basis} min · duurt bij jou ± ${g.echt} min</small></span><span class="hh-factor ${g.f > 1 ? "langer" : "korter"}">${g.f > 1 ? "+" : "−"}${Math.round(Math.abs(g.f - 1) * 100)}%</span></div>`).join("")}
+    <p class="hh-uitleg">De planner gebruikt dit vanzelf. Zo klopt je planning elke keer beter.</p></div>`;
+  h += sectie("Extra's") + `<div class="card">
+    <div class="veld" style="padding:12px 14px 4px"><label for="hh-luister">Alleen tijdens schoonmaken luister ik naar…</label>
+      <input class="invoer" id="hh-luister" value="${esc(inst("hhLuister", ""))}" maxlength="80" placeholder="Bv. die ene podcast of dat luisterboek"></div>
+    <p class="hh-uitleg" style="padding:0 14px 8px">Iets leuks dat je alléén tijdens het schoonmaken doet, maakt beginnen makkelijker (temptation bundling).</p>
+    <ul class="schakels" style="padding:0 14px 6px">
+      <li class="schakel"><span class="tekst"><b>Meewerker Tess</b><small>Een rustige aanwezigheid die af en toe laat weten dat ze meedoet (body doubling).</small></span>
+        <button class="toggle" data-act="hh-inst" data-k="hhMeewerker" aria-pressed="${inst("hhMeewerker", true)}" aria-label="Meewerker Tess"></button></li>
+      <li class="schakel"><span class="tekst"><b>Geluid en trillen</b><small>Zacht seintje als de tijd om is. Rust en Prikkelarm zetten dit uit.</small></span>
+        <button class="toggle" data-act="hh-inst" data-k="hhGeluid" aria-pressed="${inst("hhGeluid", true)}" aria-label="Geluid en trillen"></button></li></ul></div>`;
+  return `<div class="hh">${h}</div>`;
+}
+function hhGeleerd() {
+  const gezien = new Map();
+  for (const s of S.hh_sessies) for (const r of s.resultaat || []) if (r.status === "gedaan" && r.soort !== "pauze" && r.tekst && !gezien.has(hhSleutel(r.tekst))) gezien.set(hhSleutel(r.tekst), r);
+  return [...gezien.values()].map(r => { const k = hhKalibratie(r.tekst); const basis = Math.round(r.basisMin * (r.delen || 1)) || 1; return { tekst: r.tekst, f: k.factor, n: k.n, basis, echt: Math.max(1, Math.round(basis * k.factor)) }; })
+    .filter(g => g.n >= 2 && Math.abs(g.f - 1) >= .15).sort((a, b) => Math.abs(b.f - 1) - Math.abs(a.f - 1)).slice(0, 4);
+}
+
+/* ---------- 78.2 Samenvatting na een sessie ---------- */
+function hhSamenvattingHTML(s) {
+  if (!s) return "";
+  const r = (s.resultaat || []).filter(x => x.soort !== "pauze"), gedaan = r.filter(x => x.status === "gedaan"), over = r.filter(x => x.status !== "gedaan");
+  const echtMin = Math.round((s.werkSec || 0) / 60), gepland = s.werkMin || 0;
+  const verschil = gepland ? Math.round((echtMin - gepland) / gepland * 100) : 0;
+  const zin = s.afgebroken ? "Gestopt is ook gedaan. Wat af is, is af." : gedaan.length === r.length ? "Alles gedaan. Kijk even rond: dat heb jij gedaan." : "Mooi werk. Wat bleef staan, schuift door.";
+  return `<section class="hh-samen" aria-live="polite">
+    <div class="hh-samenkop"><span aria-hidden="true">✦</span><div><b>${s.afgebroken ? "Sessie gestopt" : "Sessie klaar"}</b><small>${esc(s.lijstNaam || "")} · ${esc(datumLabel(s.datum))}</small></div>
+      <button class="hh-sluitx" data-act="hh-samen-weg" aria-label="Samenvatting sluiten">${ico("x")}</button></div>
+    <p class="hh-zin">${esc(zin)}</p>
+    <div class="hh-cijfers">
+      <div class="hh-cijfer"><b>${gedaan.length}/${r.length}</b><span>klussen</span></div>
+      <div class="hh-cijfer"><b>${echtMin}</b><span>min gewerkt</span></div>
+      <div class="hh-cijfer"><b>${gepland ? (verschil > 0 ? "+" : "") + verschil + "%" : "–"}</b><span>t.o.v. gepland</span></div></div>
+    <details class="hh-details"><summary>Per klus</summary><ul>${r.map(x => `<li><span>${x.status === "gedaan" ? "✓" : "·"} ${esc(x.tekst)}${x.delen > 1 ? ` (${x.deel}/${x.delen})` : ""}</span><small>${x.status === "gedaan" ? `${Math.max(1, Math.round((x.sec || 0) / 60))} van ${x.min} min` : x.status === "overgeslagen" ? "overgeslagen" : "niet aan toegekomen"}</small></li>`).join("")}</ul></details>
+    ${over.length ? `<p class="hh-uitleg">${over.length} ${over.length === 1 ? "klus blijft" : "klussen blijven"} staan voor een volgende keer.</p>` : ""}
+    ${gepland && Math.abs(verschil) >= 15 && !s.afgebroken ? `<p class="hh-uitleg">De app past de tijden hierop aan: de volgende planning klopt beter.</p>` : ""}
+  </section>`;
+}
+
+/* ---------- 78.3 Eén lijst bewerken ---------- */
+function vwHhLijst() {
+  const l = vind("hh_lijsten", V.param);
+  if (!l) return `<div class="card card-pad">Deze lijst bestaat niet meer.</div>`;
+  const ruimtes = [...new Set(l.taken.map(t => t.ruimte || "Overal"))];
+  let h = `<div class="card card-pad hh-lijstkop">
+    <div class="hh-twee"><div class="veld"><label for="hh-l-naam">Naam</label><input class="invoer" id="hh-l-naam" data-hhl="naam" value="${esc(l.naam)}" maxlength="40"></div>
+      <div class="veld"><label for="hh-l-emoji">Icoon</label><input class="invoer" id="hh-l-emoji" data-hhl="emoji" value="${esc(l.emoji || "")}" maxlength="4"></div></div>
+    <div class="veld"><label for="hh-l-ritme">Hoe vaak?</label><select class="invoer" id="hh-l-ritme" data-hhl="ritme">${[[0, "Geen vast ritme"], [1, "Elke dag"], [2, "Om de dag"], [3, "Elke 3 dagen"], [7, "Elke week"], [14, "Elke 2 weken"], [30, "Elke maand"]].map(([w, n]) => `<option value="${w}"${(+l.ritme || 0) === w ? " selected" : ""}>${n}</option>`).join("")}</select></div>
+    ${l.bron && l.bron.soort === "checklist" ? `<p class="hh-uitleg">Geïmporteerd uit het sjabloon “${esc((vind("checklists", l.bron.id) || {}).naam || "verwijderd")}”. <button class="hh-link" data-act="hh-herimport" data-id="${l.id}">Opnieuw inlezen</button></p>` : ""}
+    <button class="knop breed primair" data-act="hh-klaarzetten" data-id="${l.id}">✦ Start sessie met deze lijst</button></div>`;
+  ruimtes.forEach(r => {
+    h += sectie(r) + `<div class="card hh-taken">${l.taken.filter(t => (t.ruimte || "Overal") === r).map(t => `<div class="hh-taak${t.uit ? " uit" : ""}">
+      <button class="hh-mee" data-act="hh-taak" data-w="uit" data-id="${t.id}" aria-pressed="${!t.uit}" aria-label="${esc(t.tekst)} ${t.uit ? "doet niet mee" : "doet mee"}">${t.uit ? "" : "✓"}</button>
+      <span class="hh-taakt"><b>${esc(t.tekst)}</b><small>${["licht", "gemiddeld", "zwaar"][t.zwaar ?? 1]}</small></span>
+      <button class="hh-prio p-${t.prio || "normaal"}" data-act="hh-taak" data-w="prio" data-id="${t.id}" aria-label="Prioriteit: ${HH_PRIO[t.prio || "normaal"][0]}, tik om te wisselen">${HH_PRIO[t.prio || "normaal"][0]}</button>
+      <span class="hh-min"><button data-act="hh-taak" data-w="min-" data-id="${t.id}" aria-label="Minuut minder">−</button><b>${t.min}′</b><button data-act="hh-taak" data-w="min+" data-id="${t.id}" aria-label="Minuut meer">+</button></span>
+      <button class="hh-weg" data-act="hh-taak" data-w="weg" data-id="${t.id}" aria-label="${esc(t.tekst)} verwijderen">${ico("x")}</button></div>`).join("")}</div>`;
+  });
+  h += `<div class="card card-pad hh-nieuw"><div class="veld"><label for="hh-t-tekst">Klus toevoegen</label><input class="invoer" id="hh-t-tekst" placeholder="Bv. Plinten afnemen (10 min)" enterkeyhint="done"></div>
+    <div class="hh-twee"><div class="veld"><label for="hh-t-ruimte">Ruimte</label><input class="invoer" id="hh-t-ruimte" list="hh-ruimtes" value="${esc(ruimtes[ruimtes.length - 1] || "Overal")}"><datalist id="hh-ruimtes">${[...new Set(ruimtes.concat(["Keuken", "Badkamer", "Woonkamer", "Slaapkamer", "Hal", "Overal"]))].map(r => `<option value="${esc(r)}">`).join("")}</datalist></div>
+    <button class="knop primair" data-act="hh-taak-plus" data-id="${l.id}" style="align-self:end">${ico("plus")} Toevoegen</button></div></div>
+    <button class="knop breed rand gevaar" data-act="hh-lijst-weg" data-id="${l.id}" style="margin-top:14px">${ico("prullenbak")} Lijst verwijderen</button>`;
+  return `<div class="hh">${h}</div>`;
+}
+
+/* ---------- 78.4 Sessie klaarzetten ---------- */
+function hhKlaarzetten(lijstId, gekozenMin, energie) {
+  if (!S.hh_lijsten.length) { toast("Voeg eerst een lijst toe"); hhStartlijstenBlad(); return; }
+  const lijst = vind("hh_lijsten", lijstId) || hhAanDeBeurt()[0]?.l || S.hh_lijsten[0];
+  const a = ndAanpak(), min = gekozenMin || inst("hhLaatsteMin", 30);
+  const plan = hhMaakPlan(lijst, min, { energie });
+  const inhoud = `
+    <div class="veld"><label for="hh-k-lijst">Lijst</label><select class="invoer" id="hh-k-lijst">${S.hh_lijsten.map(l => `<option value="${l.id}"${l.id === lijst.id ? " selected" : ""}>${esc((l.emoji || "") + " " + l.naam)}</option>`).join("")}</select></div>
+    <div class="veld"><span class="labeltekst">Hoeveel tijd heb je?</span><div class="keuzerij hh-tijden">${HH_TIJDEN.map(m => `<button class="keuze" data-hhmin="${m}" aria-pressed="${m === min}">${m} min</button>`).join("")}</div></div>
+    <div class="veld"><span class="labeltekst">Energie nu (mag leeg)</span><div class="keuzerij hh-energie">${[1, 2, 3, 4, 5].map(n => `<button class="keuze" data-hhe="${n}" aria-pressed="${energie === n}" aria-label="Energie ${n} van 5">${["🪫", "😮‍💨", "🙂", "💪", "⚡"][n - 1]}</button>`).join("")}</div></div>
+    <div class="hh-plan">
+      <div class="hh-plankop"><b>Jouw plan</b><small>${plan.items.filter(x => x.soort === "taak").length} kaartjes · ${plan.werkMin} min werk${plan.pauzeMin ? ` · ${plan.pauzeMin} min pauze` : ""} · buffer +${Math.round((plan.buffer - 1) * 100)}%</small></div>
+      ${plan.notities.map(n => `<p class="hh-noot">${esc(n)}</p>`).join("")}
+      <ol class="hh-planlijst">${plan.items.map(it => it.soort === "pauze" ? `<li class="pauze"><span>☕ Pauze</span><b>${it.min}′</b></li>`
+        : `<li><span>${esc(it.tekst)}${it.delen > 1 ? ` <small>${it.deel}/${it.delen}</small>` : ""}<small class="hh-r">${esc(it.ruimte)}</small></span><b>${it.min}′</b></li>`).join("")}</ol>
+      ${plan.buiten.length ? `<p class="hh-uitleg">Past nu niet: ${plan.buiten.slice(0, 4).map(t => esc(t.tekst)).join(", ")}${plan.buiten.length > 4 ? ` en nog ${plan.buiten.length - 4}` : ""}. Dat schuift door.</p>` : ""}
+      <p class="hh-uitleg">Ingedeeld voor: ${esc((PF_RICHTINGEN[a.richting] || PF_RICHTINGEN.geen).kort.toLowerCase())} · blokken van max. ${a.blokMax} min · pauze na ${a.pauzeElke} min.</p>
+    </div>`;
+  bladOpen("Schoonmaaksessie", inhoud, `<button class="knop breed primair" id="hh-k-start"${plan.items.length ? "" : " disabled"}>✦ Start</button>`);
+  const bi = $("#bladinhoud");
+  bi.addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    if (b.dataset.hhmin) { zetInst("hhLaatsteMin", +b.dataset.hhmin); hhKlaarzetten($("#hh-k-lijst").value, +b.dataset.hhmin, energie); }
+    else if (b.dataset.hhe) hhKlaarzetten($("#hh-k-lijst").value, min, energie === +b.dataset.hhe ? null : +b.dataset.hhe);
+  });
+  bi.addEventListener("change", e => { if (e.target.id === "hh-k-lijst") hhKlaarzetten(e.target.value, min, energie); });
+  $("#hh-k-start").onclick = () => { bladSluit(); hhSessieStart(lijst, plan, { beschikbaar: min, energie }); };
+}
+/* Snelle varianten: reset in 5 minuten en de dobbelsteen. */
+async function hhReset() {
+  let l = S.hh_lijsten.find(x => x.bron && x.bron.soort === "start" && x.bron.id === "reset");
+  if (!l) { l = hhVanStart(HH_STARTLIJSTEN[0]); await bewaar("hh_lijsten", l); }
+  hhKlaarzetten(l.id, 5);
+}
+function hhDobbel() {
+  const alle = S.hh_lijsten.flatMap(l => l.taken.filter(t => !t.uit && (+t.min || 5) <= 5).map(t => ({ l, t })));
+  if (!alle.length) { toast("Geen klussen van 5 minuten of minder. Voeg er een toe, of neem een startlijst."); return; }
+  const { l, t } = alle[Math.floor(Math.random() * alle.length)];
+  if (typeof tril === "function") tril(12);
+  const plan = hhMaakPlan({ taken: [t] }, Math.max(5, Math.ceil(t.min * ndAanpak().buffer)), {});
+  bladOpen("De dobbelsteen zegt…", `<div class="hh-dobbel"><span class="hh-dobbelsteen" aria-hidden="true">🎲</span><b>${esc(t.tekst)}</b><small>${esc(t.ruimte || "Overal")} · ${plan.totaal} min · uit ${esc(l.naam)}</small>
+    <p class="hh-uitleg">Keuzestress weg: de dobbelsteen kiest, jij hoeft alleen te beginnen.</p></div>`,
+    `<div class="knoprij"><button class="knop rand" id="hh-d-nog">Nog een keer</button><button class="knop primair" id="hh-d-start">✦ Start</button></div>`);
+  $("#hh-d-nog").onclick = hhDobbel;
+  $("#hh-d-start").onclick = () => { bladSluit(); hhSessieStart(l, plan, { beschikbaar: plan.totaal, dobbel: true }); };
+}
+
+/* ---------- 78.5 Import en startlijsten ---------- */
+function hhImportBlad() {
+  const sj = hhSjablonen();
+  const inhoud = sj.length ? `<p class="hh-uitleg" style="margin-top:0">Alleen checklist-sjablonen waarvan de naam met <b>Schoonmaken</b> begint. Kopjes (# Keuken) worden ruimtes; “(10 min)” wordt de duur; ! betekent moet.</p>
+    <div class="hh-importlijst">${sj.map(c => { const al = S.hh_lijsten.find(l => l.bron && l.bron.soort === "checklist" && l.bron.id === c.id); const n = (c.items || []).filter(i => !(typeof clSectie === "function" && clSectie(i))).length;
+      return `<button class="hh-rij" data-hhimp="${c.id}"><span class="hh-emoji" aria-hidden="true">🧽</span><span class="hh-rijt"><b>${esc(c.naam)}</b><small>${n} ${n === 1 ? "klus" : "klussen"}${al ? " · staat er al, opnieuw inlezen" : ""}</small></span><span class="hh-mini">${al ? "Bijwerken" : "Importeer"}</span></button>`; }).join("")}</div>`
+    : `<p>Er is nog geen checklist-sjabloon dat met <b>Schoonmaken</b> begint.</p><p class="hh-uitleg">Maak er een in Checklists, bijvoorbeeld “Schoonmaken – Keuken”, met kopjes per ruimte. Of maak hier een voorbeeld aan dat je daarna kunt aanpassen.</p>`;
+  bladOpen("Importeer uit Checklists", inhoud, sj.length ? "" : `<button class="knop breed primair" id="hh-i-voorbeeld">${ico("sjabloon")} Voorbeeld “Schoonmaken – Keuken” aanmaken</button>`);
+  $("#bladinhoud").addEventListener("click", async e => { const b = e.target.closest("[data-hhimp]"); if (!b) return; const l = await hhImporteer(b.dataset.hhimp); if (l) { bladSluit(); ga("hhlijst", l.id); } });
+  const vb = $("#hh-i-voorbeeld");
+  if (vb) vb.onclick = async () => {
+    const s = HH_STARTLIJSTEN[1];
+    const c = { id: uid(), naam: "Schoonmaken – Keuken", sjabloon: true, gemaakt: new Date().toISOString(), items: [{ tekst: "# Keuken", af: false }].concat(s.taken.map(([, t, m, p]) => ({ tekst: `${p === "moet" ? "! " : ""}${t} (${m} min)${p === "bonus" ? " (bonus)" : ""}`, af: false }))) };
+    await bewaar("checklists", c); toast("Sjabloon staat in Checklists"); hhImportBlad();
+  };
+}
+function hhStartlijstenBlad() {
+  bladOpen("Startlijsten", `<p class="hh-uitleg" style="margin-top:0">Een begin dat je daarna helemaal kunt aanpassen.</p>
+    <div class="hh-importlijst">${HH_STARTLIJSTEN.map((s, i) => { const al = S.hh_lijsten.some(l => l.bron && l.bron.soort === "start" && l.bron.id === s.sleutel);
+      return `<button class="hh-rij" data-hhstart="${i}"${al ? ' aria-disabled="true"' : ""}><span class="hh-emoji" aria-hidden="true">${s.emoji}</span><span class="hh-rijt"><b>${esc(s.naam)}</b><small>${s.taken.length} klussen · ± ${s.taken.reduce((a, t) => a + t[2], 0)} min${al ? " · heb je al" : ""}</small></span><span class="hh-mini">${al ? "✓" : "Toevoegen"}</span></button>`; }).join("")}</div>`);
+  $("#bladinhoud").addEventListener("click", async e => {
+    const b = e.target.closest("[data-hhstart]"); if (!b || b.getAttribute("aria-disabled") === "true") return;
+    const l = hhVanStart(HH_STARTLIJSTEN[+b.dataset.hhstart]); await bewaar("hh_lijsten", l); bladSluit(); toast(`“${l.naam}” toegevoegd`); teken();
+  });
+}
+
+/* ---------- 78.6 Tikken ---------- */
+async function hhTaakWijzig(l, id, w) {
+  const x = JSON.parse(JSON.stringify(l)), t = x.taken.find(t => t.id === id); if (!t) return;
+  if (w === "uit") t.uit = !t.uit;
+  else if (w === "prio") t.prio = { moet: "normaal", normaal: "bonus", bonus: "moet" }[t.prio || "normaal"];
+  else if (w === "min-") t.min = Math.max(1, (+t.min || 1) - 1);
+  else if (w === "min+") t.min = Math.min(120, (+t.min || 0) + 1);
+  else if (w === "weg") x.taken = x.taken.filter(y => y.id !== id);
+  x.bijgewerkt = new Date().toISOString();
+  await bewaar("hh_lijsten", x); teken();
+}
+document.addEventListener("click", async e => {
+  const el = e.target.closest && e.target.closest("[data-act^='hh-']");
+  if (!el || el.closest("#hh-sessie")) return;
+  const a = el.dataset.act, id = el.dataset.id;
+  switch (a) {
+    case "hh-klaarzetten": hhKlaarzetten(id || null); break;
+    case "hh-reset": hhReset(); break;
+    case "hh-dobbel": hhDobbel(); break;
+    case "hh-import": hhImportBlad(); break;
+    case "hh-startlijsten": hhStartlijstenBlad(); break;
+    case "hh-nieuwelijst": bladVraag("Nieuwe schoonmaaklijst", "", "Bv. Zaterdagochtend", async naam => { if (!naam) return; const l = { id: uid(), naam, emoji: "🧽", ritme: 7, bron: { soort: "eigen" }, taken: [], gemaakt: new Date().toISOString() }; await bewaar("hh_lijsten", l); ga("hhlijst", l.id); }); break;
+    case "hh-samen-weg": V.hh.samenvatting = null; teken(); break;
+    case "hh-inst": await zetInst(el.dataset.k, !inst(el.dataset.k, true)); teken(); break;
+    case "hh-taak": { const l = vind("hh_lijsten", V.param); if (l) await hhTaakWijzig(l, id, el.dataset.w); break; }
+    case "hh-taak-plus": {
+      const l = vind("hh_lijsten", id), tekst0 = ($("#hh-t-tekst").value || "").trim(); if (!l || !tekst0) { toast("Typ eerst een klus"); break; }
+      const tekst = tekst0.replace(/\s*\(?\d+\s*(min|m|minuten)\)?\s*$/i, "").trim() || tekst0;
+      const x = JSON.parse(JSON.stringify(l)); x.taken.push({ id: uid(), ruimte: ($("#hh-t-ruimte").value || "Overal").trim(), tekst, min: hhSchat(tekst0), zwaar: hhZwaarte(tekst), prio: "normaal", uit: false });
+      await bewaar("hh_lijsten", x); teken(); setTimeout(() => { const v = $("#hh-t-tekst"); if (v) v.focus(); }, 60); break;
+    }
+    case "hh-lijst-weg": { const l = vind("hh_lijsten", id); if (!l) break;
+      bevestig("Lijst verwijderen?", `“${esc(l.naam)}” verdwijnt uit Huishouden. Een checklist-sjabloon blijft gewoon in Checklists staan.`, "Verwijderen", async () => { await verwijder("hh_lijsten", id); terug(); toast("Lijst verwijderd"); }); break; }
+    case "hh-herimport": { const l = vind("hh_lijsten", id); if (l && l.bron) await hhImporteer(l.bron.id); teken(); break; }
+    case "hh-naar-huishouden": { const l = await hhImporteer(id); if (l) ga("hhlijst", l.id); break; }
+  }
+});
+document.addEventListener("change", async e => {
+  const t = e.target;
+  if (t && t.id === "hh-luister") { await zetInst("hhLuister", t.value.trim()); toast("Opgeslagen"); return; }
+  if (!t || !t.dataset || !t.dataset.hhl || V.view !== "hhlijst") return;
+  const l = vind("hh_lijsten", V.param); if (!l) return;
+  const x = Object.assign({}, l, { [t.dataset.hhl]: t.dataset.hhl === "ritme" ? +t.value : t.value.trim() || l[t.dataset.hhl] });
+  await bewaar("hh_lijsten", x); teken();
+});
+document.addEventListener("keydown", e => { if (e.key === "Enter" && e.target && e.target.id === "hh-t-tekst") { const b = document.querySelector('[data-act="hh-taak-plus"]'); if (b) b.click(); } });
+
+/* ---------- 78.7 Ingangen ---------- */
+Object.defineProperty(KOPPEN, "huishouden", { get: () => ["Huishouden", () => { const c = hhWeekCijfers(); return c.sessies ? `Deze week ${c.taken} klussen in ${c.min} min` : "Eén klus tegelijk"; }], configurable: true, enumerable: true });
+Object.defineProperty(KOPPEN, "hhlijst", { get: () => { const l = vind("hh_lijsten", V.param); return [l ? l.naam : "Schoonmaaklijst", () => l ? `${l.taken.filter(t => !t.uit).length} klussen` : ""]; }, configurable: true, enumerable: true });
+/* Tegel in Persoonlijk, direct voor Notitie en Focussessie. */
+{
+  const _p = vwPersoonlijk;
+  vwPersoonlijk = function () {
+    const h = _p.apply(this, arguments);
+    const c = hhWeekCijfers(), beurt = hhAanDeBeurt().filter(x => x.te >= 1).length;
+    const tegel = catKnop({ view: "huishouden", ill: "huishouden", naam: "Huishouden", uitleg: c.sessies ? `Deze week ${c.taken} klussen` : "Eén klus tegelijk", kleur: "#0e7490", telling: beurt || "" });
+    const i = h.indexOf('<button class="startstrip"'), j = i < 0 ? -1 : h.lastIndexOf("</div>", i);
+    return j < 0 ? h + tegel : h.slice(0, j) + tegel + h.slice(j);
+  };
+  const _m = vwMeer;
+  vwMeer = function () {
+    const h = _m.apply(this, arguments);
+    const kaart = `<button class="menu-kaart" data-act="ga" data-view="huishouden">${ico("bezem")}<span class="nm">Huishouden</span><span class="ds">Schoonmaken in behapbare stukjes</span></button>`;
+    const i = h.indexOf('data-view="gezondheid"'), j = i < 0 ? -1 : h.indexOf("</button>", i);
+    return j < 0 ? h : h.slice(0, j + 9) + kaart + h.slice(j + 9);
+  };
+}
+/* In een checklist-sjabloon dat met "Schoonmaken" begint: knop naar Huishouden. */
+RT_NA.push(() => {
+  if (V.view !== "checklist") return;
+  const c = vind("checklists", V.param);
+  if (!hhIsSchoonmaakSjabloon(c) || document.querySelector(".hh-clknop")) return;
+  const plek = $("#scherm"); if (!plek) return;
+  const al = S.hh_lijsten.some(l => l.bron && l.bron.soort === "checklist" && l.bron.id === c.id);
+  plek.insertAdjacentHTML("afterbegin", `<button class="card hh-clknop" data-act="hh-naar-huishouden" data-id="${c.id}"><span aria-hidden="true">🧽</span><span><b>${al ? "Bijwerken in Huishouden" : "Gebruik in Huishouden"}</b><small>Omzetten naar een schoonmaaklijst met tijden en ruimtes</small></span>${ico("pijlr", "width:16px;height:16px")}</button>`);
+});
+if (typeof TL_SOORTEN === "object") TL_SOORTEN.huishouden = ["Huishouden", "#0e7490"];
+if (typeof LOGFILTERS !== "undefined" && Array.isArray(LOGFILTERS)) LOGFILTERS.push(["huishouden", "Huishouden"]);
+
+</script>
+<script>
+"use strict";
+// === SECTIE 79: HUISHOUDEN – DE SESSIE (TESSERACT EN KAARTJES) ===
+/* ==========================================================================
+   Een schoonmaaksessie is een eigen, donkere ruimte: geen menu's, geen
+   meldingen, alleen de klus van nu. In het midden draait een tesseract
+   (een vierdimensionale kubus, geprojecteerd naar 2D) die langzaam pulseert.
+   Eronder één zwart kaartje met een dikke, geborduurde witte rand:
+   de klus, de tijd en zo nodig een tip.
+
+   - Start zet de timer aan. Klaar (of naar rechts vegen) legt het kaartje
+     op de stapel Gedaan; Sla over (of naar links vegen) legt het opzij.
+   - Elk gedaan kaartje maakt de tesseract feller; bij het laatste ontploft
+     hij en ga je terug naar Huishouden met een samenvatting.
+   - Pauzes zijn eigen kaartjes. Bij een wissel van ruimte komt een minuut
+     van tevoren een seintje (als je aanpak daarom vraagt).
+   - Zonder animatie (Rust, of het toestel vraagt minder beweging) staat de
+     tesseract stil en is er geen explosie; alles werkt ook met alleen
+     knoppen, toetsen of een schermlezer.
+   ========================================================================== */
+
+const HHS = { a: null, raf: 0 };
+const hhsRustig = () => inst("rust", false) || (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
+const hhsMagGeluid = () => inst("hhGeluid", true) && !inst("rust", false) && !(typeof mfInst === "function" && mfInst().prikkelarm);
+const hhsTijd = s => { s = Math.max(0, Math.round(s)); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; };
+const HHS_TESS = [
+  "Ik ben er nog. Jij ook?", "Rustig tempo is ook een tempo.", "Eén ding tegelijk. Dit ding.",
+  "Even ademhalen mag.", "Je bent al begonnen. Dat was het moeilijkste.", "Ik werk gewoon met je mee."
+];
+
+/* ---------- 79.1 Starten ---------- */
+function hhSessieStart(lijst, plan, opties) {
+  if (!plan || !plan.items.length) { toast("Er staat niets in het plan"); return; }
+  const items = plan.items.map(x => Object.assign({}, x));
+  HHS.a = { lijst, plan, items, i: 0, opties: opties || {}, resultaat: [], afgehandeld: new Set(), gestart: new Date().toISOString(), t0: Date.now(),
+    loopt: false, sec: 0, laatsteTik: 0, gedaan: 0, taken: items.filter(x => x.soort === "taak").length, seinGegeven: false, tijdOm: false,
+    helder: 0, doelHelder: 0, klaar: false, stopVraag: 0, tessTel: 0 };
+  document.getElementById("hh-sessie")?.remove();
+  const el = document.createElement("div");
+  el.id = "hh-sessie";
+  el.setAttribute("role", "dialog"); el.setAttribute("aria-modal", "true"); el.setAttribute("aria-label", "Schoonmaaksessie");
+  el.innerHTML = `
+    <div class="hhs-kop"><span class="hhs-lijst">${esc((lijst.emoji || "") + " " + (lijst.naam || "Schoonmaken"))}</span>
+      <button class="hhs-stop" data-hhs="stop" aria-label="Sessie stoppen">Stop</button></div>
+    <div class="hhs-tesswrap" aria-hidden="true"><canvas class="hhs-tess"></canvas><div class="hhs-flits"></div></div>
+    <p class="hhs-tessregel" aria-hidden="true">${inst("hhMeewerker", true) ? "Tess werkt met je mee" : ""}</p>
+    <div class="hhs-stapel"><div class="hhs-kaart" tabindex="-1"></div></div>
+    <div class="hhs-onder"><span class="hhs-tegaan"></span><span class="hhs-gedaan" aria-hidden="true"><i></i><i></i><i></i><b>0</b></span></div>
+    <div class="hhs-aria" id="hhs-aria" aria-live="assertive"></div>`;
+  document.body.appendChild(el);
+  document.documentElement.classList.add("hhs-open");
+  hhsSchermAan();
+  hhsCanvas();
+  hhsToonKaart(true);
+  cancelAnimationFrame(HHS.raf);
+  let vorig = performance.now();
+  const lus = nu => { const dt = Math.min(.05, (nu - vorig) / 1000); vorig = nu; hhsTik(dt); HHS.raf = requestAnimationFrame(lus); };
+  HHS.raf = requestAnimationFrame(lus);
+  requestAnimationFrame(() => el.classList.add("zicht"));
+}
+function hhsMeld(t) { const a = document.getElementById("hhs-aria"); if (a) { a.textContent = ""; setTimeout(() => { a.textContent = t; }, 30); } }
+async function hhsSchermAan() { try { if (navigator.wakeLock) HHS.lock = await navigator.wakeLock.request("screen"); } catch (e) { HHS.lock = null; } }
+function hhsSchermVrij() { try { HHS.lock && HHS.lock.release(); } catch (e) {} HHS.lock = null; }
+
+/* ---------- 79.2 Het kaartje ---------- */
+function hhsToonKaart(eerste) {
+  const A = HHS.a, it = A.items[A.i], k = document.querySelector("#hh-sessie .hhs-kaart");
+  if (!it || !k) return;
+  A.loopt = false; A.sec = 0; A.seinGegeven = false; A.tijdOm = false;
+  const nr = A.items.slice(0, A.i + 1).filter(x => x.soort === "taak").length;
+  const luister = eerste && inst("hhLuister", "") ? `<p class="hhs-luister">🎧 Zet nu aan: <b>${esc(inst("hhLuister", ""))}</b></p>` : "";
+  k.className = "hhs-kaart" + (it.soort === "pauze" ? " pauze" : "");
+  k.style.transform = ""; k.style.opacity = "";
+  k.innerHTML = it.soort === "pauze"
+    ? `<div class="hhs-kaartkop"><span>Pauze</span><span>${it.min} min</span></div>
+       <h2 class="hhs-titel">☕ Even niks</h2>
+       <p class="hhs-tip">${esc(it.tip || "Even zitten, water drinken.")}</p>
+       <div class="hhs-klok" aria-hidden="true">${hhsTijd(it.min * 60)}</div><div class="hhs-balk"><i></i></div>
+       <div class="hhs-knoppen"><button class="hhs-knop hoofd" data-hhs="start">Start pauze</button><button class="hhs-knop" data-hhs="klaar">Overslaan</button></div>`
+    : `<div class="hhs-kaartkop"><span>Klus ${nr} van ${A.taken}</span><span class="hhs-ruimte">${esc(it.ruimte || "")}</span></div>
+       ${luister}
+       <h2 class="hhs-titel">${esc(it.tekst)}${it.delen > 1 ? ` <small>deel ${it.deel} van ${it.delen}</small>` : ""}</h2>
+       <p class="hhs-duur"><b>${it.min}</b> min${it.geleerd ? ` <small>· aangepast op jouw tempo</small>` : ""}</p>
+       ${it.tip ? `<p class="hhs-tip">${esc(it.tip)}</p>` : ""}
+       <div class="hhs-sein" hidden></div>
+       <div class="hhs-klok" aria-hidden="true" hidden>${hhsTijd(it.min * 60)}</div><div class="hhs-balk" hidden><i></i></div>
+       <div class="hhs-knoppen"><button class="hhs-knop hoofd" data-hhs="start">Start</button><button class="hhs-knop" data-hhs="over">Sla over</button></div>
+       <p class="hhs-veeg" aria-hidden="true">Klaar? Veeg naar rechts →</p>`;
+  hhsTeller();
+  hhsMeld(it.soort === "pauze" ? `Pauze, ${it.min} minuten.` : `Klus ${nr} van ${A.taken}: ${it.tekst}, ${it.min} minuten.${it.tip ? " Tip: " + it.tip : ""}`);
+  setTimeout(() => { const b = k.querySelector('[data-hhs="start"]'); if (b) b.focus({ preventScroll: true }); }, 60);
+}
+function hhsTeller() {
+  const A = HHS.a, el = document.querySelector("#hh-sessie .hhs-tegaan"), g = document.querySelector("#hh-sessie .hhs-gedaan b");
+  const rest = A.items.slice(A.i).filter(x => x.soort === "taak").length;
+  if (el) el.textContent = rest ? `Nog ${rest} ${rest === 1 ? "klus" : "klussen"}` : "Laatste stap";
+  if (g) g.textContent = A.gedaan;
+  const stapel = document.querySelector("#hh-sessie .hhs-gedaan");
+  if (stapel) stapel.dataset.n = Math.min(3, A.gedaan);
+}
+function hhsStart() {
+  const A = HHS.a, it = A.items[A.i], k = document.querySelector("#hh-sessie .hhs-kaart");
+  if (!it || A.loopt) return;
+  A.loopt = true; A.laatsteTik = Date.now();
+  k.classList.add("loopt");
+  k.querySelectorAll(".hhs-klok,.hhs-balk").forEach(x => x.hidden = false);
+  const kn = k.querySelector(".hhs-knoppen");
+  kn.innerHTML = it.soort === "pauze"
+    ? `<button class="hhs-knop hoofd" data-hhs="klaar">Verder</button>`
+    : `<button class="hhs-knop hoofd" data-hhs="klaar">Klaar ✓</button><button class="hhs-knop" data-hhs="over">Sla over</button>`;
+  const l = k.querySelector(".hhs-luister"); if (l) l.remove();
+  if (typeof tril === "function") tril(10);
+  hhsMeld(it.soort === "pauze" ? "Pauze gestart." : "Timer loopt. Veeg of tik op Klaar als het af is.");
+  setTimeout(() => { const b = kn.querySelector('[data-hhs="klaar"]'); if (b) b.focus({ preventScroll: true }); }, 40);
+}
+/* Elk frame: tijd bijhouden, klok bijwerken, seintjes, tesseract tekenen. */
+function hhsTik(dt) {
+  const A = HHS.a; if (!A) return;
+  if (A.loopt) {
+    const nu = Date.now(); A.sec += (nu - A.laatsteTik) / 1000; A.laatsteTik = nu;
+    const it = A.items[A.i], tot = it.min * 60, rest = tot - A.sec;
+    const k = document.querySelector("#hh-sessie .hhs-kaart");
+    const klok = k && k.querySelector(".hhs-klok"), balk = k && k.querySelector(".hhs-balk i");
+    if (klok) klok.textContent = rest >= 0 ? hhsTijd(rest) : "+" + hhsTijd(-rest);
+    if (balk) balk.style.width = Math.min(100, A.sec / tot * 100) + "%";
+    if (it.wissel && !A.seinGegeven && rest <= 60 && rest > 0) {
+      A.seinGegeven = true;
+      const s = k.querySelector(".hhs-sein"); if (s) { s.hidden = false; s.textContent = `Over een minuut: naar ${it.wissel}`; }
+      hhsMeld(`Over een minuut ga je naar ${it.wissel}.`);
+    }
+    if (!A.tijdOm && rest <= 0) {
+      A.tijdOm = true; k.classList.add("om");
+      if (hhsMagGeluid()) hhsGeluid(); if (typeof tril === "function") tril(60);
+      if (it.soort === "pauze") { hhsMeld("Pauze voorbij. Tik op Verder."); }
+      else {
+        hhsMeld("De tijd is om. Afronden, of nog twee minuten?");
+        const kn = k.querySelector(".hhs-knoppen");
+        if (kn && !kn.querySelector('[data-hhs="plus2"]')) kn.insertAdjacentHTML("beforeend", `<button class="hhs-knop" data-hhs="plus2">+2 min</button>`);
+      }
+    }
+    // Meewerker: af en toe een rustig zinnetje (niet voorgelezen, alleen zichtbaar).
+    if (inst("hhMeewerker", true) && it.soort === "taak") {
+      A.tessTel += dt;
+      if (A.tessTel > 150) { A.tessTel = 0; const r = document.querySelector("#hh-sessie .hhs-tessregel"); if (r) { r.textContent = HHS_TESS[Math.floor(Math.random() * HHS_TESS.length)]; r.classList.remove("puls"); void r.offsetWidth; r.classList.add("puls"); } }
+    }
+  }
+  // Helderheid volgt het aantal gedane klussen, vloeiend.
+  A.helder += (A.doelHelder - A.helder) * Math.min(1, dt * 2.2);
+  hhsTeken(dt);
+}
+function hhsGeluid() {
+  try {
+    const ctx = HHS.audio || (HHS.audio = new (window.AudioContext || window.webkitAudioContext)());
+    [660, 880].forEach((f, i) => { const o = ctx.createOscillator(), g = ctx.createGain(), t = ctx.currentTime + i * .18;
+      o.type = "sine"; o.frequency.value = f; g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.08, t + .03); g.gain.exponentialRampToValueAtTime(.0001, t + .6);
+      o.connect(g).connect(ctx.destination); o.start(t); o.stop(t + .65); });
+  } catch (e) {}
+}
+
+/* ---------- 79.3 Afronden van een kaartje ---------- */
+function hhsVolgende(status) {
+  const A = HHS.a; if (!A || A.klaar) return;
+  const it = A.items[A.i];
+  if (status === "over" && it.soort === "taak" && !it.alOvergeslagen && A.items.slice(A.i + 1).some(x => x.soort === "taak")) {
+    // Eén keer overslaan = achteraan de rij. Niets gaat verloren, je kiest alleen de volgorde.
+    it.alOvergeslagen = true;
+    A.items.splice(A.i, 1); A.items.push(it);
+    hhsWeg("links", () => hhsToonKaart());
+    hhsMeld("Opzij gelegd. Hij komt aan het eind terug.");
+    return;
+  }
+  A.resultaat.push({ soort: it.soort, tekst: it.tekst, ruimte: it.ruimte, taakId: it.taakId, min: it.min, basisMin: it.basisMin, deel: it.deel, delen: it.delen,
+    status: status === "klaar" ? "gedaan" : "overgeslagen", sec: Math.round(A.sec) });
+  A.afgehandeld.add(it);
+  if (it.soort === "taak" && status === "klaar") { A.gedaan++; A.doelHelder = A.gedaan / Math.max(1, A.taken); }
+  const laatste = A.i >= A.items.length - 1;
+  if (typeof tril === "function") tril(status === "klaar" ? 14 : 6);
+  hhsWeg(status === "klaar" ? "rechts" : "links", () => {
+    if (laatste) { hhsEinde(false); return; }
+    A.i++;
+    // Na de laatste taak nog alleen een pauze over? Dan ben je klaar.
+    if (!A.items.slice(A.i).some(x => x.soort === "taak")) { hhsEinde(false); return; }
+    hhsToonKaart();
+  });
+}
+function hhsWeg(richting, klaar) {
+  const k = document.querySelector("#hh-sessie .hhs-kaart");
+  if (!k || hhsRustig()) { klaar(); return; }
+  k.style.transition = "transform .38s cubic-bezier(.3,.6,.4,1), opacity .38s";
+  k.style.transform = richting === "rechts" ? "translate(120%, 30px) rotate(14deg)" : "translate(-120%, 30px) rotate(-14deg)";
+  k.style.opacity = "0";
+  setTimeout(() => { k.style.transition = "none"; k.style.transform = "translateY(40px) scale(.94)"; k.style.opacity = "0"; klaar();
+    requestAnimationFrame(() => { k.style.transition = "transform .42s cubic-bezier(.22,1,.36,1), opacity .3s"; k.style.transform = ""; k.style.opacity = ""; }); }, 360);
+}
+
+/* ---------- 79.4 Einde: explosie, opslaan, samenvatting ---------- */
+async function hhsEinde(afgebroken) {
+  const A = HHS.a; if (!A || A.klaar) return;
+  A.klaar = true; A.loopt = false;
+  // Wat nog open stond, telt als "niet aan toegekomen".
+  A.items.filter(it => it.soort === "taak" && !A.afgehandeld.has(it)).forEach(it => {
+    A.resultaat.push({ soort: "taak", tekst: it.tekst, ruimte: it.ruimte, taakId: it.taakId, min: it.min, basisMin: it.basisMin, deel: it.deel, delen: it.delen, status: "niet", sec: afgebroken && it === A.items[A.i] ? Math.round(A.sec) : 0 });
+  });
+  const werkSec = A.resultaat.filter(r => r.soort === "taak").reduce((s, r) => s + (r.sec || 0), 0);
+  const s = { id: uid(), lijstId: A.lijst.id || null, lijstNaam: A.lijst.naam || "Klus", datum: vandaagISO(), ts: new Date().toISOString(), gestart: A.gestart,
+    beschikbaar: A.opties.beschikbaar || null, energie: A.opties.energie || null, richting: A.plan.richting, werkMin: A.plan.werkMin, pauzeMin: A.plan.pauzeMin,
+    resultaat: A.resultaat, werkSec, duurSec: Math.round((Date.now() - A.t0) / 1000), afgebroken: !!afgebroken };
+  const bewaarAlles = async () => {
+    await bewaar("hh_sessies", s);
+    const gedaan = s.resultaat.filter(r => r.status === "gedaan" && r.soort === "taak").length;
+    if (gedaan && A.lijst.id && vind("hh_lijsten", A.lijst.id)) await bewaar("hh_lijsten", Object.assign({}, vind("hh_lijsten", A.lijst.id), { laatstGedaan: s.ts }));
+    if (typeof logGebeurtenis === "function") await logGebeurtenis("huishouden", `Schoonmaken: ${gedaan} ${gedaan === 1 ? "klus" : "klussen"}, ${Math.round(werkSec / 60)} min (${s.lijstNaam})${afgebroken ? " — gestopt" : ""}`, s.id);
+    if (typeof vgControleerDoelen === "function") await vgControleerDoelen();
+  };
+  const sluit = () => {
+    cancelAnimationFrame(HHS.raf); hhsSchermVrij();
+    const el = document.getElementById("hh-sessie"); if (el) el.remove();
+    document.documentElement.classList.remove("hhs-open");
+    HHS.a = null;
+    V.hh.samenvatting = s.id;
+    if (V.view === "huishouden") { teken(); $("#scherm").scrollTop = 0; } else ga("huishouden");
+  };
+  const opslaan = bewaarAlles().catch(e => console.error(e));
+  if (afgebroken || hhsRustig()) { await opslaan; const el = document.getElementById("hh-sessie"); if (el) el.classList.add("weg"); setTimeout(sluit, afgebroken ? 250 : 400); return; }
+  // De explosie: deeltjes vanaf de ribben, een witte flits, dan terug.
+  HHS.explosie = { t: 0, deeltjes: hhsDeeltjes() };
+  const k = document.querySelector("#hh-sessie .hhs-kaart"); if (k) k.classList.add("verdwijn");
+  hhsMeld("Alles gedaan!");
+  if (typeof tril === "function") tril(80);
+  await opslaan;
+  setTimeout(sluit, 1700);
+}
+
+/* ---------- 79.5 De tesseract ----------
+   16 hoekpunten (±1 in vier dimensies), 32 ribben (punten die in precies
+   één coördinaat verschillen). Rotatie in de vlakken XW, YW en ZW geeft het
+   bekende "binnenstebuiten"-effect; daarna perspectief 4D → 3D → 2D. */
+const HHS_V = Array.from({ length: 16 }, (_, i) => [i & 1 ? 1 : -1, i & 2 ? 1 : -1, i & 4 ? 1 : -1, i & 8 ? 1 : -1]);
+const HHS_E = [];
+for (let i = 0; i < 16; i++) for (let b = 0; b < 4; b++) { const j = i ^ (1 << b); if (i < j) HHS_E.push([i, j]); }
+function hhsCanvas() {
+  const c = document.querySelector("#hh-sessie .hhs-tess"); if (!c) return;
+  const r = c.getBoundingClientRect(), d = Math.min(2, window.devicePixelRatio || 1);
+  c.width = Math.round(r.width * d); c.height = Math.round(r.height * d);
+  HHS.ctx = c.getContext("2d"); HHS.d = d; HHS.hoek = HHS.hoek || [0.3, 0.6, 0.2, 0.1]; HHS.tijd = HHS.tijd || 0;
+}
+window.addEventListener("resize", () => { if (HHS.a) hhsCanvas(); });
+function hhsProjecteer(p, h) {
+  let [x, y, z, w] = p;
+  const [a, b, c, e] = h;
+  let t;
+  t = x * Math.cos(a) - w * Math.sin(a); w = x * Math.sin(a) + w * Math.cos(a); x = t;       // XW
+  t = y * Math.cos(b) - w * Math.sin(b); w = y * Math.sin(b) + w * Math.cos(b); y = t;       // YW
+  t = z * Math.cos(c) - w * Math.sin(c); w = z * Math.sin(c) + w * Math.cos(c); z = t;       // ZW
+  t = x * Math.cos(e) - z * Math.sin(e); z = x * Math.sin(e) + z * Math.cos(e); x = t;       // XZ (kanteling)
+  const f4 = 2.6 / (2.6 - w * .9); x *= f4; y *= f4; z *= f4;
+  const f3 = 4.2 / (4.2 - z * .8);
+  return [x * f3, y * f3, w];
+}
+function hhsTeken(dt) {
+  const ctx = HHS.ctx, A = HHS.a; if (!ctx || !A) return;
+  const W = ctx.canvas.width, H = ctx.canvas.height, cx = W / 2, cy = H / 2, schaal = Math.min(W, H) * .17;
+  const rustig = hhsRustig(), i = Math.max(0, Math.min(1, A.helder));
+  if (!rustig) {
+    HHS.tijd += dt;
+    const v = .22 + i * .55;
+    HHS.hoek[0] += dt * v * .9; HHS.hoek[1] += dt * v * .55; HHS.hoek[2] += dt * v * .35; HHS.hoek[3] += dt * .12;
+  } else if (HHS.getekend && !HHS.explosie && Math.abs(A.helder - A.doelHelder) < .002) return;   // stilstaand: alleen tekenen als er iets verandert
+  HHS.getekend = true;
+  const puls = rustig ? 0 : Math.sin(HHS.tijd * (1.6 + i * 1.4)) * (.5 + .5 * i);
+  ctx.clearRect(0, 0, W, H);
+  // Gloed achter de figuur
+  // De gloed blijft binnen het canvas, anders zie je een vierkante rand.
+  const gr = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.min(Math.min(W, H) / 2, schaal * (1.6 + i * 1.4 + puls * .15)));
+  gr.addColorStop(0, `hsla(${190 - i * 150}, 95%, ${60 + i * 25}%, ${.10 + i * .45 + puls * .05})`);
+  gr.addColorStop(1, "hsla(200, 90%, 50%, 0)");
+  ctx.fillStyle = gr; ctx.fillRect(0, 0, W, H);
+  const ex = HHS.explosie;
+  if (ex) { hhsExplosie(ctx, dt, cx, cy, schaal); return; }
+  const P = HHS_V.map(p => hhsProjecteer(p, HHS.hoek));
+  ctx.lineCap = "round";
+  const kleur = `hsl(${190 - i * 150}, ${80 + i * 15}%, ${70 + i * 22}%)`;
+  // Twee lagen: een brede gloed en een scherpe kern
+  for (const laag of [0, 1]) {
+    ctx.shadowColor = kleur;
+    ctx.shadowBlur = laag ? (4 + i * 10) * HHS.d : (10 + i * 34 + puls * 6) * HHS.d;
+    ctx.strokeStyle = laag ? `rgba(255,255,255,${.55 + i * .45})` : kleur;
+    ctx.globalAlpha = laag ? 1 : .35 + i * .5;
+    ctx.lineWidth = (laag ? 1.1 + i * 1.2 : 3 + i * 5) * HHS.d;
+    ctx.beginPath();
+    for (const [a, b] of HHS_E) {
+      const p = P[a], q = P[b];
+      ctx.moveTo(cx + p[0] * schaal, cy + p[1] * schaal); ctx.lineTo(cx + q[0] * schaal, cy + q[1] * schaal);
+    }
+    ctx.stroke();
+  }
+  ctx.globalAlpha = 1; ctx.shadowBlur = (6 + i * 16) * HHS.d; ctx.fillStyle = "#fff";
+  for (const p of P) { ctx.beginPath(); ctx.arc(cx + p[0] * schaal, cy + p[1] * schaal, (1.4 + i * 1.6 + (p[2] + 1) * .5) * HHS.d, 0, Math.PI * 2); ctx.fill(); }
+  ctx.shadowBlur = 0;
+}
+function hhsDeeltjes() {
+  const P = HHS_V.map(p => hhsProjecteer(p, HHS.hoek)), uit = [];
+  for (const [a, b] of HHS_E) for (let k = 0; k < 6; k++) {
+    const t = Math.random(), x = P[a][0] + (P[b][0] - P[a][0]) * t, y = P[a][1] + (P[b][1] - P[a][1]) * t, len = Math.hypot(x, y) || 1;
+    const snel = 1.5 + Math.random() * 4.5;
+    uit.push({ x, y, vx: x / len * snel + (Math.random() - .5) * 1.5, vy: y / len * snel + (Math.random() - .5) * 1.5, r: .6 + Math.random() * 1.8, h: 30 + Math.random() * 30 });
+  }
+  return uit;
+}
+function hhsExplosie(ctx, dt, cx, cy, schaal) {
+  const W = ctx.canvas.width, H = ctx.canvas.height;
+  const ex = HHS.explosie; ex.t += dt;
+  const t = ex.t, fade = Math.max(0, 1 - t / 1.5);
+  const f = document.querySelector("#hh-sessie .hhs-flits");
+  if (f && !f.classList.contains("aan")) f.classList.add("aan");
+  // Schokgolf
+  const rand = Math.min(W, H) / 2, straal = Math.min(rand, schaal * (.3 + t * 5));
+  ctx.globalAlpha = fade * Math.max(0, 1 - straal / rand); ctx.strokeStyle = "#fff"; ctx.lineWidth = (6 * fade + 1) * HHS.d; ctx.shadowColor = "#ffe9a8"; ctx.shadowBlur = 30 * HHS.d;
+  ctx.beginPath(); ctx.arc(cx, cy, straal, 0, Math.PI * 2); ctx.stroke();
+  ctx.globalAlpha = fade;
+  for (const p of ex.deeltjes) {
+    p.x += p.vx * dt * 1.6; p.y += p.vy * dt * 1.6; p.vx *= .985; p.vy *= .985;
+    const afstand = Math.hypot(p.x * schaal, p.y * schaal) / (Math.min(W, H) / 2);
+    ctx.fillStyle = `hsla(${p.h}, 100%, ${75 + 25 * fade}%, ${fade * Math.max(0, 1 - afstand * afstand)})`;
+    ctx.beginPath(); ctx.arc(cx + p.x * schaal, cy + p.y * schaal, p.r * HHS.d * (1 + fade), 0, Math.PI * 2); ctx.fill();
+  }
+  ctx.globalAlpha = 1; ctx.shadowBlur = 0;
+}
+
+/* ---------- 79.6 Vegen, tikken, toetsen ---------- */
+{
+  let g = null;
+  document.addEventListener("pointerdown", e => {
+    const k = e.target.closest && e.target.closest("#hh-sessie .hhs-kaart");
+    if (!k || e.target.closest("button") || !HHS.a || HHS.a.klaar) return;
+    g = { k, x: e.clientX, y: e.clientY, dx: 0, id: e.pointerId, bezig: false };
+  }, { passive: true });
+  document.addEventListener("pointermove", e => {
+    if (!g || e.pointerId !== g.id) return;
+    const dx = e.clientX - g.x, dy = e.clientY - g.y;
+    if (!g.bezig) { if (Math.abs(dy) > 12 && Math.abs(dy) > Math.abs(dx)) { g = null; return; } if (Math.abs(dx) < 10) return; g.bezig = true; try { g.k.setPointerCapture(e.pointerId); } catch (x) {} }
+    g.dx = dx;
+    g.k.style.transition = "none";
+    g.k.style.transform = `translateX(${dx}px) rotate(${dx / 22}deg)`;
+    g.k.classList.toggle("naar-gedaan", dx > 70); g.k.classList.toggle("naar-later", dx < -70);
+  }, { passive: true });
+  const los = () => {
+    if (!g) return; const r = g; g = null;
+    r.k.classList.remove("naar-gedaan", "naar-later");
+    if (!r.bezig) return;
+    if (r.dx > 100) hhsVolgende("klaar");
+    else if (r.dx < -100) hhsVolgende(HHS.a.items[HHS.a.i].soort === "pauze" ? "klaar" : "over");
+    else { r.k.style.transition = "transform .3s cubic-bezier(.22,1,.36,1)"; r.k.style.transform = ""; }
+  };
+  document.addEventListener("pointerup", los); document.addEventListener("pointercancel", los);
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest && e.target.closest("#hh-sessie [data-hhs]");
+  if (!b || !HHS.a || HHS.a.klaar) return;
+  const A = HHS.a;
+  switch (b.dataset.hhs) {
+    case "start": hhsStart(); break;
+    case "klaar": hhsVolgende("klaar"); break;
+    case "over": hhsVolgende("over"); break;
+    case "plus2": { const it = A.items[A.i]; it.min += 2; A.tijdOm = false; const k = document.querySelector("#hh-sessie .hhs-kaart"); k.classList.remove("om"); b.remove(); hhsMeld("Twee minuten erbij."); break; }
+    case "stop":
+      if (Date.now() - A.stopVraag < 3500) { hhsEinde(true); break; }
+      A.stopVraag = Date.now(); b.textContent = "Echt stoppen?"; b.classList.add("vraag");
+      setTimeout(() => { if (b.isConnected) { b.textContent = "Stop"; b.classList.remove("vraag"); } }, 3500);
+      hhsMeld("Tik nog een keer op Stop om te stoppen. Wat af is, blijft bewaard."); break;
+  }
+});
+document.addEventListener("keydown", e => {
+  if (!HHS.a || HHS.a.klaar || !document.getElementById("hh-sessie")) return;
+  if (e.target && /INPUT|TEXTAREA/.test(e.target.tagName)) return;
+  const A = HHS.a;
+  if (e.key === "ArrowRight") { e.preventDefault(); A.loopt || A.items[A.i].soort === "pauze" ? hhsVolgende("klaar") : hhsStart(); }
+  else if (e.key === "ArrowLeft") { e.preventDefault(); hhsVolgende("over"); }
+  else if (e.key === "Escape") { e.preventDefault(); document.querySelector('#hh-sessie [data-hhs="stop"]').click(); }
+});
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && HHS.a && !HHS.a.klaar) hhsSchermAan(); });
 
 </script>
 <script>

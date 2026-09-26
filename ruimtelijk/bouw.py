@@ -20,7 +20,7 @@ def vervang(oud, nieuw, n=1):
 
 
 # 1. Opslag: nieuwe winkel (hs_items) vraagt een hogere databaseversie.
-vervang('const DB_NAAM = "futureme", DB_VERSIE = 7;', 'const DB_NAAM = "futureme", DB_VERSIE = 11;')  # 8: hs_items, 9: wl_items, 10: Anker (mf_*), 11: Voortgang (vg_*)
+vervang('const DB_NAAM = "futureme", DB_VERSIE = 7;', 'const DB_NAAM = "futureme", DB_VERSIE = 12;')  # 8: hs_items, 9: wl_items, 10: Anker (mf_*), 11: Voortgang (vg_*), 12: Huishouden (hh_*)
 # 1b. Stores met extra opties (oplopende sleutel, indexen) uit DB_OPTIES; bestaande stores blijven ongemoeid.
 vervang('if (!d.objectStoreNames.contains(naam)) d.createObjectStore(naam, { keyPath: sleutel });',
         'if (!d.objectStoreNames.contains(naam)) {\n'
@@ -43,7 +43,10 @@ vervang('shles: (typeof vwShLes === "function" ? vwShLes : vwStart)',
         '    ankerhelp: (typeof vwAnkerHelp === "function" ? vwAnkerHelp : vwStart),\n'
         '    ankerervaring: (typeof vwAnkerErvaring === "function" ? vwAnkerErvaring : vwStart),\n'
         '    ankerinst: (typeof vwAnkerInst === "function" ? vwAnkerInst : vwStart),\n'
-        '    ankerbronnen: (typeof vwAnkerBronnen === "function" ? vwAnkerBronnen : vwStart)')
+        '    ankerbronnen: (typeof vwAnkerBronnen === "function" ? vwAnkerBronnen : vwStart),\n'
+        '    profiel: (typeof vwProfiel === "function" ? vwProfiel : vwStart),\n'
+        '    huishouden: (typeof vwHuishouden === "function" ? vwHuishouden : vwStart),\n'
+        '    hhlijst: (typeof vwHhLijst === "function" ? vwHhLijst : vwStart)')
 
 # 3b. Categorieën: terugvallen op "overig" op naam, niet op positie (ruimte voor eigen categorieën).
 vervang("(CATEGORIEEN.find(c => c[0] === k) || CATEGORIEEN[6])", '(CATEGORIEEN.find(c => c[0] === k) || CATEGORIEEN.find(c => c[0] === "overig"))', 2)
@@ -93,10 +96,24 @@ ILL_VOORTGANG = ('<symbol id="ill-voortgang" viewBox="0 0 100 80"><g fill="none"
                  '  <circle cx="30" cy="46" r="3.5" fill="currentColor" stroke="none"/><circle cx="44" cy="54" r="3.5" fill="currentColor" stroke="none"/><circle cx="62" cy="34" r="3.5" fill="currentColor" stroke="none"/>\n'
                  '  <path d="M78 40V8" stroke-opacity=".9"/><path d="M78 9h14l-4 6 4 6H78" fill="currentColor" fill-opacity=".85" stroke-opacity=".9"/>\n'
                  '</g></symbol>')
-vervang('<symbol id="ill-persoonlijk"', ILL + '\n' + ILL_WL + '\n' + ILL_ANKER + '\n' + ILL_VOORTGANG + '\n<symbol id="ill-persoonlijk"')
+# Huishouden: een blinkende vloer die gebezemd wordt (illustratie en klein icoon).
+ILL_HUIS = ('<symbol id="ill-huishouden" viewBox="0 0 100 80"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">\n'
+            '  <path d="M6 70h88" stroke-opacity=".75"/>\n'
+            '  <path d="M14 76h20M44 76h14M70 76h18" stroke-opacity=".35"/>\n'
+            '  <path d="M74 6L50 50" stroke-opacity=".95"/>\n'
+            '  <path d="M44 46l14 8-4 7-22 9c-3 1-5-2-3-4z" fill="currentColor" fill-opacity=".5" stroke-opacity=".95"/>\n'
+            '  <path d="M33 66l3-6M39 67l3-6M45 66l3-6" stroke-opacity=".7"/>\n'
+            '  <path d="M14 58c3-4 7-5 12-5M10 64c4-3 8-4 13-3" stroke-opacity=".45"/>\n'
+            '  <path d="M78 52l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="currentColor" fill-opacity=".95" stroke="none"/>\n'
+            '  <path d="M90 40l1.3 3.2 3.2 1.3-3.2 1.3L90 49l-1.3-3.2-3.2-1.3 3.2-1.3z" fill="currentColor" fill-opacity=".8" stroke="none"/>\n'
+            '  <path d="M20 42l1 2.6 2.6 1-2.6 1L20 49l-1-2.4-2.6-1 2.6-1z" fill="currentColor" fill-opacity=".7" stroke="none"/>\n'
+            '</g></symbol>')
+BEZEM = ('<symbol id="i-bezem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'
+         '<path d="M19 3l-7.5 9.5"/><path d="M10 11.5l4 2.5-1.6 2.6-6 3.2c-1 .5-1.9-.6-1.2-1.4z"/><path d="M3 21.5h18"/><path d="M18.5 16l.6 1.5 1.5.6-1.5.6-.6 1.5-.6-1.5-1.5-.6 1.5-.6z" fill="currentColor" stroke="none"/></symbol>')
+vervang('<symbol id="ill-persoonlijk"', ILL + '\n' + ILL_WL + '\n' + ILL_ANKER + '\n' + ILL_VOORTGANG + '\n' + ILL_HUIS + '\n' + BEZEM + '\n<symbol id="ill-persoonlijk"')
 
 # 5. Stijl: achteraan in het bestaande <style>-blok.
-css = "\n\n" + lees("ruimte.css") + "\n\n" + lees("hobbyskills.css") + "\n\n" + lees("sh-tabs.css") + "\n\n" + lees("eigen-categorieen.css") + "\n\n" + lees("fin-vast.css") + "\n\n" + lees("wishlist.css") + "\n\n" + lees("nieuw-rail.css") + "\n\n" + lees("mm-export.css") + "\n\n" + lees("retro.css").replace("__PIXELFONT__", base64.b64encode((HIER / "fonts" / "press-start-2p.woff2").read_bytes()).decode()) + "\n\n" + lees("incasso-bellen.css") + "\n\n" + lees("nieuw-overzicht.css") + "\n\n" + lees("sh-ideeen.css") + "\n\n" + lees("anker.css") + "\n\n" + lees("voortgang.css") + "\n"
+css = "\n\n" + lees("ruimte.css") + "\n\n" + lees("hobbyskills.css") + "\n\n" + lees("sh-tabs.css") + "\n\n" + lees("eigen-categorieen.css") + "\n\n" + lees("fin-vast.css") + "\n\n" + lees("wishlist.css") + "\n\n" + lees("nieuw-rail.css") + "\n\n" + lees("mm-export.css") + "\n\n" + lees("retro.css").replace("__PIXELFONT__", base64.b64encode((HIER / "fonts" / "press-start-2p.woff2").read_bytes()).decode()) + "\n\n" + lees("incasso-bellen.css") + "\n\n" + lees("nieuw-overzicht.css") + "\n\n" + lees("sh-ideeen.css") + "\n\n" + lees("anker.css") + "\n\n" + lees("voortgang.css") + "\n\n" + lees("huishouden.css") + "\n"
 vervang('</style>\n</head>', css + '</style>\n</head>')
 
 # 6. Scripts: vlak vóór het blok dat start() aanroept.
@@ -104,7 +121,7 @@ marker = "/* Alles is geladen — de app kan starten. */"
 assert html.count(marker) == 1, "startmarker niet gevonden"
 i = html.index(marker)
 j = html.rfind("<script>", 0, i)
-blokken = "".join(f"<script>\n{lees(naam)}\n</script>\n" for naam in ("sh-theorie.js", "sh-modellen.js", "sh-scrum.js", "sh-dashboard.js", "ruimte.js", "hobbyskills.js", "hs-sjablonen.js", "mm-bron.js", "koppelingen.js", "eigen-categorieen.js", "fin-vast.js", "wishlist.js", "sh-ideeen.js", "anker-data.js", "anker-speler.js", "anker-schermen.js", "anker-koppelingen.js", "voortgang-data.js", "voortgang.js", "nieuw-rail.js", "nieuw-overzicht.js", "nieuw-analyse.js", "mm-export.js", "retro.js", "incasso-bellen.js", "tijdlijn-rust.js"))
+blokken = "".join(f"<script>\n{lees(naam)}\n</script>\n" for naam in ("sh-theorie.js", "sh-modellen.js", "sh-scrum.js", "sh-dashboard.js", "ruimte.js", "hobbyskills.js", "hs-sjablonen.js", "mm-bron.js", "koppelingen.js", "eigen-categorieen.js", "fin-vast.js", "wishlist.js", "sh-ideeen.js", "anker-data.js", "anker-speler.js", "anker-schermen.js", "anker-koppelingen.js", "voortgang-data.js", "voortgang.js", "profiel.js", "huishouden-data.js", "huishouden.js", "huishouden-sessie.js", "nieuw-rail.js", "nieuw-overzicht.js", "nieuw-analyse.js", "mm-export.js", "retro.js", "incasso-bellen.js", "tijdlijn-rust.js"))
 html = html[:j] + blokken + html[j:]
 
 UIT.write_text(html, encoding="utf-8")
