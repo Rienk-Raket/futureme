@@ -143,7 +143,7 @@ function mfBegin(o, min, opties) {
     stap: 0, stapStart: 0, fase: -1, tel: 1, labels: {}, golf: {}, keuzes: {},
     ritme: o.ritme === "instellingen"
       ? [{ fase: "in", sec: s.ademIn, stap: 0, woord: "In" }, { fase: "uit", sec: s.ademUit, stap: 1, woord: "Uit" }]
-      : o.ritme || null,
+      : o.ritme ? (s.geenVasthouden ? o.ritme.filter(f => f.fase !== "vast") : o.ritme) : null,
     gestart: new Date().toISOString()
   };
   const typeHTML = {
@@ -161,6 +161,7 @@ function mfBegin(o, min, opties) {
     <div class="mf-midden">
       <p class="mf-stap" id="mf-stap"></p>
       ${typeHTML()}
+      ${o.tip ? `<p class="mf-hint mf-ademtip">${esc(o.tip)}</p>` : ""}
     </div>
     <div class="mf-onder">
       <button class="mf-knop" data-mf="pauze" aria-pressed="false">Pauze</button>
@@ -242,7 +243,9 @@ function mfAdemFase(i) {
   if (cirkel) {
     // Groeien bij inademen, krimpen bij uitademen. De overgang duurt precies zo lang als de fase.
     cirkel.style.transitionDuration = mfMag("animatie") ? f.sec + "s" : "0s";
-    cirkel.style.transform = `scale(${f.fase === "uit" ? .55 : f.fase === "bij" ? 1.08 : 1})`;
+    // Bij "vast" blijft de cirkel staan waar hij was (na in: groot, na uit: klein).
+    if (f.fase !== "vast") cirkel.style.transform = `scale(${f.fase === "uit" ? .55 : f.fase === "bij" ? 1.08 : 1})`;
+    cirkel.classList.toggle("vast", f.fase === "vast");
   }
   const woord = document.querySelector("#mf-speler .mf-ademwoord"), cw = document.querySelector("#mf-speler .mf-cirkelwoord");
   if (woord) woord.textContent = f.woord;
@@ -251,8 +254,9 @@ function mfAdemFase(i) {
   if (p && A.verstreken > 1) p.textContent = A.stappen[f.stap] || "";
   mfMeld(f.woord);
   mfZeg(f.woord);
-  if (mfMag("ademtonen")) mfToon(f.fase === "uit" ? 330 : f.fase === "bij" ? 587 : 523, f.sec, .045);
-  mfTril(f.fase === "uit" ? 15 : 30);
+  // Vasthouden is stil: geen toon.
+  if (mfMag("ademtonen") && f.fase !== "vast") mfToon(f.fase === "uit" ? 330 : f.fase === "bij" ? 587 : 523, f.sec, .045);
+  mfTril(f.fase === "uit" ? 15 : f.fase === "vast" ? 8 : 30);
 }
 
 /* ---------- 70.6 Klaar of gestopt ----------

@@ -76,7 +76,7 @@ function mfOefKaart(o, opties) {
   return `<li class="mf-oef">
     <button class="mf-oefhoofd" data-act="mf-start" data-id="${o.id}" data-min="${min}" data-bron="${bron}"${checkin} aria-label="Start ${esc(o.naam)}, ${min} ${min === 1 ? "minuut" : "minuten"}">
       <b>${esc(o.naam)}</b><span class="mf-oefwat">${esc(o.wat)}</span>
-      <span class="mf-oefmeta">${opties.min ? `${min} min` : esc(mfDuurTekst(o))}${label ? ` · ${label}` : o.beweging ? " · bewegen" : ""}</span></button>
+      <span class="mf-oefmeta">${opties.min ? `${min} min` : esc(mfDuurTekst(o))}${label ? ` · ${label}` : o.beweging ? " · bewegen" : ""}${MF_BEWIJS[o.id] ? ` · ${MF_BEWIJS_TEKST[MF_BEWIJS[o.id]]}` : ""}</span></button>
     <div class="mf-oefknoppen">
       ${!opties.min && o.varianten.length > 1 ? o.varianten.map(m => `<button class="mf-duur" data-act="mf-start" data-id="${o.id}" data-min="${m}" data-bron="${bron}" aria-label="Start ${esc(o.naam)}, ${m} minuten">${m}′</button>`).join("") : ""}
       <button class="mf-fav" data-act="mf-fav" data-id="${o.id}" aria-pressed="${fav}" aria-label="${fav ? "Uit favorieten halen" : "Bewaar als favoriet"}: ${esc(o.naam)}">${fav ? "★" : "☆"}</button>
@@ -180,6 +180,7 @@ function vwAnkerInst() {
       ${mfSchakel("stem", "Voorleesstem", "Een stem leest elke stap voor.", s.stem, arm)}
       ${mfSchakel("animatie", "Animatie", "Ademcirkel die groeit en krimpt.", s.animatie, arm || mfSysteemRustig())}
       ${mfSchakel("trilling", "Trilling", "Korte trilling bij elke stap. Werkt niet op iPhone.", s.trilling, arm)}
+      ${mfSchakel("geenVasthouden", "Adem niet vasthouden", "Laat de pauzes in vierkant ademen en 4-7-8 weg. Fijn bij duizeligheid.", s.geenVasthouden)}
     </ul>
     ${inst("rust", false) ? `<p class="mf-klein">De prikkelarme modus van de app staat aan. Daardoor staan deze prikkels in Anker ook uit.</p>` : ""}
     ${mfSysteemRustig() ? `<p class="mf-klein">Je toestel vraagt om minder beweging. Daarom staat de animatie uit.</p>` : ""}
@@ -230,6 +231,10 @@ function mfDagenTekst(d) {
 function vwAnkerBronnen() {
   return mfScherm(`<p>${esc(MF_TEKST.bewijs)}</p>
     <ol class="mf-bronnen">${MF_BRONNEN.map(([wie, wat, wel, niet]) => `<li><b>${esc(wie)}</b><span class="mf-klein">${esc(wat)}</span>
+      <p><span class="mf-wel">Wat het laat zien:</span> ${esc(wel)}</p><p><span class="mf-niet">Wat niet:</span> ${esc(niet)}</p></li>`).join("")}</ol>
+    <h3 class="mf-bronkop">Ademoefeningen</h3>
+    <p>${esc(MF_TEKST_ADEM)}</p>
+    <ol class="mf-bronnen mf-bronnen-adem">${MF_BRONNEN_ADEM.map(([wie, wat, wel, niet]) => `<li><b>${esc(wie)}</b><span class="mf-klein">${esc(wat)}</span>
       <p><span class="mf-wel">Wat het laat zien:</span> ${esc(wel)}</p><p><span class="mf-niet">Wat niet:</span> ${esc(niet)}</p></li>`).join("")}</ol>
     <p class="mf-vet">${esc(MF_BRON_SLOT)}</p>
     <p class="mf-voet">${esc(MF_TEKST.voetregel)}</p>`);

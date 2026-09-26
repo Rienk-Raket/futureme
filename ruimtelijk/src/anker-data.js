@@ -56,6 +56,7 @@ const MF_STANDAARD = {
   stem: false,                // voorleesstem (Nederlands)
   animatie: true,             // ademcirkel die groeit en krimpt
   trilling: true,             // korte trilling (werkt niet op iPhone; dan gebeurt er niets)
+  geenVasthouden: false,      // ademoefeningen zonder vasthoud-pauzes (bij duizeligheid of benauwdheid)
   ademIn: 4, ademUit: 6,      // seconden, voor "Lange uitademing"
   lettergrootte: "normaal",   // "normaal" | "groot" | "extra"
   introGezien: false,
@@ -95,7 +96,9 @@ function mfMag(soort) {
    id, naam, categorie, varianten (minuten), focus, beweging, inspanning,
    waarom, stappen, alsHetNietLukt (id van een alternatief), type en
    'wat': één zin wat je doet (voor de kaartjes in "Kies zelf").
-   Type "adem": het ademritme herhaalt tot de tijd om is.
+   Type "adem": het ademritme herhaalt tot de tijd om is. Een fase "vast" is
+   een korte pauze (adem vasthouden); die kun je in de instellingen uitzetten.
+   Optioneel: 'tip' (één zin onder de ademcirkel).
    Type "stappen": de stappen worden verdeeld over de gekozen tijd. */
 const MF_CATEGORIEEN = ["Ademen", "Kijken en bewegen", "Gedachten en gevoel", "Mild zijn"];
 const MF_OEFENINGEN = [
@@ -121,6 +124,49 @@ const MF_OEFENINGEN = [
     wat: "Opmerken, adem, dan je hele lichaam.",
     stappen: ["Stap 1: Wat merk je nu? Gedachten, gevoel, lichaam.", "Stap 2: Richt je aandacht alleen op je adem.", "Stap 3: Merk je hele lichaam op, van top tot teen."],
     alsHetNietLukt: "Z1" },
+  /* A5–A10: toegevoegd na online onderzoek (zie MF_BRONNEN_ADEM). */
+  { id: "A5", naam: "Vierkant ademen", categorie: "Ademen", varianten: [1, 3, 5], focus: "adem", beweging: false, inspanning: "geen", type: "adem",
+    waarom: "Een vast ritme van vier geeft houvast als je hoofd vol zit.",
+    wat: "Vier tellen in, vast, uit en vast.",
+    stappen: ["Adem in door je neus.", "Houd je adem zacht vast.", "Adem rustig uit.", "Wacht even voor je weer inademt."],
+    ritme: [{ fase: "in", sec: 4, stap: 0, woord: "In" }, { fase: "vast", sec: 4, stap: 1, woord: "Vast" }, { fase: "uit", sec: 4, stap: 2, woord: "Uit" }, { fase: "vast", sec: 4, stap: 3, woord: "Vast" }],
+    tip: "Duizelig? Sla het vasthouden over of stop.",
+    alsHetNietLukt: "A2" },
+  { id: "A6", naam: "Zes keer per minuut", categorie: "Ademen", varianten: [1, 3, 5, 10], focus: "adem", beweging: false, inspanning: "geen", type: "adem",
+    waarom: "Rond zes ademhalingen per minuut lopen hartslag en adem in de pas.",
+    wat: "Vijf tellen in, vijf tellen uit.",
+    stappen: ["Adem vijf tellen rustig in.", "Adem vijf tellen rustig uit."],
+    ritme: [{ fase: "in", sec: 5, stap: 0, woord: "In" }, { fase: "uit", sec: 5, stap: 1, woord: "Uit" }],
+    tip: "Niet dieper ademen, alleen langzamer.",
+    alsHetNietLukt: "A1" },
+  { id: "A7", naam: "4-7-8 ademen", categorie: "Ademen", varianten: [1, 3], focus: "adem", beweging: false, inspanning: "geen", type: "adem",
+    waarom: "Een pauze en een lange uitademing vertragen je adem. Vaak gebruikt bij inslapen.",
+    wat: "Vier in, zeven vast, acht uit.",
+    stappen: ["Adem in door je neus.", "Houd je adem vast.", "Blaas langzaam uit door je mond."],
+    ritme: [{ fase: "in", sec: 4, stap: 0, woord: "In" }, { fase: "vast", sec: 7, stap: 1, woord: "Vast" }, { fase: "uit", sec: 8, stap: 2, woord: "Uit" }],
+    tip: "Te lang? Tel sneller, de verhouding telt.",
+    alsHetNietLukt: "A6" },
+  { id: "A8", naam: "Neuriënd uitademen", categorie: "Ademen", varianten: [1, 3, 5], focus: "lichaam", beweging: false, inspanning: "geen", type: "adem",
+    waarom: "Neuriën maakt je uitademing vanzelf lang. De trilling voelt voor velen rustig.",
+    wat: "Rustig in, neuriënd uit met je mond dicht.",
+    stappen: ["Adem in door je neus.", "Neurie zacht op je uitademing, mond dicht."],
+    ritme: [{ fase: "in", sec: 4, stap: 0, woord: "In" }, { fase: "uit", sec: 8, stap: 1, woord: "Neurie" }],
+    tip: "Liever stil? Adem dan gewoon lang uit.",
+    alsHetNietLukt: "A2" },
+  { id: "A9", naam: "Buikademhaling", categorie: "Ademen", varianten: [1, 3, 5], focus: "lichaam", beweging: false, inspanning: "geen", type: "adem",
+    waarom: "Ademen vanuit je buik vertraagt je adem en geeft je aandacht een plek.",
+    wat: "Hand op je buik, rustig in en uit.",
+    stappen: ["Adem in. Je buik komt naar voren onder je hand.", "Adem uit. Je buik zakt terug."],
+    ritme: [{ fase: "in", sec: 5, stap: 0, woord: "In" }, { fase: "uit", sec: 7, stap: 1, woord: "Uit" }],
+    tip: "Leg een hand op je buik. Liggen mag ook.",
+    alsHetNietLukt: "Z4" },
+  { id: "A10", naam: "Om en om door je neus", categorie: "Ademen", varianten: [1, 3, 5], focus: "adem", beweging: false, inspanning: "geen", type: "adem",
+    waarom: "Het wisselen vraagt net genoeg aandacht om gedachten even los te laten.",
+    wat: "Links in, rechts uit, rechts in, links uit.",
+    stappen: ["Duim op je rechterneusgat. Adem in door links.", "Wissel: links dicht. Adem uit door rechts.", "Adem in door rechts.", "Wissel weer. Adem uit door links."],
+    ritme: [{ fase: "in", sec: 4, stap: 0, woord: "In links" }, { fase: "uit", sec: 6, stap: 1, woord: "Uit rechts" }, { fase: "in", sec: 4, stap: 2, woord: "In rechts" }, { fase: "uit", sec: 6, stap: 3, woord: "Uit links" }],
+    tip: "Verstopte neus? Adem dan rustig zonder vingers.",
+    alsHetNietLukt: "A6" },
   { id: "Z1", naam: "5-4-3-2-1", categorie: "Kijken en bewegen", varianten: [2, 4], focus: "extern", beweging: false, inspanning: "geen", type: "stappen",
     waarom: "Aandacht naar buiten helpt bij te veel prikkels.",
     wat: "Noem wat je ziet, voelt, hoort, ruikt en proeft.",
@@ -212,7 +258,8 @@ function mfVoorstellen(antwoorden) {
   const weinigEnergie = profiel === "energie" || (a.energie != null && a.energie <= 2);
   const veelDrukte = a.drukte != null && a.drukte >= 4;
   // Weinig energie: alleen rustig zitten of liggen, uit deze vier.
-  if (weinigEnergie) lijst = lijst.filter(o => ["A2", "Z4", "A1", "V1"].includes(o.id));
+  // A6 (zes per minuut) en A9 (buikademhaling) kunnen liggend en kosten geen inspanning.
+  if (weinigEnergie) lijst = lijst.filter(o => ["A2", "Z4", "A1", "V1", "A6", "A9"].includes(o.id));
   // Druk hoofd: alleen aandacht naar buiten of bewegen, uit deze vier.
   if (veelDrukte) lijst = lijst.filter(o => ["Z1", "Z4", "Z2", "A1"].includes(o.id));
   // Bij profiel "weinig energie" nooit Rustig lopen.
@@ -293,5 +340,19 @@ const MF_BRONNEN = [
   ["Canada (Lunsky e.a., 2025)", "63 autistische volwassenen, 6 weken online met korte oefeningen.", "Minder stress, milder voor zichzelf.", "Betere lichaamswaarneming."],
   ["VK (Gaigg e.a., 2020)", "54 autistische volwassenen, zelfhulp online.", "Bij ruim 3 op 4 minder angst.", "Groot onderzoek; kleine groep."],
   ["Stanford (Balban e.a., 2023)", "114 volwassenen, 5 minuten per dag.", "Lange uitademing verbeterde de stemming het meest.", "Specifiek onderzocht bij ADHD of autisme."]
+];
+/* Hoeveel onderzoek is er naar deze ademoefening? Eerlijk in één woord. */
+const MF_BEWIJS = { A1: "veel", A2: "veel", A5: "enig", A6: "veel", A7: "weinig", A8: "enig", A9: "enig", A10: "enig" };
+const MF_BEWIJS_TEKST = { veel: "veel onderzoek", enig: "enig onderzoek", weinig: "weinig onderzoek" };
+const MF_TEKST_ADEM = "Ademoefeningen verminderen stress gemiddeld een beetje tot matig. Langzaam ademen met een lange uitademing is het best onderzocht. Voor vierkant ademen en 4-7-8 is minder bewijs.";
+const MF_BRONNEN_ADEM = [
+  ["Oxford (Fincham e.a., 2023)", "Meta-analyse: 12 gerandomiseerde studies, 785 volwassenen.", "Ademoefeningen verminderen stress een beetje tot matig.", "Welke techniek het best werkt; veel studies hadden matige kwaliteit."],
+  ["Stanford (Balban e.a., 2023)", "111 volwassenen, 5 minuten per dag, een maand. Twee keer in, lang uit, vierkant ademen en meditatie.", "Alle groepen voelden zich beter; lange uitademing (Twee keer in, lang uit) het meest.", "Vierkant ademen was niet beter dan de andere ademoefeningen."],
+  ["Goessl e.a., 2017 (Zes keer per minuut)", "Meta-analyse: 24 studies met ademen op je rustritme, 484 mensen.", "Duidelijk minder stress en angst.", "Meestal met apparaat en begeleiding, niet alleen met een app."],
+  ["Pisa (Zaccaro e.a., 2018)", "Overzicht van 15 studies naar langzaam ademen, minder dan 10 keer per minuut.", "Meer hartslagvariatie en een rustiger, alerter gevoel.", "Vooral gezonde mensen; weinig over klachten."],
+  ["Beijing (Ma e.a., 2017, buikademhaling)", "40 volwassenen, 8 weken, 20 keer oefenen.", "Minder negatieve gevoelens, betere aandacht, lager stresshormoon.", "Kleine groep; geoefend met een feedbackapparaat."],
+  ["Thailand (Vierra e.a., 2022, 4-7-8)", "43 jonge volwassenen, één keer oefenen.", "Hartslagvariatie en bloeddruk gingen iets gunstiger.", "Effect op stress of slaap op langere termijn."],
+  ["New Delhi (Ghati e.a., 2021, neuriën)", "Mensen met hoge bloeddruk, één keer neuriënd uitademen.", "Meer rustsignaal in het hartritme.", "Bloeddruk daalde niet meteen; één sessie."],
+  ["Overzicht om en om ademen (2017)", "44 gerandomiseerde studies naar ademen door één neusgat tegelijk.", "Gunstig voor hartslag en ademhaling.", "Uitvoering verschilt per studie; weinig over angst of stress."]
 ];
 const MF_BRON_SLOT = "Oefenen kan soms ongemakkelijk voelen. Dat komt vaker voor bij wie het al zwaar heeft. Stoppen mag altijd.";

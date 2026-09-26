@@ -182,3 +182,7 @@ html.mf-sessie-open,html.mf-sessie-open body{overflow:hidden}
 .mf-kaartje.zacht{background:color-mix(in srgb,#2f6d94 10%,var(--card))}
 @media (prefers-reduced-motion:reduce){.mf-cirkel{transition:none !important}.mf-snelknop{transition:none}}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .mf-snelknop{background:#3a7ca5;box-shadow:0 6px 0 0 #1f4d69}}
+/* Nieuwe ademoefeningen: vasthouden, tip en bronnen per soort */
+.mf-cirkel.vast{box-shadow:0 0 0 6px color-mix(in srgb,#2f6d94 22%,transparent)}
+.mf-ademtip{text-align:center;margin:14px auto 0;max-width:30ch}
+.mf-bronkop{font-size:calc(18px * var(--mf-f,1));margin:26px 0 4px}

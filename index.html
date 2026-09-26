@@ -2932,6 +2932,10 @@ html.mf-sessie-open,html.mf-sessie-open body{overflow:hidden}
 .mf-kaartje.zacht{background:color-mix(in srgb,#2f6d94 10%,var(--card))}
 @media (prefers-reduced-motion:reduce){.mf-cirkel{transition:none !important}.mf-snelknop{transition:none}}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .mf-snelknop{background:#3a7ca5;box-shadow:0 6px 0 0 #1f4d69}}
+/* Nieuwe ademoefeningen: vasthouden, tip en bronnen per soort */
+.mf-cirkel.vast{box-shadow:0 0 0 6px color-mix(in srgb,#2f6d94 22%,transparent)}
+.mf-ademtip{text-align:center;margin:14px auto 0;max-width:30ch}
+.mf-bronkop{font-size:calc(18px * var(--mf-f,1));margin:26px 0 4px}
 
 </style>
 </head>
@@ -20844,6 +20848,7 @@ const MF_STANDAARD = {
   stem: false,                // voorleesstem (Nederlands)
   animatie: true,             // ademcirkel die groeit en krimpt
   trilling: true,             // korte trilling (werkt niet op iPhone; dan gebeurt er niets)
+  geenVasthouden: false,      // ademoefeningen zonder vasthoud-pauzes (bij duizeligheid of benauwdheid)
   ademIn: 4, ademUit: 6,      // seconden, voor "Lange uitademing"
   lettergrootte: "normaal",   // "normaal" | "groot" | "extra"
   introGezien: false,
@@ -20883,7 +20888,9 @@ function mfMag(soort) {
    id, naam, categorie, varianten (minuten), focus, beweging, inspanning,
    waarom, stappen, alsHetNietLukt (id van een alternatief), type en
    'wat': één zin wat je doet (voor de kaartjes in "Kies zelf").
-   Type "adem": het ademritme herhaalt tot de tijd om is.
+   Type "adem": het ademritme herhaalt tot de tijd om is. Een fase "vast" is
+   een korte pauze (adem vasthouden); die kun je in de instellingen uitzetten.
+   Optioneel: 'tip' (één zin onder de ademcirkel).
    Type "stappen": de stappen worden verdeeld over de gekozen tijd. */
 const MF_CATEGORIEEN = ["Ademen", "Kijken en bewegen", "Gedachten en gevoel", "Mild zijn"];
 const MF_OEFENINGEN = [
@@ -20909,6 +20916,49 @@ const MF_OEFENINGEN = [
     wat: "Opmerken, adem, dan je hele lichaam.",
     stappen: ["Stap 1: Wat merk je nu? Gedachten, gevoel, lichaam.", "Stap 2: Richt je aandacht alleen op je adem.", "Stap 3: Merk je hele lichaam op, van top tot teen."],
     alsHetNietLukt: "Z1" },
+  /* A5–A10: toegevoegd na online onderzoek (zie MF_BRONNEN_ADEM). */
+  { id: "A5", naam: "Vierkant ademen", categorie: "Ademen", varianten: [1, 3, 5], focus: "adem", beweging: false, inspanning: "geen", type: "adem",
+    waarom: "Een vast ritme van vier geeft houvast als je hoofd vol zit.",
+    wat: "Vier tellen in, vast, uit en vast.",
+    stappen: ["Adem in door je neus.", "Houd je adem zacht vast.", "Adem rustig uit.", "Wacht even voor je weer inademt."],
+    ritme: [{ fase: "in", sec: 4, stap: 0, woord: "In" }, { fase: "vast", sec: 4, stap: 1, woord: "Vast" }, { fase: "uit", sec: 4, stap: 2, woord: "Uit" }, { fase: "vast", sec: 4, stap: 3, woord: "Vast" }],
+    tip: "Duizelig? Sla het vasthouden over of stop.",
+    alsHetNietLukt: "A2" },
+  { id: "A6", naam: "Zes keer per minuut", categorie: "Ademen", varianten: [1, 3, 5, 10], focus: "adem", beweging: false, inspanning: "geen", type: "adem",
+    waarom: "Rond zes ademhalingen per minuut lopen hartslag en adem in de pas.",
+    wat: "Vijf tellen in, vijf tellen uit.",
+    stappen: ["Adem vijf tellen rustig in.", "Adem vijf tellen rustig uit."],
+    ritme: [{ fase: "in", sec: 5, stap: 0, woord: "In" }, { fase: "uit", sec: 5, stap: 1, woord: "Uit" }],
+    tip: "Niet dieper ademen, alleen langzamer.",
+    alsHetNietLukt: "A1" },
+  { id: "A7", naam: "4-7-8 ademen", categorie: "Ademen", varianten: [1, 3], focus: "adem", beweging: false, inspanning: "geen", type: "adem",
+    waarom: "Een pauze en een lange uitademing vertragen je adem. Vaak gebruikt bij inslapen.",
+    wat: "Vier in, zeven vast, acht uit.",
+    stappen: ["Adem in door je neus.", "Houd je adem vast.", "Blaas langzaam uit door je mond."],
+    ritme: [{ fase: "in", sec: 4, stap: 0, woord: "In" }, { fase: "vast", sec: 7, stap: 1, woord: "Vast" }, { fase: "uit", sec: 8, stap: 2, woord: "Uit" }],
+    tip: "Te lang? Tel sneller, de verhouding telt.",
+    alsHetNietLukt: "A6" },
+  { id: "A8", naam: "Neuriënd uitademen", categorie: "Ademen", varianten: [1, 3, 5], focus: "lichaam", beweging: false, inspanning: "geen", type: "adem",
+    waarom: "Neuriën maakt je uitademing vanzelf lang. De trilling voelt voor velen rustig.",
+    wat: "Rustig in, neuriënd uit met je mond dicht.",
+    stappen: ["Adem in door je neus.", "Neurie zacht op je uitademing, mond dicht."],
+    ritme: [{ fase: "in", sec: 4, stap: 0, woord: "In" }, { fase: "uit", sec: 8, stap: 1, woord: "Neurie" }],
+    tip: "Liever stil? Adem dan gewoon lang uit.",
+    alsHetNietLukt: "A2" },
+  { id: "A9", naam: "Buikademhaling", categorie: "Ademen", varianten: [1, 3, 5], focus: "lichaam", beweging: false, inspanning: "geen", type: "adem",
+    waarom: "Ademen vanuit je buik vertraagt je adem en geeft je aandacht een plek.",
+    wat: "Hand op je buik, rustig in en uit.",
+    stappen: ["Adem in. Je buik komt naar voren onder je hand.", "Adem uit. Je buik zakt terug."],
+    ritme: [{ fase: "in", sec: 5, stap: 0, woord: "In" }, { fase: "uit", sec: 7, stap: 1, woord: "Uit" }],
+    tip: "Leg een hand op je buik. Liggen mag ook.",
+    alsHetNietLukt: "Z4" },
+  { id: "A10", naam: "Om en om door je neus", categorie: "Ademen", varianten: [1, 3, 5], focus: "adem", beweging: false, inspanning: "geen", type: "adem",
+    waarom: "Het wisselen vraagt net genoeg aandacht om gedachten even los te laten.",
+    wat: "Links in, rechts uit, rechts in, links uit.",
+    stappen: ["Duim op je rechterneusgat. Adem in door links.", "Wissel: links dicht. Adem uit door rechts.", "Adem in door rechts.", "Wissel weer. Adem uit door links."],
+    ritme: [{ fase: "in", sec: 4, stap: 0, woord: "In links" }, { fase: "uit", sec: 6, stap: 1, woord: "Uit rechts" }, { fase: "in", sec: 4, stap: 2, woord: "In rechts" }, { fase: "uit", sec: 6, stap: 3, woord: "Uit links" }],
+    tip: "Verstopte neus? Adem dan rustig zonder vingers.",
+    alsHetNietLukt: "A6" },
   { id: "Z1", naam: "5-4-3-2-1", categorie: "Kijken en bewegen", varianten: [2, 4], focus: "extern", beweging: false, inspanning: "geen", type: "stappen",
     waarom: "Aandacht naar buiten helpt bij te veel prikkels.",
     wat: "Noem wat je ziet, voelt, hoort, ruikt en proeft.",
@@ -21000,7 +21050,8 @@ function mfVoorstellen(antwoorden) {
   const weinigEnergie = profiel === "energie" || (a.energie != null && a.energie <= 2);
   const veelDrukte = a.drukte != null && a.drukte >= 4;
   // Weinig energie: alleen rustig zitten of liggen, uit deze vier.
-  if (weinigEnergie) lijst = lijst.filter(o => ["A2", "Z4", "A1", "V1"].includes(o.id));
+  // A6 (zes per minuut) en A9 (buikademhaling) kunnen liggend en kosten geen inspanning.
+  if (weinigEnergie) lijst = lijst.filter(o => ["A2", "Z4", "A1", "V1", "A6", "A9"].includes(o.id));
   // Druk hoofd: alleen aandacht naar buiten of bewegen, uit deze vier.
   if (veelDrukte) lijst = lijst.filter(o => ["Z1", "Z4", "Z2", "A1"].includes(o.id));
   // Bij profiel "weinig energie" nooit Rustig lopen.
@@ -21081,6 +21132,20 @@ const MF_BRONNEN = [
   ["Canada (Lunsky e.a., 2025)", "63 autistische volwassenen, 6 weken online met korte oefeningen.", "Minder stress, milder voor zichzelf.", "Betere lichaamswaarneming."],
   ["VK (Gaigg e.a., 2020)", "54 autistische volwassenen, zelfhulp online.", "Bij ruim 3 op 4 minder angst.", "Groot onderzoek; kleine groep."],
   ["Stanford (Balban e.a., 2023)", "114 volwassenen, 5 minuten per dag.", "Lange uitademing verbeterde de stemming het meest.", "Specifiek onderzocht bij ADHD of autisme."]
+];
+/* Hoeveel onderzoek is er naar deze ademoefening? Eerlijk in één woord. */
+const MF_BEWIJS = { A1: "veel", A2: "veel", A5: "enig", A6: "veel", A7: "weinig", A8: "enig", A9: "enig", A10: "enig" };
+const MF_BEWIJS_TEKST = { veel: "veel onderzoek", enig: "enig onderzoek", weinig: "weinig onderzoek" };
+const MF_TEKST_ADEM = "Ademoefeningen verminderen stress gemiddeld een beetje tot matig. Langzaam ademen met een lange uitademing is het best onderzocht. Voor vierkant ademen en 4-7-8 is minder bewijs.";
+const MF_BRONNEN_ADEM = [
+  ["Oxford (Fincham e.a., 2023)", "Meta-analyse: 12 gerandomiseerde studies, 785 volwassenen.", "Ademoefeningen verminderen stress een beetje tot matig.", "Welke techniek het best werkt; veel studies hadden matige kwaliteit."],
+  ["Stanford (Balban e.a., 2023)", "111 volwassenen, 5 minuten per dag, een maand. Twee keer in, lang uit, vierkant ademen en meditatie.", "Alle groepen voelden zich beter; lange uitademing (Twee keer in, lang uit) het meest.", "Vierkant ademen was niet beter dan de andere ademoefeningen."],
+  ["Goessl e.a., 2017 (Zes keer per minuut)", "Meta-analyse: 24 studies met ademen op je rustritme, 484 mensen.", "Duidelijk minder stress en angst.", "Meestal met apparaat en begeleiding, niet alleen met een app."],
+  ["Pisa (Zaccaro e.a., 2018)", "Overzicht van 15 studies naar langzaam ademen, minder dan 10 keer per minuut.", "Meer hartslagvariatie en een rustiger, alerter gevoel.", "Vooral gezonde mensen; weinig over klachten."],
+  ["Beijing (Ma e.a., 2017, buikademhaling)", "40 volwassenen, 8 weken, 20 keer oefenen.", "Minder negatieve gevoelens, betere aandacht, lager stresshormoon.", "Kleine groep; geoefend met een feedbackapparaat."],
+  ["Thailand (Vierra e.a., 2022, 4-7-8)", "43 jonge volwassenen, één keer oefenen.", "Hartslagvariatie en bloeddruk gingen iets gunstiger.", "Effect op stress of slaap op langere termijn."],
+  ["New Delhi (Ghati e.a., 2021, neuriën)", "Mensen met hoge bloeddruk, één keer neuriënd uitademen.", "Meer rustsignaal in het hartritme.", "Bloeddruk daalde niet meteen; één sessie."],
+  ["Overzicht om en om ademen (2017)", "44 gerandomiseerde studies naar ademen door één neusgat tegelijk.", "Gunstig voor hartslag en ademhaling.", "Uitvoering verschilt per studie; weinig over angst of stress."]
 ];
 const MF_BRON_SLOT = "Oefenen kan soms ongemakkelijk voelen. Dat komt vaker voor bij wie het al zwaar heeft. Stoppen mag altijd.";
 
@@ -21231,7 +21296,7 @@ function mfBegin(o, min, opties) {
     stap: 0, stapStart: 0, fase: -1, tel: 1, labels: {}, golf: {}, keuzes: {},
     ritme: o.ritme === "instellingen"
       ? [{ fase: "in", sec: s.ademIn, stap: 0, woord: "In" }, { fase: "uit", sec: s.ademUit, stap: 1, woord: "Uit" }]
-      : o.ritme || null,
+      : o.ritme ? (s.geenVasthouden ? o.ritme.filter(f => f.fase !== "vast") : o.ritme) : null,
     gestart: new Date().toISOString()
   };
   const typeHTML = {
@@ -21249,6 +21314,7 @@ function mfBegin(o, min, opties) {
     <div class="mf-midden">
       <p class="mf-stap" id="mf-stap"></p>
       ${typeHTML()}
+      ${o.tip ? `<p class="mf-hint mf-ademtip">${esc(o.tip)}</p>` : ""}
     </div>
     <div class="mf-onder">
       <button class="mf-knop" data-mf="pauze" aria-pressed="false">Pauze</button>
@@ -21330,7 +21396,9 @@ function mfAdemFase(i) {
   if (cirkel) {
     // Groeien bij inademen, krimpen bij uitademen. De overgang duurt precies zo lang als de fase.
     cirkel.style.transitionDuration = mfMag("animatie") ? f.sec + "s" : "0s";
-    cirkel.style.transform = `scale(${f.fase === "uit" ? .55 : f.fase === "bij" ? 1.08 : 1})`;
+    // Bij "vast" blijft de cirkel staan waar hij was (na in: groot, na uit: klein).
+    if (f.fase !== "vast") cirkel.style.transform = `scale(${f.fase === "uit" ? .55 : f.fase === "bij" ? 1.08 : 1})`;
+    cirkel.classList.toggle("vast", f.fase === "vast");
   }
   const woord = document.querySelector("#mf-speler .mf-ademwoord"), cw = document.querySelector("#mf-speler .mf-cirkelwoord");
   if (woord) woord.textContent = f.woord;
@@ -21339,8 +21407,9 @@ function mfAdemFase(i) {
   if (p && A.verstreken > 1) p.textContent = A.stappen[f.stap] || "";
   mfMeld(f.woord);
   mfZeg(f.woord);
-  if (mfMag("ademtonen")) mfToon(f.fase === "uit" ? 330 : f.fase === "bij" ? 587 : 523, f.sec, .045);
-  mfTril(f.fase === "uit" ? 15 : 30);
+  // Vasthouden is stil: geen toon.
+  if (mfMag("ademtonen") && f.fase !== "vast") mfToon(f.fase === "uit" ? 330 : f.fase === "bij" ? 587 : 523, f.sec, .045);
+  mfTril(f.fase === "uit" ? 15 : f.fase === "vast" ? 8 : 30);
 }
 
 /* ---------- 70.6 Klaar of gestopt ----------
@@ -21604,7 +21673,7 @@ function mfOefKaart(o, opties) {
   return `<li class="mf-oef">
     <button class="mf-oefhoofd" data-act="mf-start" data-id="${o.id}" data-min="${min}" data-bron="${bron}"${checkin} aria-label="Start ${esc(o.naam)}, ${min} ${min === 1 ? "minuut" : "minuten"}">
       <b>${esc(o.naam)}</b><span class="mf-oefwat">${esc(o.wat)}</span>
-      <span class="mf-oefmeta">${opties.min ? `${min} min` : esc(mfDuurTekst(o))}${label ? ` · ${label}` : o.beweging ? " · bewegen" : ""}</span></button>
+      <span class="mf-oefmeta">${opties.min ? `${min} min` : esc(mfDuurTekst(o))}${label ? ` · ${label}` : o.beweging ? " · bewegen" : ""}${MF_BEWIJS[o.id] ? ` · ${MF_BEWIJS_TEKST[MF_BEWIJS[o.id]]}` : ""}</span></button>
     <div class="mf-oefknoppen">
       ${!opties.min && o.varianten.length > 1 ? o.varianten.map(m => `<button class="mf-duur" data-act="mf-start" data-id="${o.id}" data-min="${m}" data-bron="${bron}" aria-label="Start ${esc(o.naam)}, ${m} minuten">${m}′</button>`).join("") : ""}
       <button class="mf-fav" data-act="mf-fav" data-id="${o.id}" aria-pressed="${fav}" aria-label="${fav ? "Uit favorieten halen" : "Bewaar als favoriet"}: ${esc(o.naam)}">${fav ? "★" : "☆"}</button>
@@ -21708,6 +21777,7 @@ function vwAnkerInst() {
       ${mfSchakel("stem", "Voorleesstem", "Een stem leest elke stap voor.", s.stem, arm)}
       ${mfSchakel("animatie", "Animatie", "Ademcirkel die groeit en krimpt.", s.animatie, arm || mfSysteemRustig())}
       ${mfSchakel("trilling", "Trilling", "Korte trilling bij elke stap. Werkt niet op iPhone.", s.trilling, arm)}
+      ${mfSchakel("geenVasthouden", "Adem niet vasthouden", "Laat de pauzes in vierkant ademen en 4-7-8 weg. Fijn bij duizeligheid.", s.geenVasthouden)}
     </ul>
     ${inst("rust", false) ? `<p class="mf-klein">De prikkelarme modus van de app staat aan. Daardoor staan deze prikkels in Anker ook uit.</p>` : ""}
     ${mfSysteemRustig() ? `<p class="mf-klein">Je toestel vraagt om minder beweging. Daarom staat de animatie uit.</p>` : ""}
@@ -21758,6 +21828,10 @@ function mfDagenTekst(d) {
 function vwAnkerBronnen() {
   return mfScherm(`<p>${esc(MF_TEKST.bewijs)}</p>
     <ol class="mf-bronnen">${MF_BRONNEN.map(([wie, wat, wel, niet]) => `<li><b>${esc(wie)}</b><span class="mf-klein">${esc(wat)}</span>
+      <p><span class="mf-wel">Wat het laat zien:</span> ${esc(wel)}</p><p><span class="mf-niet">Wat niet:</span> ${esc(niet)}</p></li>`).join("")}</ol>
+    <h3 class="mf-bronkop">Ademoefeningen</h3>
+    <p>${esc(MF_TEKST_ADEM)}</p>
+    <ol class="mf-bronnen mf-bronnen-adem">${MF_BRONNEN_ADEM.map(([wie, wat, wel, niet]) => `<li><b>${esc(wie)}</b><span class="mf-klein">${esc(wat)}</span>
       <p><span class="mf-wel">Wat het laat zien:</span> ${esc(wel)}</p><p><span class="mf-niet">Wat niet:</span> ${esc(niet)}</p></li>`).join("")}</ol>
     <p class="mf-vet">${esc(MF_BRON_SLOT)}</p>
     <p class="mf-voet">${esc(MF_TEKST.voetregel)}</p>`);
