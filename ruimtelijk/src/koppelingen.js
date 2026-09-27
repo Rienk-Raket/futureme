@@ -7,7 +7,7 @@
      in Terugblik en in Zoeken.
    ========================================================================== */
 const VERWANT = {
-  welkom: [["vandaag", "Vandaag"], ["overzicht", "Deze week"], ["hobbyskills", "HobbySkills"], ["financieel", "Financieel"]],
+  welkom: [["vandaag", "Vandaag"], ["overzicht", "Deze week"]],
   start: [["persoonlijk", "Persoonlijk"], ["hobbyskills", "HobbySkills"], ["logboek", "Logboek"]],
   vandaag: [["komend", "Komende 7 dagen"], ["kalender", "Kalender"], ["gewoontes", "Gewoontes"], ["dagboek", "Dagboek"]],
   komend: [["kalender", "Kalender"], ["overzicht", "Overzicht"], ["projecten", "Projecten"], ["afspraken", "Afspraken"]],

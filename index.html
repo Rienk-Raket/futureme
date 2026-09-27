@@ -1936,6 +1936,10 @@ svg .fm-rk-cel:hover{stroke:var(--text);stroke-width:1.5}
 /* Golf: cellen komen diagonaal op (kolom + rij bepaalt de vertraging). */
 html[data-ruimte="1"][data-beweging="vol"] .fm-ritme.rt-in .fm-rk-cel{animation:fm-rk-op .5s var(--fm-veer-zacht) backwards;animation-delay:calc(120ms + (var(--k) + var(--r)) * 22ms);transform-box:fill-box;transform-origin:center}
 @keyframes fm-rk-op{from{opacity:0;transform:scale(.2)}to{opacity:1;transform:none}}
+/* Sporen van andere modules (sectie 80) */
+.fm-dr-spoor{stroke:var(--card);stroke-width:2;cursor:pointer}
+.fm-dr-spoor:focus-visible{outline:none;stroke:var(--text);stroke-width:2.5}
+.fm-dr-legenda i.spoor{width:9px;height:9px;border-radius:2px;background:var(--muted);transform:rotate(45deg);margin:0 1px}
 
 
 /* ==========================================================================
@@ -2982,6 +2986,9 @@ html[data-retro="1"] .nwo-kies span{font-family:var(--pixel);font-weight:400;fon
 .shi-stapnieuw .invoer{flex:1;min-width:0}
 
 
+/* Anker-kleur alleen in de speler (sessie); de rest van Anker volgt de accentkleur. */
+:root{--mf-k:var(--accent)}
+#mf-speler,.mf-speler{--mf-k:#2f6d94}
 /* === SECTIE 73: ANKER – VORMGEVING ===
    Volgt de variabelen en onderdelen van de app. Tikdoelen minimaal 48px.
    Lettergrootte: .mf-l-normaal / .mf-l-groot / .mf-l-extra (--mf-f). */
@@ -3002,7 +3009,7 @@ html[data-retro="1"] .nwo-kies span{font-family:var(--pixel);font-weight:400;fon
 .mf-verder{margin-top:6px}
 /* De grote knop: één tik naar rust */
 .mf-snelknop{display:flex;align-items:center;justify-content:center;width:100%;min-height:72px;border-radius:20px;margin:6px 0 10px;
-  background:#2f6d94;color:#fff;font-size:calc(18px * var(--t) * var(--mf-f,1));font-weight:750;box-shadow:0 6px 0 0 #1f4d69,0 10px 20px -6px rgba(47,109,148,.5);
+  background:var(--mf-k);color:#fff;font-size:calc(18px * var(--t) * var(--mf-f,1));font-weight:750;box-shadow:0 6px 0 0 color-mix(in srgb,var(--mf-k) 70%,#000),0 10px 20px -6px color-mix(in srgb,var(--mf-k) 50%,transparent);
   transition:transform .1s,box-shadow .1s}
 .mf-snelknop:active{transform:translateY(4px);box-shadow:0 2px 0 0 #1f4d69}
 .mf-rij{display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -3014,7 +3021,7 @@ html[data-retro="1"] .nwo-kies span{font-family:var(--pixel);font-weight:400;fon
 .mf-profiel{display:flex;flex-direction:column;gap:2px;width:100%;text-align:left;min-height:56px;padding:12px 14px;border-radius:16px;border:2px solid var(--line);background:var(--card)}
 .mf-profiel b{font-size:calc(15px * var(--t) * var(--mf-f,1))}
 .mf-profiel span{color:var(--muted);font-size:calc(13px * var(--t) * var(--mf-f,1))}
-.mf-profiel.aan,.mf-profiel[aria-pressed="true"]{border-color:#2f6d94;background:color-mix(in srgb,#2f6d94 9%,var(--card))}
+.mf-profiel.aan,.mf-profiel[aria-pressed="true"]{border-color:var(--mf-k);background:color-mix(in srgb,var(--mf-k) 9%,var(--card))}
 .mf-overslaan{min-height:48px}
 /* Oefeningkaarten */
 .mf-oefenlijst{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
@@ -3038,15 +3045,15 @@ html[data-retro="1"] .nwo-kies span{font-family:var(--pixel);font-weight:400;fon
 .mf-progdagen{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
 .mf-progdagen li{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:calc(13.5px * var(--t) * var(--mf-f,1))}
 .mf-progdagen li>span:first-child{width:24px;height:24px;border-radius:50%;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex:0 0 auto}
-.mf-progdagen li.af>span:first-child{background:#2f6d94;color:#fff}
+.mf-progdagen li.af>span:first-child{background:var(--mf-k);color:#fff}
 .mf-progdagen li.nu{color:var(--text);font-weight:700}
-.mf-progdagen li.nu>span:first-child{border:2px solid #2f6d94;background:transparent}
+.mf-progdagen li.nu>span:first-child{border:2px solid var(--mf-k);background:transparent}
 /* Help me kiezen */
 .mf-vraag{border:0;margin:0 0 14px;padding:0}
 .mf-vraag legend{font-weight:700;margin:0 2px 8px;padding:0;font-size:calc(15px * var(--t) * var(--mf-f,1))}
 .mf-chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
 .mf-chip{min-height:48px;min-width:48px;padding:0 14px;border-radius:14px;border:2px solid var(--line);background:var(--card);font-weight:650}
-.mf-chip[aria-pressed="true"]{border-color:#2f6d94;background:color-mix(in srgb,#2f6d94 12%,var(--card))}
+.mf-chip[aria-pressed="true"]{border-color:var(--mf-k);background:color-mix(in srgb,var(--mf-k) 12%,var(--card))}
 .mf-sla{color:var(--muted)}
 /* Jouw ervaring */
 .mf-tegels{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
@@ -3059,7 +3066,7 @@ html[data-retro="1"] .nwo-kies span{font-family:var(--pixel);font-weight:400;fon
 .mf-legenda{list-style:none;margin:0 2px 8px;padding:0;display:flex;gap:14px;font-size:calc(12px * var(--t));color:var(--muted)}
 .mf-legenda i,.mf-vbalk i{display:inline-block}
 .mf-legenda i{width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
-.mf-legenda i.b,.mf-vbalk i.b{background:#2f6d94}
+.mf-legenda i.b,.mf-vbalk i.b{background:var(--mf-k)}
 .mf-legenda i.h,.mf-vbalk i.h{background:var(--line2)}
 .mf-legenda i.r,.mf-vbalk i.r{background:#c2692d}
 .mf-verdeling{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
@@ -3091,7 +3098,7 @@ html[data-retro="1"] .nwo-kies span{font-family:var(--pixel);font-weight:400;fon
 .mf-pauzeknop{display:flex;align-items:center;gap:12px;width:100%;min-height:56px;padding:10px 14px;margin:10px 0;border-radius:16px;background:var(--card);box-shadow:var(--shadow);text-align:left}
 .mf-pauzeknop b{display:block;font-size:calc(15px * var(--t))}
 .mf-pauzeknop small{color:var(--muted);font-size:calc(12.5px * var(--t))}
-.mf-pauzeicoon{width:36px;height:36px;border-radius:50%;background:color-mix(in srgb,#2f6d94 14%,transparent);display:flex;align-items:center;justify-content:center;font-size:18px;flex:0 0 auto}
+.mf-pauzeicoon{width:36px;height:36px;border-radius:50%;background:color-mix(in srgb,var(--mf-k) 14%,transparent);display:flex;align-items:center;justify-content:center;font-size:18px;flex:0 0 auto}
 .mf-tegel{-webkit-touch-callout:none;user-select:none;-webkit-user-select:none}
 
 /* ---------- De sessiespeler (over de hele app heen) ---------- */
@@ -3102,22 +3109,22 @@ html.mf-sessie-open,html.mf-sessie-open body{overflow:hidden}
 .mf-kopnaam{font-weight:700;color:var(--muted);font-size:calc(14px * var(--mf-f,1));min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .mf-stop{min-width:72px;min-height:48px;padding:0 16px;border-radius:14px;background:var(--card);border:2px solid var(--line2);font-weight:750;color:var(--text);flex:0 0 auto}
 .mf-voortgang{height:6px;border-radius:3px;background:var(--line);overflow:hidden;margin:6px 0 0}
-.mf-voortgang i{display:block;height:100%;width:0;background:#2f6d94;transition:width .2s linear}
+.mf-voortgang i{display:block;height:100%;width:0;background:var(--mf-k);transition:width .2s linear}
 .mf-stil .mf-voortgang i{transition:none}
 .mf-midden{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;min-height:0;text-align:center}
 .mf-stap{font-size:calc(24px * var(--mf-f,1));font-weight:700;line-height:1.35;margin:0;max-width:22em;min-height:2.7em;display:flex;align-items:center;justify-content:center}
 .mf-onder{display:flex;align-items:center;gap:10px}
 .mf-tijd{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--muted);font-weight:650}
 .mf-knop{min-height:52px;min-width:52px;padding:0 18px;border-radius:16px;background:var(--card);border:2px solid var(--line);font-weight:700;font-size:calc(16px * var(--mf-f,1));color:var(--text)}
-.mf-knop.hoofd{background:#2f6d94;border-color:#2f6d94;color:#fff}
+.mf-knop.hoofd{background:var(--mf-k);border-color:var(--mf-k);color:#fff}
 .mf-knop.groot{min-height:88px;width:min(100%,340px);font-size:calc(19px * var(--mf-f,1))}
-.mf-knop[aria-pressed="true"]{border-color:#2f6d94}
+.mf-knop[aria-pressed="true"]{border-color:var(--mf-k)}
 .mf-knoppen{display:flex;flex-direction:column;gap:10px;width:100%;max-width:360px;margin:8px auto 0}
 /* Ademcirkel: schaalt met transform (animatie uit = geen overgang, alleen tekst) */
 .mf-adem{display:flex;flex-direction:column;align-items:center;gap:14px}
 .mf-cirkel{width:min(62vw,250px);aspect-ratio:1;border-radius:50%;display:flex;align-items:center;justify-content:center;
-  background:radial-gradient(circle at 50% 40%,color-mix(in srgb,#5fa8d3 55%,var(--card)),color-mix(in srgb,#2f6d94 70%,var(--card)));
-  box-shadow:0 0 0 10px color-mix(in srgb,#2f6d94 12%,transparent);transform:scale(.55);transition-property:transform;transition-timing-function:ease-in-out}
+  background:radial-gradient(circle at 50% 40%,color-mix(in srgb,#5fa8d3 55%,var(--card)),color-mix(in srgb,var(--mf-k) 70%,var(--card)));
+  box-shadow:0 0 0 10px color-mix(in srgb,var(--mf-k) 12%,transparent);transform:scale(.55);transition-property:transform;transition-timing-function:ease-in-out}
 .mf-cirkelwoord{color:#fff;font-weight:800;font-size:calc(22px * var(--mf-f,1));text-shadow:0 1px 2px rgba(0,0,0,.25)}
 .mf-ademtekst{display:none;flex-direction:column;align-items:center}
 .mf-ademwoord{font-size:calc(40px * var(--mf-f,1));font-weight:800}
@@ -3133,9 +3140,9 @@ html.mf-sessie-open,html.mf-sessie-open body{overflow:hidden}
 .mf-label b{font-size:calc(16px * var(--mf-f,1))}
 .mf-labeltel{font-size:calc(13px * var(--mf-f,1));color:var(--muted);font-variant-numeric:tabular-nums}
 .mf-kies{min-height:48px;padding:0 16px;border-radius:14px;background:var(--card);border:2px solid var(--line);font-weight:650;font-size:calc(15px * var(--mf-f,1))}
-.mf-kies[aria-pressed="true"]{border-color:#2f6d94;background:color-mix(in srgb,#2f6d94 14%,var(--card))}
+.mf-kies[aria-pressed="true"]{border-color:var(--mf-k);background:color-mix(in srgb,var(--mf-k) 14%,var(--card))}
 .mf-schuif{width:min(100%,360px)}
-.mf-schuif input{width:100%;height:48px;accent-color:#2f6d94}
+.mf-schuif input{width:100%;height:48px;accent-color:var(--mf-k)}
 .mf-schuifwaarden{display:flex;justify-content:space-between;align-items:center;color:var(--muted)}
 .mf-schuifnu{font-size:calc(26px * var(--mf-f,1));color:var(--text)}
 .mf-hint{color:var(--muted);font-size:calc(15px * var(--mf-f,1))}
@@ -3149,7 +3156,7 @@ html.mf-sessie-open,html.mf-sessie-open body{overflow:hidden}
 .mf-keuzelijst.drie li{flex:1}
 .mf-keuze{width:100%;min-height:56px;border-radius:16px;border:2px solid var(--line);background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:8px 10px}
 .mf-keuze span{color:var(--muted);font-size:calc(14px * var(--mf-f,1))}
-.mf-keuze.aan,.mf-keuze[aria-pressed="true"]{border-color:#2f6d94;background:color-mix(in srgb,#2f6d94 12%,var(--card))}
+.mf-keuze.aan,.mf-keuze[aria-pressed="true"]{border-color:var(--mf-k);background:color-mix(in srgb,var(--mf-k) 12%,var(--card))}
 .mf-notitielabel{font-size:calc(14px * var(--mf-f,1));color:var(--muted);margin:4px auto 0;max-width:360px;width:100%}
 .mf-notitie{width:100%;max-width:360px;margin:0 auto;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--text);font:inherit;padding:10px 12px;min-height:56px}
 .mf-deel{margin:4px auto 0;min-height:48px;color:var(--accent);font-weight:650}
@@ -3158,46 +3165,42 @@ html.mf-sessie-open,html.mf-sessie-open body{overflow:hidden}
 .mf-uitkomst li{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--line)}
 .mf-golf{width:100%;height:auto}
 .mf-golfas{stroke:var(--line2);stroke-width:1}
-.mf-golflijn{fill:none;stroke:#2f6d94;stroke-width:2.5;stroke-linejoin:round}
-.mf-golfpunt{fill:#2f6d94;stroke:var(--card);stroke-width:2}
+.mf-golflijn{fill:none;stroke:var(--mf-k);stroke-width:2.5;stroke-linejoin:round}
+.mf-golfpunt{fill:var(--mf-k);stroke:var(--card);stroke-width:2}
 .mf-golf text{font-size:11px;font-weight:700;fill:var(--text)}
 .mf-kaartje{background:var(--card);border-radius:16px;padding:14px;max-width:360px;width:100%;margin:0 auto;display:flex;flex-direction:column;gap:10px}
 .mf-kaartje p{margin:0}
-.mf-kaartje.zacht{background:color-mix(in srgb,#2f6d94 10%,var(--card))}
+.mf-kaartje.zacht{background:color-mix(in srgb,var(--mf-k) 10%,var(--card))}
 @media (prefers-reduced-motion:reduce){.mf-cirkel{transition:none !important}.mf-snelknop{transition:none}}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .mf-snelknop{background:#3a7ca5;box-shadow:0 6px 0 0 #1f4d69}}
+
 /* Nieuwe ademoefeningen: vasthouden, tip en bronnen per soort */
-.mf-cirkel.vast{box-shadow:0 0 0 6px color-mix(in srgb,#2f6d94 22%,transparent)}
+.mf-cirkel.vast{box-shadow:0 0 0 6px color-mix(in srgb,var(--mf-k) 22%,transparent)}
 .mf-ademtip{text-align:center;margin:14px auto 0;max-width:30ch}
 .mf-bronkop{font-size:calc(18px * var(--mf-f,1));margin:26px 0 4px}
 
 
 /* 75. Voortgang: een eigen omgeving over de app heen */
 #vg-omgeving{
-  --vg-acc:#4f46e5;--vg-acc2:#6366f1;--vg-zacht:color-mix(in srgb,var(--vg-acc) 12%,var(--card));--vg-spoor:color-mix(in srgb,var(--text) 9%,transparent);
+  --vg-acc:var(--accent);--vg-acc2:var(--accent);--vg-zacht:color-mix(in srgb,var(--vg-acc) 12%,var(--card));--vg-spoor:color-mix(in srgb,var(--text) 9%,transparent);
   --vg-goed:#15803d;--vg-minder:#b45309;
   position:fixed;inset:0;z-index:55;display:flex;flex-direction:column;background:var(--bg);color:var(--text);
   opacity:0;transform:translateY(18px) scale(.985);transition:opacity .26s,transform .32s cubic-bezier(.22,1,.36,1)}
 #vg-omgeving.zicht{opacity:1;transform:none}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #vg-omgeving{--vg-acc:#818cf8;--vg-acc2:#a5b4fc;--vg-goed:#4ade80;--vg-minder:#fbbf24}}
-:root[data-theme="dark"] #vg-omgeving{--vg-acc:#818cf8;--vg-acc2:#a5b4fc;--vg-goed:#4ade80;--vg-minder:#fbbf24}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #vg-omgeving{--vg-goed:#4ade80;--vg-minder:#fbbf24}}
+:root[data-theme="dark"] #vg-omgeving{--vg-goed:#4ade80;--vg-minder:#fbbf24}
 html.vg-open,html.vg-open body{overflow:hidden}
 @media (prefers-reduced-motion:reduce){#vg-omgeving{transition:none;transform:none}}
 
-/* Kop: eigen identiteit, donker indigo met een fijn raster */
-.vg-kop{position:relative;padding:calc(env(safe-area-inset-top) + 10px) 12px 14px;color:#fff;
-  background:linear-gradient(135deg,#1e1b4b,#312e81 55%,#4338ca);overflow:hidden}
-.vg-kop::before{content:"";position:absolute;inset:0;opacity:.14;pointer-events:none;
-  background-image:linear-gradient(rgba(255,255,255,.6) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px);background-size:22px 22px;
-  mask-image:linear-gradient(180deg,#000,transparent);-webkit-mask-image:linear-gradient(180deg,#000,transparent)}
+/* Kop: zelfde als de kop van de app (geen eigen wereld; alleen sessies hebben die) */
+.vg-kop{position:relative;padding:calc(env(safe-area-inset-top) + 10px) 12px 12px;color:var(--text);background:var(--bg);border-bottom:1px solid var(--line)}
 .vg-kopregel{position:relative;display:flex;align-items:center;gap:8px}
-.vg-kopknop{flex:0 0 auto;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:rgba(255,255,255,.12);color:inherit}
+.vg-kopknop{flex:0 0 auto;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:var(--card2);color:var(--text)}
 .vg-kopknop svg{width:22px;height:22px}
 .vg-kopknop.leeg{background:none}
 .vg-kopknop[disabled]{opacity:.3}
 .vg-koptekst{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center}
 .vg-koptekst h1{font-size:calc(19px * var(--t));font-weight:800;letter-spacing:-.01em;margin:0;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.vg-koptekst span{font-size:calc(12px * var(--t));opacity:.75}
+.vg-koptekst span{font-size:calc(12px * var(--t));color:var(--muted)}
 html[data-retro="1"] .vg-koptekst h1{font-family:var(--pixel);font-weight:400;font-size:calc(13px * var(--t));line-height:1.6}
 
 .vg-inhoud{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 16px calc(96px + env(safe-area-inset-bottom))}
@@ -3376,7 +3379,7 @@ html[data-retro="1"] .vg-sectie{font-family:var(--pixel);font-weight:400;font-si
 .pf-kop b{display:block;font-size:calc(19px * var(--t))}
 .pf-kop span{font-size:calc(13px * var(--t));color:var(--muted)}
 .pf-avatar{width:58px;height:58px;border-radius:20px;display:grid;place-items:center;flex:0 0 auto;font-weight:800;font-size:26px;color:#fff;
-  background:linear-gradient(135deg,#0e7490,#4f46e5)}
+  background:var(--accent)}
 .pf-avatar.klein{width:40px;height:40px;border-radius:14px;font-size:18px}
 .pf-sectie{background:var(--card);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
 .pf-sectie summary{display:flex;align-items:center;gap:10px;padding:14px 16px;min-height:60px;cursor:pointer;list-style:none}
@@ -3414,23 +3417,26 @@ html[data-retro="1"] .vg-sectie{font-family:var(--pixel);font-weight:400;font-si
 /* 78. Huishouden */
 .hh{display:flex;flex-direction:column}
 .hh-kop{--kk:#0e7490}
-.hh-start{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:18px 16px;margin:12px 0 10px;border-radius:22px;color:#fff;
-  background:radial-gradient(120% 140% at 12% 10%,#155e75 0%,#0b1220 60%,#05070c 100%);box-shadow:0 10px 30px rgba(8,47,73,.35),inset 0 0 0 1px rgba(255,255,255,.08)}
+.hh-start{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:16px;margin:12px 0 10px;border-radius:20px;color:#fff;
+  background:var(--accent);box-shadow:var(--shadow)}
 .hh-start b{display:block;font-size:calc(17px * var(--t))}
 .hh-start small{display:block;font-size:calc(12.5px * var(--t));opacity:.75}
 .hh-start>span:nth-child(2){flex:1}
 .hh-start svg{width:18px;height:18px;opacity:.8}
-.hh-startico{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:22px;background:rgba(255,255,255,.1);box-shadow:0 0 18px rgba(103,232,249,.45);color:#a5f3fc}
+.hh-startico{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:rgba(255,255,255,.18);color:#fff}
+.hh-startico svg{width:22px;height:22px}
 .hh-snel{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px}
 .hh-snelknop{display:flex;flex-direction:column;align-items:flex-start;gap:1px;text-align:left;padding:12px 14px;border-radius:18px;background:var(--card);box-shadow:var(--shadow);min-height:84px}
-.hh-snelknop>span{font-size:22px}
+.hh-snelknop>span{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent);margin-bottom:4px}
+.hh-snelknop>span svg{width:19px;height:19px}
 .hh-snelknop b{font-size:calc(14px * var(--t))}
 .hh-snelknop small{font-size:calc(11.5px * var(--t));color:var(--muted)}
 .hh-rij{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:10px 14px;min-height:58px;border-bottom:1px solid var(--line)}
 .hh-rij:last-child{border-bottom:0}
 .hh-rij[aria-disabled="true"]{opacity:.55}
 .hh-rij.stil{cursor:default}
-.hh-emoji{font-size:22px;width:30px;text-align:center;flex:0 0 auto}
+.hh-emoji{font-size:22px;width:30px;text-align:center;flex:0 0 auto;display:grid;place-items:center;color:var(--muted)}
+.hh-emoji svg{width:22px;height:22px}
 .hh-rijt{flex:1;min-width:0;display:flex;flex-direction:column}
 .hh-rijt b{font-size:calc(14.5px * var(--t))}
 .hh-rijt small{font-size:calc(12px * var(--t));color:var(--muted)}
@@ -3455,25 +3461,24 @@ html[data-retro="1"] .vg-sectie{font-family:var(--pixel);font-weight:400;font-si
 .hh-link{color:var(--accent);font-weight:700}
 
 /* Samenvatting */
-.hh-samen{margin:12px 0 4px;padding:16px;border-radius:22px;color:#e6f6fb;background:radial-gradient(120% 140% at 85% 0%,#1e3a5f 0%,#0b1220 65%);box-shadow:0 10px 30px rgba(8,47,73,.3);
+.hh-samen{margin:12px 0 4px;padding:16px;border-radius:20px;background:var(--card);box-shadow:var(--shadow);border:2px solid color-mix(in srgb,var(--accent) 35%,transparent);
   animation:hh-in .5s cubic-bezier(.22,1,.36,1)}
 @keyframes hh-in{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.hh-samen{animation:none}}
 .hh-samenkop{display:flex;align-items:center;gap:12px}
-.hh-samenkop>span{font-size:24px;color:#a5f3fc;text-shadow:0 0 14px #67e8f9}
+.hh-samenkop>span{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.hh-samenkop>span svg{width:20px;height:20px}
 .hh-samenkop div{flex:1;display:flex;flex-direction:column}
 .hh-samenkop b{font-size:calc(17px * var(--t))}
-.hh-samenkop small{font-size:calc(12px * var(--t));opacity:.7}
-.hh-sluitx{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:inherit;background:rgba(255,255,255,.08)}
+.hh-samenkop small{font-size:calc(12px * var(--t));color:var(--muted)}
+.hh-sluitx{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:var(--muted);background:var(--card2)}
 .hh-sluitx svg{width:18px;height:18px}
 .hh-zin{margin:10px 0 12px;font-size:calc(14px * var(--t))}
-.hh-samen .hh-cijfer{background:rgba(255,255,255,.07);box-shadow:none;color:#fff}
-.hh-samen .hh-cijfer span,.hh-samen .hh-uitleg{color:rgba(230,246,251,.7)}
 .hh-details{margin-top:10px}
 .hh-details summary{min-height:40px;display:flex;align-items:center;font-weight:700;cursor:pointer}
 .hh-details ul{list-style:none;margin:0;padding:0}
-.hh-details li{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-top:1px solid rgba(255,255,255,.08);font-size:calc(13px * var(--t))}
-.hh-details li small{opacity:.7;white-space:nowrap}
+.hh-details li{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-top:1px solid var(--line);font-size:calc(13px * var(--t))}
+.hh-details li small{color:var(--muted);white-space:nowrap}
 
 /* Lijst bewerken */
 .hh-lijstkop .veld{margin-bottom:10px}
@@ -3484,7 +3489,7 @@ html[data-retro="1"] .vg-sectie{font-family:var(--pixel);font-weight:400;font-si
 .hh-taak:last-child{border-bottom:0}
 .hh-taak.uit .hh-taakt{opacity:.45;text-decoration:line-through}
 .hh-mee{width:30px;height:30px;border-radius:9px;border:2px solid var(--line2);display:grid;place-items:center;font-weight:900;color:#fff;flex:0 0 auto}
-.hh-mee[aria-pressed="true"]{background:#0e7490;border-color:#0e7490}
+.hh-mee[aria-pressed="true"]{background:var(--accent);border-color:var(--accent)}
 .hh-taakt{flex:1;min-width:0;display:flex;flex-direction:column}
 .hh-taakt b{font-size:calc(14px * var(--t));font-weight:600}
 .hh-taakt small{font-size:calc(11px * var(--t));color:var(--faint)}
@@ -3497,7 +3502,8 @@ html[data-retro="1"] .vg-sectie{font-family:var(--pixel);font-weight:400;font-si
 .hh-weg{width:32px;height:36px;display:grid;place-items:center;color:var(--faint);flex:0 0 auto}
 .hh-weg svg{width:15px;height:15px}
 .hh-clknop{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px 14px;margin-bottom:10px}
-.hh-clknop>span:first-child{font-size:22px}
+.hh-clknop>span:first-child{display:grid;place-items:center;color:var(--accent)}
+.hh-clknop>span:first-child svg{width:22px;height:22px}
 .hh-clknop>span:nth-child(2){flex:1;display:flex;flex-direction:column}
 .hh-clknop small{font-size:12px;color:var(--muted)}
 
@@ -3520,7 +3526,7 @@ html[data-retro="1"] .vg-sectie{font-family:var(--pixel);font-weight:400;font-si
 .hh-planlijst b{font-variant-numeric:tabular-nums}
 .hh-importlijst{background:var(--card2);border-radius:14px;overflow:hidden}
 .hh-dobbel{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;padding:10px 0}
-.hh-dobbelsteen{font-size:54px;animation:hh-rol .7s cubic-bezier(.22,1,.36,1)}
+.hh-dobbelsteen{color:var(--accent);animation:hh-rol .7s cubic-bezier(.22,1,.36,1)}
 @keyframes hh-rol{from{transform:rotate(-200deg) scale(.4);opacity:0}to{transform:none;opacity:1}}
 @media (prefers-reduced-motion:reduce){.hh-dobbelsteen{animation:none}}
 .hh-dobbel b{font-size:19px}
@@ -3594,7 +3600,8 @@ html.hhs-open,html.hhs-open body{overflow:hidden}
 
 /* 78.5b Waarom zo? */
 .hh-waaromknop{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px 14px;margin-top:12px}
-.hh-waaromknop>span:first-child{font-size:22px}
+.hh-waaromknop>span:first-child{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.hh-waaromknop>span:first-child svg{width:18px;height:18px}
 .hh-waaromknop>span:nth-child(2){flex:1;display:flex;flex-direction:column}
 .hh-waaromknop small{font-size:12px;color:var(--muted)}
 .hh-lead{margin:0;font-size:calc(15px * var(--t));line-height:1.5}
@@ -3603,11 +3610,11 @@ html.hhs-open,html.hhs-open body{overflow:hidden}
 .hh-tabel{border-collapse:collapse;width:100%;min-width:520px;font-size:calc(12.5px * var(--t))}
 .hh-tabel th,.hh-tabel td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap;font-variant-numeric:tabular-nums}
 .hh-tabel thead th{color:var(--muted);font-weight:650;font-size:calc(11.5px * var(--t))}
-.hh-tabel tr.jij{background:color-mix(in srgb,#0e7490 10%,transparent)}
+.hh-tabel tr.jij{background:color-mix(in srgb,var(--accent) 10%,transparent)}
 .hh-tabel tr.jij th small{color:var(--muted);font-weight:500}
 .hh-filters{display:flex;gap:6px;overflow-x:auto;margin:0 0 8px;padding-bottom:2px}
 .hh-filter{flex:0 0 auto;min-height:36px;padding:0 12px;border-radius:99px;background:var(--card);box-shadow:var(--shadow);font-size:calc(12.5px * var(--t));font-weight:650}
-.hh-filter[aria-pressed="true"]{background:#0e7490;color:#fff}
+.hh-filter[aria-pressed="true"]{background:var(--accent);color:#fff}
 .hh-bewijs{display:flex;flex-direction:column;gap:8px}
 .hh-bewijskaart{padding:12px 14px}
 .hh-bewijskaart p{margin:6px 0 0;font-size:calc(13.5px * var(--t));line-height:1.45}
@@ -3619,6 +3626,59 @@ html.hhs-open,html.hhs-open body{overflow:hidden}
 :root[data-theme="dark"] .hh-sterkte.s-sterk{color:#4ade80}:root[data-theme="dark"] .hh-sterkte.s-redelijk{color:#67e8f9}:root[data-theme="dark"] .hh-sterkte.s-matig{color:#fbbf24}:root[data-theme="dark"] .hh-sterkte.s-zwak{color:#f87171}
 .hh-bronnen{margin:0;padding-left:34px;font-size:calc(12.5px * var(--t));line-height:1.5}
 .hh-bronnen li{margin-bottom:6px}
+
+
+/* 80. Verweven: dagcheck, voorstellen, sessie-ingangen, dichtheid (basisstijl van de app) */
+.vw-briefing,.vw-hart{display:flex;flex-direction:column;gap:10px;margin:12px 0}
+.vw-briefing:empty,.vw-hart:empty{display:none}
+
+/* Dagcheck */
+.dc-kaart{padding:14px 16px}
+.dc-kaart.dc-klaar{display:flex;align-items:center;gap:12px;padding:12px 14px}
+.dc-ico{flex:0 0 auto;width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:color-mix(in srgb,var(--accent) 12%,transparent);color:var(--accent)}
+.dc-ico svg{width:18px;height:18px}
+.dc-tekst{flex:1;min-width:0;display:flex;flex-direction:column}
+.dc-tekst b{font-size:calc(14.5px * var(--t))}
+.dc-tekst small{font-size:calc(12.5px * var(--t));color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dc-link{color:var(--accent);font-weight:700;min-height:40px;padding:0 6px}
+.dc-kop{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:6px}
+.dc-kop h2{font-size:calc(16px * var(--t));margin:0}
+.dc-schaal{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.dc-schaal button{min-height:44px;border-radius:12px;background:var(--card2);font-weight:650;font-size:calc(13px * var(--t));color:var(--text)}
+.dc-schaal button[aria-checked="true"]{background:var(--accent);color:#fff}
+.dc-schaal button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.dc-vink{display:flex;align-items:center;gap:8px;min-height:40px;font-size:calc(13.5px * var(--t))}
+.dc-vink input{width:20px;height:20px;accent-color:var(--accent)}
+
+/* Voorstellen, sessie-ingangen en verwijzingen naar Voortgang: één rijvorm */
+.vs{display:flex;flex-direction:column;gap:8px}
+.vs-kaart,.vw-sessie,.vw-naarvg{display:flex;align-items:center;gap:12px;padding:12px 14px;width:100%;text-align:left}
+.vs-kaart{flex-wrap:wrap}
+.vs-ico{flex:0 0 auto;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb,var(--accent) 12%,transparent);color:var(--accent)}
+.vs-ico svg{width:20px;height:20px}
+.vs-tekst{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.vs-tekst b{font-size:calc(14.5px * var(--t))}
+.vs-tekst small{font-size:calc(12.5px * var(--t));color:var(--muted);line-height:1.4}
+.vs-knoppen{display:flex;align-items:center;gap:6px;margin-left:50px;flex-basis:100%}
+.vs-niet{min-height:40px;padding:0 10px;color:var(--muted);font-weight:650;font-size:calc(13px * var(--t))}
+.vw-sessie,.vw-naarvg{margin:0 0 10px}
+.vw-hart .vw-sessie{margin:0}
+
+/* Hoeveel tegelijk op je scherm */
+.nd-verborgen{display:none !important}
+.nd-meer{display:block;width:100%;min-height:44px;color:var(--accent);font-weight:700;font-size:calc(13.5px * var(--t));border-top:1px solid var(--line)}
+html[data-dichtheid="rustig"] .verwant{display:none}
+
+/* Mindful moment ↔ Anker */
+.vw-anker{flex:0 0 auto;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,transparent);margin-left:6px}
+.vw-anker svg{width:18px;height:18px}
+
+/* Iconen in tekst (gebieden, richtingen) */
+.vg-g{display:inline-grid;place-items:center;vertical-align:-3px;color:var(--accent)}
+.vg-g svg{width:1.15em;height:1.15em}
+.nd-ico{display:grid;place-items:center;color:var(--accent)}
+.nd-ico svg{width:20px;height:20px}
+.mf-pauzeicoon svg{width:18px;height:18px;color:var(--mf-k)}
 
 </style>
 </head>
@@ -3840,6 +3900,11 @@ html.hhs-open,html.hhs-open body{overflow:hidden}
   <path d="M20 42l1 2.6 2.6 1-2.6 1L20 49l-1-2.4-2.6-1 2.6-1z" fill="currentColor" fill-opacity=".7" stroke="none"/>
 </g></symbol>
 <symbol id="i-bezem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M19 3l-7.5 9.5"/><path d="M10 11.5l4 2.5-1.6 2.6-6 3.2c-1 .5-1.9-.6-1.2-1.4z"/><path d="M3 21.5h18"/><path d="M18.5 16l.6 1.5 1.5.6-1.5.6-.6 1.5-.6-1.5-1.5-.6 1.5-.6z" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-anker" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.2"/><path d="M12 7.2V21M8 11h8"/><path d="M4.5 13.5c.6 4.2 3.7 7.5 7.5 7.5s6.9-3.3 7.5-7.5"/><path d="M3 15l1.5-1.8L6.3 15M21 15l-1.5-1.8L17.7 15"/></symbol>
+<symbol id="i-huis" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 11 12 4l8.5 7"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5.5h4V20"/></symbol>
+<symbol id="i-dobbel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3.5"/><circle cx="8.5" cy="8.5" r="1.1" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.1" fill="currentColor"/><circle cx="12" cy="12" r="1.1" fill="currentColor"/><circle cx="15.5" cy="8.5" r="1.1" fill="currentColor"/><circle cx="8.5" cy="15.5" r="1.1" fill="currentColor"/></symbol>
+<symbol id="i-puzzel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4h3.5a1.8 1.8 0 1 1 3.4 0H19v4a1.8 1.8 0 1 0 0 3.5V15h-3.5a1.8 1.8 0 1 1-3.5 0H9v-3.5a1.8 1.8 0 1 1 0-3.5z"/><path d="M5 9v10h10"/></symbol>
+<symbol id="i-batterij" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="16" height="10" rx="2.5"/><path d="M21 10.5v3"/><path d="M6 10v4M9 10v4"/></symbol>
 <symbol id="ill-persoonlijk" viewBox="0 0 100 80"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
   <path d="M14 40L40 18l26 22" stroke-opacity=".8"/>
   <path d="M20 36v26h40V36" fill="currentColor" fill-opacity=".16" stroke-opacity=".75"/>
@@ -19187,6 +19252,10 @@ RT_NA.push(() => {
 
 /* ---------- Dagring ---------- */
 const FM_RING = { cx: 110, cy: 110, r: 86 };
+/* Sporen: andere modules (Anker, Huishouden, Side Hustle …) laten hier een merkje
+   achter op het moment dat er iets gebeurde. Een aanbieder geeft een lijst
+   { min, kleur, label, view, param, act }; zie sectie 80 (verweven.js). */
+const FM_SPOREN = [];
 /** Minuten sinds middernacht → hoek (0 = boven, met de klok mee, 24 uur rond). */
 const fmHoek = min => (min / 1440) * Math.PI * 2 - Math.PI / 2;
 const fmPunt = (min, r) => [FM_RING.cx + Math.cos(fmHoek(min)) * r, FM_RING.cy + Math.sin(fmHoek(min)) * r];
@@ -19205,6 +19274,7 @@ function fmDagringHTML() {
   const taken = open.concat(af).filter(t => t.datum === v && fmMin(t.tijd) != null).map(t => ({ t, m: fmMin(t.tijd) })).sort((x, y) => x.m - y.m);
   const nu = new Date(), nuMin = nu.getHours() * 60 + nu.getMinutes();
   const tot = open.length + af.length, pct = tot ? Math.round(af.length / tot * 100) : 0;
+  const sporen = FM_SPOREN.flatMap(f => { try { return f() || []; } catch (e) { return []; } }).filter(x => x && x.min != null).sort((a, b) => a.min - b.min);
   const { cx, cy, r } = FM_RING;
   // Uurstreepjes; elke 6 uur een label.
   let streep = "";
@@ -19221,26 +19291,31 @@ function fmDagringHTML() {
     const [x, y] = fmPunt(m, r);
     return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="6.5" class="fm-dr-punt${t.af ? " af" : ""}" style="--i:${i}" data-fm-taak="${esc(t.id)}" tabindex="0" role="button" aria-label="${esc(t.titel)} om ${esc(t.tijd)}"><title>${esc(t.tijd)} ${esc(t.titel)}${t.af ? " (af)" : ""}</title></circle>`;
   }).join("");
+  const spoorHTML = sporen.map((x, i) => {
+    const [sx, sy] = fmPunt(x.min, r - 22), hoek = (x.min / 1440) * 360;
+    const doel = x.act ? `data-act="${esc(x.act)}"` : `data-act="ga" data-view="${esc(x.view || "logboek")}"${x.param ? ` data-param="${esc(x.param)}"` : ""}`;
+    return `<rect x="${(sx - 4.5).toFixed(1)}" y="${(sy - 4.5).toFixed(1)}" width="9" height="9" rx="2" transform="rotate(${(45 + hoek).toFixed(0)} ${sx.toFixed(1)} ${sy.toFixed(1)})" class="fm-dr-spoor" style="--i:${i};fill:${x.kleur}" ${doel} tabindex="0" role="button" aria-label="${esc(x.label)}"><title>${esc(x.tijd || "")} ${esc(x.label)}</title></rect>`;
+  }).join("");
   const [hx, hy] = fmPunt(nuMin, r + 6), [wx, wy] = fmPunt(nuMin, r - 38);
   const omtrek = 2 * Math.PI * (r - 44);
-  const lijst = afspr.map(({ a }) => `<li>${esc(a.tijd)} afspraak: ${esc(a.titel)}</li>`).join("") + taken.map(({ t }) => `<li>${esc(t.tijd)} taak: ${esc(t.titel)}${t.af ? " (af)" : ""}</li>`).join("");
-  const leeg = !afspr.length && !taken.length;
+  const lijst = afspr.map(({ a }) => `<li>${esc(a.tijd)} afspraak: ${esc(a.titel)}</li>`).join("") + taken.map(({ t }) => `<li>${esc(t.tijd)} taak: ${esc(t.titel)}${t.af ? " (af)" : ""}</li>`).join("") + sporen.map(x => `<li>${esc(x.tijd || "")} ${esc(x.label)}</li>`).join("");
+  const leeg = !afspr.length && !taken.length && !sporen.length;
   return `<section class="card card-pad fm-dagring" aria-labelledby="fm-dr-kop">
-    <div class="fm-dr-kop"><h2 id="fm-dr-kop">Dagring</h2><span class="klein">${afspr.length} ${afspr.length === 1 ? "afspraak" : "afspraken"} · ${taken.length} met een tijd</span></div>
+    <div class="fm-dr-kop"><h2 id="fm-dr-kop">Dagring</h2><span class="klein">${afspr.length} ${afspr.length === 1 ? "afspraak" : "afspraken"} · ${taken.length} met een tijd${sporen.length ? ` · ${sporen.length} ${sporen.length === 1 ? "spoor" : "sporen"}` : ""}</span></div>
     <div class="fm-dr-wrap">
       <svg viewBox="0 0 220 220" class="fm-dr" role="group" aria-label="Je dag als klok: ${pct}% van de taken af, ${afspr.length} afspraken, het is nu ${pad(nu.getHours())}:${pad(nu.getMinutes())}">
         <circle cx="${cx}" cy="${cy}" r="${r}" class="fm-dr-baan"/>
         ${licht}${streep}${labels}
         <circle cx="${cx}" cy="${cy}" r="${r - 44}" class="fm-dr-voortgang-baan"/>
         <circle cx="${cx}" cy="${cy}" r="${r - 44}" class="fm-dr-voortgang" style="stroke-dasharray:${omtrek.toFixed(1)};stroke-dashoffset:${(omtrek * (1 - pct / 100)).toFixed(1)}" transform="rotate(-90 ${cx} ${cy})"/>
-        ${bogen}${punten}
+        ${bogen}${punten}${spoorHTML}
         <line x1="${wx.toFixed(1)}" y1="${wy.toFixed(1)}" x2="${hx.toFixed(1)}" y2="${hy.toFixed(1)}" class="fm-dr-wijzer" data-fm-wijzer/>
         <circle cx="${hx.toFixed(1)}" cy="${hy.toFixed(1)}" r="4" class="fm-dr-nu" data-fm-nu/>
         <text x="${cx}" y="${cy - 2}" class="fm-dr-tijd" data-fm-klok>${pad(nu.getHours())}:${pad(nu.getMinutes())}</text>
         <text x="${cx}" y="${cy + 16}" class="fm-dr-sub">${open.length} open · ${pct}%</text>
       </svg>
       <ul class="fm-dr-legenda" aria-hidden="true">
-        <li><i class="boog"></i>Afspraak</li><li><i class="punt"></i>Taak</li><li><i class="punt af"></i>Afgerond</li><li><i class="licht"></i>Daglicht</li>
+        <li><i class="boog"></i>Afspraak</li><li><i class="punt"></i>Taak</li><li><i class="punt af"></i>Afgerond</li>${sporen.length ? `<li><i class="spoor"></i>Spoor</li>` : ""}<li><i class="licht"></i>Daglicht</li>
       </ul>
     </div>
     ${leeg ? `<p class="klein fm-dr-leeg">Nog niets met een tijd vandaag. Zet een tijd bij een taak of afspraak en hij verschijnt op de ring.</p>` : ""}
@@ -20479,7 +20554,7 @@ document.addEventListener("click", e => {
      in Terugblik en in Zoeken.
    ========================================================================== */
 const VERWANT = {
-  welkom: [["vandaag", "Vandaag"], ["overzicht", "Deze week"], ["hobbyskills", "HobbySkills"], ["financieel", "Financieel"]],
+  welkom: [["vandaag", "Vandaag"], ["overzicht", "Deze week"]],
   start: [["persoonlijk", "Persoonlijk"], ["hobbyskills", "HobbySkills"], ["logboek", "Logboek"]],
   vandaag: [["komend", "Komende 7 dagen"], ["kalender", "Kalender"], ["gewoontes", "Gewoontes"], ["dagboek", "Dagboek"]],
   komend: [["kalender", "Kalender"], ["overzicht", "Overzicht"], ["projecten", "Projecten"], ["afspraken", "Afspraken"]],
@@ -22815,12 +22890,12 @@ function vwAnkerInst() {
     <p class="mf-klein">Staan standaard uit. Pas als je ze aanzet, zie je ze op die plek.</p>
     <ul class="card mf-schakels" role="list">
       ${mfSchakel("kop.logboek", "Logboek", "Elk moment als regel in je logboek.", s.koppelingen.logboek)}
-      ${mfSchakel("kop.gewoonte", "Gewoonte afvinken", "Vinkt de gewoonte “Mindful moment” af na een moment van minstens 1 minuut.", s.koppelingen.gewoonte)}
+      <li class="schakel"><span class="tekst"><b>Mindful moment</b><small>${typeof mfMindfulGewoonte === "function" && mfMindfulGewoonte() ? "Een Anker-moment is je Mindful moment: elk moment van 1 minuut of langer vinkt de gewoonte af." : "Maak de gewoonte “Mindful moment”; daarna vinkt elk Anker-moment hem af."}</small></span>
+        ${typeof mfMindfulGewoonte === "function" && mfMindfulGewoonte() ? "" : `<button class="knop klein rand" data-act="mf-gewoonte-maak">Maak</button>`}</li>
       ${mfSchakel("kop.roken", "Rookvrij", "Knop “Even pauze” bij Rookvrij.", s.koppelingen.roken)}
       ${mfSchakel("kop.financieel", "Financieel", "Knop “Even pauze” bij Financieel.", s.koppelingen.financieel)}
       ${mfSchakel("kop.werk", "Werk", "Knop “Focus-start” bij Werk.", s.koppelingen.werk)}
     </ul>
-    ${s.koppelingen.gewoonte && !mindful ? `<div class="card card-pad mf-blok"><p>Er is nog geen gewoonte “Mindful moment”.</p><button class="knop rand" data-act="mf-gewoonte-maak">Gewoonte aanmaken</button></div>` : ""}
     <h3 class="mf-kop3">Herinneringen</h3>
     <p class="mf-klein">Wordt een terugkerende afspraak in je agenda van de app.</p>
     ${s.herinneringen.length ? `<ul class="card mf-herinneringen" role="list">${s.herinneringen.map(r => `<li><span>${esc(r.tijd)} · ${esc(mfDagenTekst(r.dagen))}</span>
@@ -23013,7 +23088,8 @@ async function mfNaSessie(sessie, fase) {
     const na = sessie.afgebroken ? "gestopt" : (sessie.nameting || "geen meting");
     await logGebeurtenis("anker", `Anker: ${o.naam}, ${min} min, ${na}${sessie.notitie ? " — " + sessie.notitie : ""}`, String(sessie.id));
   }
-  if (s.koppelingen.gewoonte && (sessie.duurSec || 0) >= 60) {
+  // Mindful moment en Anker-moment zijn hetzelfde: bestaat de gewoonte, dan telt elk moment van 1 minuut of langer.
+  if ((s.koppelingen.gewoonte || mfMindfulGewoonte()) && (sessie.duurSec || 0) >= 60) {
     const g = mfMindfulGewoonte(), d = vandaagISO();
     if (g && !gewoonteAf(g.id, d)) await bewaar("gewoontelog", { id: g.id + "|" + d, gewoonteId: g.id, datum: d, ts: new Date().toISOString() });
   }
@@ -23029,7 +23105,7 @@ async function mfMindfulMaak() {
 function mfPauzeKnop(id, min, bron, titel) {
   const o = mfOef(id);
   return `<button class="mf-pauzeknop" data-act="mf-start" data-id="${id}" data-min="${min}" data-bron="${bron}">
-    <span class="mf-pauzeicoon" aria-hidden="true">⚓</span><span><b>${titel}</b><small>${esc(o.naam)} · ${min} min</small></span></button>`;
+    <span class="mf-pauzeicoon" aria-hidden="true">${ico("anker")}</span><span><b>${titel}</b><small>${esc(o.naam)} · ${min} min</small></span></button>`;
 }
 {
   const _roken = vwRoken;
@@ -23102,14 +23178,16 @@ S.vg_terugblik = S.vg_terugblik || [];
 
 /* ---------- 74.2 Levensgebieden ---------- */
 const VG_GEBIEDEN = [
-  { id: "gezondheid", naam: "Gezondheid", ico: "💚" },
-  { id: "geld", naam: "Geld", ico: "💶" },
-  { id: "werk", naam: "Werk", ico: "💼" },
-  { id: "ondernemen", naam: "Ondernemen", ico: "🚀" },
-  { id: "groei", naam: "Leren en hobby's", ico: "🎨" },
-  { id: "rust", naam: "Rust en gewoontes", ico: "⚓" },
-  { id: "thuis", naam: "Thuis en taken", ico: "🏠" }
+  { id: "gezondheid", naam: "Gezondheid", icoon: "hart" },
+  { id: "geld", naam: "Geld", icoon: "euro" },
+  { id: "werk", naam: "Werk", icoon: "koffer" },
+  { id: "ondernemen", naam: "Ondernemen", icoon: "raket" },
+  { id: "groei", naam: "Leren en hobby's", icoon: "hobby" },
+  { id: "rust", naam: "Rust en gewoontes", icoon: "anker" },
+  { id: "thuis", naam: "Thuis en taken", icoon: "huis" }
 ];
+// Iconen als SVG (geen emoji in de bediening); g.ico levert de opmaak.
+VG_GEBIEDEN.forEach(g => Object.defineProperty(g, "ico", { get: () => `<span class="vg-g">${ico(g.icoon)}</span>`, enumerable: false }));
 const vgGebied = id => VG_GEBIEDEN.find(g => g.id === id) || VG_GEBIEDEN[VG_GEBIEDEN.length - 1];
 
 /* ---------- 74.3 Automatische bronnen uit de app ----------
@@ -23534,7 +23612,7 @@ function vgBewegerRij(x) {
     <span class="vg-rijwaarde"><b>${esc(vgFmt(x.b, x.nu || 0))}</b><small>was ${esc(vgFmt(x.b, x.voor || 0))}</small></span>${vgPijl(x.nu || 0, x.voor || 0, x.b.richting)}</button>`;
 }
 function vgMijlpaalRij(m) {
-  return `<div class="vg-rij vg-mp"><span class="vg-mpico" aria-hidden="true">${m.doel ? "🏁" : vgGebied(m.gebied).ico}</span><span class="vg-rijnaam">${esc(m.titel)}</span><small>${esc(datumLabel(m.datum))}</small></div>`;
+  return `<div class="vg-rij vg-mp"><span class="vg-mpico" aria-hidden="true">${m.doel ? `<span class="vg-g">${ico("vlag")}</span>` : vgGebied(m.gebied).ico}</span><span class="vg-rijnaam">${esc(m.titel)}</span><small>${esc(datumLabel(m.datum))}</small></div>`;
 }
 
 /* ---------- 75.5 Doelen ---------- */
@@ -23543,7 +23621,7 @@ function vgDoelenTab() {
   const alle = S.vg_doelen.filter(d => (d.status || "actief") === st);
   const tel = id => alle.filter(d => d.gebied === id).length;
   let h = vgKeuzeRij("status", st, [["actief", `Actief (${S.vg_doelen.filter(d => (d.status || "actief") === "actief").length})`], ["behaald", `Behaald (${S.vg_doelen.filter(d => d.status === "behaald").length})`], ["archief", "Archief"]]);
-  h += `<div class="vg-chips" role="group" aria-label="Levensgebied">${[["alle", "Alles", "✨"]].concat(VG_GEBIEDEN.filter(g => tel(g.id)).map(g => [g.id, g.naam, g.ico])).map(([k, n, e]) =>
+  h += `<div class="vg-chips" role="group" aria-label="Levensgebied">${[["alle", "Alles", ""]].concat(VG_GEBIEDEN.filter(g => tel(g.id)).map(g => [g.id, g.naam, g.ico])).map(([k, n, e]) =>
     `<button class="vg-chip" data-vg="filter" data-w="${k}" aria-pressed="${f === k}">${e} ${esc(n)}</button>`).join("")}</div>`;
   const lijst = alle.filter(d => f === "alle" || d.gebied === f);
   if (!lijst.length) return h + `<section class="vg-kaart vg-stil">${st === "actief" ? `Nog geen doelen${f !== "alle" ? " in dit gebied" : ""}. <button class="vg-link" data-vg="vg-doel-nieuw">Zet een doel</button>` : st === "behaald" ? "Nog geen behaalde doelen. Dat komt." : "Het archief is leeg."}</section>`;
@@ -23656,7 +23734,7 @@ function vgMijlpalenTab() {
   h += `<h2 class="vg-sectie${bijna.length ? "" : " eerste"}">Bereikt <small>${vgMv(alle.length, "mijlpaal", "mijlpalen")}</small></h2><ol class="vg-tijdlijn">`;
   for (const [k, l] of perMaand) {
     const [y, mm] = k.split("-").map(Number);
-    h += `<li class="vg-maand"><span class="vg-maandnaam">${MAANDNAMEN[mm - 1]} ${y}</span><ul>${l.map(m => `<li class="vg-mpitem"><span class="vg-mpico" aria-hidden="true">${m.doel ? "🏁" : vgGebied(m.gebied).ico}</span><span><b>${esc(m.titel)}</b><small>${esc(datumLabel(m.datum))}</small></span></li>`).join("")}</ul></li>`;
+    h += `<li class="vg-maand"><span class="vg-maandnaam">${MAANDNAMEN[mm - 1]} ${y}</span><ul>${l.map(m => `<li class="vg-mpitem"><span class="vg-mpico" aria-hidden="true">${m.doel ? `<span class="vg-g">${ico("vlag")}</span>` : vgGebied(m.gebied).ico}</span><span><b>${esc(m.titel)}</b><small>${esc(datumLabel(m.datum))}</small></span></li>`).join("")}</ul></li>`;
   }
   return h + "</ol>";
 }
@@ -23670,8 +23748,8 @@ function vgTerugblikTab() {
   h += `<div class="vg-periodenav"><button class="vg-kopknop" data-vg="tb-nav" data-w="-1" aria-label="Vorige periode">${ico("pijll")}</button>
     <b>${esc(per.naam)}</b><button class="vg-kopknop" data-vg="tb-nav" data-w="1" aria-label="Volgende periode"${isNu ? " disabled" : ""}>${ico("pijlr")}</button></div>`;
   h += `<section class="vg-kaart"><span class="vg-label">Automatisch samengevat</span>
-    ${sam.behaald.length ? `<p class="vg-samen">🏁 ${vgMv(sam.behaald.length, "doel", "doelen")} behaald: ${sam.behaald.map(d => esc(d.naam)).join(", ")}</p>` : ""}
-    ${sam.mijlpalen.length ? `<p class="vg-samen">⭐ ${sam.mijlpalen.map(m => esc(m.titel)).join(" · ")}</p>` : ""}
+    ${sam.behaald.length ? `<p class="vg-samen"><span class="vg-g">${ico("vlag")}</span> ${vgMv(sam.behaald.length, "doel", "doelen")} behaald: ${sam.behaald.map(d => esc(d.naam)).join(", ")}</p>` : ""}
+    ${sam.mijlpalen.length ? `<p class="vg-samen"><span class="vg-g">${ico("ster")}</span> ${sam.mijlpalen.map(m => esc(m.titel)).join(" · ")}</p>` : ""}
     ${sam.rijen.length ? `<div class="vg-rijen">${sam.rijen.slice(0, 8).map(vgBewegerRij).join("")}</div>` : `<p class="vg-uitleg">Niets vastgelegd in deze periode of de periode ervoor.</p>`}
     <p class="vg-uitleg">${sam.lopend ? `Tot nu toe, vergeleken met dezelfde dagen van de ${soort === "week" ? "week" : "maand"} ervoor.` : `Vergeleken met de ${soort === "week" ? "week" : "maand"} ervoor.`}</p></section>`;
   h += `<h2 class="vg-sectie">Jouw terugblik</h2><section class="vg-kaart vg-form" id="vg-tbform" data-id="${per.id}">
@@ -23696,7 +23774,7 @@ function vgBronOpties(gekozen) {
   VG_GEBIEDEN.forEach(g => {
     const l = bronnen.filter(b => b.gebied === g.id), m = S.vg_meters.filter(x => x.gebied === g.id);
     if (!l.length && !m.length) return;
-    h += `<optgroup label="${esc(g.ico + " " + g.naam)}">${l.map(b => `<option value="${esc(b.id)}"${b.id === gekozen ? " selected" : ""}>${esc(b.naam)}</option>`).join("")}
+    h += `<optgroup label="${esc(g.naam)}">${l.map(b => `<option value="${esc(b.id)}"${b.id === gekozen ? " selected" : ""}>${esc(b.naam)}</option>`).join("")}
       ${m.map(x => `<option value="meter:${x.id}"${"meter:" + x.id === gekozen ? " selected" : ""}>${esc(x.naam)} (eigen meter)</option>`).join("")}</optgroup>`;
   });
   return h;
@@ -23724,8 +23802,8 @@ function vgDoelBlad(concept) {
     <div class="veld"><label for="vg-d-naam">Doel</label><input class="invoer" id="vg-d-naam" value="${esc(d.naam || "")}" maxlength="80" placeholder="Bv. 10 km hardlopen, € 5.000 sparen"></div>
     <div class="veld"><span class="labeltekst">Levensgebied</span><div class="keuzerij">${VG_GEBIEDEN.map(g => `<button class="keuze" data-vggebied="${g.id}" aria-pressed="${d.gebied === g.id}">${g.ico} ${esc(g.naam)}</button>`).join("")}</div></div>
     <div class="veld"><span class="labeltekst">Hoe meet je het?</span><div class="keuzerij">
-      <button class="keuze" data-vgsoort="bron" aria-pressed="${d.soort === "bron"}">📈 Met een meting</button>
-      <button class="keuze" data-vgsoort="stappen" aria-pressed="${d.soort === "stappen"}">🪜 Met stappen</button></div></div>
+      <button class="keuze" data-vgsoort="bron" aria-pressed="${d.soort === "bron"}">Met een meting</button>
+      <button class="keuze" data-vgsoort="stappen" aria-pressed="${d.soort === "stappen"}">Met stappen</button></div></div>
     ${d.soort === "stappen" ? `<div class="veld"><label for="vg-d-stappen">Stappen (één per regel)</label><textarea class="invoer" id="vg-d-stappen" rows="5" placeholder="Cursus kiezen&#10;Inschrijven&#10;Eerste les">${esc((d.stappen || []).map(s => s.tekst).join("\n"))}</textarea></div>` : `
     <div class="veld"><label for="vg-d-bron">Meting</label><select class="invoer" id="vg-d-bron"><option value="">Kies wat je wilt meten…</option>${vgBronOpties(d.bron)}</select>
       <small class="vg-hint">Staat het er niet bij? Maak eerst een eigen meter in het tabblad Meters.</small></div>
@@ -24091,7 +24169,8 @@ function ndTipKaart(plek) {
   const tip = ndTip(plek), r = pfRichting();
   if (!tip || !inst("ndTips", true)) return "";
   const rr = PF_RICHTINGEN[r] || PF_RICHTINGEN.geen;
-  return `<div class="nd-tip" role="note"><span class="nd-ico" aria-hidden="true">${rr.ico}</span><span>${esc(tip)}</span>
+  const icoon = typeof ND_ICO === "object" ? ico(ND_ICO[r] || "blad") : rr.ico;
+  return `<div class="nd-tip" role="note"><span class="nd-ico" aria-hidden="true">${icoon}</span><span>${esc(tip)}</span>
     <button class="nd-tipknop" data-act="ga" data-view="profiel" aria-label="Aanpak aanpassen in je profiel">${ico("pijlr")}</button></div>`;
 }
 
@@ -24103,7 +24182,7 @@ function vwProfiel() {
   const open = V.pfOpen || "over";
   const sectie2 = (id, titel, sub, inhoud) => `<details class="pf-sectie" data-pf="${id}"${open === id ? " open" : ""}><summary><span><b>${titel}</b><small>${esc(sub)}</small></span>${ico("pijlr")}</summary><div class="pf-inhoud">${inhoud}</div></details>`;
   let h = `<div class="pf-kop"><div class="pf-avatar" aria-hidden="true">${esc((p.naam || "?").trim().slice(0, 1).toUpperCase() || "?")}</div>
-    <div><b>${esc(p.naam || "Jouw profiel")}</b><span>${[l != null ? l + " jaar" : "", rr ? rr.ico + " " + rr.kort : ""].filter(Boolean).join(" · ") || "Vul in wat je wilt; alles is optioneel"}</span></div></div>`;
+    <div><b>${esc(p.naam || "Jouw profiel")}</b><span>${[l != null ? l + " jaar" : "", rr ? pfIco(r) + " " + esc(rr.kort) : ""].filter(Boolean).join(" · ") || "Vul in wat je wilt; alles is optioneel"}</span></div></div>`;
   h += sectie2("over", "Over jou", [p.naam, l != null ? l + " jaar" : ""].filter(Boolean).join(" · ") || "Naam en geboortedatum", `
     <div class="veld"><label for="pf-naam">Naam</label><input class="invoer" id="pf-naam" value="${esc(p.naam)}" maxlength="40" autocomplete="given-name" placeholder="Hoe mag de app je noemen?"></div>
     <div class="veld"><label for="pf-gd">Geboortedatum</label><input class="invoer" id="pf-gd" type="date" value="${esc(p.geboortedatum)}" max="${vandaagISO()}"></div>
@@ -24114,24 +24193,32 @@ function vwProfiel() {
     ${gw && gw.bron === "Gezondheid" ? `<p class="pf-klein">Laatste meting in Gezondheid: <b>${nwoGetal(gw.kg, 1)} kg</b> (${esc(datumLabel(gw.datum))}). Die gebruikt de app voor berekeningen.</p>` : ""}
     ${bmi ? `<p class="pf-klein">BMI: <b>${nwoGetal(bmi, 1)}</b>. Een BMI zegt weinig over één persoon; zie het als ruwe indicatie.</p>` : ""}`);
   const nd = p.nd, uit = nd.antwoorden.length === 10 ? pfUitslag(nd.antwoorden) : null;
-  h += sectie2("aanpak", "Aanpak die bij je past", rr ? rr.ico + " " + rr.naam : "Nog niet gekozen", `
+  h += sectie2("aanpak", "Aanpak die bij je past", rr ? rr.naam : "Nog niet gekozen", `
     <p class="pf-klein">De app past de indeling van klussen, taken, planning, side hustles en wishlist-afwegingen aan op de richting die bij je past. Kies zelf, of beantwoord tien korte vragen.</p>
     <div class="veld"><label for="pf-richting">Mijn richting</label><select class="invoer" id="pf-richting">
       <option value=""${!nd.handmatig ? " selected" : ""}>${nd.richting ? "Uit de vragen: " + esc(PF_RICHTINGEN[nd.richting].naam) : "Nog niet gekozen (algemeen)"}</option>
-      ${Object.entries(PF_RICHTINGEN).map(([k, v]) => `<option value="${k}"${nd.handmatig === k ? " selected" : ""}>${v.ico} ${esc(v.naam)}</option>`).join("")}</select></div>
-    ${rr ? `<div class="pf-richting"><b>${rr.ico} ${esc(rr.naam)}</b><p>${esc(rr.uitleg)}</p>${pfAanpakLijst()}</div>` : ""}
+      ${Object.entries(PF_RICHTINGEN).map(([k, v]) => `<option value="${k}"${nd.handmatig === k ? " selected" : ""}>${esc(v.naam)}</option>`).join("")}</select></div>
+    ${rr ? `<div class="pf-richting"><b>${pfIco(r)} ${esc(rr.naam)}</b><p>${esc(rr.uitleg)}</p>${pfAanpakLijst()}</div>` : ""}
     ${uit ? `<div class="pf-scores" aria-label="Uitkomst van de vragen">${[["Aandacht en beginnen", uit.A], ["Prikkels en voorspelbaarheid", uit.S], ["Energie", uit.E]].map(([n, v]) => `<div class="pf-score"><span>${n}</span><i><b style="width:${Math.round(v * 100)}%"></b></i><small>${Math.round(v * 100)}%</small></div>`).join("")}
       <p class="pf-klein">Ingevuld: ${esc(datumLabel(nd.datum).toLowerCase())}.</p></div>` : ""}
     <button class="knop breed ${uit ? "rand" : "primair"}" data-act="pf-vragen">${uit ? "Vragen opnieuw invullen" : "Tien vragen beantwoorden"}</button>
     <p class="pf-let"><b>Geen diagnose.</b> ${esc(FM_KENNIS.vragen.geenDiagnose)}</p>
     <button class="knop breed rand" data-act="ga" data-view="hhwaarom">Waarom deze aanpak? Onderbouwing en bronnen</button>`);
-  h += sectie2("app", "In de app", inst("ndTips", true) ? "Tips staan aan" : "Tips staan uit", `
-    <ul class="schakels">${typeof mfSchakel === "function" ? "" : ""}
+  const dicht = typeof ndDichtheid === "function" ? ndDichtheid() : "normaal", dichtStd = typeof ndDichtheidStandaard === "function" ? ndDichtheidStandaard() : "normaal";
+  h += sectie2("app", "In de app", `${typeof ND_DICHTHEID === "object" ? ND_DICHTHEID[dicht].naam + " scherm · " : ""}${inst("ndTips", true) ? "tips aan" : "tips uit"}`, `
+    ${typeof ND_DICHTHEID === "object" ? `<div class="veld"><span class="labeltekst">Hoeveel tegelijk op je scherm</span>
+      <div class="segment pf-seg" role="group">${Object.entries(ND_DICHTHEID).map(([k, d]) => `<button data-act="pf-dicht" data-w="${k}" aria-pressed="${dicht === k}">${d.naam}${k === dichtStd ? " ·" : ""}</button>`).join("")}</div>
+      <p class="pf-klein">Rustig: 5 regels per lijst, 1 voorstel, geen “Verder naar”. Normaal: 10 regels, 3 voorstellen. Alles: niets ingekort. Het puntje staat bij wat past bij je richting.</p></div>` : ""}
+    ${typeof VS_KOPPELINGEN === "object" ? `<span class="labeltekst" style="display:block;margin-top:12px">Slimme koppelingen (als voorstel op Vandaag)</span>
+      <ul class="schakels">${VS_KOPPELINGEN.map(([k, t]) => `<li class="schakel"><span class="tekst"><b>${esc(t.split(" → ")[1][0].toUpperCase() + t.split(" → ")[1].slice(1))}</b><small>${esc(t.split(" → ")[0])}</small></span>
+        <button class="toggle" data-act="pf-vs" data-k="${k}" aria-pressed="${inst("vsAan_" + k, true)}" aria-label="${esc(t)}"></button></li>`).join("")}</ul>` : ""}
+    <ul class="schakels">
       <li class="schakel"><span class="tekst"><b>Tips per onderdeel</b><small>Eén korte tip bovenaan Persoonlijk, Komend, Side Hustle, Wishlist en Huishouden.</small></span>
       <button class="toggle" data-act="pf-tips" aria-pressed="${inst("ndTips", true)}" aria-label="Tips per onderdeel"></button></li></ul>
     <p class="pf-klein">Alles blijft op dit toestel. Je profiel gaat mee in je back-up.</p>`);
   return `<div class="pf">${h}</div>`;
 }
+const pfIco = r => typeof ND_ICO === "object" ? `<span class="vg-g">${ico(ND_ICO[r] || "blad")}</span>` : (PF_RICHTINGEN[r] || {}).ico || "";
 const pfLeeftijdTekst = l => l != null ? `Leeftijd: <b>${l} jaar</b>` : "Je leeftijd wordt berekend uit je geboortedatum.";
 function pfAanpakLijst() {
   const a = ndAanpak();
@@ -24143,7 +24230,8 @@ function pfAanpakLijst() {
     ${rij("Volgorde", FM_KENNIS.volgordeNamen[a.volgorde])}
     ${rij("Seintje voor een wissel", a.wisselSein ? "Ja" : "Nee")}
     ${a.maxSessie ? rij("Langste sessie", a.maxSessie + " min") : ""}
-    ${rij("Afkoelen bij aankopen > € 50", a.afkoelUur + " uur")}</ul>`;
+    ${rij("Afkoelen bij aankopen > € 50", a.afkoelUur + " uur")}
+    ${typeof ndDichtheid === "function" ? rij("Tegelijk op je scherm", ND_DICHTHEID[ndDichtheid()].naam) : ""}</ul>`;
 }
 /* De vragen in een onderblad, één scherm, grote tikdoelen. */
 function pfVragenBlad() {
@@ -24180,6 +24268,8 @@ document.addEventListener("click", async e => {
   if (!el) return;
   if (el.dataset.act === "pf-vragen") pfVragenBlad();
   else if (el.dataset.act === "pf-tips") { await zetInst("ndTips", !inst("ndTips", true)); V.pfOpen = "app"; teken(); }
+  else if (el.dataset.act === "pf-dicht") { await zetInst("ndDichtheid", el.dataset.w === (typeof ndDichtheidStandaard === "function" ? ndDichtheidStandaard() : "") ? null : el.dataset.w); V.pfOpen = "app"; teken(); }
+  else if (el.dataset.act === "pf-vs") { const k = "vsAan_" + el.dataset.k; await zetInst(k, !inst(k, true)); V.pfOpen = "app"; teken(); }
 });
 /* Geboortedatum: op iPhone meldt het datumwiel elke draai als wijziging.
    Opnieuw tekenen zou het wiel dan sluiten. Daarom slaan we de datum stil op
@@ -24227,7 +24317,7 @@ Object.defineProperty(KOPPEN, "profiel", { get: () => ["Profiel", () => "Wie je 
     const p = pfProfiel(), rr = PF_RICHTINGEN[pfRichting()], l = pfLeeftijd(p.geboortedatum);
     return `${sectie("Profiel")}<button class="card pf-instkaart" data-act="ga" data-view="profiel">
       <span class="pf-avatar klein" aria-hidden="true">${esc((p.naam || "?").slice(0, 1).toUpperCase())}</span>
-      <span class="pf-instt"><b>${esc(p.naam || "Stel je profiel in")}</b><small>${[l != null ? l + " jaar" : "", rr.ico + " " + rr.naam].filter(Boolean).join(" · ")}</small></span>${ico("pijlr", "width:16px;height:16px;color:var(--faint)")}</button>` + _inst();
+      <span class="pf-instt"><b>${esc(p.naam || "Stel je profiel in")}</b><small>${[l != null ? l + " jaar" : "", pfIco(pfRichting()) + " " + esc(rr.naam)].filter(Boolean).join(" · ")}</small></span>${ico("pijlr", "width:16px;height:16px;color:var(--faint)")}</button>` + _inst();
   };
 }
 /* Tips bovenaan de plekken waar de aanpak het meest verschil maakt. */
@@ -24471,9 +24561,11 @@ function hhAanDeBeurt() {
 }
 
 /* ---------- 77.8 Cijfers ---------- */
+/* Alleen schoonmaaksessies; sessies met taken of lijsten (sectie 80) tellen hier niet mee. */
+const hhIsSchoon = x => !x.bron || x.bron === "huishouden";
 function hhWeekCijfers() {
   const ws = weekStart(vandaagISO());
-  const s = S.hh_sessies.filter(x => (x.datum || "") >= ws);
+  const s = S.hh_sessies.filter(x => hhIsSchoon(x) && (x.datum || "") >= ws);
   const taken = s.reduce((a, x) => a + (x.resultaat || []).filter(r => r.status === "gedaan" && r.soort !== "pauze").length, 0);
   const min = s.reduce((a, x) => a + Math.round((x.werkSec || 0) / 60), 0);
   return { sessies: s.length, taken, min };
@@ -24483,8 +24575,8 @@ if (typeof vgAutoBronnen === "function") {
   const _vg = vgAutoBronnen;
   vgAutoBronnen = function () {
     const uit = _vg();
-    uit.push({ id: "huishouden.minuten", naam: "Minuten schoongemaakt", eenheid: "min", agg: "som", gebied: "thuis", richting: "omhoog", data: () => S.hh_sessies.map(s => ({ d: s.datum, v: Math.round((s.werkSec || 0) / 60) })) });
-    uit.push({ id: "huishouden.taken", naam: "Huishoudklussen gedaan", eenheid: "aantal", agg: "som", gebied: "thuis", richting: "omhoog", data: () => S.hh_sessies.map(s => ({ d: s.datum, v: (s.resultaat || []).filter(r => r.status === "gedaan" && r.soort !== "pauze").length })) });
+    uit.push({ id: "huishouden.minuten", naam: "Minuten schoongemaakt", eenheid: "min", agg: "som", gebied: "thuis", richting: "omhoog", data: () => S.hh_sessies.filter(hhIsSchoon).map(s => ({ d: s.datum, v: Math.round((s.werkSec || 0) / 60) })) });
+    uit.push({ id: "huishouden.taken", naam: "Huishoudklussen gedaan", eenheid: "aantal", agg: "som", gebied: "thuis", richting: "omhoog", data: () => S.hh_sessies.filter(hhIsSchoon).map(s => ({ d: s.datum, v: (s.resultaat || []).filter(r => r.status === "gedaan" && r.soort !== "pauze").length })) });
     return uit;
   };
   if (typeof VG_MP_TEKST === "object") {
@@ -24522,18 +24614,18 @@ function vwHuishouden() {
   if (typeof ndTipKaart === "function") h += ndTipKaart("huishouden");
   if (V.hh.samenvatting) h += hhSamenvattingHTML(vind("hh_sessies", V.hh.samenvatting));
   h += `<button class="hh-start" data-act="hh-klaarzetten">
-    <span class="hh-startico" aria-hidden="true">✦</span><span><b>Start een schoonmaaksessie</b><small>Kies een lijst en hoeveel tijd je hebt</small></span>${ico("pijlr")}</button>
+    <span class="hh-startico" aria-hidden="true">${ico("ster")}</span><span><b>Start een schoonmaaksessie</b><small>Kies een lijst en hoeveel tijd je hebt</small></span>${ico("pijlr")}</button>
     <div class="hh-snel">
-      <button class="hh-snelknop" data-act="hh-reset"><span aria-hidden="true">⚡</span><b>Reset in 5 min</b><small>Vijf dingen, snel resultaat</small></button>
-      <button class="hh-snelknop" data-act="hh-dobbel"><span aria-hidden="true">🎲</span><b>Gooi een klus</b><small>Eén klus van max. 5 min</small></button>
+      <button class="hh-snelknop" data-act="hh-reset"><span aria-hidden="true">${ico("bliksem")}</span><b>Reset in 5 min</b><small>Vijf dingen, snel resultaat</small></button>
+      <button class="hh-snelknop" data-act="hh-dobbel"><span aria-hidden="true">${ico("dobbel")}</span><b>Gooi een klus</b><small>Eén klus van max. 5 min</small></button>
     </div>`;
   if (beurt.length) h += sectie("Aan de beurt") + `<div class="card hh-beurt">${beurt.map(({ l, dagen }) => `<button class="hh-rij" data-act="hh-klaarzetten" data-id="${l.id}">
-    <span class="hh-emoji" aria-hidden="true">${l.emoji || "🧽"}</span><span class="hh-rijt"><b>${esc(l.naam)}</b><small>${dagen == null ? "Nog nooit gedaan" : dagen === 0 ? "Vandaag gedaan" : `${dagen} ${dagen === 1 ? "dag" : "dagen"} geleden · elke ${l.ritme} ${l.ritme === 1 ? "dag" : "dagen"}`}</small></span>
+    <span class="hh-emoji" aria-hidden="true">${l.emoji ? esc(l.emoji) : ico("bezem")}</span><span class="hh-rijt"><b>${esc(l.naam)}</b><small>${dagen == null ? "Nog nooit gedaan" : dagen === 0 ? "Vandaag gedaan" : `${dagen} ${dagen === 1 ? "dag" : "dagen"} geleden · elke ${l.ritme} ${l.ritme === 1 ? "dag" : "dagen"}`}</small></span>
     <span class="hh-mini">Start</span></button>`).join("")}</div>`;
   h += sectie("Mijn lijsten", S.hh_lijsten.length ? String(S.hh_lijsten.length) : "");
   if (!S.hh_lijsten.length) h += `<div class="card card-pad hh-leeg"><p>Nog geen schoonmaaklijsten. Begin met een startlijst, of importeer een checklist-sjablonen die met <b>Schoonmaken</b> begint.</p></div>`;
   else h += `<div class="card hh-lijsten">${S.hh_lijsten.slice().sort((a, b) => a.naam.localeCompare(b.naam)).map(l => { const aan = l.taken.filter(t => !t.uit);
-    return `<button class="hh-rij" data-act="ga" data-view="hhlijst" data-param="${l.id}"><span class="hh-emoji" aria-hidden="true">${l.emoji || "🧽"}</span>
+    return `<button class="hh-rij" data-act="ga" data-view="hhlijst" data-param="${l.id}"><span class="hh-emoji" aria-hidden="true">${l.emoji ? esc(l.emoji) : ico("bezem")}</span>
       <span class="hh-rijt"><b>${esc(l.naam)}</b><small>${aan.length} ${aan.length === 1 ? "klus" : "klussen"} · ± ${aan.reduce((s, t) => s + (+t.min || 0), 0)} min${l.bron && l.bron.soort === "checklist" ? " · uit Checklists" : ""}</small></span>${ico("pijlr", "width:16px;height:16px;color:var(--faint)")}</button>`; }).join("")}</div>`;
   h += `<div class="hh-knoppen">
     <button class="knop rand" data-act="hh-import">${ico("sjabloon")} Importeer uit Checklists${nieuwSj.length ? ` <span class="hh-bol">${nieuwSj.length}</span>` : ""}</button>
@@ -24555,7 +24647,7 @@ function vwHuishouden() {
         <button class="toggle" data-act="hh-inst" data-k="hhMeewerker" aria-pressed="${inst("hhMeewerker", true)}" aria-label="Meewerker Tess"></button></li>
       <li class="schakel"><span class="tekst"><b>Geluid en trillen</b><small>Zacht seintje als de tijd om is. Rust en Prikkelarm zetten dit uit.</small></span>
         <button class="toggle" data-act="hh-inst" data-k="hhGeluid" aria-pressed="${inst("hhGeluid", true)}" aria-label="Geluid en trillen"></button></li></ul></div>`;
-  h += `<button class="card hh-waaromknop" data-act="ga" data-view="hhwaarom"><span aria-hidden="true">📚</span><span><b>Waarom werkt het zo?</b><small>Onderbouwing, aanpak per richting en bronnen</small></span>${ico("pijlr", "width:16px;height:16px;color:var(--faint)")}</button>`;
+  h += `<button class="card hh-waaromknop" data-act="ga" data-view="hhwaarom"><span aria-hidden="true">${ico("boek")}</span><span><b>Waarom werkt het zo?</b><small>Onderbouwing, aanpak per richting en bronnen</small></span>${ico("pijlr", "width:16px;height:16px;color:var(--faint)")}</button>`;
   return `<div class="hh">${h}</div>`;
 }
 function hhGeleerd() {
@@ -24573,7 +24665,7 @@ function hhSamenvattingHTML(s) {
   const verschil = gepland ? Math.round((echtMin - gepland) / gepland * 100) : 0;
   const zin = s.afgebroken ? "Gestopt is ook gedaan. Wat af is, is af." : gedaan.length === r.length ? "Alles gedaan. Kijk even rond: dat heb jij gedaan." : "Mooi werk. Wat bleef staan, schuift door.";
   return `<section class="hh-samen" aria-live="polite">
-    <div class="hh-samenkop"><span aria-hidden="true">✦</span><div><b>${s.afgebroken ? "Sessie gestopt" : "Sessie klaar"}</b><small>${esc(s.lijstNaam || "")} · ${esc(datumLabel(s.datum))}</small></div>
+    <div class="hh-samenkop"><span aria-hidden="true">${ico("ster")}</span><div><b>${s.afgebroken ? "Sessie gestopt" : "Sessie klaar"}</b><small>${esc(s.lijstNaam || "")} · ${esc(datumLabel(s.datum))}</small></div>
       <button class="hh-sluitx" data-act="hh-samen-weg" aria-label="Samenvatting sluiten">${ico("x")}</button></div>
     <p class="hh-zin">${esc(zin)}</p>
     <div class="hh-cijfers">
@@ -24596,7 +24688,7 @@ function vwHhLijst() {
       <div class="veld"><label for="hh-l-emoji">Icoon</label><input class="invoer" id="hh-l-emoji" data-hhl="emoji" value="${esc(l.emoji || "")}" maxlength="4"></div></div>
     <div class="veld"><label for="hh-l-ritme">Hoe vaak?</label><select class="invoer" id="hh-l-ritme" data-hhl="ritme">${[[0, "Geen vast ritme"], [1, "Elke dag"], [2, "Om de dag"], [3, "Elke 3 dagen"], [7, "Elke week"], [14, "Elke 2 weken"], [30, "Elke maand"]].map(([w, n]) => `<option value="${w}"${(+l.ritme || 0) === w ? " selected" : ""}>${n}</option>`).join("")}</select></div>
     ${l.bron && l.bron.soort === "checklist" ? `<p class="hh-uitleg">Geïmporteerd uit het sjabloon “${esc((vind("checklists", l.bron.id) || {}).naam || "verwijderd")}”. <button class="hh-link" data-act="hh-herimport" data-id="${l.id}">Opnieuw inlezen</button></p>` : ""}
-    <button class="knop breed primair" data-act="hh-klaarzetten" data-id="${l.id}">✦ Start sessie met deze lijst</button></div>`;
+    <button class="knop breed primair" data-act="hh-klaarzetten" data-id="${l.id}">${ico("ster")} Start sessie met deze lijst</button></div>`;
   ruimtes.forEach(r => {
     h += sectie(r) + `<div class="card hh-taken">${l.taken.filter(t => (t.ruimte || "Overal") === r).map(t => `<div class="hh-taak${t.uit ? " uit" : ""}">
       <button class="hh-mee" data-act="hh-taak" data-w="uit" data-id="${t.id}" aria-pressed="${!t.uit}" aria-label="${esc(t.tekst)} ${t.uit ? "doet niet mee" : "doet mee"}">${t.uit ? "" : "✓"}</button>
@@ -24614,6 +24706,8 @@ function vwHhLijst() {
 
 /* ---------- 78.4 Sessie klaarzetten ---------- */
 function hhKlaarzetten(lijstId, gekozenMin, energie) {
+  // Energie uit je ochtend-check-in (sectie 80), tenzij je hem hier aanpast.
+  if (energie === undefined && typeof dcEnergie === "function") energie = dcEnergie();
   if (!S.hh_lijsten.length) { toast("Voeg eerst een lijst toe"); hhStartlijstenBlad(); return; }
   const lijst = vind("hh_lijsten", lijstId) || hhAanDeBeurt()[0]?.l || S.hh_lijsten[0];
   const a = ndAanpak(), min = gekozenMin || inst("hhLaatsteMin", 30);
@@ -24621,16 +24715,16 @@ function hhKlaarzetten(lijstId, gekozenMin, energie) {
   const inhoud = `
     <div class="veld"><label for="hh-k-lijst">Lijst</label><select class="invoer" id="hh-k-lijst">${S.hh_lijsten.map(l => `<option value="${l.id}"${l.id === lijst.id ? " selected" : ""}>${esc((l.emoji || "") + " " + l.naam)}</option>`).join("")}</select></div>
     <div class="veld"><span class="labeltekst">Hoeveel tijd heb je?</span><div class="keuzerij hh-tijden">${HH_TIJDEN.map(m => `<button class="keuze" data-hhmin="${m}" aria-pressed="${m === min}">${m} min</button>`).join("")}</div></div>
-    <div class="veld"><span class="labeltekst">Energie nu (mag leeg)</span><div class="keuzerij hh-energie">${[1, 2, 3, 4, 5].map(n => `<button class="keuze" data-hhe="${n}" aria-pressed="${energie === n}" aria-label="Energie ${n} van 5">${["🪫", "😮‍💨", "🙂", "💪", "⚡"][n - 1]}</button>`).join("")}</div></div>
+    <div class="veld"><span class="labeltekst">Energie nu${typeof dcEnergie === "function" && dcEnergie() ? " (uit je check-in)" : " (mag leeg)"}</span><div class="keuzerij hh-energie">${[1, 2, 3, 4, 5].map(n => `<button class="keuze" data-hhe="${n}" aria-pressed="${energie === n}" aria-label="Energie ${n} van 5">${typeof DC_ENERGIE === "object" ? DC_ENERGIE[n - 1] : n}</button>`).join("")}</div></div>
     <div class="hh-plan">
       <div class="hh-plankop"><b>Jouw plan</b><small>${plan.items.filter(x => x.soort === "taak").length} kaartjes · ${plan.werkMin} min werk${plan.pauzeMin ? ` · ${plan.pauzeMin} min pauze` : ""} · buffer +${Math.round((plan.buffer - 1) * 100)}%</small></div>
       ${plan.notities.map(n => `<p class="hh-noot">${esc(n)}</p>`).join("")}
-      <ol class="hh-planlijst">${plan.items.map(it => it.soort === "pauze" ? `<li class="pauze"><span>☕ Pauze</span><b>${it.min}′</b></li>`
+      <ol class="hh-planlijst">${plan.items.map(it => it.soort === "pauze" ? `<li class="pauze"><span>Pauze</span><b>${it.min}′</b></li>`
         : `<li><span>${esc(it.tekst)}${it.delen > 1 ? ` <small>${it.deel}/${it.delen}</small>` : ""}<small class="hh-r">${esc(it.ruimte)}</small></span><b>${it.min}′</b></li>`).join("")}</ol>
       ${plan.buiten.length ? `<p class="hh-uitleg">Past nu niet: ${plan.buiten.slice(0, 4).map(t => esc(t.tekst)).join(", ")}${plan.buiten.length > 4 ? ` en nog ${plan.buiten.length - 4}` : ""}. Dat schuift door.</p>` : ""}
       <p class="hh-uitleg">Ingedeeld voor: ${esc((PF_RICHTINGEN[a.richting] || PF_RICHTINGEN.geen).kort.toLowerCase())} · blokken van max. ${a.blokMax} min · pauze na ${a.pauzeElke} min.</p>
     </div>`;
-  bladOpen("Schoonmaaksessie", inhoud, `<button class="knop breed primair" id="hh-k-start"${plan.items.length ? "" : " disabled"}>✦ Start</button>`);
+  bladOpen("Schoonmaaksessie", inhoud, `<button class="knop breed primair" id="hh-k-start"${plan.items.length ? "" : " disabled"}>${ico("ster")} Start</button>`);
   const bi = $("#bladinhoud");
   bi.addEventListener("click", e => {
     const b = e.target.closest("button"); if (!b) return;
@@ -24652,9 +24746,9 @@ function hhDobbel() {
   const { l, t } = alle[Math.floor(Math.random() * alle.length)];
   if (typeof tril === "function") tril(12);
   const plan = hhMaakPlan({ taken: [t] }, Math.max(5, Math.ceil(t.min * ndAanpak().buffer)), {});
-  bladOpen("De dobbelsteen zegt…", `<div class="hh-dobbel"><span class="hh-dobbelsteen" aria-hidden="true">🎲</span><b>${esc(t.tekst)}</b><small>${esc(t.ruimte || "Overal")} · ${plan.totaal} min · uit ${esc(l.naam)}</small>
+  bladOpen("De dobbelsteen zegt…", `<div class="hh-dobbel"><span class="hh-dobbelsteen" aria-hidden="true">${ico("dobbel")}</span><b>${esc(t.tekst)}</b><small>${esc(t.ruimte || "Overal")} · ${plan.totaal} min · uit ${esc(l.naam)}</small>
     <p class="hh-uitleg">Keuzestress weg: de dobbelsteen kiest, jij hoeft alleen te beginnen.</p></div>`,
-    `<div class="knoprij"><button class="knop rand" id="hh-d-nog">Nog een keer</button><button class="knop primair" id="hh-d-start">✦ Start</button></div>`);
+    `<div class="knoprij"><button class="knop rand" id="hh-d-nog">Nog een keer</button><button class="knop primair" id="hh-d-start">${ico("ster")} Start</button></div>`);
   $("#hh-d-nog").onclick = hhDobbel;
   $("#hh-d-start").onclick = () => { bladSluit(); hhSessieStart(l, plan, { beschikbaar: plan.totaal, dobbel: true }); };
 }
@@ -24664,7 +24758,7 @@ function hhImportBlad() {
   const sj = hhSjablonen();
   const inhoud = sj.length ? `<p class="hh-uitleg" style="margin-top:0">Alleen checklist-sjablonen waarvan de naam met <b>Schoonmaken</b> begint. Kopjes (# Keuken) worden ruimtes; “(10 min)” wordt de duur; ! betekent moet.</p>
     <div class="hh-importlijst">${sj.map(c => { const al = S.hh_lijsten.find(l => l.bron && l.bron.soort === "checklist" && l.bron.id === c.id); const n = (c.items || []).filter(i => !(typeof clSectie === "function" && clSectie(i))).length;
-      return `<button class="hh-rij" data-hhimp="${c.id}"><span class="hh-emoji" aria-hidden="true">🧽</span><span class="hh-rijt"><b>${esc(c.naam)}</b><small>${n} ${n === 1 ? "klus" : "klussen"}${al ? " · staat er al, opnieuw inlezen" : ""}</small></span><span class="hh-mini">${al ? "Bijwerken" : "Importeer"}</span></button>`; }).join("")}</div>`
+      return `<button class="hh-rij" data-hhimp="${c.id}"><span class="hh-emoji" aria-hidden="true">${ico("bezem")}</span><span class="hh-rijt"><b>${esc(c.naam)}</b><small>${n} ${n === 1 ? "klus" : "klussen"}${al ? " · staat er al, opnieuw inlezen" : ""}</small></span><span class="hh-mini">${al ? "Bijwerken" : "Importeer"}</span></button>`; }).join("")}</div>`
     : `<p>Er is nog geen checklist-sjabloon dat met <b>Schoonmaken</b> begint.</p><p class="hh-uitleg">Maak er een in Checklists, bijvoorbeeld “Schoonmaken – Keuken”, met kopjes per ruimte. Of maak hier een voorbeeld aan dat je daarna kunt aanpassen.</p>`;
   bladOpen("Importeer uit Checklists", inhoud, sj.length ? "" : `<button class="knop breed primair" id="hh-i-voorbeeld">${ico("sjabloon")} Voorbeeld “Schoonmaken – Keuken” aanmaken</button>`);
   $("#bladinhoud").addEventListener("click", async e => { const b = e.target.closest("[data-hhimp]"); if (!b) return; const l = await hhImporteer(b.dataset.hhimp); if (l) { bladSluit(); ga("hhlijst", l.id); } });
@@ -24702,7 +24796,7 @@ function vwHhWaarom() {
       <p class="hh-uitleg">Kennisbank versie ${esc(K.meta.versie)} · ${esc(datumLabel(K.meta.datum))}${K.meta.webpagina ? ` · <a href="${esc(K.meta.webpagina)}" target="_blank" rel="noopener">Open de deelbare webpagina</a>` : ""}</p></div>
     ${sectie("Uitgangspunten")}<div class="card hh-principes">${K.principes.map(([t, u]) => `<div class="hh-rij stil"><span class="hh-rijt"><b>${esc(t)}</b><small>${esc(u)}</small></span></div>`).join("")}</div>
     ${sectie("Aanpak per richting")}<div class="card hh-tabelwrap"><table class="hh-tabel"><thead><tr><th>Richting</th><th>Blok</th><th>Pauze na</th><th>Pauze</th><th>Buffer</th><th>Volgorde</th><th>Max.</th></tr></thead><tbody>
-      ${Object.entries(K.aanpak).map(([k, a]) => `<tr${k === r ? ' class="jij"' : ""}><th>${K.richtingen[k].ico} ${esc(K.richtingen[k].kort)}${k === r ? " <small>(jij)</small>" : ""}</th>${kol.map(c => `<td>${esc(String(waarde(c, a[c])))}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
+      ${Object.entries(K.aanpak).map(([k, a]) => `<tr${k === r ? ' class="jij"' : ""}><th>${typeof ND_ICO === "object" ? `<span class="vg-g">${ico(ND_ICO[k])}</span>` : K.richtingen[k].ico} ${esc(K.richtingen[k].kort)}${k === r ? " <small>(jij)</small>" : ""}</th>${kol.map(c => `<td>${esc(String(waarde(c, a[c])))}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
     ${sectie("Onderbouwing")}<div class="hh-filters" role="group" aria-label="Filter op sterkte van het bewijs">${[["alle", "Alles"]].concat(sterktes.map(s => [s, K.sterktes[s]])).map(([k, n]) => `<button class="hh-filter" data-act="hh-waarom-filter" data-w="${k}" aria-pressed="${f === k}">${esc(n)}</button>`).join("")}</div>
     <div class="hh-bewijs">${lijst.map(o => `<article class="card hh-bewijskaart"><div class="hh-bewijskop"><b>${esc(o.id)}</b><span class="hh-sterkte s-${o.sterkte}">${esc(K.sterktes[o.sterkte])}</span></div>
       <p>${esc(o.bevinding)}</p><p class="hh-keuze"><b>In de app:</b> ${esc(o.keuze)}</p><p class="hh-uitleg">${esc(o.kanttekening)} · ${bronLink(o.bron)}${o.bron2 ? " · " + bronLink(o.bron2) : ""}</p></article>`).join("")}</div>
@@ -24787,7 +24881,7 @@ RT_NA.push(() => {
   if (!hhIsSchoonmaakSjabloon(c) || document.querySelector(".hh-clknop")) return;
   const plek = $("#scherm"); if (!plek) return;
   const al = S.hh_lijsten.some(l => l.bron && l.bron.soort === "checklist" && l.bron.id === c.id);
-  plek.insertAdjacentHTML("afterbegin", `<button class="card hh-clknop" data-act="hh-naar-huishouden" data-id="${c.id}"><span aria-hidden="true">🧽</span><span><b>${al ? "Bijwerken in Huishouden" : "Gebruik in Huishouden"}</b><small>Omzetten naar een schoonmaaklijst met tijden en ruimtes</small></span>${ico("pijlr", "width:16px;height:16px")}</button>`);
+  plek.insertAdjacentHTML("afterbegin", `<button class="card hh-clknop" data-act="hh-naar-huishouden" data-id="${c.id}"><span aria-hidden="true">${ico("bezem")}</span><span><b>${al ? "Bijwerken in Huishouden" : "Gebruik in Huishouden"}</b><small>Omzetten naar een schoonmaaklijst met tijden en ruimtes</small></span>${ico("pijlr", "width:16px;height:16px")}</button>`);
 });
 if (typeof TL_SOORTEN === "object") TL_SOORTEN.huishouden = ["Huishouden", "#0e7490"];
 if (typeof LOGFILTERS !== "undefined" && Array.isArray(LOGFILTERS)) LOGFILTERS.push(["huishouden", "Huishouden"]);
@@ -24964,6 +25058,8 @@ function hhsVolgende(status) {
   A.resultaat.push({ soort: it.soort, tekst: it.tekst, ruimte: it.ruimte, taakId: it.taakId, min: it.min, basisMin: it.basisMin, deel: it.deel, delen: it.delen,
     status: status === "klaar" ? "gedaan" : "overgeslagen", sec: Math.round(A.sec) });
   A.afgehandeld.add(it);
+  // Sessies uit andere lijsten (taken, checklist, side hustle): afvinken in de bron (sectie 80).
+  if (status === "klaar" && typeof sesKlaar === "function") sesKlaar(A, it);
   if (it.soort === "taak" && status === "klaar") { A.gedaan++; A.doelHelder = A.gedaan / Math.max(1, A.taken); }
   const laatste = A.i >= A.items.length - 1;
   if (typeof tril === "function") tril(status === "klaar" ? 14 : 6);
@@ -24996,12 +25092,13 @@ async function hhsEinde(afgebroken) {
   const werkSec = A.resultaat.filter(r => r.soort === "taak").reduce((s, r) => s + (r.sec || 0), 0);
   const s = { id: uid(), lijstId: A.lijst.id || null, lijstNaam: A.lijst.naam || "Klus", datum: vandaagISO(), ts: new Date().toISOString(), gestart: A.gestart,
     beschikbaar: A.opties.beschikbaar || null, energie: A.opties.energie || null, richting: A.plan.richting, werkMin: A.plan.werkMin, pauzeMin: A.plan.pauzeMin,
-    resultaat: A.resultaat, werkSec, duurSec: Math.round((Date.now() - A.t0) / 1000), afgebroken: !!afgebroken };
+    resultaat: A.resultaat, werkSec, duurSec: Math.round((Date.now() - A.t0) / 1000), afgebroken: !!afgebroken, bron: A.opties.bron || "huishouden" };
+  const isHuishouden = s.bron === "huishouden";
   const bewaarAlles = async () => {
     await bewaar("hh_sessies", s);
     const gedaan = s.resultaat.filter(r => r.status === "gedaan" && r.soort === "taak").length;
     if (gedaan && A.lijst.id && vind("hh_lijsten", A.lijst.id)) await bewaar("hh_lijsten", Object.assign({}, vind("hh_lijsten", A.lijst.id), { laatstGedaan: s.ts }));
-    if (typeof logGebeurtenis === "function") await logGebeurtenis("huishouden", `Schoonmaken: ${gedaan} ${gedaan === 1 ? "klus" : "klussen"}, ${Math.round(werkSec / 60)} min (${s.lijstNaam})${afgebroken ? " — gestopt" : ""}`, s.id);
+    if (typeof logGebeurtenis === "function") await logGebeurtenis(isHuishouden ? "huishouden" : "sessie", `${isHuishouden ? "Schoonmaken" : "Sessie"}: ${gedaan} ${isHuishouden ? (gedaan === 1 ? "klus" : "klussen") : "af"}, ${Math.round(werkSec / 60)} min (${s.lijstNaam})${afgebroken ? " — gestopt" : ""}`, s.id);
     if (typeof vgControleerDoelen === "function") await vgControleerDoelen();
   };
   const sluit = () => {
@@ -25009,6 +25106,13 @@ async function hhsEinde(afgebroken) {
     const el = document.getElementById("hh-sessie"); if (el) el.remove();
     document.documentElement.classList.remove("hhs-open");
     HHS.a = null;
+    const terug = A.opties.terug;
+    if (!isHuishouden && terug) {
+      // Terug naar waar je vandaan kwam, met de samenvatting in een onderblad.
+      if (V.view === terug[0] && (V.param || null) === (terug[1] || null)) teken(); else ga(terug[0], terug[1]);
+      setTimeout(() => bladOpen("Sessie", hhSamenvattingHTML(s), `<button class="knop breed primair" onclick="bladSluit()">Klaar</button>`), 60);
+      return;
+    }
     V.hh.samenvatting = s.id;
     if (V.view === "huishouden") { teken(); $("#scherm").scrollTop = 0; } else ga("huishouden");
   };
@@ -25171,6 +25275,431 @@ document.addEventListener("keydown", e => {
   else if (e.key === "Escape") { e.preventDefault(); document.querySelector('#hh-sessie [data-hhs="stop"]').click(); }
 });
 document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && HHS.a && !HHS.a.klaar) hhsSchermAan(); });
+
+</script>
+<script>
+"use strict";
+// === SECTIE 80: VERWEVEN – DE APP ALS ÉÉN GEHEEL ===
+/* ==========================================================================
+   Keuzes (september 2026):
+   - Het hart is Welkom (briefing) → Vandaag → Nieuw. Welkom is een korte
+     briefing en verschijnt alleen bij de eerste keer openen sinds verversen.
+     Vandaag is waar alles samenkomt: elke module laat daar een spoor achter.
+     Vanaf Nieuw kun je overal heen, en de tegels tonen tussenstanden.
+   - Voortgang is leidend: andere overzichten verwijzen ernaar.
+   - Eén sessie-motor: taken, checklists, projecten en side hustles kunnen
+     net als Huishouden een kaartjes-sessie starten; wat je afmaakt, wordt
+     in de bron afgevinkt.
+   - Het profiel bepaalt hoeveel er tegelijk op je scherm staat.
+   - Vijf slimme koppelingen als voorstel (nooit automatisch).
+   - Dagritme: ochtend-check-in en avondafsluiting, als uitdaging (geen reeks).
+   - Mindful moment en Anker-moment zijn hetzelfde.
+   ========================================================================== */
+
+/* ---------- 80.1 Modulekleuren en iconen (één plek) ----------
+   Een modulekleur hoort alleen op het icoon, de tegel en het spoor op de
+   Dagring; knoppen en balken gebruiken de accentkleur van de app. */
+const MODULES = {
+  anker: { naam: "Anker", kleur: "#3a7ca5", ico: "anker", view: "anker" },
+  huishouden: { naam: "Huishouden", kleur: "#0e7490", ico: "bezem", view: "huishouden" },
+  voortgang: { naam: "Voortgang", kleur: "#4f46e5", ico: "doel", act: "vg-open" },
+  sidehustle: { naam: "Side hustle", kleur: "#d97706", ico: "raket", view: "sidehustles" },
+  hobbyskill: { naam: "HobbySkills", kleur: "#0f766e", ico: "hobby", view: "hobbyskills" },
+  sport: { naam: "Sport", kleur: "var(--gezond)", ico: "sport", view: "gezondheid" },
+  dagboek: { naam: "Dagboek", kleur: "var(--accent)", ico: "boek", view: "dagboek" },
+  geld: { naam: "Uitgaven", kleur: "var(--green)", ico: "euro", view: "financieel" },
+  gewoonte: { naam: "Gewoontes", kleur: "var(--amber)", ico: "vuur", view: "gewoontes" },
+  sessie: { naam: "Sessie", kleur: "#7c3aed", ico: "ster", view: "vandaag" }
+};
+TL_SOORTEN.sidehustle = TL_SOORTEN.sidehustle || ["Side hustle", MODULES.sidehustle.kleur];
+TL_SOORTEN.hobbyskill = TL_SOORTEN.hobbyskill || ["HobbySkills", MODULES.hobbyskill.kleur];
+TL_SOORTEN.sessie = TL_SOORTEN.sessie || ["Sessies", MODULES.sessie.kleur];
+if (typeof LOGFILTERS !== "undefined" && Array.isArray(LOGFILTERS)) {
+  for (const [k, n] of [["sidehustle", "Side hustle"], ["hobbyskill", "HobbySkills"], ["sessie", "Sessies"]]) if (!LOGFILTERS.some(f => f[0] === k)) LOGFILTERS.push([k, n]);
+}
+/* Iconen per profielrichting (in plaats van emoji in de bediening). */
+const ND_ICO = { adhd: "bliksem", autisme: "puzzel", audhd: "kompas", energie: "batterij", geen: "blad" };
+
+/* ---------- 80.2 Dagritme: check-in en afsluiting ----------
+   Beide komen in het dagboekrecord van vandaag (bestaande store): de
+   dagboekweergave toont stemming en energie dus meteen mee. */
+const DC_ENERGIE = ["Leeg", "Laag", "Gaat", "Goed", "Vol"];
+const dcVandaag = () => S.dagboek.find(d => d.datum === vandaagISO()) || null;
+const dcEnergieLabel = n => n <= 2 ? "laag" : n === 3 ? "midden" : "hoog";
+/* Energie van vandaag als getal 1–5 (ook uit een oud dagboek met laag/midden/hoog). */
+function dcEnergie() {
+  const d = dcVandaag(); if (!d) return null;
+  if (d.energieNr) return d.energieNr;
+  return { laag: 2, midden: 3, hoog: 4 }[d.energie] || null;
+}
+async function dcBewaar(velden) {
+  const d = Object.assign({ id: uid(), datum: vandaagISO(), stemming: null, energie: null, tekst: "", dankbaar: "", gemaakt: new Date().toISOString() }, dcVandaag() || {}, velden);
+  await bewaar("dagboek", d);
+  return d;
+}
+function dcCheckinHTML(klein) {
+  const d = dcVandaag();
+  if (d && d.checkinTs && !V.dcWijzig) {
+    return `<div class="card dc-kaart dc-klaar"><span class="dc-ico" aria-hidden="true">${ico("check")}</span>
+      <span class="dc-tekst"><b>Ingecheckt</b><small>Energie ${esc(DC_ENERGIE[(d.energieNr || 3) - 1].toLowerCase())}${d.stemming ? " · " + STEMMINGEN[d.stemming - 1] : ""}${d.intentie ? " · " + esc(d.intentie) : ""}</small></span>
+      <button class="dc-link" data-act="dc-wijzig">Wijzig</button></div>`;
+  }
+  const w = dcWeekTelling();
+  return `<section class="card dc-kaart dc-open" aria-labelledby="dc-kop">
+    <div class="dc-kop"><h2 id="dc-kop">Ochtend-check-in</h2><span class="klein">${w.checkins} van ${w.dagen} dagen deze week</span></div>
+    <div class="veld"><span class="labeltekst">Energie</span><div class="dc-schaal" role="radiogroup" aria-label="Energie">${DC_ENERGIE.map((n, i) => `<button role="radio" data-dce="${i + 1}" aria-checked="${(d && d.energieNr) === i + 1}">${n}</button>`).join("")}</div></div>
+    <div class="veld"><span class="labeltekst">Stemming</span><div class="dc-schaal" role="radiogroup" aria-label="Stemming">${STEMMINGEN.map((e, i) => `<button role="radio" data-dcs="${i + 1}" aria-checked="${(d && d.stemming) === i + 1}" aria-label="Stemming ${i + 1} van 5">${e}</button>`).join("")}</div></div>
+    ${klein ? "" : `<div class="veld"><label for="dc-intentie">Waar ga je vandaag voor?</label><input class="invoer" id="dc-intentie" maxlength="80" value="${esc((d && d.intentie) || "")}" placeholder="Eén ding is genoeg"></div>`}
+    <button class="knop breed primair" data-act="dc-opslaan">Check in</button></section>`;
+}
+function dcAfsluitingHTML() {
+  const d = dcVandaag(), uur = new Date().getHours();
+  if (d && d.afsluitTs && !V.dcAfWijzig) return `<div class="card dc-kaart dc-klaar"><span class="dc-ico" aria-hidden="true">${ico("check")}</span>
+    <span class="dc-tekst"><b>Dag afgesloten</b><small>${d.afsluiting && d.afsluiting.goed ? esc(d.afsluiting.goed) : "Goed gedaan."}</small></span><button class="dc-link" data-act="dc-af-wijzig">Wijzig</button></div>`;
+  if (uur < 18 && !V.dcAfWijzig) return "";
+  return `<section class="card dc-kaart dc-open" aria-labelledby="dc-af-kop">
+    <div class="dc-kop"><h2 id="dc-af-kop">Dag afsluiten</h2><span class="klein">twee minuten</span></div>
+    <div class="veld"><label for="dc-goed">Wat ging goed?</label><input class="invoer" id="dc-goed" maxlength="120" value="${esc((d && d.afsluiting && d.afsluiting.goed) || "")}" placeholder="Hoe klein ook"></div>
+    <div class="veld"><label for="dc-morgen">Eén ding voor morgen</label><input class="invoer" id="dc-morgen" maxlength="80" value="${esc((d && d.afsluiting && d.afsluiting.morgen) || "")}" placeholder="Dan hoef je er morgen niet over na te denken"></div>
+    <label class="dc-vink"><input type="checkbox" id="dc-alstaak" checked> Zet het als taak voor morgen</label>
+    <button class="knop breed primair" data-act="dc-afsluiten">Sluit de dag af</button></section>`;
+}
+function dcWeekTelling() {
+  const ws = weekStart(vandaagISO()), dagen = dagVerschil(vandaagISO(), ws) + 1;
+  return { dagen, checkins: S.dagboek.filter(d => d.datum >= ws && d.checkinTs).length, afgesloten: S.dagboek.filter(d => d.datum >= ws && d.afsluitTs).length };
+}
+
+/* ---------- 80.3 De briefing: alleen de eerste keer sinds verversen ----------
+   Welkom opent bij het starten (als dat je startscherm is). Zodra je verder
+   gaat, verdwijnt hij uit de terug-stapel en brengt een verwijzing naar
+   Welkom je naar Vandaag, tot je de app ververst. */
+V.briefingGezien = false;
+{
+  const _ga = ga;
+  ga = function (view, param, terugStap) {
+    if (view === "welkom" && V.briefingGezien) view = "vandaag";
+    if (V.view === "welkom" && view !== "welkom") V.briefingGezien = true;
+    const r = _ga(view, param, terugStap);
+    if (V.briefingGezien) V.stapel = V.stapel.filter(s => s.view !== "welkom");
+    return r;
+  };
+}
+{
+  const _w = vwWelkom;
+  vwWelkom = function () {
+    const h = _w.apply(this, arguments);
+    const d = dcVandaag(), check = !(d && d.checkinTs) || V.dcWijzig ? dcCheckinHTML(false) : "";
+    const vs = vsHTML("briefing");
+    // Kort houden: check-in en voorstellen bovenaan, de rest van de briefing eronder.
+    return `<div class="vw-briefing">${check}${vs}</div>` + h;
+  };
+}
+
+/* De briefing blijft kort: de categorietegels (Werk, Persoonlijk, Sociaal …)
+   gaan eraf; die schermen zijn al via Nieuw, Meer of de tabbalk te bereiken
+   (hooguit drie routes per scherm). */
+RT_NA.push(() => {
+  if (V.view !== "welkom") return;
+  const t = document.querySelector("#scherm .wk-tegels"); if (t) t.remove();
+  document.querySelectorAll("#scherm .ug-naar[data-act='ga']").forEach(e => { e.removeAttribute("data-act"); e.removeAttribute("data-view"); });
+});
+
+/* ---------- 80.4 Vijf slimme koppelingen (voorstellen) ----------
+   Nooit automatisch: een kaart met één actie en "Niet nu" (voor vandaag).
+   Elke koppeling is uit te zetten in Profiel → In de app. */
+const VS_KOPPELINGEN = [
+  ["rust", "Weinig energie of een lage stemming → even landen met Anker"],
+  ["huishouden", "Een schoonmaaklijst is aan de beurt → korte sessie"],
+  ["doel", "Een doel loopt achter en de deadline nadert → volgende stap"],
+  ["wens", "Genoeg gespaard voor een wens → rustig beslissen"],
+  ["sidehustle", "Deze week nog niets aan je side hustle → blok van 25 minuten"]
+];
+const vsAan = k => inst("vsAan_" + k, true);
+const vsNietNu = k => (inst("vsNietNu", {}) || {})[k] === vandaagISO();
+function vsVoorstellen() {
+  const uit = [], v = vandaagISO(), d = dcVandaag(), en = dcEnergie();
+  if (vsAan("rust") && ((en != null && en <= 2) || (d && d.stemming && d.stemming <= 2)) && typeof mfStart === "function")
+    uit.push({ k: "rust", ico: "anker", titel: "Even landen", tekst: "Je gaf aan dat het zwaar is. Eén minuut rustig ademen helpt je lichaam naar rust.", knop: "1 minuut ademen" });
+  if (vsAan("huishouden") && typeof hhAanDeBeurt === "function") {
+    const b = hhAanDeBeurt().find(x => x.te >= 1);
+    if (b) uit.push({ k: "huishouden", ico: "bezem", titel: `${b.l.naam} is aan de beurt`, tekst: b.dagen == null ? "Nog nooit gedaan. Tien minuten is genoeg om te beginnen." : `${b.dagen} dagen geleden. Tien minuten is genoeg om te beginnen.`, knop: "10 minuten", data: b.l.id });
+  }
+  if (vsAan("doel") && typeof vgActieveDoelen === "function") {
+    const doel = vgActieveDoelen().filter(x => x.deadline && x.deadline >= v && dagVerschil(x.deadline, v) <= 7).map(x => ({ x, t: vgTempo(x) })).find(y => ["iets", "achter"].includes(y.t.code));
+    if (doel) uit.push({ k: "doel", ico: "doel", titel: doel.x.naam, tekst: `${vgDoelStand(doel.x).tekst}. ${doel.t.tekst}.`, knop: "Naar het doel", data: doel.x.id });
+  }
+  if (vsAan("wens") && S.wl_items) {
+    const w = S.wl_items.find(x => (x.status || "actief") === "actief" && +x.prijs > 0 && +x.gespaard >= +x.prijs);
+    if (w) {
+      const a = typeof ndAanpak === "function" ? ndAanpak() : { afkoelUur: 24 };
+      const klaar = w.gemaakt ? new Date(new Date(w.gemaakt).getTime() + a.afkoelUur * 3600e3) : null, afkoelen = +w.prijs > 50 && klaar && klaar > new Date();
+      uit.push({ k: "wens", ico: "cadeau", titel: `Genoeg gespaard: ${w.naam}`, tekst: afkoelen ? `De afkoelperiode loopt nog tot ${datumLabel(klaar.toISOString().slice(0, 10)).toLowerCase()}. Daarna rustig beslissen.` : "Kijk nog één keer naar de koopcheck en beslis dan.", knop: "Naar de wens", data: w.id });
+    }
+  }
+  if (vsAan("sidehustle") && typeof shActief === "function") {
+    const ws = weekStart(v), h = shActief().find(h => !S.tijdlog.some(l => l.shId === h.id && (l.datum || "") >= ws));
+    if (h) uit.push({ k: "sidehustle", ico: "raket", titel: `Tijd voor ${h.naam}`, tekst: "Deze week nog niets gedaan. Een blok van 25 minuten houdt het levend.", knop: "Start 25 minuten", data: h.id });
+  }
+  return uit.filter(x => !vsNietNu(x.k));
+}
+function vsHTML(plek) {
+  const l = vsVoorstellen(), max = ndMax("voorstellen");
+  if (!l.length) return "";
+  return `<section class="vs" aria-label="Voorstellen voor vandaag">${l.slice(0, max).map(x => `<div class="card vs-kaart">
+    <span class="vs-ico" aria-hidden="true">${ico(x.ico)}</span>
+    <span class="vs-tekst"><b>${esc(x.titel)}</b><small>${esc(x.tekst)}</small></span>
+    <span class="vs-knoppen"><button class="knop klein primair" data-act="vs-doe" data-k="${x.k}" data-d="${esc(x.data || "")}">${esc(x.knop)}</button>
+      <button class="vs-niet" data-act="vs-niet" data-k="${x.k}">Niet nu</button></span></div>`).join("")}</section>`;
+}
+async function vsDoe(k, data) {
+  if (k === "rust") mfStart("A1", { min: 1, bron: "voorstel" });
+  else if (k === "huishouden") hhKlaarzetten(data, 10, dcEnergie());
+  else if (k === "doel") { vgOpen("doelen"); V.vg.stapel = [{ soort: "doel", id: data }]; vgTeken(); }
+  else if (k === "wens") ga("wens", data);
+  else if (k === "sidehustle") {
+    const h = shH(data), kaarten = sesShKaarten(h);
+    if (kaarten.length) sesKlaarzetten(sesVanSh(h, kaarten), { min: 25, terug: ["sh", h.id], bron: "sidehustle" });
+    else ga("sh", data);
+  }
+}
+
+/* ---------- 80.5 Vandaag: het hart ----------
+   Na de dagring: check-in (als die er nog niet is), voorstellen, een
+   startkaart voor een kaartjes-sessie met je taken, en 's avonds de
+   afsluiting. Anker, Huishouden, Side Hustle, HobbySkills, Sport, Voortgang
+   en het dagboek laten een spoor achter op de Dagring. */
+RT_NA.push(() => {
+  if (V.view !== "vandaag") return;
+  const s = $("#scherm"); if (!s || s.querySelector(".vw-hart")) return;
+  const open = typeof fmVandaagTaken === "function" ? fmVandaagTaken().open : [];
+  const d = dcVandaag();
+  let h = "";
+  if (!(d && d.checkinTs)) h += dcCheckinHTML(true);
+  h += vsHTML("vandaag");
+  if (open.length) {
+    const min = open.reduce((a, t) => a + (+t.duur || 10), 0);
+    h += `<button class="card vw-sessie" data-act="ses-taken"><span class="vs-ico" aria-hidden="true">${ico("ster")}</span>
+      <span class="vs-tekst"><b>Aan de slag met je taken</b><small>${open.length} ${open.length === 1 ? "taak" : "taken"} · ± ${min} min · één kaartje tegelijk</small></span>${ico("pijlr", "width:16px;height:16px;color:var(--faint)")}</button>`;
+  }
+  h += dcAfsluitingHTML();
+  const plek = s.querySelector(".fm-dagring") || s.querySelector(":scope > .dagpaneel, :scope > .card");
+  const blok = `<div class="vw-hart">${h}</div>`;
+  if (plek) plek.insertAdjacentHTML("afterend", blok); else s.insertAdjacentHTML("afterbegin", blok);
+});
+/* Sporen op de Dagring: alles wat modules vandaag in het logboek zetten. */
+const VW_SPOOR_SOORTEN = ["anker", "huishouden", "sidehustle", "hobbyskill", "sport", "voortgang", "dagboek", "geld", "gewoonte", "sessie"];
+if (typeof FM_SPOREN !== "undefined") FM_SPOREN.push(() => {
+  const v = vandaagISO();
+  return S.gebeurtenissen.filter(g => VW_SPOOR_SOORTEN.includes(g.soort) && g.ts && (g.datum || vandaagVan(g.ts)) === v).map(g => {
+    const t = new Date(g.ts), m = MODULES[g.soort] || {};
+    return { min: t.getHours() * 60 + t.getMinutes(), tijd: pad(t.getHours()) + ":" + pad(t.getMinutes()), kleur: m.kleur || "var(--muted)", label: g.tekst, view: m.view, act: m.act };
+  });
+});
+const vandaagVan = ts => { const d = new Date(ts); return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`; };
+
+/* ---------- 80.6 Eén sessie-motor ----------
+   Elke lijst wordt een schoonmaaklijst-vorm { naam, taken[] } met per taak
+   een bron. De planner en het sessiescherm van Huishouden doen de rest.
+   Een afgerond kaartje (laatste deel) wordt in de bron afgevinkt. */
+const sesTaak = (tekst, ruimte, min, prio, bron) => ({ id: uid(), tekst, ruimte, min: Math.max(1, Math.round(min)), zwaar: hhZwaarte(tekst), prio, uit: false, bron });
+function sesVanTaken(taken, naam) {
+  return { naam: naam || "Je taken", emoji: "", taken: taken.map(t => sesTaak(t.titel || "Taak", t.projectId ? ((vind("projecten", t.projectId) || {}).naam || "Taken") : (t.werk ? "Werk" : "Taken"), +t.duur || 10, t.prioriteit && t.prioriteit <= 2 ? "moet" : "normaal", { soort: "taak", id: t.id })) };
+}
+function sesVanChecklist(c) {
+  let ruimte = c.naam;
+  const taken = [];
+  (c.items || []).forEach((it, i) => {
+    if (typeof clSectie === "function" && clSectie(it)) { ruimte = String(it.tekst).replace(/^\s*(#+|--)\s*/, "") || c.naam; return; }
+    if (!it.af) taken.push(sesTaak(it.tekst, ruimte, hhSchat(it.tekst), "normaal", { soort: "checklist", id: c.id, i }));
+  });
+  return { naam: c.naam, emoji: "", taken };
+}
+const sesShKaarten = h => { if (!h) return []; const klaar = new Set(shVan("sh_kolommen", h.id).filter(k => k.rol === "klaar").map(k => k.id)); return shVan("sh_kaarten", h.id).filter(k => !k.gearchiveerd && !klaar.has(k.kolomId)).sort((a, b) => (a.deadline || "9999").localeCompare(b.deadline || "9999")); };
+function sesVanSh(h, kaarten) { return { naam: h.naam, emoji: h.emoji || "", taken: kaarten.map(k => sesTaak(k.titel, h.naam, +k.minuten || 25, k.deadline && k.deadline <= vandaagISO() ? "moet" : "normaal", { soort: "shkaart", id: k.id })) }; }
+/* Wat af is, wordt in de bron afgevinkt (aangeroepen vanuit het sessiescherm). */
+async function sesKlaar(A, it) {
+  if (!A || !A.lijst || !it || it.soort !== "taak" || (it.delen > 1 && it.deel !== it.delen)) return;
+  const t = (A.lijst.taken || []).find(x => x.id === it.taakId), b = t && t.bron; if (!b) return;
+  try {
+    if (b.soort === "taak") { const x = vind("taken", b.id); if (x && !x.af) await vinkTaak(b.id); }
+    else if (b.soort === "checklist") { const c = vind("checklists", b.id); if (c && c.items[b.i] && !c.items[b.i].af) { const k = JSON.parse(JSON.stringify(c)); k.items[b.i].af = true; await bewaar("checklists", k); } }
+    else if (b.soort === "shkaart") await sesShKaartKlaar(b.id);
+  } catch (e) { console.error(e); }
+}
+async function sesShKaartKlaar(id) {
+  const k = vind("sh_kaarten", id); if (!k) return;
+  const kol = shVan("sh_kolommen", k.shId).find(x => x.rol === "klaar"); if (!kol || k.kolomId === kol.id) return;
+  const x = JSON.parse(JSON.stringify(k)); x.kolomId = kol.id; x.klaarOp = new Date().toISOString();
+  await bewaar("sh_kaarten", x);
+  if (typeof logGebeurtenis === "function") await logGebeurtenis("sidehustle", `Kaart klaar: ${x.titel}`, x.id);
+}
+/* De afvinkknop bij side-hustle-deadlines op Vandaag deed nog niets; nu wel. */
+if (typeof SH_ACT === "object" && !SH_ACT["kaart-klaar"]) SH_ACT["kaart-klaar"] = async el => { await sesShKaartKlaar(el.dataset.id); teken(); toast("Kaart klaar"); };
+
+/* Klaarzetten voor elke lijst (zelfde onderblad als Huishouden, zonder lijstkeuze). */
+function sesKlaarzetten(lijst, opties) {
+  opties = opties || {};
+  if (!lijst.taken.length) { toast("Er staat niets open"); return; }
+  const min = opties.min || inst("hhLaatsteMin", 30), energie = opties.energie !== undefined ? opties.energie : dcEnergie();
+  const plan = hhMaakPlan(lijst, min, { energie });
+  const a = ndAanpak();
+  bladOpen(`Sessie: ${lijst.naam}`, `
+    <div class="veld"><span class="labeltekst">Hoeveel tijd heb je?</span><div class="keuzerij hh-tijden">${HH_TIJDEN.map(m => `<button class="keuze" data-sesmin="${m}" aria-pressed="${m === min}">${m} min</button>`).join("")}</div></div>
+    <div class="veld"><span class="labeltekst">Energie nu${dcEnergie() ? " (uit je check-in)" : " (mag leeg)"}</span><div class="keuzerij hh-energie">${[1, 2, 3, 4, 5].map(n => `<button class="keuze" data-sese="${n}" aria-pressed="${energie === n}">${DC_ENERGIE[n - 1]}</button>`).join("")}</div></div>
+    <div class="hh-plan"><div class="hh-plankop"><b>Jouw plan</b><small>${plan.items.filter(x => x.soort === "taak").length} kaartjes · ${plan.werkMin} min werk${plan.pauzeMin ? ` · ${plan.pauzeMin} min pauze` : ""}</small></div>
+      ${plan.notities.map(n => `<p class="hh-noot">${esc(n)}</p>`).join("")}
+      <ol class="hh-planlijst">${plan.items.map(it => it.soort === "pauze" ? `<li class="pauze"><span>Pauze</span><b>${it.min}′</b></li>` : `<li><span>${esc(it.tekst)}${it.delen > 1 ? ` <small>${it.deel}/${it.delen}</small>` : ""}<small class="hh-r">${esc(it.ruimte)}</small></span><b>${it.min}′</b></li>`).join("")}</ol>
+      ${plan.buiten.length ? `<p class="hh-uitleg">Past nu niet: ${plan.buiten.slice(0, 4).map(t => esc(t.tekst)).join(", ")}${plan.buiten.length > 4 ? ` en nog ${plan.buiten.length - 4}` : ""}.</p>` : ""}
+      <p class="hh-uitleg">Wat je afmaakt, wordt meteen afgevinkt in ${esc(opties.bron === "checklist" ? "de checklist" : opties.bron === "sidehustle" ? "je SCRUM-bord" : "je takenlijst")}. Blokken van max. ${a.blokMax} min.</p></div>`,
+    `<button class="knop breed primair" id="ses-start"${plan.items.length ? "" : " disabled"}>Start</button>`);
+  $("#bladinhoud").addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    if (b.dataset.sesmin) { zetInst("hhLaatsteMin", +b.dataset.sesmin); sesKlaarzetten(lijst, Object.assign({}, opties, { min: +b.dataset.sesmin, energie })); }
+    else if (b.dataset.sese) sesKlaarzetten(lijst, Object.assign({}, opties, { min, energie: energie === +b.dataset.sese ? null : +b.dataset.sese }));
+  });
+  $("#ses-start").onclick = () => { bladSluit(); hhSessieStart(lijst, plan, { beschikbaar: min, energie, bron: opties.bron || "taken", terug: opties.terug || [V.view, V.param] }); };
+}
+/* Ingangen: Vandaag (kaart), checklist, project en side hustle. */
+document.addEventListener("click", async e => {
+  const el = e.target.closest && e.target.closest("[data-act^='ses-'],[data-act^='dc-'],[data-act^='vs-'],[data-act='nd-meer'],[data-act='vw-voortgang']");
+  if (!el) return;
+  const a = el.dataset.act;
+  if (a === "ses-taken") { const { open } = fmVandaagTaken(); sesKlaarzetten(sesVanTaken(open, "Taken van vandaag"), { bron: "taken", terug: ["vandaag", null] }); }
+  else if (a === "ses-checklist") { const c = vind("checklists", el.dataset.id); if (c) sesKlaarzetten(sesVanChecklist(c), { bron: "checklist", terug: ["checklist", c.id] }); }
+  else if (a === "ses-project") { const p = vind("projecten", el.dataset.id); if (p) sesKlaarzetten(sesVanTaken(takenVanProject(p.id).filter(t => !t.af), p.naam), { bron: "taken", terug: ["project", p.id] }); }
+  else if (a === "ses-sh") { const h = shH(el.dataset.id); if (h) sesKlaarzetten(sesVanSh(h, sesShKaarten(h)), { min: 25, bron: "sidehustle", terug: ["sh", h.id] }); }
+  else if (a === "dc-wijzig") { V.dcWijzig = true; teken(); }
+  else if (a === "dc-af-wijzig") { V.dcAfWijzig = true; teken(); }
+  else if (a === "dc-opslaan") {
+    const k = el.closest(".dc-kaart"), en = k.querySelector("[data-dce][aria-checked='true']"), st = k.querySelector("[data-dcs][aria-checked='true']"), int = k.querySelector("#dc-intentie");
+    if (!en && !st) { toast("Kies je energie of stemming"); return; }
+    const n = en ? +en.dataset.dce : null;
+    await dcBewaar(Object.assign({ checkinTs: new Date().toISOString() }, n ? { energieNr: n, energie: dcEnergieLabel(n) } : {}, st ? { stemming: +st.dataset.dcs } : {}, int ? { intentie: int.value.trim() } : {}));
+    V.dcWijzig = false;
+    if (typeof logGebeurtenis === "function") await logGebeurtenis("dagboek", `Check-in: energie ${n ? DC_ENERGIE[n - 1].toLowerCase() : "–"}${int && int.value.trim() ? " · " + int.value.trim() : ""}`, null);
+    teken(); toast("Ingecheckt");
+  }
+  else if (a === "dc-afsluiten") {
+    const goed = ($("#dc-goed").value || "").trim(), morgen = ($("#dc-morgen").value || "").trim();
+    const d = dcVandaag() || {};
+    await dcBewaar({ afsluitTs: new Date().toISOString(), afsluiting: { goed, morgen }, dankbaar: d.dankbaar || goed });
+    if (morgen && $("#dc-alstaak") && $("#dc-alstaak").checked) await maakTaakUitTekst(morgen, { datum: plusDagen(vandaagISO(), 1), tijd: null });
+    V.dcAfWijzig = false;
+    if (typeof logGebeurtenis === "function") await logGebeurtenis("dagboek", `Dag afgesloten${goed ? ": " + goed : ""}`, null);
+    teken(); toast(morgen ? "Afgesloten. Morgen staat klaar." : "Dag afgesloten");
+  }
+  else if (a === "vs-doe") vsDoe(el.dataset.k, el.dataset.d);
+  else if (a === "vs-niet") { const m = Object.assign({}, inst("vsNietNu", {}) || {}); m[el.dataset.k] = vandaagISO(); await zetInst("vsNietNu", m); teken(); }
+  else if (a === "nd-meer") { const lijst = el.parentElement; lijst.querySelectorAll(".nd-verborgen").forEach(x => x.classList.remove("nd-verborgen")); el.remove(); }
+  else if (a === "vw-voortgang") { vgOpen(el.dataset.tab || "overzicht"); if (el.dataset.bron) { V.vg.stapel = [{ soort: "bron", id: el.dataset.bron }]; vgTeken(); } }
+});
+document.addEventListener("click", e => {
+  const b = e.target.closest && e.target.closest("[data-dce],[data-dcs]"); if (!b) return;
+  b.parentElement.querySelectorAll("button").forEach(x => x.setAttribute("aria-checked", String(x === b)));
+});
+RT_NA.push(() => {
+  const s = $("#scherm"); if (!s) return;
+  const knop = (act, id, tekst, uitleg) => `<button class="card vw-sessie vw-ingang" data-act="${act}" data-id="${esc(id)}"><span class="vs-ico" aria-hidden="true">${ico("ster")}</span><span class="vs-tekst"><b>${tekst}</b><small>${uitleg}</small></span>${ico("pijlr", "width:16px;height:16px;color:var(--faint)")}</button>`;
+  if (s.querySelector(".vw-ingang")) return;
+  if (V.view === "checklist") { const c = vind("checklists", V.param); if (c && !c.sjabloon) { const n = sesVanChecklist(c).taken.length; if (n) s.insertAdjacentHTML("afterbegin", knop("ses-checklist", c.id, "Doe deze lijst als sessie", `${n} open · één punt tegelijk, met timer`)); } }
+  else if (V.view === "project") { const p = vind("projecten", V.param); const n = p ? takenVanProject(p.id).filter(t => !t.af).length : 0; if (n) s.insertAdjacentHTML("afterbegin", knop("ses-project", p.id, "Werk dit project af als sessie", `${n} open ${n === 1 ? "taak" : "taken"} · één kaartje tegelijk`)); }
+  else if (V.view === "sh") { const h = shH(V.param); const n = h ? sesShKaarten(h).length : 0; if (n) s.insertAdjacentHTML("afterbegin", knop("ses-sh", h.id, "Werkblok als sessie", `${n} open ${n === 1 ? "kaart" : "kaarten"} · 25 minuten, één kaart tegelijk`)); }
+});
+
+/* ---------- 80.7 Hoeveel tegelijk op je scherm ----------
+   Rustig: 5 regels per lijst, 1 voorstel, geen "Verder naar"-strook.
+   Normaal: 10 regels, 3 voorstellen. Alles: niets ingekort. */
+const ND_DICHTHEID = { rustig: { lijst: 5, voorstellen: 1, naam: "Rustig" }, normaal: { lijst: 10, voorstellen: 3, naam: "Normaal" }, alles: { lijst: Infinity, voorstellen: 5, naam: "Alles" } };
+function ndDichtheidStandaard() { const r = typeof pfRichting === "function" ? pfRichting() : "geen"; return ["adhd", "audhd", "energie"].includes(r) ? "rustig" : "normaal"; }
+const ndDichtheid = () => inst("ndDichtheid", null) || ndDichtheidStandaard();
+const ndMax = soort => (ND_DICHTHEID[ndDichtheid()] || ND_DICHTHEID.normaal)[soort];
+RT_NA.push(() => {
+  const d = ndDichtheid();
+  document.documentElement.dataset.dichtheid = d;
+  const max = ndMax("lijst"); if (!isFinite(max)) return;
+  $$("#scherm .card").forEach(card => {
+    if (card.dataset.ndKort) return;
+    const rijen = [...card.children].filter(x => x.classList.contains("taak") || x.classList.contains("gew"));
+    if (rijen.length <= max + 1) return;
+    card.dataset.ndKort = "1";
+    rijen.slice(max).forEach(x => x.classList.add("nd-verborgen"));
+    card.insertAdjacentHTML("beforeend", `<button class="nd-meer" data-act="nd-meer">Toon nog ${rijen.length - max}</button>`);
+  });
+});
+
+/* ---------- 80.8 Nieuw: tussenstanden op de tegels ----------
+   Elke tegel toont hoe het er nu voor staat, zodat Nieuw motiveert. */
+function vwTussenstand(view) {
+  const v = vandaagISO(), ws = weekStart(v), mv = (n, e, m) => `${n} ${n === 1 ? e : m}`;
+  try {
+    switch (view) {
+      case "persoonlijk": { const { open, af } = fmVandaagTaken(); return open.length || af.length ? `${af.length} van ${open.length + af.length} af vandaag` : ""; }
+      case "werk": { const n = S.taken.filter(t => t.werk && t.af && (t.afOp || "") >= ws).length; return n ? `${mv(n, "werktaak", "werktaken")} af deze week` : ""; }
+      case "gezondheid": { const n = (S.vs_sportlog || []).filter(l => l.datum >= ws).length; const rk = typeof rookCijfers === "function" ? rookCijfers() : null; return [n ? `${n}× gesport` : "", rk ? `${rk.heleDagen} dagen rookvrij` : ""].filter(Boolean).join(" · "); }
+      case "financieel": { if (typeof dagbudget !== "function") return ""; const b = dagbudget(v); return b.maand ? `${eur(b.over)} ${b.over < 0 ? "over budget" : "over vandaag"}` : ""; }
+      case "wishlist": { const l = (S.wl_items || []).filter(x => (x.status || "actief") === "actief"); const g = l.reduce((a, x) => a + (+x.gespaard || 0), 0); return l.length ? `${mv(l.length, "wens", "wensen")}${g ? " · " + eur(g) + " gespaard" : ""}` : ""; }
+      case "sidehustles": { const m = v.slice(0, 7), o = (S.sh_geld || []).filter(g => g.soort === "in" && (g.datum || "").startsWith(m)).reduce((a, g) => a + g.bedrag / 100, 0); const u = S.tijdlog.filter(l => l.shId && (l.datum || "") >= ws).reduce((a, l) => a + l.seconden / 3600, 0); return [o ? eur(o) + " deze maand" : "", u ? nwoGetal(u, 1) + " uur deze week" : ""].filter(Boolean).join(" · "); }
+      case "hobbyskills": { const m = (S.hs_items || []).flatMap(x => x.sessies || []).filter(s => (s.datum || "") >= ws).reduce((a, s) => a + (+s.minuten || 0), 0); return m ? `${m} min geoefend deze week` : ""; }
+      case "huishouden": { const c = hhWeekCijfers(); return c.sessies ? `${mv(c.taken, "klus", "klussen")} deze week` : ""; }
+    }
+  } catch (e) { return ""; }
+  return "";
+}
+{
+  const _s = vwStart;
+  vwStart = function () {
+    let h = _s.apply(this, arguments);
+    // Huishouden ook vanaf Nieuw (na Persoonlijk).
+    if (!h.includes('data-view="huishouden"')) {
+      const tegel = catKnop({ view: "huishouden", ill: "huishouden", naam: "Huishouden", uitleg: "Eén klus tegelijk", kleur: MODULES.huishouden.kleur });
+      const i = h.indexOf('data-view="persoonlijk"'), j = i < 0 ? -1 : h.indexOf("</button>", i);
+      if (j >= 0) h = h.slice(0, j + 9) + tegel + h.slice(j + 9);
+    }
+    // Tussenstanden in de uitlegregel van elke tegel.
+    return h.replace(/(<button class="knop3d breed[^"]*"[^>]*data-view="([a-z]+)"[^>]*>[\s\S]*?<span class="ds3d"[^>]*>)([\s\S]*?)(<\/span>)/g, (m, voor, view, uitleg, na) => {
+      const t = vwTussenstand(view); return t ? voor + esc(t) + na : m;
+    });
+  };
+}
+
+/* ---------- 80.9 Voortgang is leidend ----------
+   De andere overzichten (Nieuw, Anker, Huishouden, Terugblik) verwijzen naar
+   Voortgang, waar alles samenkomt. */
+RT_NA.push(() => {
+  const s = $("#scherm"); if (!s || s.querySelector(".vw-naarvg")) return;
+  const link = (tekst, tab, bron) => `<button class="card vw-naarvg" data-act="vw-voortgang" data-tab="${tab}"${bron ? ` data-bron="${bron}"` : ""}><span class="vs-ico" aria-hidden="true">${ico("doel")}</span><span class="vs-tekst"><b>${tekst}</b><small>Voortgang is je overzicht van alles</small></span>${ico("pijlr", "width:16px;height:16px;color:var(--faint)")}</button>`;
+  if (V.view === "start") { const k = s.querySelector(".nwo-statkop"); if (k) k.insertAdjacentHTML("beforebegin", link("Alles in Voortgang", "overzicht")); }
+  else if (V.view === "ankerervaring") s.insertAdjacentHTML("beforeend", link("Anker in Voortgang", "meters", "anker.momenten"));
+  else if (V.view === "huishouden") { const c = s.querySelector(".hh-cijfers"); if (c) c.insertAdjacentHTML("afterend", link("Huishouden in Voortgang", "meters", "huishouden.taken")); }
+  else if (V.view === "stats") s.insertAdjacentHTML("afterbegin", link("Terugblik, doelen en mijlpalen in Voortgang", "terugblik"));
+});
+/* Het dagritme telt mee in Voortgang (geen reeks: gewoon hoe vaak). */
+if (typeof vgAutoBronnen === "function") {
+  const _vg = vgAutoBronnen;
+  vgAutoBronnen = function () {
+    const uit = _vg();
+    uit.push({ id: "dagritme.checkins", naam: "Ochtend-check-ins", eenheid: "aantal", agg: "som", gebied: "rust", richting: "omhoog", data: () => S.dagboek.filter(d => d.checkinTs).map(d => ({ d: d.datum, v: 1 })) });
+    uit.push({ id: "dagritme.afsluitingen", naam: "Dagen afgesloten", eenheid: "aantal", agg: "som", gebied: "rust", richting: "omhoog", data: () => S.dagboek.filter(d => d.afsluitTs).map(d => ({ d: d.datum, v: 1 })) });
+    uit.push({ id: "sessies.minuten", naam: "Minuten in sessies (taken, lijsten, side hustle)", eenheid: "min", agg: "som", gebied: "werk", richting: "omhoog", data: () => S.hh_sessies.filter(s => s.bron && s.bron !== "huishouden").map(s => ({ d: s.datum, v: Math.round((s.werkSec || 0) / 60) })) });
+    return uit;
+  };
+  if (typeof VG_MP_TEKST === "object") {
+    VG_MP_TEKST["dagritme.checkins"] = n => `${nwoGetal(n)} keer ingecheckt`;
+    VG_MP_TEKST["dagritme.afsluitingen"] = n => `${nwoGetal(n)} ${n === 1 ? "dag" : "dagen"} bewust afgesloten`;
+  }
+}
+
+/* ---------- 80.10 Mindful moment = Anker-moment ----------
+   Bij de gewoonte "Mindful moment" staat een knop die Anker start; een
+   Anker-moment vinkt de gewoonte af (zie mfNaSessie). */
+RT_NA.push(() => {
+  if (typeof mfMindfulGewoonte !== "function") return;
+  const g = mfMindfulGewoonte(); if (!g) return;
+  $$(`#scherm .gew [data-act="gew-vink"][data-id="${g.id}"]`).forEach(v => {
+    const rij = v.closest(".gew"); if (!rij || rij.querySelector(".vw-anker")) return;
+    rij.insertAdjacentHTML("beforeend", `<button class="vw-anker" data-act="mf-start" data-id="A1" data-min="1" data-bron="gewoonte" aria-label="Mindful moment met Anker">${ico("anker")}</button>`);
+  });
+});
 
 </script>
 <script>

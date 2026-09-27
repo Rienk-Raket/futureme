@@ -82,7 +82,8 @@ async function mfNaSessie(sessie, fase) {
     const na = sessie.afgebroken ? "gestopt" : (sessie.nameting || "geen meting");
     await logGebeurtenis("anker", `Anker: ${o.naam}, ${min} min, ${na}${sessie.notitie ? " — " + sessie.notitie : ""}`, String(sessie.id));
   }
-  if (s.koppelingen.gewoonte && (sessie.duurSec || 0) >= 60) {
+  // Mindful moment en Anker-moment zijn hetzelfde: bestaat de gewoonte, dan telt elk moment van 1 minuut of langer.
+  if ((s.koppelingen.gewoonte || mfMindfulGewoonte()) && (sessie.duurSec || 0) >= 60) {
     const g = mfMindfulGewoonte(), d = vandaagISO();
     if (g && !gewoonteAf(g.id, d)) await bewaar("gewoontelog", { id: g.id + "|" + d, gewoonteId: g.id, datum: d, ts: new Date().toISOString() });
   }
@@ -98,7 +99,7 @@ async function mfMindfulMaak() {
 function mfPauzeKnop(id, min, bron, titel) {
   const o = mfOef(id);
   return `<button class="mf-pauzeknop" data-act="mf-start" data-id="${id}" data-min="${min}" data-bron="${bron}">
-    <span class="mf-pauzeicoon" aria-hidden="true">⚓</span><span><b>${titel}</b><small>${esc(o.naam)} · ${min} min</small></span></button>`;
+    <span class="mf-pauzeicoon" aria-hidden="true">${ico("anker")}</span><span><b>${titel}</b><small>${esc(o.naam)} · ${min} min</small></span></button>`;
 }
 {
   const _roken = vwRoken;

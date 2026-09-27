@@ -166,7 +166,7 @@ function vgBewegerRij(x) {
     <span class="vg-rijwaarde"><b>${esc(vgFmt(x.b, x.nu || 0))}</b><small>was ${esc(vgFmt(x.b, x.voor || 0))}</small></span>${vgPijl(x.nu || 0, x.voor || 0, x.b.richting)}</button>`;
 }
 function vgMijlpaalRij(m) {
-  return `<div class="vg-rij vg-mp"><span class="vg-mpico" aria-hidden="true">${m.doel ? "🏁" : vgGebied(m.gebied).ico}</span><span class="vg-rijnaam">${esc(m.titel)}</span><small>${esc(datumLabel(m.datum))}</small></div>`;
+  return `<div class="vg-rij vg-mp"><span class="vg-mpico" aria-hidden="true">${m.doel ? `<span class="vg-g">${ico("vlag")}</span>` : vgGebied(m.gebied).ico}</span><span class="vg-rijnaam">${esc(m.titel)}</span><small>${esc(datumLabel(m.datum))}</small></div>`;
 }
 
 /* ---------- 75.5 Doelen ---------- */
@@ -175,7 +175,7 @@ function vgDoelenTab() {
   const alle = S.vg_doelen.filter(d => (d.status || "actief") === st);
   const tel = id => alle.filter(d => d.gebied === id).length;
   let h = vgKeuzeRij("status", st, [["actief", `Actief (${S.vg_doelen.filter(d => (d.status || "actief") === "actief").length})`], ["behaald", `Behaald (${S.vg_doelen.filter(d => d.status === "behaald").length})`], ["archief", "Archief"]]);
-  h += `<div class="vg-chips" role="group" aria-label="Levensgebied">${[["alle", "Alles", "✨"]].concat(VG_GEBIEDEN.filter(g => tel(g.id)).map(g => [g.id, g.naam, g.ico])).map(([k, n, e]) =>
+  h += `<div class="vg-chips" role="group" aria-label="Levensgebied">${[["alle", "Alles", ""]].concat(VG_GEBIEDEN.filter(g => tel(g.id)).map(g => [g.id, g.naam, g.ico])).map(([k, n, e]) =>
     `<button class="vg-chip" data-vg="filter" data-w="${k}" aria-pressed="${f === k}">${e} ${esc(n)}</button>`).join("")}</div>`;
   const lijst = alle.filter(d => f === "alle" || d.gebied === f);
   if (!lijst.length) return h + `<section class="vg-kaart vg-stil">${st === "actief" ? `Nog geen doelen${f !== "alle" ? " in dit gebied" : ""}. <button class="vg-link" data-vg="vg-doel-nieuw">Zet een doel</button>` : st === "behaald" ? "Nog geen behaalde doelen. Dat komt." : "Het archief is leeg."}</section>`;
@@ -288,7 +288,7 @@ function vgMijlpalenTab() {
   h += `<h2 class="vg-sectie${bijna.length ? "" : " eerste"}">Bereikt <small>${vgMv(alle.length, "mijlpaal", "mijlpalen")}</small></h2><ol class="vg-tijdlijn">`;
   for (const [k, l] of perMaand) {
     const [y, mm] = k.split("-").map(Number);
-    h += `<li class="vg-maand"><span class="vg-maandnaam">${MAANDNAMEN[mm - 1]} ${y}</span><ul>${l.map(m => `<li class="vg-mpitem"><span class="vg-mpico" aria-hidden="true">${m.doel ? "🏁" : vgGebied(m.gebied).ico}</span><span><b>${esc(m.titel)}</b><small>${esc(datumLabel(m.datum))}</small></span></li>`).join("")}</ul></li>`;
+    h += `<li class="vg-maand"><span class="vg-maandnaam">${MAANDNAMEN[mm - 1]} ${y}</span><ul>${l.map(m => `<li class="vg-mpitem"><span class="vg-mpico" aria-hidden="true">${m.doel ? `<span class="vg-g">${ico("vlag")}</span>` : vgGebied(m.gebied).ico}</span><span><b>${esc(m.titel)}</b><small>${esc(datumLabel(m.datum))}</small></span></li>`).join("")}</ul></li>`;
   }
   return h + "</ol>";
 }
@@ -302,8 +302,8 @@ function vgTerugblikTab() {
   h += `<div class="vg-periodenav"><button class="vg-kopknop" data-vg="tb-nav" data-w="-1" aria-label="Vorige periode">${ico("pijll")}</button>
     <b>${esc(per.naam)}</b><button class="vg-kopknop" data-vg="tb-nav" data-w="1" aria-label="Volgende periode"${isNu ? " disabled" : ""}>${ico("pijlr")}</button></div>`;
   h += `<section class="vg-kaart"><span class="vg-label">Automatisch samengevat</span>
-    ${sam.behaald.length ? `<p class="vg-samen">🏁 ${vgMv(sam.behaald.length, "doel", "doelen")} behaald: ${sam.behaald.map(d => esc(d.naam)).join(", ")}</p>` : ""}
-    ${sam.mijlpalen.length ? `<p class="vg-samen">⭐ ${sam.mijlpalen.map(m => esc(m.titel)).join(" · ")}</p>` : ""}
+    ${sam.behaald.length ? `<p class="vg-samen"><span class="vg-g">${ico("vlag")}</span> ${vgMv(sam.behaald.length, "doel", "doelen")} behaald: ${sam.behaald.map(d => esc(d.naam)).join(", ")}</p>` : ""}
+    ${sam.mijlpalen.length ? `<p class="vg-samen"><span class="vg-g">${ico("ster")}</span> ${sam.mijlpalen.map(m => esc(m.titel)).join(" · ")}</p>` : ""}
     ${sam.rijen.length ? `<div class="vg-rijen">${sam.rijen.slice(0, 8).map(vgBewegerRij).join("")}</div>` : `<p class="vg-uitleg">Niets vastgelegd in deze periode of de periode ervoor.</p>`}
     <p class="vg-uitleg">${sam.lopend ? `Tot nu toe, vergeleken met dezelfde dagen van de ${soort === "week" ? "week" : "maand"} ervoor.` : `Vergeleken met de ${soort === "week" ? "week" : "maand"} ervoor.`}</p></section>`;
   h += `<h2 class="vg-sectie">Jouw terugblik</h2><section class="vg-kaart vg-form" id="vg-tbform" data-id="${per.id}">
@@ -328,7 +328,7 @@ function vgBronOpties(gekozen) {
   VG_GEBIEDEN.forEach(g => {
     const l = bronnen.filter(b => b.gebied === g.id), m = S.vg_meters.filter(x => x.gebied === g.id);
     if (!l.length && !m.length) return;
-    h += `<optgroup label="${esc(g.ico + " " + g.naam)}">${l.map(b => `<option value="${esc(b.id)}"${b.id === gekozen ? " selected" : ""}>${esc(b.naam)}</option>`).join("")}
+    h += `<optgroup label="${esc(g.naam)}">${l.map(b => `<option value="${esc(b.id)}"${b.id === gekozen ? " selected" : ""}>${esc(b.naam)}</option>`).join("")}
       ${m.map(x => `<option value="meter:${x.id}"${"meter:" + x.id === gekozen ? " selected" : ""}>${esc(x.naam)} (eigen meter)</option>`).join("")}</optgroup>`;
   });
   return h;
@@ -356,8 +356,8 @@ function vgDoelBlad(concept) {
     <div class="veld"><label for="vg-d-naam">Doel</label><input class="invoer" id="vg-d-naam" value="${esc(d.naam || "")}" maxlength="80" placeholder="Bv. 10 km hardlopen, € 5.000 sparen"></div>
     <div class="veld"><span class="labeltekst">Levensgebied</span><div class="keuzerij">${VG_GEBIEDEN.map(g => `<button class="keuze" data-vggebied="${g.id}" aria-pressed="${d.gebied === g.id}">${g.ico} ${esc(g.naam)}</button>`).join("")}</div></div>
     <div class="veld"><span class="labeltekst">Hoe meet je het?</span><div class="keuzerij">
-      <button class="keuze" data-vgsoort="bron" aria-pressed="${d.soort === "bron"}">📈 Met een meting</button>
-      <button class="keuze" data-vgsoort="stappen" aria-pressed="${d.soort === "stappen"}">🪜 Met stappen</button></div></div>
+      <button class="keuze" data-vgsoort="bron" aria-pressed="${d.soort === "bron"}">Met een meting</button>
+      <button class="keuze" data-vgsoort="stappen" aria-pressed="${d.soort === "stappen"}">Met stappen</button></div></div>
     ${d.soort === "stappen" ? `<div class="veld"><label for="vg-d-stappen">Stappen (één per regel)</label><textarea class="invoer" id="vg-d-stappen" rows="5" placeholder="Cursus kiezen&#10;Inschrijven&#10;Eerste les">${esc((d.stappen || []).map(s => s.tekst).join("\n"))}</textarea></div>` : `
     <div class="veld"><label for="vg-d-bron">Meting</label><select class="invoer" id="vg-d-bron"><option value="">Kies wat je wilt meten…</option>${vgBronOpties(d.bron)}</select>
       <small class="vg-hint">Staat het er niet bij? Maak eerst een eigen meter in het tabblad Meters.</small></div>

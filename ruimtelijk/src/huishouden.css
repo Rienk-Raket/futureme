@@ -11,7 +11,7 @@
 .pf-kop b{display:block;font-size:calc(19px * var(--t))}
 .pf-kop span{font-size:calc(13px * var(--t));color:var(--muted)}
 .pf-avatar{width:58px;height:58px;border-radius:20px;display:grid;place-items:center;flex:0 0 auto;font-weight:800;font-size:26px;color:#fff;
-  background:linear-gradient(135deg,#0e7490,#4f46e5)}
+  background:var(--accent)}
 .pf-avatar.klein{width:40px;height:40px;border-radius:14px;font-size:18px}
 .pf-sectie{background:var(--card);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
 .pf-sectie summary{display:flex;align-items:center;gap:10px;padding:14px 16px;min-height:60px;cursor:pointer;list-style:none}
@@ -49,23 +49,26 @@
 /* 78. Huishouden */
 .hh{display:flex;flex-direction:column}
 .hh-kop{--kk:#0e7490}
-.hh-start{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:18px 16px;margin:12px 0 10px;border-radius:22px;color:#fff;
-  background:radial-gradient(120% 140% at 12% 10%,#155e75 0%,#0b1220 60%,#05070c 100%);box-shadow:0 10px 30px rgba(8,47,73,.35),inset 0 0 0 1px rgba(255,255,255,.08)}
+.hh-start{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:16px;margin:12px 0 10px;border-radius:20px;color:#fff;
+  background:var(--accent);box-shadow:var(--shadow)}
 .hh-start b{display:block;font-size:calc(17px * var(--t))}
 .hh-start small{display:block;font-size:calc(12.5px * var(--t));opacity:.75}
 .hh-start>span:nth-child(2){flex:1}
 .hh-start svg{width:18px;height:18px;opacity:.8}
-.hh-startico{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:22px;background:rgba(255,255,255,.1);box-shadow:0 0 18px rgba(103,232,249,.45);color:#a5f3fc}
+.hh-startico{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:rgba(255,255,255,.18);color:#fff}
+.hh-startico svg{width:22px;height:22px}
 .hh-snel{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:6px}
 .hh-snelknop{display:flex;flex-direction:column;align-items:flex-start;gap:1px;text-align:left;padding:12px 14px;border-radius:18px;background:var(--card);box-shadow:var(--shadow);min-height:84px}
-.hh-snelknop>span{font-size:22px}
+.hh-snelknop>span{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent);margin-bottom:4px}
+.hh-snelknop>span svg{width:19px;height:19px}
 .hh-snelknop b{font-size:calc(14px * var(--t))}
 .hh-snelknop small{font-size:calc(11.5px * var(--t));color:var(--muted)}
 .hh-rij{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:10px 14px;min-height:58px;border-bottom:1px solid var(--line)}
 .hh-rij:last-child{border-bottom:0}
 .hh-rij[aria-disabled="true"]{opacity:.55}
 .hh-rij.stil{cursor:default}
-.hh-emoji{font-size:22px;width:30px;text-align:center;flex:0 0 auto}
+.hh-emoji{font-size:22px;width:30px;text-align:center;flex:0 0 auto;display:grid;place-items:center;color:var(--muted)}
+.hh-emoji svg{width:22px;height:22px}
 .hh-rijt{flex:1;min-width:0;display:flex;flex-direction:column}
 .hh-rijt b{font-size:calc(14.5px * var(--t))}
 .hh-rijt small{font-size:calc(12px * var(--t));color:var(--muted)}
@@ -90,25 +93,24 @@
 .hh-link{color:var(--accent);font-weight:700}
 
 /* Samenvatting */
-.hh-samen{margin:12px 0 4px;padding:16px;border-radius:22px;color:#e6f6fb;background:radial-gradient(120% 140% at 85% 0%,#1e3a5f 0%,#0b1220 65%);box-shadow:0 10px 30px rgba(8,47,73,.3);
+.hh-samen{margin:12px 0 4px;padding:16px;border-radius:20px;background:var(--card);box-shadow:var(--shadow);border:2px solid color-mix(in srgb,var(--accent) 35%,transparent);
   animation:hh-in .5s cubic-bezier(.22,1,.36,1)}
 @keyframes hh-in{from{opacity:0;transform:translateY(10px) scale(.98)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.hh-samen{animation:none}}
 .hh-samenkop{display:flex;align-items:center;gap:12px}
-.hh-samenkop>span{font-size:24px;color:#a5f3fc;text-shadow:0 0 14px #67e8f9}
+.hh-samenkop>span{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.hh-samenkop>span svg{width:20px;height:20px}
 .hh-samenkop div{flex:1;display:flex;flex-direction:column}
 .hh-samenkop b{font-size:calc(17px * var(--t))}
-.hh-samenkop small{font-size:calc(12px * var(--t));opacity:.7}
-.hh-sluitx{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:inherit;background:rgba(255,255,255,.08)}
+.hh-samenkop small{font-size:calc(12px * var(--t));color:var(--muted)}
+.hh-sluitx{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:var(--muted);background:var(--card2)}
 .hh-sluitx svg{width:18px;height:18px}
 .hh-zin{margin:10px 0 12px;font-size:calc(14px * var(--t))}
-.hh-samen .hh-cijfer{background:rgba(255,255,255,.07);box-shadow:none;color:#fff}
-.hh-samen .hh-cijfer span,.hh-samen .hh-uitleg{color:rgba(230,246,251,.7)}
 .hh-details{margin-top:10px}
 .hh-details summary{min-height:40px;display:flex;align-items:center;font-weight:700;cursor:pointer}
 .hh-details ul{list-style:none;margin:0;padding:0}
-.hh-details li{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-top:1px solid rgba(255,255,255,.08);font-size:calc(13px * var(--t))}
-.hh-details li small{opacity:.7;white-space:nowrap}
+.hh-details li{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-top:1px solid var(--line);font-size:calc(13px * var(--t))}
+.hh-details li small{color:var(--muted);white-space:nowrap}
 
 /* Lijst bewerken */
 .hh-lijstkop .veld{margin-bottom:10px}
@@ -119,7 +121,7 @@
 .hh-taak:last-child{border-bottom:0}
 .hh-taak.uit .hh-taakt{opacity:.45;text-decoration:line-through}
 .hh-mee{width:30px;height:30px;border-radius:9px;border:2px solid var(--line2);display:grid;place-items:center;font-weight:900;color:#fff;flex:0 0 auto}
-.hh-mee[aria-pressed="true"]{background:#0e7490;border-color:#0e7490}
+.hh-mee[aria-pressed="true"]{background:var(--accent);border-color:var(--accent)}
 .hh-taakt{flex:1;min-width:0;display:flex;flex-direction:column}
 .hh-taakt b{font-size:calc(14px * var(--t));font-weight:600}
 .hh-taakt small{font-size:calc(11px * var(--t));color:var(--faint)}
@@ -132,7 +134,8 @@
 .hh-weg{width:32px;height:36px;display:grid;place-items:center;color:var(--faint);flex:0 0 auto}
 .hh-weg svg{width:15px;height:15px}
 .hh-clknop{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px 14px;margin-bottom:10px}
-.hh-clknop>span:first-child{font-size:22px}
+.hh-clknop>span:first-child{display:grid;place-items:center;color:var(--accent)}
+.hh-clknop>span:first-child svg{width:22px;height:22px}
 .hh-clknop>span:nth-child(2){flex:1;display:flex;flex-direction:column}
 .hh-clknop small{font-size:12px;color:var(--muted)}
 
@@ -155,7 +158,7 @@
 .hh-planlijst b{font-variant-numeric:tabular-nums}
 .hh-importlijst{background:var(--card2);border-radius:14px;overflow:hidden}
 .hh-dobbel{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;padding:10px 0}
-.hh-dobbelsteen{font-size:54px;animation:hh-rol .7s cubic-bezier(.22,1,.36,1)}
+.hh-dobbelsteen{color:var(--accent);animation:hh-rol .7s cubic-bezier(.22,1,.36,1)}
 @keyframes hh-rol{from{transform:rotate(-200deg) scale(.4);opacity:0}to{transform:none;opacity:1}}
 @media (prefers-reduced-motion:reduce){.hh-dobbelsteen{animation:none}}
 .hh-dobbel b{font-size:19px}
@@ -229,7 +232,8 @@ html.hhs-open,html.hhs-open body{overflow:hidden}
 
 /* 78.5b Waarom zo? */
 .hh-waaromknop{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px 14px;margin-top:12px}
-.hh-waaromknop>span:first-child{font-size:22px}
+.hh-waaromknop>span:first-child{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.hh-waaromknop>span:first-child svg{width:18px;height:18px}
 .hh-waaromknop>span:nth-child(2){flex:1;display:flex;flex-direction:column}
 .hh-waaromknop small{font-size:12px;color:var(--muted)}
 .hh-lead{margin:0;font-size:calc(15px * var(--t));line-height:1.5}
@@ -238,11 +242,11 @@ html.hhs-open,html.hhs-open body{overflow:hidden}
 .hh-tabel{border-collapse:collapse;width:100%;min-width:520px;font-size:calc(12.5px * var(--t))}
 .hh-tabel th,.hh-tabel td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap;font-variant-numeric:tabular-nums}
 .hh-tabel thead th{color:var(--muted);font-weight:650;font-size:calc(11.5px * var(--t))}
-.hh-tabel tr.jij{background:color-mix(in srgb,#0e7490 10%,transparent)}
+.hh-tabel tr.jij{background:color-mix(in srgb,var(--accent) 10%,transparent)}
 .hh-tabel tr.jij th small{color:var(--muted);font-weight:500}
 .hh-filters{display:flex;gap:6px;overflow-x:auto;margin:0 0 8px;padding-bottom:2px}
 .hh-filter{flex:0 0 auto;min-height:36px;padding:0 12px;border-radius:99px;background:var(--card);box-shadow:var(--shadow);font-size:calc(12.5px * var(--t));font-weight:650}
-.hh-filter[aria-pressed="true"]{background:#0e7490;color:#fff}
+.hh-filter[aria-pressed="true"]{background:var(--accent);color:#fff}
 .hh-bewijs{display:flex;flex-direction:column;gap:8px}
 .hh-bewijskaart{padding:12px 14px}
 .hh-bewijskaart p{margin:6px 0 0;font-size:calc(13.5px * var(--t));line-height:1.45}

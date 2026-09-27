@@ -101,7 +101,8 @@ function ndTipKaart(plek) {
   const tip = ndTip(plek), r = pfRichting();
   if (!tip || !inst("ndTips", true)) return "";
   const rr = PF_RICHTINGEN[r] || PF_RICHTINGEN.geen;
-  return `<div class="nd-tip" role="note"><span class="nd-ico" aria-hidden="true">${rr.ico}</span><span>${esc(tip)}</span>
+  const icoon = typeof ND_ICO === "object" ? ico(ND_ICO[r] || "blad") : rr.ico;
+  return `<div class="nd-tip" role="note"><span class="nd-ico" aria-hidden="true">${icoon}</span><span>${esc(tip)}</span>
     <button class="nd-tipknop" data-act="ga" data-view="profiel" aria-label="Aanpak aanpassen in je profiel">${ico("pijlr")}</button></div>`;
 }
 
@@ -113,7 +114,7 @@ function vwProfiel() {
   const open = V.pfOpen || "over";
   const sectie2 = (id, titel, sub, inhoud) => `<details class="pf-sectie" data-pf="${id}"${open === id ? " open" : ""}><summary><span><b>${titel}</b><small>${esc(sub)}</small></span>${ico("pijlr")}</summary><div class="pf-inhoud">${inhoud}</div></details>`;
   let h = `<div class="pf-kop"><div class="pf-avatar" aria-hidden="true">${esc((p.naam || "?").trim().slice(0, 1).toUpperCase() || "?")}</div>
-    <div><b>${esc(p.naam || "Jouw profiel")}</b><span>${[l != null ? l + " jaar" : "", rr ? rr.ico + " " + rr.kort : ""].filter(Boolean).join(" · ") || "Vul in wat je wilt; alles is optioneel"}</span></div></div>`;
+    <div><b>${esc(p.naam || "Jouw profiel")}</b><span>${[l != null ? l + " jaar" : "", rr ? pfIco(r) + " " + esc(rr.kort) : ""].filter(Boolean).join(" · ") || "Vul in wat je wilt; alles is optioneel"}</span></div></div>`;
   h += sectie2("over", "Over jou", [p.naam, l != null ? l + " jaar" : ""].filter(Boolean).join(" · ") || "Naam en geboortedatum", `
     <div class="veld"><label for="pf-naam">Naam</label><input class="invoer" id="pf-naam" value="${esc(p.naam)}" maxlength="40" autocomplete="given-name" placeholder="Hoe mag de app je noemen?"></div>
     <div class="veld"><label for="pf-gd">Geboortedatum</label><input class="invoer" id="pf-gd" type="date" value="${esc(p.geboortedatum)}" max="${vandaagISO()}"></div>
@@ -124,24 +125,32 @@ function vwProfiel() {
     ${gw && gw.bron === "Gezondheid" ? `<p class="pf-klein">Laatste meting in Gezondheid: <b>${nwoGetal(gw.kg, 1)} kg</b> (${esc(datumLabel(gw.datum))}). Die gebruikt de app voor berekeningen.</p>` : ""}
     ${bmi ? `<p class="pf-klein">BMI: <b>${nwoGetal(bmi, 1)}</b>. Een BMI zegt weinig over één persoon; zie het als ruwe indicatie.</p>` : ""}`);
   const nd = p.nd, uit = nd.antwoorden.length === 10 ? pfUitslag(nd.antwoorden) : null;
-  h += sectie2("aanpak", "Aanpak die bij je past", rr ? rr.ico + " " + rr.naam : "Nog niet gekozen", `
+  h += sectie2("aanpak", "Aanpak die bij je past", rr ? rr.naam : "Nog niet gekozen", `
     <p class="pf-klein">De app past de indeling van klussen, taken, planning, side hustles en wishlist-afwegingen aan op de richting die bij je past. Kies zelf, of beantwoord tien korte vragen.</p>
     <div class="veld"><label for="pf-richting">Mijn richting</label><select class="invoer" id="pf-richting">
       <option value=""${!nd.handmatig ? " selected" : ""}>${nd.richting ? "Uit de vragen: " + esc(PF_RICHTINGEN[nd.richting].naam) : "Nog niet gekozen (algemeen)"}</option>
-      ${Object.entries(PF_RICHTINGEN).map(([k, v]) => `<option value="${k}"${nd.handmatig === k ? " selected" : ""}>${v.ico} ${esc(v.naam)}</option>`).join("")}</select></div>
-    ${rr ? `<div class="pf-richting"><b>${rr.ico} ${esc(rr.naam)}</b><p>${esc(rr.uitleg)}</p>${pfAanpakLijst()}</div>` : ""}
+      ${Object.entries(PF_RICHTINGEN).map(([k, v]) => `<option value="${k}"${nd.handmatig === k ? " selected" : ""}>${esc(v.naam)}</option>`).join("")}</select></div>
+    ${rr ? `<div class="pf-richting"><b>${pfIco(r)} ${esc(rr.naam)}</b><p>${esc(rr.uitleg)}</p>${pfAanpakLijst()}</div>` : ""}
     ${uit ? `<div class="pf-scores" aria-label="Uitkomst van de vragen">${[["Aandacht en beginnen", uit.A], ["Prikkels en voorspelbaarheid", uit.S], ["Energie", uit.E]].map(([n, v]) => `<div class="pf-score"><span>${n}</span><i><b style="width:${Math.round(v * 100)}%"></b></i><small>${Math.round(v * 100)}%</small></div>`).join("")}
       <p class="pf-klein">Ingevuld: ${esc(datumLabel(nd.datum).toLowerCase())}.</p></div>` : ""}
     <button class="knop breed ${uit ? "rand" : "primair"}" data-act="pf-vragen">${uit ? "Vragen opnieuw invullen" : "Tien vragen beantwoorden"}</button>
     <p class="pf-let"><b>Geen diagnose.</b> ${esc(FM_KENNIS.vragen.geenDiagnose)}</p>
     <button class="knop breed rand" data-act="ga" data-view="hhwaarom">Waarom deze aanpak? Onderbouwing en bronnen</button>`);
-  h += sectie2("app", "In de app", inst("ndTips", true) ? "Tips staan aan" : "Tips staan uit", `
-    <ul class="schakels">${typeof mfSchakel === "function" ? "" : ""}
+  const dicht = typeof ndDichtheid === "function" ? ndDichtheid() : "normaal", dichtStd = typeof ndDichtheidStandaard === "function" ? ndDichtheidStandaard() : "normaal";
+  h += sectie2("app", "In de app", `${typeof ND_DICHTHEID === "object" ? ND_DICHTHEID[dicht].naam + " scherm · " : ""}${inst("ndTips", true) ? "tips aan" : "tips uit"}`, `
+    ${typeof ND_DICHTHEID === "object" ? `<div class="veld"><span class="labeltekst">Hoeveel tegelijk op je scherm</span>
+      <div class="segment pf-seg" role="group">${Object.entries(ND_DICHTHEID).map(([k, d]) => `<button data-act="pf-dicht" data-w="${k}" aria-pressed="${dicht === k}">${d.naam}${k === dichtStd ? " ·" : ""}</button>`).join("")}</div>
+      <p class="pf-klein">Rustig: 5 regels per lijst, 1 voorstel, geen “Verder naar”. Normaal: 10 regels, 3 voorstellen. Alles: niets ingekort. Het puntje staat bij wat past bij je richting.</p></div>` : ""}
+    ${typeof VS_KOPPELINGEN === "object" ? `<span class="labeltekst" style="display:block;margin-top:12px">Slimme koppelingen (als voorstel op Vandaag)</span>
+      <ul class="schakels">${VS_KOPPELINGEN.map(([k, t]) => `<li class="schakel"><span class="tekst"><b>${esc(t.split(" → ")[1][0].toUpperCase() + t.split(" → ")[1].slice(1))}</b><small>${esc(t.split(" → ")[0])}</small></span>
+        <button class="toggle" data-act="pf-vs" data-k="${k}" aria-pressed="${inst("vsAan_" + k, true)}" aria-label="${esc(t)}"></button></li>`).join("")}</ul>` : ""}
+    <ul class="schakels">
       <li class="schakel"><span class="tekst"><b>Tips per onderdeel</b><small>Eén korte tip bovenaan Persoonlijk, Komend, Side Hustle, Wishlist en Huishouden.</small></span>
       <button class="toggle" data-act="pf-tips" aria-pressed="${inst("ndTips", true)}" aria-label="Tips per onderdeel"></button></li></ul>
     <p class="pf-klein">Alles blijft op dit toestel. Je profiel gaat mee in je back-up.</p>`);
   return `<div class="pf">${h}</div>`;
 }
+const pfIco = r => typeof ND_ICO === "object" ? `<span class="vg-g">${ico(ND_ICO[r] || "blad")}</span>` : (PF_RICHTINGEN[r] || {}).ico || "";
 const pfLeeftijdTekst = l => l != null ? `Leeftijd: <b>${l} jaar</b>` : "Je leeftijd wordt berekend uit je geboortedatum.";
 function pfAanpakLijst() {
   const a = ndAanpak();
@@ -153,7 +162,8 @@ function pfAanpakLijst() {
     ${rij("Volgorde", FM_KENNIS.volgordeNamen[a.volgorde])}
     ${rij("Seintje voor een wissel", a.wisselSein ? "Ja" : "Nee")}
     ${a.maxSessie ? rij("Langste sessie", a.maxSessie + " min") : ""}
-    ${rij("Afkoelen bij aankopen > € 50", a.afkoelUur + " uur")}</ul>`;
+    ${rij("Afkoelen bij aankopen > € 50", a.afkoelUur + " uur")}
+    ${typeof ndDichtheid === "function" ? rij("Tegelijk op je scherm", ND_DICHTHEID[ndDichtheid()].naam) : ""}</ul>`;
 }
 /* De vragen in een onderblad, één scherm, grote tikdoelen. */
 function pfVragenBlad() {
@@ -190,6 +200,8 @@ document.addEventListener("click", async e => {
   if (!el) return;
   if (el.dataset.act === "pf-vragen") pfVragenBlad();
   else if (el.dataset.act === "pf-tips") { await zetInst("ndTips", !inst("ndTips", true)); V.pfOpen = "app"; teken(); }
+  else if (el.dataset.act === "pf-dicht") { await zetInst("ndDichtheid", el.dataset.w === (typeof ndDichtheidStandaard === "function" ? ndDichtheidStandaard() : "") ? null : el.dataset.w); V.pfOpen = "app"; teken(); }
+  else if (el.dataset.act === "pf-vs") { const k = "vsAan_" + el.dataset.k; await zetInst(k, !inst(k, true)); V.pfOpen = "app"; teken(); }
 });
 /* Geboortedatum: op iPhone meldt het datumwiel elke draai als wijziging.
    Opnieuw tekenen zou het wiel dan sluiten. Daarom slaan we de datum stil op
@@ -237,7 +249,7 @@ Object.defineProperty(KOPPEN, "profiel", { get: () => ["Profiel", () => "Wie je 
     const p = pfProfiel(), rr = PF_RICHTINGEN[pfRichting()], l = pfLeeftijd(p.geboortedatum);
     return `${sectie("Profiel")}<button class="card pf-instkaart" data-act="ga" data-view="profiel">
       <span class="pf-avatar klein" aria-hidden="true">${esc((p.naam || "?").slice(0, 1).toUpperCase())}</span>
-      <span class="pf-instt"><b>${esc(p.naam || "Stel je profiel in")}</b><small>${[l != null ? l + " jaar" : "", rr.ico + " " + rr.naam].filter(Boolean).join(" · ")}</small></span>${ico("pijlr", "width:16px;height:16px;color:var(--faint)")}</button>` + _inst();
+      <span class="pf-instt"><b>${esc(p.naam || "Stel je profiel in")}</b><small>${[l != null ? l + " jaar" : "", pfIco(pfRichting()) + " " + esc(rr.naam)].filter(Boolean).join(" · ")}</small></span>${ico("pijlr", "width:16px;height:16px;color:var(--faint)")}</button>` + _inst();
   };
 }
 /* Tips bovenaan de plekken waar de aanpak het meest verschil maakt. */

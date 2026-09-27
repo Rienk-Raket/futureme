@@ -69,3 +69,7 @@ svg .fm-rk-cel:hover{stroke:var(--text);stroke-width:1.5}
 /* Golf: cellen komen diagonaal op (kolom + rij bepaalt de vertraging). */
 html[data-ruimte="1"][data-beweging="vol"] .fm-ritme.rt-in .fm-rk-cel{animation:fm-rk-op .5s var(--fm-veer-zacht) backwards;animation-delay:calc(120ms + (var(--k) + var(--r)) * 22ms);transform-box:fill-box;transform-origin:center}
 @keyframes fm-rk-op{from{opacity:0;transform:scale(.2)}to{opacity:1;transform:none}}
+/* Sporen van andere modules (sectie 80) */
+.fm-dr-spoor{stroke:var(--card);stroke-width:2;cursor:pointer}
+.fm-dr-spoor:focus-visible{outline:none;stroke:var(--text);stroke-width:2.5}
+.fm-dr-legenda i.spoor{width:9px;height:9px;border-radius:2px;background:var(--muted);transform:rotate(45deg);margin:0 1px}

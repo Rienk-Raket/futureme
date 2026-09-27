@@ -33,14 +33,16 @@ S.vg_terugblik = S.vg_terugblik || [];
 
 /* ---------- 74.2 Levensgebieden ---------- */
 const VG_GEBIEDEN = [
-  { id: "gezondheid", naam: "Gezondheid", ico: "💚" },
-  { id: "geld", naam: "Geld", ico: "💶" },
-  { id: "werk", naam: "Werk", ico: "💼" },
-  { id: "ondernemen", naam: "Ondernemen", ico: "🚀" },
-  { id: "groei", naam: "Leren en hobby's", ico: "🎨" },
-  { id: "rust", naam: "Rust en gewoontes", ico: "⚓" },
-  { id: "thuis", naam: "Thuis en taken", ico: "🏠" }
+  { id: "gezondheid", naam: "Gezondheid", icoon: "hart" },
+  { id: "geld", naam: "Geld", icoon: "euro" },
+  { id: "werk", naam: "Werk", icoon: "koffer" },
+  { id: "ondernemen", naam: "Ondernemen", icoon: "raket" },
+  { id: "groei", naam: "Leren en hobby's", icoon: "hobby" },
+  { id: "rust", naam: "Rust en gewoontes", icoon: "anker" },
+  { id: "thuis", naam: "Thuis en taken", icoon: "huis" }
 ];
+// Iconen als SVG (geen emoji in de bediening); g.ico levert de opmaak.
+VG_GEBIEDEN.forEach(g => Object.defineProperty(g, "ico", { get: () => `<span class="vg-g">${ico(g.icoon)}</span>`, enumerable: false }));
 const vgGebied = id => VG_GEBIEDEN.find(g => g.id === id) || VG_GEBIEDEN[VG_GEBIEDEN.length - 1];
 
 /* ---------- 74.3 Automatische bronnen uit de app ----------

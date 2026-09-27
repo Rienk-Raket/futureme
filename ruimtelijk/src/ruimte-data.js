@@ -33,6 +33,10 @@ RT_NA.push(() => {
 
 /* ---------- Dagring ---------- */
 const FM_RING = { cx: 110, cy: 110, r: 86 };
+/* Sporen: andere modules (Anker, Huishouden, Side Hustle …) laten hier een merkje
+   achter op het moment dat er iets gebeurde. Een aanbieder geeft een lijst
+   { min, kleur, label, view, param, act }; zie sectie 80 (verweven.js). */
+const FM_SPOREN = [];
 /** Minuten sinds middernacht → hoek (0 = boven, met de klok mee, 24 uur rond). */
 const fmHoek = min => (min / 1440) * Math.PI * 2 - Math.PI / 2;
 const fmPunt = (min, r) => [FM_RING.cx + Math.cos(fmHoek(min)) * r, FM_RING.cy + Math.sin(fmHoek(min)) * r];
@@ -51,6 +55,7 @@ function fmDagringHTML() {
   const taken = open.concat(af).filter(t => t.datum === v && fmMin(t.tijd) != null).map(t => ({ t, m: fmMin(t.tijd) })).sort((x, y) => x.m - y.m);
   const nu = new Date(), nuMin = nu.getHours() * 60 + nu.getMinutes();
   const tot = open.length + af.length, pct = tot ? Math.round(af.length / tot * 100) : 0;
+  const sporen = FM_SPOREN.flatMap(f => { try { return f() || []; } catch (e) { return []; } }).filter(x => x && x.min != null).sort((a, b) => a.min - b.min);
   const { cx, cy, r } = FM_RING;
   // Uurstreepjes; elke 6 uur een label.
   let streep = "";
@@ -67,26 +72,31 @@ function fmDagringHTML() {
     const [x, y] = fmPunt(m, r);
     return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="6.5" class="fm-dr-punt${t.af ? " af" : ""}" style="--i:${i}" data-fm-taak="${esc(t.id)}" tabindex="0" role="button" aria-label="${esc(t.titel)} om ${esc(t.tijd)}"><title>${esc(t.tijd)} ${esc(t.titel)}${t.af ? " (af)" : ""}</title></circle>`;
   }).join("");
+  const spoorHTML = sporen.map((x, i) => {
+    const [sx, sy] = fmPunt(x.min, r - 22), hoek = (x.min / 1440) * 360;
+    const doel = x.act ? `data-act="${esc(x.act)}"` : `data-act="ga" data-view="${esc(x.view || "logboek")}"${x.param ? ` data-param="${esc(x.param)}"` : ""}`;
+    return `<rect x="${(sx - 4.5).toFixed(1)}" y="${(sy - 4.5).toFixed(1)}" width="9" height="9" rx="2" transform="rotate(${(45 + hoek).toFixed(0)} ${sx.toFixed(1)} ${sy.toFixed(1)})" class="fm-dr-spoor" style="--i:${i};fill:${x.kleur}" ${doel} tabindex="0" role="button" aria-label="${esc(x.label)}"><title>${esc(x.tijd || "")} ${esc(x.label)}</title></rect>`;
+  }).join("");
   const [hx, hy] = fmPunt(nuMin, r + 6), [wx, wy] = fmPunt(nuMin, r - 38);
   const omtrek = 2 * Math.PI * (r - 44);
-  const lijst = afspr.map(({ a }) => `<li>${esc(a.tijd)} afspraak: ${esc(a.titel)}</li>`).join("") + taken.map(({ t }) => `<li>${esc(t.tijd)} taak: ${esc(t.titel)}${t.af ? " (af)" : ""}</li>`).join("");
-  const leeg = !afspr.length && !taken.length;
+  const lijst = afspr.map(({ a }) => `<li>${esc(a.tijd)} afspraak: ${esc(a.titel)}</li>`).join("") + taken.map(({ t }) => `<li>${esc(t.tijd)} taak: ${esc(t.titel)}${t.af ? " (af)" : ""}</li>`).join("") + sporen.map(x => `<li>${esc(x.tijd || "")} ${esc(x.label)}</li>`).join("");
+  const leeg = !afspr.length && !taken.length && !sporen.length;
   return `<section class="card card-pad fm-dagring" aria-labelledby="fm-dr-kop">
-    <div class="fm-dr-kop"><h2 id="fm-dr-kop">Dagring</h2><span class="klein">${afspr.length} ${afspr.length === 1 ? "afspraak" : "afspraken"} · ${taken.length} met een tijd</span></div>
+    <div class="fm-dr-kop"><h2 id="fm-dr-kop">Dagring</h2><span class="klein">${afspr.length} ${afspr.length === 1 ? "afspraak" : "afspraken"} · ${taken.length} met een tijd${sporen.length ? ` · ${sporen.length} ${sporen.length === 1 ? "spoor" : "sporen"}` : ""}</span></div>
     <div class="fm-dr-wrap">
       <svg viewBox="0 0 220 220" class="fm-dr" role="group" aria-label="Je dag als klok: ${pct}% van de taken af, ${afspr.length} afspraken, het is nu ${pad(nu.getHours())}:${pad(nu.getMinutes())}">
         <circle cx="${cx}" cy="${cy}" r="${r}" class="fm-dr-baan"/>
         ${licht}${streep}${labels}
         <circle cx="${cx}" cy="${cy}" r="${r - 44}" class="fm-dr-voortgang-baan"/>
         <circle cx="${cx}" cy="${cy}" r="${r - 44}" class="fm-dr-voortgang" style="stroke-dasharray:${omtrek.toFixed(1)};stroke-dashoffset:${(omtrek * (1 - pct / 100)).toFixed(1)}" transform="rotate(-90 ${cx} ${cy})"/>
-        ${bogen}${punten}
+        ${bogen}${punten}${spoorHTML}
         <line x1="${wx.toFixed(1)}" y1="${wy.toFixed(1)}" x2="${hx.toFixed(1)}" y2="${hy.toFixed(1)}" class="fm-dr-wijzer" data-fm-wijzer/>
         <circle cx="${hx.toFixed(1)}" cy="${hy.toFixed(1)}" r="4" class="fm-dr-nu" data-fm-nu/>
         <text x="${cx}" y="${cy - 2}" class="fm-dr-tijd" data-fm-klok>${pad(nu.getHours())}:${pad(nu.getMinutes())}</text>
         <text x="${cx}" y="${cy + 16}" class="fm-dr-sub">${open.length} open · ${pct}%</text>
       </svg>
       <ul class="fm-dr-legenda" aria-hidden="true">
-        <li><i class="boog"></i>Afspraak</li><li><i class="punt"></i>Taak</li><li><i class="punt af"></i>Afgerond</li><li><i class="licht"></i>Daglicht</li>
+        <li><i class="boog"></i>Afspraak</li><li><i class="punt"></i>Taak</li><li><i class="punt af"></i>Afgerond</li>${sporen.length ? `<li><i class="spoor"></i>Spoor</li>` : ""}<li><i class="licht"></i>Daglicht</li>
       </ul>
     </div>
     ${leeg ? `<p class="klein fm-dr-leeg">Nog niets met een tijd vandaag. Zet een tijd bij een taak of afspraak en hij verschijnt op de ring.</p>` : ""}

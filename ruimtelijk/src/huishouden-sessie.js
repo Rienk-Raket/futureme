@@ -168,6 +168,8 @@ function hhsVolgende(status) {
   A.resultaat.push({ soort: it.soort, tekst: it.tekst, ruimte: it.ruimte, taakId: it.taakId, min: it.min, basisMin: it.basisMin, deel: it.deel, delen: it.delen,
     status: status === "klaar" ? "gedaan" : "overgeslagen", sec: Math.round(A.sec) });
   A.afgehandeld.add(it);
+  // Sessies uit andere lijsten (taken, checklist, side hustle): afvinken in de bron (sectie 80).
+  if (status === "klaar" && typeof sesKlaar === "function") sesKlaar(A, it);
   if (it.soort === "taak" && status === "klaar") { A.gedaan++; A.doelHelder = A.gedaan / Math.max(1, A.taken); }
   const laatste = A.i >= A.items.length - 1;
   if (typeof tril === "function") tril(status === "klaar" ? 14 : 6);
@@ -200,12 +202,13 @@ async function hhsEinde(afgebroken) {
   const werkSec = A.resultaat.filter(r => r.soort === "taak").reduce((s, r) => s + (r.sec || 0), 0);
   const s = { id: uid(), lijstId: A.lijst.id || null, lijstNaam: A.lijst.naam || "Klus", datum: vandaagISO(), ts: new Date().toISOString(), gestart: A.gestart,
     beschikbaar: A.opties.beschikbaar || null, energie: A.opties.energie || null, richting: A.plan.richting, werkMin: A.plan.werkMin, pauzeMin: A.plan.pauzeMin,
-    resultaat: A.resultaat, werkSec, duurSec: Math.round((Date.now() - A.t0) / 1000), afgebroken: !!afgebroken };
+    resultaat: A.resultaat, werkSec, duurSec: Math.round((Date.now() - A.t0) / 1000), afgebroken: !!afgebroken, bron: A.opties.bron || "huishouden" };
+  const isHuishouden = s.bron === "huishouden";
   const bewaarAlles = async () => {
     await bewaar("hh_sessies", s);
     const gedaan = s.resultaat.filter(r => r.status === "gedaan" && r.soort === "taak").length;
     if (gedaan && A.lijst.id && vind("hh_lijsten", A.lijst.id)) await bewaar("hh_lijsten", Object.assign({}, vind("hh_lijsten", A.lijst.id), { laatstGedaan: s.ts }));
-    if (typeof logGebeurtenis === "function") await logGebeurtenis("huishouden", `Schoonmaken: ${gedaan} ${gedaan === 1 ? "klus" : "klussen"}, ${Math.round(werkSec / 60)} min (${s.lijstNaam})${afgebroken ? " — gestopt" : ""}`, s.id);
+    if (typeof logGebeurtenis === "function") await logGebeurtenis(isHuishouden ? "huishouden" : "sessie", `${isHuishouden ? "Schoonmaken" : "Sessie"}: ${gedaan} ${isHuishouden ? (gedaan === 1 ? "klus" : "klussen") : "af"}, ${Math.round(werkSec / 60)} min (${s.lijstNaam})${afgebroken ? " — gestopt" : ""}`, s.id);
     if (typeof vgControleerDoelen === "function") await vgControleerDoelen();
   };
   const sluit = () => {
@@ -213,6 +216,13 @@ async function hhsEinde(afgebroken) {
     const el = document.getElementById("hh-sessie"); if (el) el.remove();
     document.documentElement.classList.remove("hhs-open");
     HHS.a = null;
+    const terug = A.opties.terug;
+    if (!isHuishouden && terug) {
+      // Terug naar waar je vandaan kwam, met de samenvatting in een onderblad.
+      if (V.view === terug[0] && (V.param || null) === (terug[1] || null)) teken(); else ga(terug[0], terug[1]);
+      setTimeout(() => bladOpen("Sessie", hhSamenvattingHTML(s), `<button class="knop breed primair" onclick="bladSluit()">Klaar</button>`), 60);
+      return;
+    }
     V.hh.samenvatting = s.id;
     if (V.view === "huishouden") { teken(); $("#scherm").scrollTop = 0; } else ga("huishouden");
   };

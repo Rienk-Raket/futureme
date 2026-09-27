@@ -194,12 +194,12 @@ function vwAnkerInst() {
     <p class="mf-klein">Staan standaard uit. Pas als je ze aanzet, zie je ze op die plek.</p>
     <ul class="card mf-schakels" role="list">
       ${mfSchakel("kop.logboek", "Logboek", "Elk moment als regel in je logboek.", s.koppelingen.logboek)}
-      ${mfSchakel("kop.gewoonte", "Gewoonte afvinken", "Vinkt de gewoonte “Mindful moment” af na een moment van minstens 1 minuut.", s.koppelingen.gewoonte)}
+      <li class="schakel"><span class="tekst"><b>Mindful moment</b><small>${typeof mfMindfulGewoonte === "function" && mfMindfulGewoonte() ? "Een Anker-moment is je Mindful moment: elk moment van 1 minuut of langer vinkt de gewoonte af." : "Maak de gewoonte “Mindful moment”; daarna vinkt elk Anker-moment hem af."}</small></span>
+        ${typeof mfMindfulGewoonte === "function" && mfMindfulGewoonte() ? "" : `<button class="knop klein rand" data-act="mf-gewoonte-maak">Maak</button>`}</li>
       ${mfSchakel("kop.roken", "Rookvrij", "Knop “Even pauze” bij Rookvrij.", s.koppelingen.roken)}
       ${mfSchakel("kop.financieel", "Financieel", "Knop “Even pauze” bij Financieel.", s.koppelingen.financieel)}
       ${mfSchakel("kop.werk", "Werk", "Knop “Focus-start” bij Werk.", s.koppelingen.werk)}
     </ul>
-    ${s.koppelingen.gewoonte && !mindful ? `<div class="card card-pad mf-blok"><p>Er is nog geen gewoonte “Mindful moment”.</p><button class="knop rand" data-act="mf-gewoonte-maak">Gewoonte aanmaken</button></div>` : ""}
     <h3 class="mf-kop3">Herinneringen</h3>
     <p class="mf-klein">Wordt een terugkerende afspraak in je agenda van de app.</p>
     ${s.herinneringen.length ? `<ul class="card mf-herinneringen" role="list">${s.herinneringen.map(r => `<li><span>${esc(r.tijd)} · ${esc(mfDagenTekst(r.dagen))}</span>

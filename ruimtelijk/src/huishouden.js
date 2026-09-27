@@ -25,18 +25,18 @@ function vwHuishouden() {
   if (typeof ndTipKaart === "function") h += ndTipKaart("huishouden");
   if (V.hh.samenvatting) h += hhSamenvattingHTML(vind("hh_sessies", V.hh.samenvatting));
   h += `<button class="hh-start" data-act="hh-klaarzetten">
-    <span class="hh-startico" aria-hidden="true">✦</span><span><b>Start een schoonmaaksessie</b><small>Kies een lijst en hoeveel tijd je hebt</small></span>${ico("pijlr")}</button>
+    <span class="hh-startico" aria-hidden="true">${ico("ster")}</span><span><b>Start een schoonmaaksessie</b><small>Kies een lijst en hoeveel tijd je hebt</small></span>${ico("pijlr")}</button>
     <div class="hh-snel">
-      <button class="hh-snelknop" data-act="hh-reset"><span aria-hidden="true">⚡</span><b>Reset in 5 min</b><small>Vijf dingen, snel resultaat</small></button>
-      <button class="hh-snelknop" data-act="hh-dobbel"><span aria-hidden="true">🎲</span><b>Gooi een klus</b><small>Eén klus van max. 5 min</small></button>
+      <button class="hh-snelknop" data-act="hh-reset"><span aria-hidden="true">${ico("bliksem")}</span><b>Reset in 5 min</b><small>Vijf dingen, snel resultaat</small></button>
+      <button class="hh-snelknop" data-act="hh-dobbel"><span aria-hidden="true">${ico("dobbel")}</span><b>Gooi een klus</b><small>Eén klus van max. 5 min</small></button>
     </div>`;
   if (beurt.length) h += sectie("Aan de beurt") + `<div class="card hh-beurt">${beurt.map(({ l, dagen }) => `<button class="hh-rij" data-act="hh-klaarzetten" data-id="${l.id}">
-    <span class="hh-emoji" aria-hidden="true">${l.emoji || "🧽"}</span><span class="hh-rijt"><b>${esc(l.naam)}</b><small>${dagen == null ? "Nog nooit gedaan" : dagen === 0 ? "Vandaag gedaan" : `${dagen} ${dagen === 1 ? "dag" : "dagen"} geleden · elke ${l.ritme} ${l.ritme === 1 ? "dag" : "dagen"}`}</small></span>
+    <span class="hh-emoji" aria-hidden="true">${l.emoji ? esc(l.emoji) : ico("bezem")}</span><span class="hh-rijt"><b>${esc(l.naam)}</b><small>${dagen == null ? "Nog nooit gedaan" : dagen === 0 ? "Vandaag gedaan" : `${dagen} ${dagen === 1 ? "dag" : "dagen"} geleden · elke ${l.ritme} ${l.ritme === 1 ? "dag" : "dagen"}`}</small></span>
     <span class="hh-mini">Start</span></button>`).join("")}</div>`;
   h += sectie("Mijn lijsten", S.hh_lijsten.length ? String(S.hh_lijsten.length) : "");
   if (!S.hh_lijsten.length) h += `<div class="card card-pad hh-leeg"><p>Nog geen schoonmaaklijsten. Begin met een startlijst, of importeer een checklist-sjablonen die met <b>Schoonmaken</b> begint.</p></div>`;
   else h += `<div class="card hh-lijsten">${S.hh_lijsten.slice().sort((a, b) => a.naam.localeCompare(b.naam)).map(l => { const aan = l.taken.filter(t => !t.uit);
-    return `<button class="hh-rij" data-act="ga" data-view="hhlijst" data-param="${l.id}"><span class="hh-emoji" aria-hidden="true">${l.emoji || "🧽"}</span>
+    return `<button class="hh-rij" data-act="ga" data-view="hhlijst" data-param="${l.id}"><span class="hh-emoji" aria-hidden="true">${l.emoji ? esc(l.emoji) : ico("bezem")}</span>
       <span class="hh-rijt"><b>${esc(l.naam)}</b><small>${aan.length} ${aan.length === 1 ? "klus" : "klussen"} · ± ${aan.reduce((s, t) => s + (+t.min || 0), 0)} min${l.bron && l.bron.soort === "checklist" ? " · uit Checklists" : ""}</small></span>${ico("pijlr", "width:16px;height:16px;color:var(--faint)")}</button>`; }).join("")}</div>`;
   h += `<div class="hh-knoppen">
     <button class="knop rand" data-act="hh-import">${ico("sjabloon")} Importeer uit Checklists${nieuwSj.length ? ` <span class="hh-bol">${nieuwSj.length}</span>` : ""}</button>
@@ -58,7 +58,7 @@ function vwHuishouden() {
         <button class="toggle" data-act="hh-inst" data-k="hhMeewerker" aria-pressed="${inst("hhMeewerker", true)}" aria-label="Meewerker Tess"></button></li>
       <li class="schakel"><span class="tekst"><b>Geluid en trillen</b><small>Zacht seintje als de tijd om is. Rust en Prikkelarm zetten dit uit.</small></span>
         <button class="toggle" data-act="hh-inst" data-k="hhGeluid" aria-pressed="${inst("hhGeluid", true)}" aria-label="Geluid en trillen"></button></li></ul></div>`;
-  h += `<button class="card hh-waaromknop" data-act="ga" data-view="hhwaarom"><span aria-hidden="true">📚</span><span><b>Waarom werkt het zo?</b><small>Onderbouwing, aanpak per richting en bronnen</small></span>${ico("pijlr", "width:16px;height:16px;color:var(--faint)")}</button>`;
+  h += `<button class="card hh-waaromknop" data-act="ga" data-view="hhwaarom"><span aria-hidden="true">${ico("boek")}</span><span><b>Waarom werkt het zo?</b><small>Onderbouwing, aanpak per richting en bronnen</small></span>${ico("pijlr", "width:16px;height:16px;color:var(--faint)")}</button>`;
   return `<div class="hh">${h}</div>`;
 }
 function hhGeleerd() {
@@ -76,7 +76,7 @@ function hhSamenvattingHTML(s) {
   const verschil = gepland ? Math.round((echtMin - gepland) / gepland * 100) : 0;
   const zin = s.afgebroken ? "Gestopt is ook gedaan. Wat af is, is af." : gedaan.length === r.length ? "Alles gedaan. Kijk even rond: dat heb jij gedaan." : "Mooi werk. Wat bleef staan, schuift door.";
   return `<section class="hh-samen" aria-live="polite">
-    <div class="hh-samenkop"><span aria-hidden="true">✦</span><div><b>${s.afgebroken ? "Sessie gestopt" : "Sessie klaar"}</b><small>${esc(s.lijstNaam || "")} · ${esc(datumLabel(s.datum))}</small></div>
+    <div class="hh-samenkop"><span aria-hidden="true">${ico("ster")}</span><div><b>${s.afgebroken ? "Sessie gestopt" : "Sessie klaar"}</b><small>${esc(s.lijstNaam || "")} · ${esc(datumLabel(s.datum))}</small></div>
       <button class="hh-sluitx" data-act="hh-samen-weg" aria-label="Samenvatting sluiten">${ico("x")}</button></div>
     <p class="hh-zin">${esc(zin)}</p>
     <div class="hh-cijfers">
@@ -99,7 +99,7 @@ function vwHhLijst() {
       <div class="veld"><label for="hh-l-emoji">Icoon</label><input class="invoer" id="hh-l-emoji" data-hhl="emoji" value="${esc(l.emoji || "")}" maxlength="4"></div></div>
     <div class="veld"><label for="hh-l-ritme">Hoe vaak?</label><select class="invoer" id="hh-l-ritme" data-hhl="ritme">${[[0, "Geen vast ritme"], [1, "Elke dag"], [2, "Om de dag"], [3, "Elke 3 dagen"], [7, "Elke week"], [14, "Elke 2 weken"], [30, "Elke maand"]].map(([w, n]) => `<option value="${w}"${(+l.ritme || 0) === w ? " selected" : ""}>${n}</option>`).join("")}</select></div>
     ${l.bron && l.bron.soort === "checklist" ? `<p class="hh-uitleg">Geïmporteerd uit het sjabloon “${esc((vind("checklists", l.bron.id) || {}).naam || "verwijderd")}”. <button class="hh-link" data-act="hh-herimport" data-id="${l.id}">Opnieuw inlezen</button></p>` : ""}
-    <button class="knop breed primair" data-act="hh-klaarzetten" data-id="${l.id}">✦ Start sessie met deze lijst</button></div>`;
+    <button class="knop breed primair" data-act="hh-klaarzetten" data-id="${l.id}">${ico("ster")} Start sessie met deze lijst</button></div>`;
   ruimtes.forEach(r => {
     h += sectie(r) + `<div class="card hh-taken">${l.taken.filter(t => (t.ruimte || "Overal") === r).map(t => `<div class="hh-taak${t.uit ? " uit" : ""}">
       <button class="hh-mee" data-act="hh-taak" data-w="uit" data-id="${t.id}" aria-pressed="${!t.uit}" aria-label="${esc(t.tekst)} ${t.uit ? "doet niet mee" : "doet mee"}">${t.uit ? "" : "✓"}</button>
@@ -117,6 +117,8 @@ function vwHhLijst() {
 
 /* ---------- 78.4 Sessie klaarzetten ---------- */
 function hhKlaarzetten(lijstId, gekozenMin, energie) {
+  // Energie uit je ochtend-check-in (sectie 80), tenzij je hem hier aanpast.
+  if (energie === undefined && typeof dcEnergie === "function") energie = dcEnergie();
   if (!S.hh_lijsten.length) { toast("Voeg eerst een lijst toe"); hhStartlijstenBlad(); return; }
   const lijst = vind("hh_lijsten", lijstId) || hhAanDeBeurt()[0]?.l || S.hh_lijsten[0];
   const a = ndAanpak(), min = gekozenMin || inst("hhLaatsteMin", 30);
@@ -124,16 +126,16 @@ function hhKlaarzetten(lijstId, gekozenMin, energie) {
   const inhoud = `
     <div class="veld"><label for="hh-k-lijst">Lijst</label><select class="invoer" id="hh-k-lijst">${S.hh_lijsten.map(l => `<option value="${l.id}"${l.id === lijst.id ? " selected" : ""}>${esc((l.emoji || "") + " " + l.naam)}</option>`).join("")}</select></div>
     <div class="veld"><span class="labeltekst">Hoeveel tijd heb je?</span><div class="keuzerij hh-tijden">${HH_TIJDEN.map(m => `<button class="keuze" data-hhmin="${m}" aria-pressed="${m === min}">${m} min</button>`).join("")}</div></div>
-    <div class="veld"><span class="labeltekst">Energie nu (mag leeg)</span><div class="keuzerij hh-energie">${[1, 2, 3, 4, 5].map(n => `<button class="keuze" data-hhe="${n}" aria-pressed="${energie === n}" aria-label="Energie ${n} van 5">${["🪫", "😮‍💨", "🙂", "💪", "⚡"][n - 1]}</button>`).join("")}</div></div>
+    <div class="veld"><span class="labeltekst">Energie nu${typeof dcEnergie === "function" && dcEnergie() ? " (uit je check-in)" : " (mag leeg)"}</span><div class="keuzerij hh-energie">${[1, 2, 3, 4, 5].map(n => `<button class="keuze" data-hhe="${n}" aria-pressed="${energie === n}" aria-label="Energie ${n} van 5">${typeof DC_ENERGIE === "object" ? DC_ENERGIE[n - 1] : n}</button>`).join("")}</div></div>
     <div class="hh-plan">
       <div class="hh-plankop"><b>Jouw plan</b><small>${plan.items.filter(x => x.soort === "taak").length} kaartjes · ${plan.werkMin} min werk${plan.pauzeMin ? ` · ${plan.pauzeMin} min pauze` : ""} · buffer +${Math.round((plan.buffer - 1) * 100)}%</small></div>
       ${plan.notities.map(n => `<p class="hh-noot">${esc(n)}</p>`).join("")}
-      <ol class="hh-planlijst">${plan.items.map(it => it.soort === "pauze" ? `<li class="pauze"><span>☕ Pauze</span><b>${it.min}′</b></li>`
+      <ol class="hh-planlijst">${plan.items.map(it => it.soort === "pauze" ? `<li class="pauze"><span>Pauze</span><b>${it.min}′</b></li>`
         : `<li><span>${esc(it.tekst)}${it.delen > 1 ? ` <small>${it.deel}/${it.delen}</small>` : ""}<small class="hh-r">${esc(it.ruimte)}</small></span><b>${it.min}′</b></li>`).join("")}</ol>
       ${plan.buiten.length ? `<p class="hh-uitleg">Past nu niet: ${plan.buiten.slice(0, 4).map(t => esc(t.tekst)).join(", ")}${plan.buiten.length > 4 ? ` en nog ${plan.buiten.length - 4}` : ""}. Dat schuift door.</p>` : ""}
       <p class="hh-uitleg">Ingedeeld voor: ${esc((PF_RICHTINGEN[a.richting] || PF_RICHTINGEN.geen).kort.toLowerCase())} · blokken van max. ${a.blokMax} min · pauze na ${a.pauzeElke} min.</p>
     </div>`;
-  bladOpen("Schoonmaaksessie", inhoud, `<button class="knop breed primair" id="hh-k-start"${plan.items.length ? "" : " disabled"}>✦ Start</button>`);
+  bladOpen("Schoonmaaksessie", inhoud, `<button class="knop breed primair" id="hh-k-start"${plan.items.length ? "" : " disabled"}>${ico("ster")} Start</button>`);
   const bi = $("#bladinhoud");
   bi.addEventListener("click", e => {
     const b = e.target.closest("button"); if (!b) return;
@@ -155,9 +157,9 @@ function hhDobbel() {
   const { l, t } = alle[Math.floor(Math.random() * alle.length)];
   if (typeof tril === "function") tril(12);
   const plan = hhMaakPlan({ taken: [t] }, Math.max(5, Math.ceil(t.min * ndAanpak().buffer)), {});
-  bladOpen("De dobbelsteen zegt…", `<div class="hh-dobbel"><span class="hh-dobbelsteen" aria-hidden="true">🎲</span><b>${esc(t.tekst)}</b><small>${esc(t.ruimte || "Overal")} · ${plan.totaal} min · uit ${esc(l.naam)}</small>
+  bladOpen("De dobbelsteen zegt…", `<div class="hh-dobbel"><span class="hh-dobbelsteen" aria-hidden="true">${ico("dobbel")}</span><b>${esc(t.tekst)}</b><small>${esc(t.ruimte || "Overal")} · ${plan.totaal} min · uit ${esc(l.naam)}</small>
     <p class="hh-uitleg">Keuzestress weg: de dobbelsteen kiest, jij hoeft alleen te beginnen.</p></div>`,
-    `<div class="knoprij"><button class="knop rand" id="hh-d-nog">Nog een keer</button><button class="knop primair" id="hh-d-start">✦ Start</button></div>`);
+    `<div class="knoprij"><button class="knop rand" id="hh-d-nog">Nog een keer</button><button class="knop primair" id="hh-d-start">${ico("ster")} Start</button></div>`);
   $("#hh-d-nog").onclick = hhDobbel;
   $("#hh-d-start").onclick = () => { bladSluit(); hhSessieStart(l, plan, { beschikbaar: plan.totaal, dobbel: true }); };
 }
@@ -167,7 +169,7 @@ function hhImportBlad() {
   const sj = hhSjablonen();
   const inhoud = sj.length ? `<p class="hh-uitleg" style="margin-top:0">Alleen checklist-sjablonen waarvan de naam met <b>Schoonmaken</b> begint. Kopjes (# Keuken) worden ruimtes; “(10 min)” wordt de duur; ! betekent moet.</p>
     <div class="hh-importlijst">${sj.map(c => { const al = S.hh_lijsten.find(l => l.bron && l.bron.soort === "checklist" && l.bron.id === c.id); const n = (c.items || []).filter(i => !(typeof clSectie === "function" && clSectie(i))).length;
-      return `<button class="hh-rij" data-hhimp="${c.id}"><span class="hh-emoji" aria-hidden="true">🧽</span><span class="hh-rijt"><b>${esc(c.naam)}</b><small>${n} ${n === 1 ? "klus" : "klussen"}${al ? " · staat er al, opnieuw inlezen" : ""}</small></span><span class="hh-mini">${al ? "Bijwerken" : "Importeer"}</span></button>`; }).join("")}</div>`
+      return `<button class="hh-rij" data-hhimp="${c.id}"><span class="hh-emoji" aria-hidden="true">${ico("bezem")}</span><span class="hh-rijt"><b>${esc(c.naam)}</b><small>${n} ${n === 1 ? "klus" : "klussen"}${al ? " · staat er al, opnieuw inlezen" : ""}</small></span><span class="hh-mini">${al ? "Bijwerken" : "Importeer"}</span></button>`; }).join("")}</div>`
     : `<p>Er is nog geen checklist-sjabloon dat met <b>Schoonmaken</b> begint.</p><p class="hh-uitleg">Maak er een in Checklists, bijvoorbeeld “Schoonmaken – Keuken”, met kopjes per ruimte. Of maak hier een voorbeeld aan dat je daarna kunt aanpassen.</p>`;
   bladOpen("Importeer uit Checklists", inhoud, sj.length ? "" : `<button class="knop breed primair" id="hh-i-voorbeeld">${ico("sjabloon")} Voorbeeld “Schoonmaken – Keuken” aanmaken</button>`);
   $("#bladinhoud").addEventListener("click", async e => { const b = e.target.closest("[data-hhimp]"); if (!b) return; const l = await hhImporteer(b.dataset.hhimp); if (l) { bladSluit(); ga("hhlijst", l.id); } });
@@ -205,7 +207,7 @@ function vwHhWaarom() {
       <p class="hh-uitleg">Kennisbank versie ${esc(K.meta.versie)} · ${esc(datumLabel(K.meta.datum))}${K.meta.webpagina ? ` · <a href="${esc(K.meta.webpagina)}" target="_blank" rel="noopener">Open de deelbare webpagina</a>` : ""}</p></div>
     ${sectie("Uitgangspunten")}<div class="card hh-principes">${K.principes.map(([t, u]) => `<div class="hh-rij stil"><span class="hh-rijt"><b>${esc(t)}</b><small>${esc(u)}</small></span></div>`).join("")}</div>
     ${sectie("Aanpak per richting")}<div class="card hh-tabelwrap"><table class="hh-tabel"><thead><tr><th>Richting</th><th>Blok</th><th>Pauze na</th><th>Pauze</th><th>Buffer</th><th>Volgorde</th><th>Max.</th></tr></thead><tbody>
-      ${Object.entries(K.aanpak).map(([k, a]) => `<tr${k === r ? ' class="jij"' : ""}><th>${K.richtingen[k].ico} ${esc(K.richtingen[k].kort)}${k === r ? " <small>(jij)</small>" : ""}</th>${kol.map(c => `<td>${esc(String(waarde(c, a[c])))}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
+      ${Object.entries(K.aanpak).map(([k, a]) => `<tr${k === r ? ' class="jij"' : ""}><th>${typeof ND_ICO === "object" ? `<span class="vg-g">${ico(ND_ICO[k])}</span>` : K.richtingen[k].ico} ${esc(K.richtingen[k].kort)}${k === r ? " <small>(jij)</small>" : ""}</th>${kol.map(c => `<td>${esc(String(waarde(c, a[c])))}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
     ${sectie("Onderbouwing")}<div class="hh-filters" role="group" aria-label="Filter op sterkte van het bewijs">${[["alle", "Alles"]].concat(sterktes.map(s => [s, K.sterktes[s]])).map(([k, n]) => `<button class="hh-filter" data-act="hh-waarom-filter" data-w="${k}" aria-pressed="${f === k}">${esc(n)}</button>`).join("")}</div>
     <div class="hh-bewijs">${lijst.map(o => `<article class="card hh-bewijskaart"><div class="hh-bewijskop"><b>${esc(o.id)}</b><span class="hh-sterkte s-${o.sterkte}">${esc(K.sterktes[o.sterkte])}</span></div>
       <p>${esc(o.bevinding)}</p><p class="hh-keuze"><b>In de app:</b> ${esc(o.keuze)}</p><p class="hh-uitleg">${esc(o.kanttekening)} · ${bronLink(o.bron)}${o.bron2 ? " · " + bronLink(o.bron2) : ""}</p></article>`).join("")}</div>
@@ -290,7 +292,7 @@ RT_NA.push(() => {
   if (!hhIsSchoonmaakSjabloon(c) || document.querySelector(".hh-clknop")) return;
   const plek = $("#scherm"); if (!plek) return;
   const al = S.hh_lijsten.some(l => l.bron && l.bron.soort === "checklist" && l.bron.id === c.id);
-  plek.insertAdjacentHTML("afterbegin", `<button class="card hh-clknop" data-act="hh-naar-huishouden" data-id="${c.id}"><span aria-hidden="true">🧽</span><span><b>${al ? "Bijwerken in Huishouden" : "Gebruik in Huishouden"}</b><small>Omzetten naar een schoonmaaklijst met tijden en ruimtes</small></span>${ico("pijlr", "width:16px;height:16px")}</button>`);
+  plek.insertAdjacentHTML("afterbegin", `<button class="card hh-clknop" data-act="hh-naar-huishouden" data-id="${c.id}"><span aria-hidden="true">${ico("bezem")}</span><span><b>${al ? "Bijwerken in Huishouden" : "Gebruik in Huishouden"}</b><small>Omzetten naar een schoonmaaklijst met tijden en ruimtes</small></span>${ico("pijlr", "width:16px;height:16px")}</button>`);
 });
 if (typeof TL_SOORTEN === "object") TL_SOORTEN.huishouden = ["Huishouden", "#0e7490"];
 if (typeof LOGFILTERS !== "undefined" && Array.isArray(LOGFILTERS)) LOGFILTERS.push(["huishouden", "Huishouden"]);

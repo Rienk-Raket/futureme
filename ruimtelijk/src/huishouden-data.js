@@ -221,9 +221,11 @@ function hhAanDeBeurt() {
 }
 
 /* ---------- 77.8 Cijfers ---------- */
+/* Alleen schoonmaaksessies; sessies met taken of lijsten (sectie 80) tellen hier niet mee. */
+const hhIsSchoon = x => !x.bron || x.bron === "huishouden";
 function hhWeekCijfers() {
   const ws = weekStart(vandaagISO());
-  const s = S.hh_sessies.filter(x => (x.datum || "") >= ws);
+  const s = S.hh_sessies.filter(x => hhIsSchoon(x) && (x.datum || "") >= ws);
   const taken = s.reduce((a, x) => a + (x.resultaat || []).filter(r => r.status === "gedaan" && r.soort !== "pauze").length, 0);
   const min = s.reduce((a, x) => a + Math.round((x.werkSec || 0) / 60), 0);
   return { sessies: s.length, taken, min };
@@ -233,8 +235,8 @@ if (typeof vgAutoBronnen === "function") {
   const _vg = vgAutoBronnen;
   vgAutoBronnen = function () {
     const uit = _vg();
-    uit.push({ id: "huishouden.minuten", naam: "Minuten schoongemaakt", eenheid: "min", agg: "som", gebied: "thuis", richting: "omhoog", data: () => S.hh_sessies.map(s => ({ d: s.datum, v: Math.round((s.werkSec || 0) / 60) })) });
-    uit.push({ id: "huishouden.taken", naam: "Huishoudklussen gedaan", eenheid: "aantal", agg: "som", gebied: "thuis", richting: "omhoog", data: () => S.hh_sessies.map(s => ({ d: s.datum, v: (s.resultaat || []).filter(r => r.status === "gedaan" && r.soort !== "pauze").length })) });
+    uit.push({ id: "huishouden.minuten", naam: "Minuten schoongemaakt", eenheid: "min", agg: "som", gebied: "thuis", richting: "omhoog", data: () => S.hh_sessies.filter(hhIsSchoon).map(s => ({ d: s.datum, v: Math.round((s.werkSec || 0) / 60) })) });
+    uit.push({ id: "huishouden.taken", naam: "Huishoudklussen gedaan", eenheid: "aantal", agg: "som", gebied: "thuis", richting: "omhoog", data: () => S.hh_sessies.filter(hhIsSchoon).map(s => ({ d: s.datum, v: (s.resultaat || []).filter(r => r.status === "gedaan" && r.soort !== "pauze").length })) });
     return uit;
   };
   if (typeof VG_MP_TEKST === "object") {

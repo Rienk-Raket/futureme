@@ -1,29 +1,25 @@
 /* 75. Voortgang: een eigen omgeving over de app heen */
 #vg-omgeving{
-  --vg-acc:#4f46e5;--vg-acc2:#6366f1;--vg-zacht:color-mix(in srgb,var(--vg-acc) 12%,var(--card));--vg-spoor:color-mix(in srgb,var(--text) 9%,transparent);
+  --vg-acc:var(--accent);--vg-acc2:var(--accent);--vg-zacht:color-mix(in srgb,var(--vg-acc) 12%,var(--card));--vg-spoor:color-mix(in srgb,var(--text) 9%,transparent);
   --vg-goed:#15803d;--vg-minder:#b45309;
   position:fixed;inset:0;z-index:55;display:flex;flex-direction:column;background:var(--bg);color:var(--text);
   opacity:0;transform:translateY(18px) scale(.985);transition:opacity .26s,transform .32s cubic-bezier(.22,1,.36,1)}
 #vg-omgeving.zicht{opacity:1;transform:none}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #vg-omgeving{--vg-acc:#818cf8;--vg-acc2:#a5b4fc;--vg-goed:#4ade80;--vg-minder:#fbbf24}}
-:root[data-theme="dark"] #vg-omgeving{--vg-acc:#818cf8;--vg-acc2:#a5b4fc;--vg-goed:#4ade80;--vg-minder:#fbbf24}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #vg-omgeving{--vg-goed:#4ade80;--vg-minder:#fbbf24}}
+:root[data-theme="dark"] #vg-omgeving{--vg-goed:#4ade80;--vg-minder:#fbbf24}
 html.vg-open,html.vg-open body{overflow:hidden}
 @media (prefers-reduced-motion:reduce){#vg-omgeving{transition:none;transform:none}}
 
-/* Kop: eigen identiteit, donker indigo met een fijn raster */
-.vg-kop{position:relative;padding:calc(env(safe-area-inset-top) + 10px) 12px 14px;color:#fff;
-  background:linear-gradient(135deg,#1e1b4b,#312e81 55%,#4338ca);overflow:hidden}
-.vg-kop::before{content:"";position:absolute;inset:0;opacity:.14;pointer-events:none;
-  background-image:linear-gradient(rgba(255,255,255,.6) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px);background-size:22px 22px;
-  mask-image:linear-gradient(180deg,#000,transparent);-webkit-mask-image:linear-gradient(180deg,#000,transparent)}
+/* Kop: zelfde als de kop van de app (geen eigen wereld; alleen sessies hebben die) */
+.vg-kop{position:relative;padding:calc(env(safe-area-inset-top) + 10px) 12px 12px;color:var(--text);background:var(--bg);border-bottom:1px solid var(--line)}
 .vg-kopregel{position:relative;display:flex;align-items:center;gap:8px}
-.vg-kopknop{flex:0 0 auto;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:rgba(255,255,255,.12);color:inherit}
+.vg-kopknop{flex:0 0 auto;width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:var(--card2);color:var(--text)}
 .vg-kopknop svg{width:22px;height:22px}
 .vg-kopknop.leeg{background:none}
 .vg-kopknop[disabled]{opacity:.3}
 .vg-koptekst{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center}
 .vg-koptekst h1{font-size:calc(19px * var(--t));font-weight:800;letter-spacing:-.01em;margin:0;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.vg-koptekst span{font-size:calc(12px * var(--t));opacity:.75}
+.vg-koptekst span{font-size:calc(12px * var(--t));color:var(--muted)}
 html[data-retro="1"] .vg-koptekst h1{font-family:var(--pixel);font-weight:400;font-size:calc(13px * var(--t));line-height:1.6}
 
 .vg-inhoud{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 16px calc(96px + env(safe-area-inset-bottom))}
