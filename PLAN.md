@@ -1,6 +1,10 @@
 # PLAN — Keuzemachine (sectie 82)
 
-Status: **wacht op akkoord**. Nog niets gebouwd.
+Status: **akkoord (A, B, C) — in aanbouw**.
+
+Akkoord met aanvullingen:
+- Tegel op Nieuw: **wel** (na Lijstjes).
+- De theorie komt ook elders: volledig onderzoek in `docs/keuzes-onderzoek.md`, in de app als Keuzetheorie (Meer, Keuzemachine, Profiel), en de inzichten voeden features in andere modules (zie 7b).
 
 ## 1. Wat de verkenning liet zien (en waar de spec afwijkt van de huidige app)
 
@@ -65,7 +69,7 @@ Inhaakpunten (allemaal via het bestaande patroon van HobbySkills, Wishlist en Li
 
 ## 4. Takenlijst (werk ik bij tijdens het bouwen)
 
-- [ ] 0. `docs/keuzemachine-spec.md` en `tests/fixtures/index-v9.html` klaarzetten
+- [x] 0. `docs/keuzemachine-spec.md` en `tests/fixtures/index-v9.html` klaarzetten
 - [ ] 1. Data-constanten (25 vragen, 7 routes, tekstbank, theorie, gevoelige woorden, badges, levels)
 - [ ] 2. Rekenkern als pure functies
 - [ ] 3. `tests/keuzemachine.test.mjs`, groen, met:
@@ -78,6 +82,7 @@ Inhaakpunten (allemaal via het bestaande patroon van HobbySkills, Wishlist en Li
 - [ ] 5. Views: `keuze` (profiel, nieuw dilemma, open/besloten, XP), `keuzetest` (intro, vraag, hervatten, profielkaart), `keuzedilemma` (invoer A/B, checks, uitkomst, besluit, nazorg), `keuzetheorie` (lijst, lezen, gelezen)
 - [ ] 6. Lopende band (SVG, ±4,4 s, overslaan, reduced motion, 2 s bij de tweede keer), munt-test, haptiek
 - [ ] 7. Koppelingen: Meer, Verder naar, taak bij "Nog niet", nazorgmelding, XP, badges en reeks, plus A en B hierboven (na akkoord)
+- [ ] 7b. Theorie in andere modules: Wishlist (twijfel over een wens → Keuzemachine met ingevulde A/B, en een hint per route), Lijstjes Wat nu? (stopregel-hint na drie keer 'Een andere'), Profiel (kaart 'Jouw keuzeprofiel'), Voortgang (bron 'Besluiten'), Dagring/logboek (spoor bij een besluit)
 - [ ] 8. AI-laag achter `km_ai.aan = false`:
   - de veiligheid draait altijd eerst
   - time-out na 8 s, terugvallen op de lokale uitkomst

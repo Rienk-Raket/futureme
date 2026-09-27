@@ -565,7 +565,7 @@ function ljKandidaten(o) {
 function ljWatNu(lijstId) {
   const energie = typeof dcEnergie === "function" ? dcEnergie() : null, avond = new Date().getHours() >= 18;
   const o = { lijstId: lijstId || "", tijd: avond ? 120 : 60, sfeer: energie && energie <= 2 ? "licht" : "" };
-  let lijst = [], pos = 0;
+  let lijst = [], pos = 0, anders = 0;
   const lijsten = ljLijsten().filter(l => ljItems(l.id).some(x => x.status === "wil" || x.status === "bezig"));
   const kiesRij = (attr, opties, huidig) => `<div class="keuzerij">${opties.map(([k, n]) => `<button class="keuze" ${attr}="${k}" aria-pressed="${String(huidig) === String(k)}">${esc(n)}</button>`).join("")}</div>`;
   const vorm = () => `
@@ -581,6 +581,7 @@ function ljWatNu(lijstId) {
     rad.innerHTML = `<div class="card card-pad lj-keuze">
       <div class="lj-keuzekop">${ljDuim(k.x, k.l)}<div><span class="labeltekst">${esc(k.l ? k.l.naam : "")}</span><b class="lj-keuzetitel">${esc(k.x.titel)}</b><span class="lj-meta">${ljMeta(k.x, k.l)}</span></div></div>
       <ul class="lj-redenen">${k.r.slice(0, 3).map(t => `<li>${ico("check", "width:14px;height:14px")} ${esc(t)}</li>`).join("")}</ul>
+      ${anders >= 3 && typeof kmStopHint === "function" ? `<p class="lj-inzicht lj-stophint">${ico("keuze", "width:16px;height:16px")} <span>${esc(kmStopHint())}</span></p>` : ""}
       <div class="knoprij"><button class="knop primair" id="wn-doe">${esc(k.x.status === "bezig" ? "Verder" : ljStatusNaam(k.l, "bezig"))}</button><button class="knop rand" id="wn-ander">Een andere</button></div></div>`;
   };
   const draai = () => {
@@ -608,7 +609,7 @@ function ljWatNu(lijstId) {
     if (l || ti || sf) {
       if (l) o.lijstId = l.dataset.wnL; if (ti) o.tijd = +ti.dataset.wnT; if (sf) o.sfeer = sf.dataset.wnS;
       bi.innerHTML = vorm(); if (lijst.length) { lijst = ljKandidaten(o); pos = 0; toonKeuze(); }
-    } else if (t.closest("#wn-ander")) { pos = (pos + 1) % Math.max(1, lijst.length); toonKeuze(); }
+    } else if (t.closest("#wn-ander")) { anders++; pos = (pos + 1) % Math.max(1, lijst.length); toonKeuze(); }
     else if (t.closest("#wn-doe")) {
       const k = lijst[pos]; if (!k) return;
       if (k.x.status === "wil") await ljZetStatus(k.x, "bezig");
