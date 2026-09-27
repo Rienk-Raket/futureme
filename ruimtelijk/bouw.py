@@ -20,7 +20,7 @@ def vervang(oud, nieuw, n=1):
 
 
 # 1. Opslag: nieuwe winkel (hs_items) vraagt een hogere databaseversie.
-vervang('const DB_NAAM = "futureme", DB_VERSIE = 7;', 'const DB_NAAM = "futureme", DB_VERSIE = 12;')  # 8: hs_items, 9: wl_items, 10: Anker (mf_*), 11: Voortgang (vg_*), 12: Huishouden (hh_*)
+vervang('const DB_NAAM = "futureme", DB_VERSIE = 7;', 'const DB_NAAM = "futureme", DB_VERSIE = 13;')  # 8: hs_items, 9: wl_items, 10: Anker (mf_*), 11: Voortgang (vg_*), 12: Huishouden (hh_*), 13: Lijstjes (lj_*)
 # 1b. Stores met extra opties (oplopende sleutel, indexen) uit DB_OPTIES; bestaande stores blijven ongemoeid.
 vervang('if (!d.objectStoreNames.contains(naam)) d.createObjectStore(naam, { keyPath: sleutel });',
         'if (!d.objectStoreNames.contains(naam)) {\n'
@@ -48,6 +48,10 @@ vervang('shles: (typeof vwShLes === "function" ? vwShLes : vwStart)',
         '    huishouden: (typeof vwHuishouden === "function" ? vwHuishouden : vwStart),\n'
         '    hhlijst: (typeof vwHhLijst === "function" ? vwHhLijst : vwStart),\n'
         '    hhwaarom: (typeof vwHhWaarom === "function" ? vwHhWaarom : vwStart),\n'
+        '    lijstjes: (typeof vwLijstjes === "function" ? vwLijstjes : vwStart),\n'
+        '    lijstje: (typeof vwLijstje === "function" ? vwLijstje : vwStart),\n'
+        '    lijstitem: (typeof vwLijstItem === "function" ? vwLijstItem : vwStart),\n'
+        '    ljjaar: (typeof vwLjJaar === "function" ? vwLjJaar : vwStart),\n'
         '    ontwerp: (typeof vwOntwerp === "function" ? vwOntwerp : vwStart)')
 
 # 3b. Categorieën: terugvallen op "overig" op naam, niet op positie (ruimte voor eigen categorieën).
@@ -119,11 +123,29 @@ EXTRA_ICONEN = "\n".join([
     SYM("huis", '<path d="M3.5 11 12 4l8.5 7"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5.5h4V20"/>'),
     SYM("dobbel", '<rect x="4" y="4" width="16" height="16" rx="3.5"/><circle cx="8.5" cy="8.5" r="1.1" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.1" fill="currentColor"/><circle cx="12" cy="12" r="1.1" fill="currentColor"/><circle cx="15.5" cy="8.5" r="1.1" fill="currentColor"/><circle cx="8.5" cy="15.5" r="1.1" fill="currentColor"/>'),
     SYM("puzzel", '<path d="M9 4h3.5a1.8 1.8 0 1 1 3.4 0H19v4a1.8 1.8 0 1 0 0 3.5V15h-3.5a1.8 1.8 0 1 1-3.5 0H9v-3.5a1.8 1.8 0 1 1 0-3.5z"/><path d="M5 9v10h10"/>'),
-    SYM("batterij", '<rect x="3" y="7" width="16" height="10" rx="2.5"/><path d="M21 10.5v3"/><path d="M6 10v4M9 10v4"/>')])
-vervang('<symbol id="ill-persoonlijk"', ILL + '\n' + ILL_WL + '\n' + ILL_ANKER + '\n' + ILL_VOORTGANG + '\n' + ILL_HUIS + '\n' + BEZEM + '\n' + EXTRA_ICONEN + '\n<symbol id="ill-persoonlijk"')
+    SYM("batterij", '<rect x="3" y="7" width="16" height="10" rx="2.5"/><path d="M21 10.5v3"/><path d="M6 10v4M9 10v4"/>'),
+    # Sectie 81: Lijstjes
+    SYM("lijstjes", '<path d="M9 6h11M9 12h11M9 18h7"/><path d="M4.5 4.3l.7 1.4 1.5.2-1.1 1 .3 1.5-1.4-.7-1.4.7.3-1.5-1.1-1 1.5-.2z" fill="currentColor" stroke-width="1"/><circle cx="4.5" cy="12" r="1.2" fill="currentColor"/><circle cx="4.5" cy="18" r="1.2" fill="currentColor"/>'),
+    SYM("film", '<rect x="3" y="9" width="18" height="11" rx="2"/><path d="M3 9l1.2-4.2 16.3 1.8L20 9"/><path d="M8.2 5.3 7 9M13.2 5.9 12 9M18 6.4 17 9"/>'),
+    SYM("tv", '<rect x="3" y="6" width="18" height="12.5" rx="2.2"/><path d="M8.5 21.5h7M9 2.5l3 3.5 3-3.5"/>'),
+    SYM("noot", '<path d="M9 17.5V5.5l11-2v12"/><circle cx="6.5" cy="17.5" r="2.5"/><circle cx="17.5" cy="15.5" r="2.5"/><path d="M9 9.5l11-2"/>'),
+    SYM("game", '<path d="M7 7.5h10a4.5 4.5 0 0 1 4.4 5.4l-.8 3.9a2.2 2.2 0 0 1-3.8 1l-2.1-2.3H9.3l-2.1 2.3a2.2 2.2 0 0 1-3.8-1l-.8-3.9A4.5 4.5 0 0 1 7 7.5z"/><path d="M8 10.5v3M6.5 12h3"/><circle cx="15.5" cy="11" r=".9" fill="currentColor"/><circle cx="17.5" cy="13" r=".9" fill="currentColor"/>'),
+    SYM("bestek", '<path d="M7 3v7a2 2 0 0 0 2 2M11 3v7a2 2 0 0 1-2 2v9M9 3v6"/><path d="M17 21V3c-2.2 1.2-3 3.6-3 7 0 1.7.9 3 3 3"/>'),
+    SYM("pan", '<path d="M3 11h14v4a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5z"/><path d="M17 12.5h4"/><path d="M8 7.5c0-1.4 1.2-1.6 1.2-3M12 7.5c0-1.4 1.2-1.6 1.2-3"/>'),
+    SYM("trofee", '<path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 5.5H4.5a3 3 0 0 0 3.6 4.3M16 5.5h3.5a3 3 0 0 1-3.6 4.3"/><path d="M12 13v4M8.5 20.5h7M9.5 20.5c0-2 1-3.5 2.5-3.5s2.5 1.5 2.5 3.5"/>')])
+# Lijstjes: een klapbord met een lijst, sterren en een filmstrookje (illustratie voor de tegel).
+ILL_LJ = ('<symbol id="ill-lijstjes" viewBox="0 0 100 80"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">\n'
+          '  <rect x="16" y="12" width="46" height="62" rx="6" fill="currentColor" fill-opacity=".18" stroke-opacity=".85"/>\n'
+          '  <rect x="29" y="7" width="20" height="10" rx="3" fill="currentColor" fill-opacity=".55" stroke-opacity=".9"/>\n'
+          '  <path d="M26 32h26M26 44h26M26 56h18" stroke-opacity=".75"/>\n'
+          '  <rect x="62" y="30" width="30" height="40" rx="4" fill="currentColor" fill-opacity=".4" stroke-opacity=".85" transform="rotate(10 77 50)"/>\n'
+          '  <path d="M68 33l-1 7M78 35l-1 7M88 37l-1 7" stroke-opacity=".7" transform="rotate(10 77 50)"/>\n'
+          '  <path d="M80 4l2.4 5.2 5.6.6-4.2 3.8 1.2 5.5L80 16.3l-5 2.8 1.2-5.5-4.2-3.8 5.6-.6z" fill="currentColor" fill-opacity=".95" stroke="none"/>\n'
+          '</g></symbol>')
+vervang('<symbol id="ill-persoonlijk"', ILL + '\n' + ILL_WL + '\n' + ILL_ANKER + '\n' + ILL_VOORTGANG + '\n' + ILL_HUIS + '\n' + ILL_LJ + '\n' + BEZEM + '\n' + EXTRA_ICONEN + '\n<symbol id="ill-persoonlijk"')
 
 # 5. Stijl: achteraan in het bestaande <style>-blok.
-css = "\n\n" + lees("ruimte.css") + "\n\n" + lees("ruimte-data.css") + "\n\n" + lees("ontwerp.css") + "\n\n" + lees("hobbyskills.css") + "\n\n" + lees("sh-tabs.css") + "\n\n" + lees("eigen-categorieen.css") + "\n\n" + lees("fin-vast.css") + "\n\n" + lees("wishlist.css") + "\n\n" + lees("nieuw-rail.css") + "\n\n" + lees("mm-export.css") + "\n\n" + lees("retro.css").replace("__PIXELFONT__", base64.b64encode((HIER / "fonts" / "press-start-2p.woff2").read_bytes()).decode()) + "\n\n" + lees("incasso-bellen.css") + "\n\n" + lees("nieuw-overzicht.css") + "\n\n" + lees("sh-ideeen.css") + "\n\n" + lees("anker.css") + "\n\n" + lees("voortgang.css") + "\n\n" + lees("huishouden.css") + "\n\n" + lees("verweven.css") + "\n"
+css = "\n\n" + lees("ruimte.css") + "\n\n" + lees("ruimte-data.css") + "\n\n" + lees("ontwerp.css") + "\n\n" + lees("hobbyskills.css") + "\n\n" + lees("sh-tabs.css") + "\n\n" + lees("eigen-categorieen.css") + "\n\n" + lees("fin-vast.css") + "\n\n" + lees("wishlist.css") + "\n\n" + lees("nieuw-rail.css") + "\n\n" + lees("mm-export.css") + "\n\n" + lees("retro.css").replace("__PIXELFONT__", base64.b64encode((HIER / "fonts" / "press-start-2p.woff2").read_bytes()).decode()) + "\n\n" + lees("incasso-bellen.css") + "\n\n" + lees("nieuw-overzicht.css") + "\n\n" + lees("sh-ideeen.css") + "\n\n" + lees("anker.css") + "\n\n" + lees("voortgang.css") + "\n\n" + lees("huishouden.css") + "\n\n" + lees("verweven.css") + "\n\n" + lees("lijstjes.css") + "\n"
 vervang('</style>\n</head>', css + '</style>\n</head>')
 
 # 6. Scripts: vlak vóór het blok dat start() aanroept.
@@ -137,7 +159,7 @@ kennis = json.loads(KENNIS_PAD.read_text(encoding="utf-8"))
 for sleutel in ("meta", "richtingen", "aanpak", "vragen", "tips", "huishouden", "onderbouwing", "bronnen"):
     assert sleutel in kennis, f"kennisbank mist '{sleutel}'"
 kennis_js = "const FM_KENNIS = " + json.dumps(kennis, ensure_ascii=False).replace("</", "<\\/") + ";"
-blokken = f"<script>\n\"use strict\";\n// Kennisbank (gegenereerd uit kennis/huishouden.json, niet met de hand aanpassen)\n{kennis_js}\n</script>\n" + "".join(f"<script>\n{lees(naam)}\n</script>\n" for naam in ("sh-theorie.js", "sh-modellen.js", "sh-scrum.js", "sh-dashboard.js", "ruimte.js", "ruimte-data.js", "hobbyskills.js", "hs-sjablonen.js", "mm-bron.js", "koppelingen.js", "eigen-categorieen.js", "fin-vast.js", "wishlist.js", "sh-ideeen.js", "anker-data.js", "anker-speler.js", "anker-schermen.js", "anker-koppelingen.js", "voortgang-data.js", "voortgang.js", "profiel.js", "huishouden-data.js", "huishouden.js", "huishouden-sessie.js", "verweven.js", "nieuw-rail.js", "nieuw-overzicht.js", "nieuw-analyse.js", "mm-export.js", "ontwerp.js", "retro.js", "incasso-bellen.js", "tijdlijn-rust.js"))
+blokken = f"<script>\n\"use strict\";\n// Kennisbank (gegenereerd uit kennis/huishouden.json, niet met de hand aanpassen)\n{kennis_js}\n</script>\n" + "".join(f"<script>\n{lees(naam)}\n</script>\n" for naam in ("sh-theorie.js", "sh-modellen.js", "sh-scrum.js", "sh-dashboard.js", "ruimte.js", "ruimte-data.js", "hobbyskills.js", "hs-sjablonen.js", "mm-bron.js", "koppelingen.js", "eigen-categorieen.js", "fin-vast.js", "wishlist.js", "sh-ideeen.js", "anker-data.js", "anker-speler.js", "anker-schermen.js", "anker-koppelingen.js", "voortgang-data.js", "voortgang.js", "profiel.js", "huishouden-data.js", "huishouden.js", "huishouden-sessie.js", "verweven.js", "lijstjes.js", "nieuw-rail.js", "nieuw-overzicht.js", "nieuw-analyse.js", "mm-export.js", "ontwerp.js", "retro.js", "incasso-bellen.js", "tijdlijn-rust.js"))
 html = html[:j] + blokken + html[j:]
 
 UIT.write_text(html, encoding="utf-8")
