@@ -137,9 +137,16 @@ test("reden uit de twee zwaarste signalen, maximaal drie zinnen", () => {
   assert.equal(v.reden, "Als niemand het ooit zou weten, kies je B. En B kun je later nog terugdraaien. Dat maakt B voor jou de rustigste keuze.");
   assert.ok(u.reden.split(/(?<=\.)\s/).length <= 3);
 });
-test("munt-reactie wordt verwerkt in advies en reden", () => {
+test("munt-reactie telt niet mee in de stand (niet in de tabel), maar staat in de reden", () => {
   const u = K.kmAdvies(dil({ trek: 0, prive: "?", terug: "gelijk", munt: { viel: "A", reactie: "teleurgesteld" } }), prof("F"), { nu: NU });
-  assert.equal(u.advies, "B"); assert.match(u.reden, /Je was teleurgesteld toen A viel\. Dat zegt dat je eigenlijk B wilt\./);
+  assert.equal(u.stand, 0); assert.equal(u.advies, "gelijk");
+  assert.match(u.reden, /Je was teleurgesteld toen A viel\. Dat zegt dat je eigenlijk B wilt\./);
+});
+test("munt tegen het advies in met één steunend signaal: geen crash, reactie in de reden", () => {
+  const u = K.kmAdvies(dil({ trek: 0, prive: "A", terug: "gelijk", munt: { viel: "A", reactie: "teleurgesteld" } }), prof("C"), { nu: NU });
+  assert.equal(u.advies, "A"); assert.match(u.reden, /munt-reactie wees naar B/);
+  const v = K.kmAdvies(dil({ trek: 0, prive: "B", terug: "B", munt: { viel: "B", reactie: "opgelucht" } }), prof("C"), { nu: NU });
+  assert.equal(v.advies, "B"); assert.match(v.reden, /opgelucht toen B viel/); assert.ok(v.reden.split(/(?<=\.)\s/).length <= 3);
 });
 test("munt-reactie staat altijd in de reden, ook als ze tegen het advies in gaat", () => {
   const mee = K.kmAdvies(dil({ trek: -2, prive: "A", terug: "A", munt: { viel: "B", reactie: "teleurgesteld" } }), prof("C"), { nu: NU });
@@ -177,7 +184,8 @@ test("geen diagnose-taal in uitkomstkaarten (alle routes × contexten)", () => {
 
 /* ---------- kmVeiligheid ---------- */
 test(`alle ${K.KM_GEVOELIG.length} gevoelige woorden blokkeren (ook in een notitie)`, () => {
-  for (const w of K.KM_GEVOELIG) {
+  for (const w0 of K.KM_GEVOELIG) {
+    const w = w0.replace(/^=/, "");
     assert.equal(K.kmVeiligheid(`Ik twijfel over ${w} of niet`).status, "geblokkeerd", w);
     const d = { a: { titel: "Optie een", notitie: `Het gaat eigenlijk over ${w.toUpperCase()}` }, b: { titel: "Optie twee" }, context: {}, checks: { prive: "A" } };
     const u = K.kmAdvies(d, prof("A"), { nu: NU });
@@ -191,7 +199,7 @@ test("geld, recht en gezondheid: advies blijft, met de extra zin", () => {
   }
 });
 test("gewone keuzes blokkeren niet (ook niet 'overslaan' of 'opslaan')", () => {
-  for (const t of ["Pizza of pasta", "Blauwe of groene trui", "Les overslaan of gaan", "Foto's opslaan in de cloud", "Nieuwe laptop nu kopen"])
+  for (const t of ["Een geweldige laptop of een goede tablet", "Geweldig feestje of rustig thuis", "Pizza of pasta", "Blauwe of groene trui", "Les overslaan of gaan", "Foto's opslaan in de cloud", "Nieuwe laptop nu kopen"])
     assert.equal(K.kmVeiligheid(t).status, "geen", t);
 });
 

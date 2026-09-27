@@ -148,9 +148,16 @@ const ROUTE_B = [0, 0, 0, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "a", "c",
   check("'Nog niet' maakt een gewone taak met datum (Komend)", taak.d === "geparkeerd" && taak.t && taak.t.datum === morgen && /Kiezen: Verhuizen of Blijven/.test(taak.t.titel));
   await p.evaluate(() => ga("komend")); await wacht(300);
   check("de taak staat in Komend", await p.evaluate(() => document.querySelector("#scherm").textContent.includes("Kiezen: Verhuizen of Blijven")));
+  // Lege concepten verdwijnen, titels met # of @ blijven gewone tekst
+  await p.evaluate(() => ga("keuze")); await wacht(200); await p.click('[data-act="km-nieuw"]'); await wacht(200); await p.evaluate(() => ga("keuze")); await wacht(300);
+  check("leeg dilemma (niets ingevuld) verdwijnt weer", await p.evaluate(() => !S.km_dilemmas.some(d => d.status === "concept" && !d.a.titel && !d.b.titel)));
+  await p.evaluate(async () => { const d = kmNieuwDilemma({ a: { titel: "Feest #werk @Sam", notitie: "" }, b: { titel: "Elke week sporten", notitie: "" }, invoerKlaar: true, checks: { trek: 0, prive: "A", terug: "gelijk" } }); await bewaar("km_dilemmas", d); ga("keuzedilemma", d.id); await kmMachine(d); });
+  await p.click(".km-overslaan"); await wacht(300); await p.click('[data-act="km-parkeer"]'); await wacht(300); await p.click("#km-pok"); await wacht(400);
+  check("deadline-taak houdt de titels letterlijk (geen project, label of herhaling)", await p.evaluate(() => { const d = vind("km_dilemmas", V.param), t = vind("taken", d.besluit.taakId); return t.titel === "Kiezen: Feest #werk @Sam of Elke week sporten" && !t.projectId && !t.herhaal && !t.labels.length; }));
   // Veiligheid
   await p.evaluate(async () => { const d = kmNieuwDilemma({ a: { titel: "Stoppen met mijn medicatie", notitie: "" }, b: { titel: "Doorgaan", notitie: "" }, invoerKlaar: true, checks: { trek: 0, prive: "A", terug: "gelijk" } });
-    await bewaar("km_dilemmas", d); V.briefingGezien = true; ga("keuzedilemma", d.id); await kmMachine(d); }); await p.click(".km-overslaan"); await wacht(400);
+    await bewaar("km_dilemmas", d); V.briefingGezien = true; ga("keuzedilemma", d.id); await kmMachine(d); }); await wacht(400);
+  check("gevoelig onderwerp: geen lopende band", await p.evaluate(() => !document.querySelector("#km-band")));
   check("gevoelig onderwerp: alleen de hulpkaart (113, huisarts, 112), geen advies", await p.evaluate(() => !!document.querySelector(".km-hulp") && !document.querySelector(".km-advies") && /0800-0113/.test(document.querySelector(".km-hulp").textContent) && /112/.test(document.querySelector(".km-hulp").textContent)));
   const geld = await p.evaluate(() => kmAdvies({ a: { titel: "Hypotheek oversluiten" }, b: { titel: "Laten staan" }, context: {}, checks: { prive: "A" } }, kmProfiel(), { nu: Date.now() }));
   check("geld/recht/gezondheid: advies blijft met de extra zin", geld.advies === "A" && geld.extra === "Laat dit ook checken door iemand met verstand van zaken.");
@@ -194,7 +201,8 @@ const ROUTE_B = [0, 0, 0, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "a", "c",
   const r0 = verzoeken[0] || { headers: {}, body: {} };
   check("AI aan: teksten verrijkt, thinking-blok overgeslagen, advies blijft lokaal", ua.bron === "ai" && ua.handvatten[0] === "Kies drie eisen voor je laptop." && ua.advies === "A");
   check("AI-aanroep: juiste headers, effort low, max_tokens ≥ 16000, alleen toegestane velden", r0.headers["anthropic-version"] === "2023-06-01" && r0.headers["anthropic-dangerous-direct-browser-access"] === "true" && r0.headers["x-api-key"] === SLEUTEL
-    && r0.body.output_config.effort === "low" && r0.body.max_tokens >= 16000 && !("thinking" in r0.body) && /<dilemma>/.test(r0.body.messages[0].content) && !/taken|Oude taak|Racefiets/.test(r0.body.messages[0].content));
+    && r0.body.output_config.effort === "low" && r0.body.max_tokens >= 16000 && !("thinking" in r0.body) && /<dilemma>/.test(r0.body.messages[0].content) && !/taken|Oude taak|Racefiets|"lokaal"/.test(r0.body.messages[0].content)
+    && Object.keys(JSON.parse(r0.body.messages[0].content.replace(/^<dilemma>\n|\n<\/dilemma>$/g, ""))).sort().join() === "checks,context,optieA,optieB,routes");
   antwoord = "refusal"; ua = await aiRun("Fiets nu kopen");
   check("stop_reason refusal → lokale uitkomst met label 'offline advies'", ua.bron === "lokaal" && ua.aiMislukt === true && await p.evaluate(() => /offline advies/.test(document.querySelector(".km-advies").textContent)));
   const n0 = verzoeken.length; ua = await aiRun("Zelfbeschadiging of niet");

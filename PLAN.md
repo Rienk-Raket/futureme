@@ -1,6 +1,6 @@
 # PLAN — Keuzemachine (sectie 82)
 
-Status: **akkoord (A, B, C) — in aanbouw**.
+Status: **gebouwd en getest**.
 
 Akkoord met aanvullingen:
 - Tegel op Nieuw: **wel** (na Lijstjes).
@@ -70,29 +70,50 @@ Inhaakpunten (allemaal via het bestaande patroon van HobbySkills, Wishlist en Li
 ## 4. Takenlijst (werk ik bij tijdens het bouwen)
 
 - [x] 0. `docs/keuzemachine-spec.md` en `tests/fixtures/index-v9.html` klaarzetten
-- [ ] 1. Data-constanten (25 vragen, 7 routes, tekstbank, theorie, gevoelige woorden, badges, levels)
-- [ ] 2. Rekenkern als pure functies
-- [ ] 3. `tests/keuzemachine.test.mjs`, groen, met:
+- [x] 1. Data-constanten (25 vragen, 7 routes, tekstbank, theorie, gevoelige woorden, badges, levels)
+- [x] 2. Rekenkern als pure functies
+- [x] 3. `tests/keuzemachine.test.mjs`, groen, met:
   - 7 routeprofielen
   - gemengd, laag en een gelijke stand
   - 9 budgetcellen en een eerdere deadline
   - de adviesregels (gewichten, 0 → terugdraaien, anders gelijk)
   - de veiligheidswoorden (blokkeren en disclaimer)
-- [ ] 4. Opslag (`km_profielen`, `km_dilemmas`, DB 14, `kmBewaarProfiel`, `kmBewaarDilemma`)
-- [ ] 5. Views: `keuze` (profiel, nieuw dilemma, open/besloten, XP), `keuzetest` (intro, vraag, hervatten, profielkaart), `keuzedilemma` (invoer A/B, checks, uitkomst, besluit, nazorg), `keuzetheorie` (lijst, lezen, gelezen)
-- [ ] 6. Lopende band (SVG, ±4,4 s, overslaan, reduced motion, 2 s bij de tweede keer), munt-test, haptiek
-- [ ] 7. Koppelingen: Meer, Verder naar, taak bij "Nog niet", nazorgmelding, XP, badges en reeks, plus A en B hierboven (na akkoord)
-- [ ] 7b. Theorie in andere modules: Wishlist (twijfel over een wens → Keuzemachine met ingevulde A/B, en een hint per route), Lijstjes Wat nu? (stopregel-hint na drie keer 'Een andere'), Profiel (kaart 'Jouw keuzeprofiel'), Voortgang (bron 'Besluiten'), Dagring/logboek (spoor bij een besluit)
-- [ ] 8. AI-laag achter `km_ai.aan = false`:
+- [x] 4. Opslag (`km_profielen`, `km_dilemmas`, DB 14, `kmBewaarProfiel`, `kmBewaarDilemma`)
+- [x] 5. Views: `keuze` (profiel, nieuw dilemma, open/besloten, XP), `keuzetest` (intro, vraag, hervatten, profielkaart), `keuzedilemma` (invoer A/B, checks, uitkomst, besluit, nazorg), `keuzetheorie` (lijst, lezen, gelezen)
+- [x] 6. Lopende band (SVG, ±4,4 s, overslaan, reduced motion, 2 s bij de tweede keer), munt-test, haptiek
+- [x] 7. Koppelingen: Meer, Verder naar, taak bij "Nog niet", nazorgmelding, XP, badges en reeks, plus A en B hierboven (na akkoord)
+- [x] 7b. Theorie in andere modules: Wishlist (twijfel over een wens → Keuzemachine met ingevulde A/B, en een hint per route), Lijstjes Wat nu? (stopregel-hint na drie keer 'Een andere'), Profiel (kaart 'Jouw keuzeprofiel'), Voortgang (bron 'Besluiten'), Dagring/logboek (spoor bij een besluit)
+- [x] 8. AI-laag achter `km_ai.aan = false`:
   - de veiligheid draait altijd eerst
   - time-out na 8 s, terugvallen op de lokale uitkomst
   - de sleutel komt niet in de back-up
-- [ ] 9. Playwright-test:
+- [x] 9. Playwright-test:
   - upgrade v9 → 14 en v13 → 14 met aantallen per winkel
   - back-up-roundtrip in een schone browser
   - zoeken op de testsleutel in de export
   - geen console-fouten in de 4 views
   - de flows
-- [ ] 10. Schermafbeeldingen van testvraag, profielkaart, invoer A/B, band halverwege, uitkomstkaart en theoriehoofdstuk, op 390×844 en 360×740, licht en donker (24 stuks). Zelf nakijken en herstellen.
-- [ ] 11. Subagent in schone context legt de diff naast de spec; gaten oplossen
-- [ ] 12. Regressie op de bestaande suites, README, commit en push (branch en main)
+- [x] 10. Schermafbeeldingen van testvraag, profielkaart, invoer A/B, band halverwege, uitkomstkaart en theoriehoofdstuk, op 390×844 en 360×740, licht en donker (24 stuks). Zelf nakijken en herstellen.
+- [x] 11. Subagent in schone context legt de diff naast de spec; gaten oplossen
+- [x] 12. Regressie op de bestaande suites, README, commit en push (branch en main)
+
+## 5. Resultaat en afwijkingen van de spec
+
+- `node tests/keuzemachine.test.mjs`: 45 geslaagd. `tests/keuzemachine.e2e.cjs`: 52 geslaagd.
+- Onafhankelijke review (subagent, schone context) vond 10 gaten; alle opgelost:
+  - crash bij een munt-reactie tegen het advies in;
+  - 'geweldig' werd als 'geweld' geblokkeerd;
+  - munt had een gewicht buiten de tabel;
+  - fade viel weg bij minder beweging;
+  - geblokkeerd dilemma liep door de band;
+  - AI-payload bevatte meer dan toegestaan;
+  - 'Sleutel wissen' alleen zichtbaar als AI aan stond;
+  - maar 10 besluiten terug te zien;
+  - lege concepten bleven staan;
+  - deadline-taak liep door de snelinvoer-parser.
+- Afwijkingen:
+  - DB-versie 13 → 14 (in plaats van 9 → 10), sectie 82 (in plaats van 67). De app was al verder.
+  - Voor de Speurder is er een extra check 'Voldoen beide aan je goed-genoeg-criteria?'. De gewichtentabel noemt die voorwaarde, maar de spec had er geen invoerveld voor.
+  - De munt-reactie telt niet mee in de stand. Ze staat wel altijd in de reden; bij 'gelijk' geeft ze de doorslag in de tekst, niet in het advies.
+  - Extra bestandsgrootte is ± 121 kB (spec: max. 90 kB). De module is ongeminificeerd, net als de rest van de app, en bevat de theorie, de AI-laag en de koppelingen.
+  - De AI-laag krijgt de routebeschrijvingen en de gewichten in de systeemprompt en moet hetzelfde advies geven als de lokale motor; anders geldt de lokale uitkomst.

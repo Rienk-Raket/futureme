@@ -168,7 +168,7 @@
 .km-machine.stil *{animation:none !important;transition:fill .15s,opacity .2s !important}
 .km-machine.stil .km-blok{transform:none !important}
 .km-machine.stil[data-fase="6"] .km-capsule{transform:none}
-@media (prefers-reduced-motion:reduce){.km-in,.km-fade{animation:none}.km-test{transition:none}}
+@media (prefers-reduced-motion:reduce){.km-in{animation:none}.km-test{transition:none}}
 
 /* Uitkomst */
 .km-uitkomst{padding:16px;display:flex;flex-direction:column;gap:14px;margin-top:6px}
