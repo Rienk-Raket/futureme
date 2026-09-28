@@ -179,8 +179,8 @@ const ROUTE_B = [0, 0, 0, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "a", "c",
   await p.evaluate(() => ga("meer")); await wacht(300);
   check("Meer: Keuzemachine en Keuzetheorie in 'Doen en groeien'", await p.evaluate(() => { const k = document.querySelector('#scherm .menu-kaart[data-view="keuze"]'), t = document.querySelector('#scherm .menu-kaart[data-view="keuzetheorie"]'); if (!k || !t) return false;
     let s = k.parentElement.previousElementSibling; while (s && !s.classList.contains("sectie")) s = s.previousElementSibling; return s && /Doen en groeien/.test(s.textContent) && k.parentElement === t.parentElement; }));
-  await p.evaluate(() => ga("start")); await wacht(400);
-  check("tegel op Nieuw", await p.evaluate(() => !!document.querySelector('#scherm [data-view="keuze"].knop3d')));
+  await p.evaluate(() => { ga("start"); V.nwPad = ["toolbox", "beslissen"]; teken(); }); await wacht(600);
+  check("kaart op Nieuw (Toolbox › Beslissen)", await p.evaluate(() => !!document.querySelector('#scherm [data-view="keuze"].knop3d')));
   check("Voortgang-bron 'besluiten'", await p.evaluate(() => vgAutoBronnen().some(b => b.id === "keuze.besluiten")));
   await p.evaluate(async () => { await bewaar("wl_items", { id: "w9", naam: "Racefiets", prijs: 900, status: "actief", gemaakt: new Date().toISOString(), redenen: [] }); ga("wens", "w9"); }); await wacht(400);
   await p.click('[data-act="km-van-wens"]'); await wacht(400);
