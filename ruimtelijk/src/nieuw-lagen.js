@@ -100,7 +100,10 @@ function nwlCijfers(pad) {
   const uren = S.tijdlog.filter(l => l.datum >= ws).reduce((a, l) => a + (l.seconden || 0), 0) / 3600;
   const uitMaand = S.uitgaven.filter(u => (u.datum || "").slice(0, 7) === ym).reduce((a, u) => a + (+u.bedrag || 0), 0);
   const b = typeof dagbudget === "function" ? dagbudget(v) : null;
-  const ink = S.incassos.filter(i => i.actief), wl = (S.wl_items || []).filter(x => (x.status || "actief") === "actief");
+  const ink = S.incassos.filter(i => i.actief);
+  // Totaal van de incasso's, omgerekend naar per maand (week ×52/12, kwartaal /3, halfjaar /6, jaar /12).
+  const inkMaand = ink.reduce((a, i) => { const f = (typeof FREQ === "object" && FREQ[i.freq]) || [0, 1]; return a + (i.freq === "week" ? (+i.bedrag || 0) * 52 / 12 : (+i.bedrag || 0) / (f[1] || 1)); }, 0);
+  const wl = (S.wl_items || []).filter(x => (x.status || "actief") === "actief");
   const km = typeof kmBesloten === "function" ? kmBesloten().filter(d => d.besluit.op.slice(0, 10) >= ws).length : 0;
   const kmOpenN = typeof kmOpen === "function" ? kmOpen().length : 0;
   const shAct = (S.sh_hustles || []).filter(h => !h.gearchiveerd);
@@ -120,7 +123,7 @@ function nwlCijfers(pad) {
     "werk": [tv("werk") || `${nwlN(werkOpen.length)} werktaken open`, [nwlR("Werktaken open", nwlN(werkOpen.length)), nwlR("Meetings komende 7 dagen", nwlN(meetings.length)), nwlR("Uren deze week", nwlN(uren)),
       nwlR("Werkdocumenten", nwlN(S.werkdocs.filter(d => d.status !== "archief").length))]],
     "financieel": [tv("financieel") || `${eur(uitMaand)} deze maand`, [...(b && b.maand ? [nwlR("Over vandaag", eur(b.over))] : []), nwlR("Uitgegeven deze maand", eur(uitMaand)),
-      nwlR("Actieve incasso's", nwlN(ink.length)), nwlR("Potjes", nwlN(S.potjes.length)), nwlR("Wensen", nwlN(wl.length))]],
+      nwlR("Actieve incasso's", nwlN(ink.length), `± ${eur(inkMaand)} per maand`), nwlR("Totaal incasso's per maand", eur(inkMaand), `± ${eur(inkMaand * 12)} per jaar`), nwlR("Potjes", nwlN(S.potjes.length)), nwlR("Wensen", nwlN(wl.length))]],
     "toolbox": [[kmOpenN ? `${kmOpenN} open keuze${kmOpenN === 1 ? "" : "s"}` : "", ljBezig ? `${ljBezig} bezig in Lijstjes` : "", hh.sessies ? `${hh.taken} klussen` : ""].filter(Boolean).join(" · ") || "Al je hulpmiddelen op één plek",
       [nwlR("Besluiten deze week", nwlN(km), kmOpenN ? `${kmOpenN} open` : ""), nwlR("Side hustles", nwlN(shAct.length), shOmzet ? eur(shOmzet) + " omzet deze maand" : ""), nwlR("Huishoudklussen deze week", nwlN(hh.taken)),
         nwlR("Anker-momenten deze week", nwlN(mf)), nwlR("Lijstjes afgerond dit jaar", nwlN(ljAf), ljBezig ? `${ljBezig} bezig` : ""), nwlR("Actieve doelen", nwlN(vgDoelen))]],
@@ -137,7 +140,8 @@ function nwlCijfers(pad) {
     "werk/documenten": [nwlMv(S.werkdocs.filter(d => d.status !== "archief").length, "document", "documenten"), [nwlR("Actieve documenten", nwlN(S.werkdocs.filter(d => d.status === "actief").length)), nwlR("Concepten", nwlN(S.werkdocs.filter(d => d.status === "concept").length))]],
     "werk/tijd": [`${nwlN(uren)} uur deze week`, [nwlR("Uren deze week", (Math.round(uren * 10) / 10).toString().replace(".", ",")), nwlR("Registraties deze week", nwlN(S.tijdlog.filter(l => l.datum >= ws).length))]],
     "financieel/vandaag": [b && b.maand ? `${eur(b.over)} over vandaag` : `${eur(uitMaand)} deze maand`, [...(b && b.maand ? [nwlR("Over vandaag", eur(b.over))] : []), nwlR("Uitgegeven deze maand", eur(uitMaand)), nwlR("Uitgaven deze maand", nwlN(S.uitgaven.filter(u => (u.datum || "").slice(0, 7) === ym).length))]],
-    "financieel/vast": [nwlMv(ink.length, "incasso", "incasso's"), [nwlR("Actieve incasso's", nwlN(ink.length))]],
+    "financieel/vast": [ink.length ? `${nwlMv(ink.length, "incasso", "incasso's")} · ${eur(inkMaand)} p/m` : "Geen incasso's", [nwlR("Actieve incasso's", nwlN(ink.length)),
+      nwlR("Totaal per maand", eur(inkMaand)), nwlR("Totaal per jaar", eur(inkMaand * 12))]],
     "financieel/sparen": [nwlMv(S.potjes.length, "potje", "potjes"), [nwlR("Potjes", nwlN(S.potjes.length))]],
     "financieel/wensen": [nwlMv(wl.length, "wens", "wensen"), [nwlR("Op de wishlist", nwlN(wl.length), eur(wl.reduce((a, x) => a + (+x.prijs || 0), 0))), nwlR("Gespaard", eur(wl.reduce((a, x) => a + (+x.gespaard || 0), 0)))]],
     "toolbox/beslissen": [km ? `${km} besluiten deze week` : kmOpenN ? `${kmOpenN} open` : "Een A/B-keuze in minuten", [nwlR("Besluiten deze week", nwlN(km)), nwlR("Open keuzes", nwlN(kmOpenN)), nwlR("XP", nwlN(inst("km_xp", 0)))]],
