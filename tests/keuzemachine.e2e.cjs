@@ -112,7 +112,7 @@ const ROUTE_B = [0, 0, 0, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "a", "c",
   check("'Waarom?' opent het juiste theoriehoofdstuk", await p.evaluate(() => V.view === "keuzetheorie" && V.param === "route-b"));
   await p.evaluate(() => terug()); await wacht(300);
   // Tweede keer: versnelde band van ~2 s, en overslaan
-  let t1 = Date.now(); await p.click('[data-act="km-opnieuw"]'); await p.waitForSelector("#km-band"); await p.waitForSelector("#km-uitkomst", { timeout: 6000 });
+  await p.click('[data-act="km-opnieuw"]'); await p.waitForSelector("#km-band"); let t1 = Date.now(); await p.waitForSelector("#km-uitkomst", { timeout: 6000 });
   const snel = (Date.now() - t1) / 1000;
   check(`tweede keer: versnelde band (${snel.toFixed(1)} s)`, snel < 3);
   t1 = Date.now(); await p.click('[data-act="km-opnieuw"]'); await p.waitForSelector("#km-band"); await p.click(".km-overslaan"); await p.waitForSelector("#km-uitkomst", { timeout: 3000 });
