@@ -29,6 +29,22 @@ vervang('if (!d.objectStoreNames.contains(naam)) d.createObjectStore(naam, { key
         '          if (opt && opt.indexen) opt.indexen.forEach(([n, k]) => st.createIndex(n, k));\n'
         '        }')
 
+# 8. Export en import van alle gegevens (overgenomen uit Brain-Mate Nate, stap 12).
+#    Samenvoegen vergelijkt op de echte sleutel van de opslagplek ("id", of "sleutel" bij instellingen),
+#    slaat dezelfde open taak (titel en datum) niet nog eens over, houdt bestaande instellingen en past
+#    de instellingen daarna meteen toe. Alles vervangen zet het hele bestand terug.
+vervang('      if (modus !== "vervangen" && S[w].some(x => x.id === rij.id)) continue;',
+        '      const sl = WINKELS[w] || "id";\n'
+        '      if (modus !== "vervangen" && S[w].some(x => x[sl] === rij[sl])) continue;\n'
+        '      // Samenvoegen: dezelfde open taak (titel en datum) niet nog eens, bv. de starttaken van een nieuwe installatie.\n'
+        '      if (modus !== "vervangen" && w === "taken" && !rij.af && S.taken.some(x => !x.af && x.titel === rij.titel && (x.datum || null) === (rij.datum || null))) continue;')
+vervang('      if (w === "instellingen") { S.instellingen[rij.sleutel] = rij.waarde; await idbZet(w, rij); aantal++; continue; }',
+        '      if (w === "instellingen") { if (modus !== "vervangen" && S.instellingen[rij.sleutel] !== undefined) continue; S.instellingen[rij.sleutel] = rij.waarde; await idbZet(w, rij); aantal++; continue; }')
+vervang('''  teken();
+  toast(`${aantal} onderdelen teruggezet`, null, null, 5000);''', '''  if (typeof pasInstellingenToe === "function") pasInstellingenToe();
+  teken();
+  toast(`${aantal} onderdelen teruggezet`, null, null, 5000);''')
+
 # 2. Views van HobbySkills in de tekenkaart.
 vervang('shles: (typeof vwShLes === "function" ? vwShLes : vwStart)',
         'shles: (typeof vwShLes === "function" ? vwShLes : vwStart),\n'
@@ -171,7 +187,7 @@ ILL_TB = ('<symbol id="ill-toolbox" viewBox="0 0 100 80"><g fill="none" stroke="
 vervang('<symbol id="ill-persoonlijk"', ILL + '\n' + ILL_WL + '\n' + ILL_ANKER + '\n' + ILL_VOORTGANG + '\n' + ILL_HUIS + '\n' + ILL_LJ + '\n' + ILL_KM + '\n' + ILL_TB + '\n' + BEZEM + '\n' + EXTRA_ICONEN + '\n<symbol id="ill-persoonlijk"')
 
 # 5. Stijl: achteraan in het bestaande <style>-blok.
-css = "\n\n" + lees("ruimte.css") + "\n\n" + lees("ruimte-data.css") + "\n\n" + lees("ontwerp.css") + "\n\n" + lees("hobbyskills.css") + "\n\n" + lees("sh-tabs.css") + "\n\n" + lees("eigen-categorieen.css") + "\n\n" + lees("fin-vast.css") + "\n\n" + lees("wishlist.css") + "\n\n" + lees("nieuw-rail.css") + "\n\n" + lees("mm-export.css") + "\n\n" + lees("retro.css").replace("__PIXELFONT__", base64.b64encode((HIER / "fonts" / "press-start-2p.woff2").read_bytes()).decode()) + "\n\n" + lees("incasso-bellen.css") + "\n\n" + lees("nieuw-overzicht.css") + "\n\n" + lees("sh-ideeen.css") + "\n\n" + lees("anker.css") + "\n\n" + lees("voortgang.css") + "\n\n" + lees("huishouden.css") + "\n\n" + lees("verweven.css") + "\n\n" + lees("lijstjes.css") + "\n\n" + lees("keuzemachine.css") + "\n\n" + lees("nieuw-lagen.css") + "\n"
+css = "\n\n" + lees("ruimte.css") + "\n\n" + lees("ruimte-data.css") + "\n\n" + lees("ontwerp.css") + "\n\n" + lees("hobbyskills.css") + "\n\n" + lees("sh-tabs.css") + "\n\n" + lees("eigen-categorieen.css") + "\n\n" + lees("fin-vast.css") + "\n\n" + lees("wishlist.css") + "\n\n" + lees("nieuw-rail.css") + "\n\n" + lees("mm-export.css") + "\n\n" + lees("retro.css").replace("__PIXELFONT__", base64.b64encode((HIER / "fonts" / "press-start-2p.woff2").read_bytes()).decode()) + "\n\n" + lees("incasso-bellen.css") + "\n\n" + lees("nieuw-overzicht.css") + "\n\n" + lees("sh-ideeen.css") + "\n\n" + lees("anker.css") + "\n\n" + lees("voortgang.css") + "\n\n" + lees("huishouden.css") + "\n\n" + lees("verweven.css") + "\n\n" + lees("lijstjes.css") + "\n\n" + lees("keuzemachine.css") + "\n\n" + lees("nieuw-lagen.css") + "\n\n" + lees("gegevens.css") + "\n"
 vervang('</style>\n</head>', css + '</style>\n</head>')
 
 # 6. Scripts: vlak vóór het blok dat start() aanroept.
@@ -185,7 +201,27 @@ kennis = json.loads(KENNIS_PAD.read_text(encoding="utf-8"))
 for sleutel in ("meta", "richtingen", "aanpak", "vragen", "tips", "huishouden", "onderbouwing", "bronnen"):
     assert sleutel in kennis, f"kennisbank mist '{sleutel}'"
 kennis_js = "const FM_KENNIS = " + json.dumps(kennis, ensure_ascii=False).replace("</", "<\\/") + ";"
-blokken = f"<script>\n\"use strict\";\n// Kennisbank (gegenereerd uit kennis/huishouden.json, niet met de hand aanpassen)\n{kennis_js}\n</script>\n" + "".join(f"<script>\n{lees(naam)}\n</script>\n" for naam in ("sh-theorie.js", "sh-modellen.js", "sh-scrum.js", "sh-dashboard.js", "ruimte.js", "ruimte-data.js", "hobbyskills.js", "hs-sjablonen.js", "mm-bron.js", "koppelingen.js", "eigen-categorieen.js", "fin-vast.js", "wishlist.js", "sh-ideeen.js", "anker-data.js", "anker-speler.js", "anker-schermen.js", "anker-koppelingen.js", "voortgang-data.js", "voortgang.js", "profiel.js", "huishouden-data.js", "huishouden.js", "huishouden-sessie.js", "verweven.js", "lijstjes.js", "keuzemachine.js", "nieuw-rail.js", "nieuw-overzicht.js", "nieuw-analyse.js", "nieuw-lagen.js", "mm-export.js", "ontwerp.js", "retro.js", "incasso-bellen.js", "tijdlijn-rust.js"))
+# 6b. Kennismaking: kennis/vragenbank.json en kennis/scoreweging.json komen letterlijk in de app.
+#     We controleren de vorm, zodat een kapotte kopie de bouw stopt in plaats van de app.
+VRAGEN = json.loads((HIER.parent / "kennis" / "vragenbank.json").read_text(encoding="utf-8"))
+WEGING = json.loads((HIER.parent / "kennis" / "scoreweging.json").read_text(encoding="utf-8"))
+assert VRAGEN.get("schema_version"), "vragenbank mist schema_version"
+assert len(VRAGEN["questions"]) == 96, "vragenbank moet 96 vragen hebben"
+assert len(VRAGEN["cases"]) == 32, "vragenbank moet 32 casussen hebben"
+LABELS = ["Nooit", "Zelden", "Soms", "Vaak", "Zeer vaak", "Niet van toepassing", "Liever niet beantwoorden"]
+for q in VRAGEN["questions"]:
+    assert [o["label"] for o in q["response_options"]] == LABELS, f"{q['question_id']}: antwoordopties wijken af"
+    assert q["response_options"][5]["score"] is None and q["response_options"][6]["score"] is None, f"{q['question_id']}: ontbrekend mag nooit 0 zijn"
+assert sum(1 for q in VRAGEN["questions"] if q["assessment_part"] == "A" and q["question_id"].endswith(".Q1")) == 16, "16 kernvragen verwacht"
+assert WEGING.get("schema_version", "").startswith("1.1"), "scoreweging moet versie 1.1 zijn"
+assert WEGING["global_neurodivergence_score"] is False and WEGING["diagnosis_probabilities_enabled"] is False, "verboden uitkomst aan"
+assert WEGING["raw_response_mapping"]["not_applicable"] is None and WEGING["raw_response_mapping"]["prefer_not"] is None, "ontbrekend mag nooit 0 zijn"
+for cl in WEGING["pattern_clusters"]:
+    assert abs(sum(cl["dimension_weights"].values()) - 1) < 1e-9, f"clustergewichten {cl['cluster_id']} tellen niet op tot 1"
+assert len(WEGING["pattern_clusters"]) == 7 and len(WEGING["context_prompts"]) == 12, "7 clusters en 12 contextvragen verwacht"
+kennis_js += "\nconst NATE_VRAGENBANK = " + json.dumps(VRAGEN, ensure_ascii=False).replace("</", "<\\/") + ";"
+kennis_js += "\nconst NATE_SCOREWEGING = " + json.dumps(WEGING, ensure_ascii=False).replace("</", "<\\/") + ";"
+blokken = f"<script>\n\"use strict\";\n// Kennisbank (gegenereerd uit kennis/huishouden.json, niet met de hand aanpassen)\n{kennis_js}\n</script>\n" + "".join(f"<script>\n{lees(naam)}\n</script>\n" for naam in ("sh-theorie.js", "sh-modellen.js", "sh-scrum.js", "sh-dashboard.js", "ruimte.js", "ruimte-data.js", "hobbyskills.js", "hs-sjablonen.js", "mm-bron.js", "koppelingen.js", "eigen-categorieen.js", "fin-vast.js", "wishlist.js", "sh-ideeen.js", "anker-data.js", "anker-speler.js", "anker-schermen.js", "anker-koppelingen.js", "voortgang-data.js", "voortgang.js", "profiel.js", "huishouden-data.js", "huishouden.js", "huishouden-sessie.js", "verweven.js", "lijstjes.js", "keuzemachine.js", "nieuw-rail.js", "nieuw-overzicht.js", "nieuw-analyse.js", "nieuw-lagen.js", "gegevens.js", "mm-export.js", "ontwerp.js", "retro.js", "incasso-bellen.js", "tijdlijn-rust.js", "nate-score.js"))
 html = html[:j] + blokken + html[j:]
 
 UIT.write_text(html, encoding="utf-8")

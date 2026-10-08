@@ -1,0 +1,6 @@
+/* 84. Je gegevens */
+.gv-blok{margin:10px 0 4px}
+.gv-blok p{margin:6px 0}
+.gv-knoppen{display:flex;gap:8px;margin:10px 0 6px}
+.gv-knoppen .knop{flex:1;min-height:48px;display:flex;align-items:center;justify-content:center;gap:6px}
+.gv-link{display:flex;align-items:center;gap:4px;color:var(--accent);font-weight:700;font-size:calc(13.5px * var(--t));min-height:var(--tap);padding:0 2px;text-align:left}
