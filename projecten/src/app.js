@@ -83,7 +83,7 @@ function toast(tekst, knop, doe, ms) {
 function pasInstellingenToe() {
   const h = document.documentElement;
   h.dataset.thema = inst("thema", "donker");
-  h.dataset.beweging = inst("beweging", "vol");
+  h.dataset.beweging = inst("beweging", "vol") === "rustig" || inst("ap_rustig", false) ? "rustig" : "vol";
 }
 
 /* ---------- Start ---------- */

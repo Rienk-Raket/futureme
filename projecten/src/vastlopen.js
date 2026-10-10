@@ -56,9 +56,10 @@ function vastRoute(p, o) {
       <div class="chips">${o.voorbeelden.map(v => `<button type="button" class="chip-knop" data-vast-vb="${esc(v)}">${esc(v)}</button>`).join("")}</div>` : stap ? `<p class="klein">Aan: ${esc(stap.tekst)}</p>` : ""}
     <details class="waarom"><summary>Waarom zeg je dit?</summary><p>${esc(o.waarom)} ${esc(PT_VAST_BEWIJS)}</p></details>`,
     `<button class="knop primair breed" id="vast-doe">${invoer ? `Opslaan en ${o.duur} minuten starten` : `Start ${o.duur} minuten`}</button>${o.tweede ? `<button class="knop rand breed" id="vast-moment">Nieuw moment kiezen</button>` : ""}`);
-  $("#bladinhoud").addEventListener("click", e => { const v = e.target.closest("[data-vast-vb]"); if (v) { $("#vast-stap").value = v.dataset.vastVb; $("#vast-stap").focus(); } });
+  $("#bladinhoud").onclick = e => { const v = e.target.closest("[data-vast-vb]"); if (v) { $("#vast-stap").value = v.dataset.vastVb; $("#vast-stap").focus(); } };
   if (o.tweede) $("#vast-moment").onclick = () => belofteBlad(p.id);
   $("#vast-doe").onclick = async () => {
+    if (inst("timer", null)) { bladSluit(); timerTeken(); toast("Er loopt al een blok. Maak dat eerst af."); return; }
     let stapId = stap ? stap.id : null;
     if (invoer) {
       const t = $("#vast-stap").value.trim(); if (!t) { toast("Schrijf eerst één handeling op"); return; }
@@ -67,7 +68,6 @@ function vastRoute(p, o) {
       stapId = nieuw.id;
     }
     await log(p.id, "notitie", `Vastgelopen (${o.label.toLowerCase()}): ${invoer ? "eerste handeling gekozen" : `${o.duur} minuten`}`);
-    if (inst("timer", null)) { bladSluit(); timerTeken(); toast("Er loopt al een blok."); return; }
     await zetInst("timer", { projectId: p.id, stapId, start: Date.now(), duur: o.duur, pauzeOp: null, gepauzeerd: 0 });
     bladSluit(); tril(10); timerTeken();
   };
@@ -78,7 +78,7 @@ function kiesBlad(vanId) {
   const actief = S.projecten.filter(p => p.status === "actief");
   if (actief.length < 2) { bladSluit(); toast("Er is maar één actief project. Dat is je keuze."); return; }
   const a = vind("projecten", vanId) && vind("projecten", vanId).status === "actief" ? vind("projecten", vanId) : actief[0], rest = actief.filter(p => p.id !== a.id);
-  const ant = { b: rest[0].id }, start = Date.now();
+  const ant = { b: rest[0].id }, start = Date.now();   // zin/energie/dichtbij = "a" of "b"; b is wie er "Tegen" staat
   const vraag = (k, tekst) => `<p class="hud-label">${tekst}</p><div class="segment" role="group" aria-label="${esc(tekst)}"><button type="button" data-kies="${k}" data-waarde="a" aria-pressed="false">${esc(a.titel)}</button><button type="button" data-kies="${k}" data-waarde="b" aria-pressed="false" class="kies-b">${esc(rest[0].titel)}</button></div>`;
   bladOpen("Kiezen in twee minuten", `${rest.length > 1 ? `<div class="veld"><label for="kies-b">Tegen</label><select id="kies-b" class="invoer">${rest.map(p => `<option value="${esc(p.id)}">${esc(p.titel)}</option>`).join("")}</select></div>` : ""}
     ${vraag("zin", "Waar heb je nu het meest zin in?")}${vraag("energie", "Wat past bij je energie van nu?")}${vraag("dichtbij", "Wat brengt je het dichtst bij 'klaar'?")}
@@ -86,13 +86,14 @@ function kiesBlad(vanId) {
     `<button class="knop primair breed" id="kies-klaar">Kies voor mij</button><button class="knop rand breed" id="kies-munt">Gooi een munt</button>`);
   const naam = id => (vind("projecten", id) || {}).titel || "";
   const bSel = $("#kies-b"); if (bSel) bSel.onchange = () => { ant.b = bSel.value; document.querySelectorAll(".kies-b").forEach(x => { x.textContent = naam(ant.b); }); };
-  $("#bladinhoud").addEventListener("click", e => { const b = e.target.closest("[data-kies]"); if (!b) return; ant[b.dataset.kies] = b.dataset.waarde === "a" ? a.id : ant.b; document.querySelectorAll(`[data-kies="${b.dataset.kies}"]`).forEach(x => x.setAttribute("aria-pressed", String(x === b))); });
+  $("#bladinhoud").onclick = e => { const b = e.target.closest("[data-kies]"); if (!b) return; ant[b.dataset.kies] = b.dataset.waarde; document.querySelectorAll(`[data-kies="${b.dataset.kies}"]`).forEach(x => x.setAttribute("aria-pressed", String(x === b))); };
+  const ids = () => { const o = {}; for (const k of ["zin", "energie", "dichtbij"]) o[k] = ant[k] === "a" ? a.id : ant[k] === "b" ? ant.b : null; return o; };
   const kies = async (winnaar, hoe) => {
     await zetInst("focusId", winnaar.id);
     await log(winnaar.id, "notitie", `Gekozen boven ${winnaar.id === a.id ? naam(ant.b) : a.titel} (${hoe}, ${Math.max(1, Math.round((Date.now() - start) / 1000))} s)`);
     bladSluit(); ga("commando"); toast(`${winnaar.titel} staat in focus. De ander loopt niet weg.`);
   };
-  $("#kies-klaar").onclick = () => { const B = vind("projecten", ant.b); kies(ptKiesScore(a, ant, Date.now()) >= ptKiesScore(B, ant, Date.now()) ? a : B, "drie vragen"); };
+  $("#kies-klaar").onclick = () => { const B = vind("projecten", ant.b), x = ids(); kies(ptKiesScore(a, x, Date.now()) >= ptKiesScore(B, x, Date.now()) ? a : B, "drie vragen"); };
   $("#kies-munt").onclick = () => kies(Math.random() < .5 ? a : vind("projecten", ant.b), "munt");
 }
 
@@ -108,7 +109,7 @@ function kiesBlad(vanId) {
       <details class="waarom"><summary>Waarom?</summary><p>Een kleinere versie op een zware dag houdt de draad vast, zodat je niet helemaal stilvalt. Praktisch: een experiment.</p></details></section>`;
     // Minimum: alleen de focus (met één blok van vijf minuten) en de check-ins; de rest is morgen weer.
     if (n === "minimum") {
-      const f = h.match(/<section class="paneel focus"[\s\S]*?<\/section>/), ci = (h.match(/<section class="paneel checkin"[\s\S]*?<\/section>/g) || []).join("");
+      const f = h.match(/<section class="paneel focus"[\s\S]*?<\/section>/), ci = (h.match(/<section class="paneel checkin"[\s\S]*?<\/section>/g) || []).join("") + ((h.match(/<p class="klein">En nog \d+ check-ins\.<\/p>/) || [""])[0]);
       const fp = focusProject();
       h = ci + (f ? f[0] : "") + (fp ? `<button class="knop primair breed min-blok" data-focus-start="${esc(fp.id)}" data-duur="5">${ico("klok")} Vijf minuten, meer hoeft niet</button>` : "") + blok;
       return h;
@@ -118,12 +119,15 @@ function kiesBlad(vanId) {
       const e = V.energieNu || "";
       const lijst = e ? S.projecten.filter(p => p.status === "actief" && ptPastBijEnergie(p, e)) : [];
       extra += `<section class="paneel"><p class="hud-label">Wat past bij je energie?</p><div class="segment" role="group" aria-label="Energie van nu">${[["laag", "Laag"], ["midden", "Midden"], ["hoog", "Hoog"]].map(([k, l]) => `<button type="button" data-energie-nu="${k}" aria-pressed="${e === k}">${l}</button>`).join("")}</div>
-        ${e ? (lijst.length ? `<div class="lijst">${lijst.map(projectKaart).join("")}</div>` : `<p class="klein">Geen project dat hierbij past. Rust is ook een plan.</p>`) : ""}</section>`;
+        ${e ? (lijst.length ? `<div class="lijst">${lijst.map(projectKaart).join("")}</div>` : `<p class="klein">Geen project dat hierbij past. Rust is ook een plan.</p>`) : ""}
+        <details class="waarom"><summary>Waarom?</summary><p>${esc(PT_AANPASSINGEN.find(a => a.id === "energie").waarom)} ${esc(PT_BEWIJS.praktisch)}</p></details></section>`;
     }
-    if (aanAan("ochtend") && new Date().getHours() < 12 && inst("ochtendGedaan", null) !== vandaagISO()) {
-      const fp = focusProject();
+    const fp0 = focusProject(), vandaagBeloofd = fp0 && S.beloftes.some(b => b.projectId === fp0.id && b.gemaakt && vandaagISO() === (d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`)(new Date(b.gemaakt)));
+    if (aanAan("ochtend") && new Date().getHours() < 12 && inst("ochtendGedaan", null) !== vandaagISO() && !vandaagBeloofd) {
+      const fp = fp0;
       if (fp) extra = `<section class="paneel ochtend"><p class="hud-label">Ochtendstart</p><p>Welke ene stap zet je vandaag voor <b>${esc(fp.titel)}</b>?</p>
-        <div class="knoprij"><button class="knop primair" data-belofte="${esc(fp.id)}" data-ochtend="1">Stap kiezen</button><button class="knop rand" data-ochtend-klaar>Vandaag niet</button></div></section>` + extra;
+        <div class="knoprij"><button class="knop primair" data-belofte="${esc(fp.id)}">Stap kiezen</button><button class="knop rand" data-ochtend-klaar>Vandaag niet</button></div>
+        <details class="waarom"><summary>Waarom?</summary><p>${esc(PT_AANPASSINGEN.find(a => a.id === "ochtend").waarom)} ${esc(PT_BEWIJS.indirect)}</p></details></section>` + extra;
     }
     const i = h.indexOf('<section class="tellers"');
     h = i < 0 ? h + extra + blok : h.slice(0, i) + extra + h.slice(i) + blok;
@@ -150,7 +154,7 @@ function kiesBlad(vanId) {
   checkinHTML = function () {
     const h = _ci.apply(this, arguments);
     if (!aanAan("zacht")) return h;
-    return h.replace(/<button class="knop rand" data-ci="half"[^>]*>Half<\/button>/g, "").replace(/(data-ci="niet"[^>]*>)Niet(<\/button>)/g, "$1Nog niet$2").replace(/grid-template-columns/g, "");
+    return h.replace(/<button class="knop rand" data-ci="half"[^>]*>Half<\/button>/g, "").replace(/data-ci="niet"([^>]*)>Niet(<\/button>)/g, "data-ci-later$1>Nog niet$2").replace(/class="checkin-knoppen"/g, 'class="checkin-knoppen twee"');
   };
   const _week = VIEWS.week;
   VIEWS.week = function () {
@@ -166,9 +170,16 @@ function kiesBlad(vanId) {
 
 /* ---------- Klikken ---------- */
 document.addEventListener("click", async e => {
-  const el = e.target.closest("[data-vast],[data-vast-oorzaak],[data-vast-los],[data-niveau],[data-energie-nu],[data-ochtend-klaar],[data-ochtend]"); if (!el) return;
+  const el = e.target.closest("[data-vast],[data-vast-oorzaak],[data-vast-los],[data-niveau],[data-energie-nu],[data-ochtend-klaar],[data-ci-later]"); if (!el) return;
   const d = el.dataset;
   if (d.vast) return vastBlad(d.vast);
+  if (d.ciLater !== undefined) {
+    // Zacht: geen 'niet gelukt', gewoon een nieuw moment. Telt niet mee in de cijfers.
+    const b = vind("beloftes", d.id); if (!b || b.status !== "open") return;
+    b.status = "los"; b.antwoordOp = new Date().toISOString(); b.verzet = true; await bewaar("beloftes", b);
+    await log(b.projectId, "notitie", `Belofte verzet: ${b.tekst}`);
+    return belofteBlad(b.projectId, b.tekst, b.stapId);
+  }
   if (d.vastOorzaak) return vastRoute(vind("projecten", d.id), PT_OORZAKEN.find(o => o.id === d.vastOorzaak));
   if (d.vastLos) {
     await log(d.vastLos, "notitie", "Vastgelopen: vandaag niet, morgen weer");
@@ -177,7 +188,6 @@ document.addEventListener("click", async e => {
   if (d.niveau) { await zetInst("dagniveau", { datum: vandaagISO(), niveau: d.niveau }); tril(6); teken(); const b = document.querySelector(`#scherm [data-niveau="${d.niveau}"]`); if (b) b.focus({ preventScroll: true }); return; }
   if (d.energieNu) { V.energieNu = V.energieNu === d.energieNu ? "" : d.energieNu; return teken(); }
   if (d.ochtendKlaar !== undefined) { await zetInst("ochtendGedaan", vandaagISO()); return teken(); }
-  if (d.ochtend) { await zetInst("ochtendGedaan", vandaagISO()); }   // de belofte zelf opent via data-belofte
 });
 // Pijltjes in de radiogroep Dagniveau
 document.addEventListener("keydown", e => {

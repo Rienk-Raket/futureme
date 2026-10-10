@@ -44,6 +44,13 @@ const wacht = ms => new Promise(r => setTimeout(r, ms));
   check("Eerste vraag met 5 antwoorden plus overslaan", await p.evaluate(() => document.querySelectorAll("#scherm .km-optie").length === 5 && document.querySelectorAll("#scherm .km-extra [data-km-antwoord]").length === 2));
   await foto("f3-01-vraag");
   check("44px: kennismaking", (await tikvlakken()).length === 0, JSON.stringify(await tikvlakken()));
+  // Na precies 16 kernvragen pauzeren: nog niet af, geen 'weinig behoefte'
+  for (let i = 0; i < 16; i++) { await p.click('#scherm [data-km-antwoord="often"]'); await wacht(50); }
+  await p.evaluate(() => ga("aanpak")); await wacht(300);
+  check("Review: na 16 vragen 'nog niet af', niet 'weinig behoefte'", await p.evaluate(() => /nog niet af/.test(document.querySelector("#scherm").textContent) && !/weinig gemelde behoefte/.test(document.querySelector("#scherm").textContent)));
+  await p.evaluate(() => ga("commando")); await wacht(200);
+  check("Review: uitnodiging blijft staan met 'Verdergaan'", await p.evaluate(() => /Verdergaan/.test(document.querySelector("#scherm").textContent)));
+  await p.evaluate(async () => { await zetInst("km", { antwoorden: {}, gestart: new Date().toISOString() }); ga("kennismaking"); }); await wacht(300);
   // Alle vragen: aandacht en start 'zeer vaak', de rest 'zelden'
   for (let i = 0; i < 60; i++) {
     const id = await p.evaluate(() => document.querySelector("#scherm .km-optie") ? nsVolgende(kmRoute(), km().antwoorden) : null);
@@ -60,15 +67,23 @@ const wacht = ms => new Promise(r => setTimeout(r, ms));
   check("44px: mijn aanpak", (await tikvlakken()).length === 0, JSON.stringify(await tikvlakken()));
   check("Niets gaat vanzelf aan", await p.evaluate(() => PT_AANPASSINGEN.every(a => !aanAan(a.id))));
   // Aanpassingen aanzetten
+  await p.evaluate(async () => { await zetInst("wipLimiet", 1); await zetInst("blokDuur", 45); teken(); }); await wacht(150);
   for (const id of ["wip2", "kortBlok", "zacht", "energie", "ochtend", "groot"]) { await p.click(`#scherm [data-ap="${id}"]`); await wacht(150); }
-  check("WIP-limiet 2, blok 15, grotere tekst", await p.evaluate(() => wipLimiet() === 2 && inst("blokDuur") === 15 && document.documentElement.dataset.groot === "1"));
+  check("Review: 'Hooguit 2' maakt een strengere limiet (1) niet losser", await p.evaluate(() => wipLimiet() === 1));
+  check("Grotere tekst aan; je eigen blokduur blijft bewaard", await p.evaluate(() => document.documentElement.dataset.groot === "1" && inst("blokDuur") === 45));
   await p.click('#scherm [data-ap="wip2"]'); await wacht(150);
-  check("WIP terug naar 3", await p.evaluate(() => wipLimiet() === 3));
+  check("Review: WIP precies terug naar je eigen limiet", await p.evaluate(() => wipLimiet() === 1));
+  await p.evaluate(async () => { await zetInst("wipLimiet", 3); });
+  await p.evaluate(() => focusBlad("boek")); await wacht(300);
+  check("Korte blokken: het focusblok staat standaard op 15", await p.evaluate(() => document.querySelector('#blad [data-fb-duur="15"]').getAttribute("aria-pressed") === "true"));
+  await p.keyboard.press("Escape"); await wacht(300);
   await p.click('#scherm [data-ap="groot"]'); await wacht(150);
 
   // Commandocentrum: ochtendstart, energie, dagniveau
   await p.evaluate(() => ga("commando")); await wacht(300);
   check("Ochtendstart (voor 12 uur)", await p.evaluate(() => /Ochtendstart/.test(document.querySelector("#scherm").textContent)));
+  await p.click('#scherm .ochtend [data-belofte]'); await wacht(300); await p.keyboard.press("Escape"); await wacht(300);
+  check("Review: ochtendstart blijft staan als je het blad annuleert", await p.evaluate(() => /Ochtendstart/.test(document.querySelector("#scherm").textContent)));
   await p.click('#scherm [data-ochtend-klaar]'); await wacht(200);
   check("Ochtendstart weg na 'Vandaag niet'", await p.evaluate(() => !/Ochtendstart/.test(document.querySelector("#scherm").textContent)));
   await p.click('#scherm [data-energie-nu="laag"]'); await wacht(200);
@@ -81,7 +96,10 @@ const wacht = ms => new Promise(r => setTimeout(r, ms));
 
   // Zachte check-ins
   await p.evaluate(async () => { await bewaar("beloftes", { id: "b1", projectId: "boek", tekst: "Bellen", moment: "2026-10-10T09:00", status: "open" }); teken(); }); await wacht(300);
-  check("Zachte check-in: Gedaan en Nog niet, geen Half", await p.evaluate(() => { const c = document.querySelector("#scherm .checkin"); return !!c && !c.querySelector('[data-ci="half"]') && /Nog niet/.test(c.textContent); }));
+  check("Zachte check-in: Gedaan en Nog niet, geen Half, twee kolommen", await p.evaluate(() => { const c = document.querySelector("#scherm .checkin"); return !!c && !c.querySelector('[data-ci="half"]') && /Nog niet/.test(c.textContent) && !!c.querySelector(".checkin-knoppen.twee"); }));
+  await p.click("#scherm .checkin [data-ci-later]"); await wacht(400);
+  check("Review: Nog niet = nieuw moment, geen 'niet gelukt'", await p.evaluate(() => /Belofte/.test(document.querySelector("#bladtitel").textContent) && vind("beloftes", "b1").status === "los" && !S.logs.some(l => l.soort === "blokkade")));
+  await p.keyboard.press("Escape"); await wacht(300);
 
   // Ik loop vast
   await p.click("#scherm .focus [data-vast]"); await wacht(300);
@@ -91,8 +109,13 @@ const wacht = ms => new Promise(r => setTimeout(r, ms));
   await p.click('#blad [data-vast-vb="Bestand openen"]'); await p.click("#vast-doe"); await wacht(500);
   check("Onduidelijk: eerste handeling vastgepind en blok van 5 minuten loopt", await p.evaluate(() => { const s = S.stappen.find(x => x.tekst === "Bestand openen"); return s && s.pin && inst("timer") && inst("timer").duur === 5 && inst("timer").stapId === s.id; }));
   await p.evaluate(async () => { await zetInst("timer", null); timerTeken(); }); await wacht(200);
-  // Kiezen
-  await p.evaluate(() => ga("commando")); await wacht(200);
+  // Kiezen, met een derde project en 'Tegen' wisselen na het antwoorden
+  await p.evaluate(async () => { await bewaar("projecten", { id: "gam", titel: "Gamma", fase: "idee", status: "actief", kleur: "#ff5fd2", prioriteit: 2, gemaakt: new Date().toISOString(), tags: [] }); await zetInst("focusId", "boek"); ga("commando"); }); await wacht(300);
+  await p.click("#scherm .focus [data-vast]"); await wacht(300); await p.click('#blad [data-vast-oorzaak="kiezen"]'); await wacht(300);
+  for (const k of ["zin", "energie", "dichtbij"]) await p.click(`#blad [data-kies="${k}"][data-waarde="b"]`);
+  await p.selectOption("#kies-b", "gam"); await wacht(100); await p.click("#kies-klaar"); await wacht(400);
+  check("Review: na wisselen van 'Tegen' wint het gekozen project", await p.evaluate(() => inst("focusId") === "gam"));
+  await p.evaluate(async () => { await statusToepassen(vind("projecten", "gam"), "pauze"); await zetInst("focusId", "boek"); ga("commando"); }); await wacht(200);
   await p.click("#scherm .focus [data-vast]"); await wacht(300); await p.click('#blad [data-vast-oorzaak="kiezen"]'); await wacht(300);
   check("Kiezen: drie vragen tussen twee projecten", await p.evaluate(() => document.querySelectorAll("#blad [data-kies]").length === 6));
   await p.click('#blad [data-kies="zin"][data-waarde="b"]'); await p.click('#blad [data-kies="dichtbij"][data-waarde="b"]'); await p.click("#kies-klaar"); await wacht(400);

@@ -147,3 +147,23 @@
 - **Dagniveau** Minimum, Standaard of Extra (per dag). Bij Minimum zie je alleen de focus, de check-ins en "Vijf minuten, meer hoeft niet".
 
 **Tests:** `tests/profiel.test.mjs` (6, met de echte vragenbank) en `tests/profiel.e2e.cjs` (25).
+
+### Review fase 3 (verwerkt)
+- **Kiezen:** antwoorden worden bewaard als a of b, en pas bij het kiezen omgezet. Wissel je "Tegen", dan wint het juiste project.
+- **Kennismaking:**
+  - "Af" betekent pas dat er patronen zijn of geen vragen meer (`profielAf`). Na alleen de 16 kernvragen zegt de app "nog niet af" in plaats van "weinig gemelde behoefte", en de uitnodiging blijft staan.
+  - De introtekst noemt 20 tot 45 vragen.
+  - De tussenstop "Eerste beeld" komt pas als alle open domeinen hun verdiepingsvragen hebben.
+  - De focus gaat naar de kop van het nieuwe scherm. Een live-regio op een steeds nieuw element is weggehaald.
+- **Zachte check-ins:** twee kolommen (CSS-klasse). "Nog niet" geeft een nieuw moment, zonder "niet gelukt"; de belofte wordt verzet en telt niet mee.
+- **Aanpassingen overschrijven je eigen keuzes niet meer:**
+  - "Hooguit 2" maakt een strengere limiet niet losser en zet bij uitzetten precies je eigen limiet terug. Wijzig je de limiet zelf, dan gaat de schakelaar uit.
+  - "Korte blokken" is een standaard in het focusblok; je eigen gekozen duur blijft bewaard.
+  - "Rustige weergave" werkt in `pasInstellingenToe` zonder je instelling te wijzigen.
+- **Grotere tekst:** zoomt alleen de inhoud van het blad, niet het blad zelf, zodat het niet meer onder de statusbalk schuift.
+- **Ochtendstart:** verdwijnt pas na een belofte van vandaag of "Vandaag niet", niet al als je het blad opent.
+- **Ik loop vast:** kijkt eerst of er al een blok loopt, en schrijft dan niets.
+- **Waarom?:** staat nu ook bij Energie en Ochtendstart.
+- **Minimum:** toont ook "En nog N check-ins".
+- **Klein:** de klikafhandeling in bladen gebruikt `onclick`, zodat er geen luisteraars meer opstapelen.
+- **Tests:** `profiel.e2e.cjs` (32).

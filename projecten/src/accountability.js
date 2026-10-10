@@ -81,13 +81,13 @@ function belofteBlad(projectId, tekst, stapId) {
     <div class="veld"><label for="bf-tijd">Hoe laat check ik bij je in?</label><input class="invoer" id="bf-tijd" type="time" value="${rond(120)}"></div>
     <details class="waarom"><summary>Waarom een belofte?</summary><p>Een plan met een vast moment ("om 17:00 bel ik de drukker") wordt vaker uitgevoerd dan een losse bedoeling, en terugkijken of het lukte houdt je op koers. Indirect: als-dan-plannen en zelfmonitoring zijn onderzocht in brede groepen, niet specifiek bij ADHD.</p></details>`,
     `<button class="knop primair breed" id="bf-bewaar">Beloven</button>`);
-  $("#bladinhoud").addEventListener("click", e => {
+  $("#bladinhoud").onclick = e => {
     const b = e.target.closest("[data-bf-wanneer]"); if (!b) return;
     wanneer = b.dataset.bfWanneer;
     document.querySelectorAll("[data-bf-wanneer]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
     $("#bf-datumveld").hidden = wanneer !== "datum";
     if (wanneer === "morgen" && $("#bf-tijd").value < "08:00") $("#bf-tijd").value = "10:00";
-  });
+  };
   $("#bf-bewaar").onclick = async () => {
     const t = $("#bf-tekst").value.trim(), tijd = $("#bf-tijd").value || "17:00"; if (!t) { toast("Schrijf op wat je doet"); return; }
     const datum = wanneer === "vandaag" ? vandaagISO() : wanneer === "morgen" ? (d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`)((d => { d.setDate(d.getDate() + 1); return d; })(new Date())) : ($("#bf-datum").value || vandaagISO());
@@ -138,7 +138,8 @@ function checkinHTML() {
 function focusBlad(projectId) {
   const p = vind("projecten", projectId); if (!p) return;
   const open = stappenVan(p.id).filter(s => !s.af), stap = ptVolgendeStap(p, S.stappen);
-  let duur = +inst("blokDuur", 25), stapId = stap ? stap.id : "";
+  // Korte blokken (Mijn aanpak) is een standaard, geen overschrijving van wat je zelf kiest.
+  let duur = typeof aanAan === "function" && aanAan("kortBlok") && !inst("blokDuurZelf", false) ? 15 : +inst("blokDuur", 25), stapId = stap ? stap.id : "";
   bladOpen(`Focusblok · ${p.titel}`, `<p class="hud-label">Hoe lang?</p><div class="chips">${[5, 15, 25, 45, 60].map(m => `<button type="button" class="chip-knop" data-fb-duur="${m}" aria-pressed="${m === duur}">${m} min</button>`).join("")}</div>
     ${open.length ? `<div class="veld"><label for="fb-stap">Waaraan?</label><select id="fb-stap" class="invoer"><option value="">Het project in het algemeen</option>${open.map(s => `<option value="${esc(s.id)}"${s.id === stapId ? " selected" : ""}>${esc(s.tekst)}</option>`).join("")}</select></div>` : ""}
     <details class="waarom"><summary>Waarom een blok met een eind?</summary><p>Een blok met een duidelijk einde vraagt minder volhouden dan een open taak, en de timer maakt tijd zichtbaar. Praktisch: een experiment, kijk welke lengte bij jou past.</p></details>`,
@@ -147,6 +148,7 @@ function focusBlad(projectId) {
   $("#fb-start").onclick = async () => {
     if (inst("timer", null)) { bladSluit(); timerTeken(); return; }
     if ($("#fb-stap")) stapId = $("#fb-stap").value;
+    if (duur !== +inst("blokDuur", 25)) await zetInst("blokDuurZelf", true);
     await zetInst("blokDuur", duur);
     await zetInst("timer", { projectId: p.id, stapId: stapId || null, start: Date.now(), duur, pauzeOp: null, gepauzeerd: 0 });
     bladSluit(); tril(10); timerTeken();

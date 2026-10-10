@@ -324,4 +324,5 @@ select { width: auto; min-height: 44px; padding: 0 12px; }
 .dagniveau .segment { margin-bottom: 0; }
 .min-blok { margin-bottom: 12px; }
 .ochtend { border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
-[data-groot="1"] #scherm, [data-groot="1"] #blad { zoom: 1.13; }
+[data-groot="1"] #scherm, [data-groot="1"] #bladinhoud, [data-groot="1"] #bladknoppen { zoom: 1.13; }
+.checkin-knoppen.twee { grid-template-columns: 1fr 1fr; }

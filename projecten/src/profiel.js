@@ -58,20 +58,24 @@ function profiel() {
   return profielCache;
 }
 const aanAan = id => !!inst("ap_" + id, false);
+/** Is het profiel af? Pas als er patronen zijn, of als er geen vragen meer over zijn. */
+function profielAf() { const p = profiel(); return !!p && (p.top.length > 0 || !nsVolgende(kmRoute(), km().antwoorden)); }
+/** Tussenstop: alle open A-domeinen hebben hun verdiepingsvragen (Q2 en Q3), dus het eerste beeld is compleet. */
+function kmTussenstop() { const a = km().antwoorden; return kmRoute().filter(id => id.startsWith("A")).every(id => a[id] !== undefined && a[id] !== null); }
 
 /* ---------- Kennismaking ---------- */
 function vwKennismaking() {
   const d = km(), route = kmRoute(), volgende = nsVolgende(route, d.antwoorden), v = ptKmVoortgang(route, d.antwoorden), kernKlaar = nsKernKlaar(PT_VRAGENBANK, d.antwoorden);
   if (!d.gestart) return `<section class="paneel"><p class="hud-label">Kennismaking</p><h2>Hoe werk jij?</h2>
-    <p>Zestien korte vragen over aandacht, plannen, prikkels, energie en routines. Daarna kun je verdiepen, maar dat hoeft niet.</p>
+    <p>Zestien korte vragen over aandacht, plannen, prikkels, energie en routines, daarna een paar vragen over wat bij jou speelt. Samen 20 tot 45 vragen.</p>
     <p class="klein">Elke vraag mag je overslaan. Je kunt stoppen en later verdergaan. Alles blijft op dit toestel.</p>
     <p class="klein">${esc(PT_VRAGENBANK.disclaimer)}</p>
     <div class="knoprij"><button class="knop primair" data-km="start">Beginnen</button><button class="knop rand" data-ga="commando">Later</button></div></section>`;
   // Na de kernvragen: pas een tussenstop als er al patronen zijn; anders eerst de verdieping (daar komen de patronen uit).
-  const tussen = kernKlaar && !d.verdiepen && volgende && profiel() && profiel().top.length;
+  const tussen = kernKlaar && !d.verdiepen && volgende && kmTussenstop() && profiel() && profiel().top.length;
   if (kernKlaar && (tussen || !volgende)) {
     const p = profiel(), rest = route.length - v.n;
-    return `<section class="paneel"><p class="hud-label">${volgende ? "Kernvragen klaar" : "Kennismaking klaar"}</p><h2>Je profiel is er</h2>
+    return `<section class="paneel"><p class="hud-label">${volgende ? "Eerste beeld" : "Kennismaking klaar"}</p><h2 tabindex="-1">Je profiel is er</h2>
       <p>${p && p.top.length ? `Je patronen: <b>${p.top.map(c => esc(c.metafoor)).join(", ")}</b>.` : "In je antwoorden zie ik weinig gemelde behoefte. Je krijgt de standaardaanpak."}</p>
       ${volgende && !d.verdiepen ? `<p class="klein">Verdiepen geeft een preciezere afstemming: nog ongeveer ${rest} vragen.</p>` : ""}
       <div class="knoprij"><button class="knop primair" data-ga="aanpak">Mijn aanpak bekijken</button>${volgende && !d.verdiepen ? `<button class="knop rand" data-km="verdiepen">Verdiepen</button>` : ""}</div></section>`;
@@ -79,7 +83,7 @@ function vwKennismaking() {
   const q = kmVraag(volgende); if (!q) return `<div class="paneel"><p>Geen vragen meer.</p></div>`;
   const hoofd = q.response_options.slice(0, 5), extra = q.response_options.slice(5);
   return `<div class="km-voortgang" role="progressbar" aria-valuemin="0" aria-valuemax="${v.van}" aria-valuenow="${v.n}" aria-label="Voortgang kennismaking"><i style="width:${v.pct}%"></i></div>
-    <section class="paneel km-vraag" aria-live="polite"><p class="hud-label">${esc(q.pillar_name || "")}</p><h2 id="km-tekst" tabindex="-1">${esc(q.question_text)}</h2>
+    <section class="paneel km-vraag"><p class="hud-label">${esc(q.pillar_name || "")}</p><h2 id="km-tekst" tabindex="-1">${esc(q.question_text)}</h2>
     <div class="km-opties" role="group" aria-labelledby="km-tekst">${hoofd.map(o => `<button type="button" class="knop rand km-optie" data-km-antwoord="${esc(o.value)}" aria-pressed="${d.antwoorden[q.question_id] === o.value}">${esc(o.label)}</button>`).join("")}</div>
     <div class="km-extra">${extra.map(o => `<button type="button" class="link klein" data-km-antwoord="${esc(o.value)}">${esc(o.label)}</button>`).join("")}</div></section>
     <div class="knoprij"><button class="knop rand" data-km="vorige"${v.n ? "" : " disabled"}>Vorige</button><button class="knop rand" data-ga="commando">Pauzeren</button></div>
@@ -93,7 +97,7 @@ VIEWS.kennismaking = vwKennismaking;
 function vwAanpak() {
   const p = profiel(), voor = ptVoorgesteld(p ? p.top : []);
   let h = `<section class="paneel"><p class="hud-label">Jouw patronen</p>`;
-  if (!p) h += `<p>Nog geen profiel. Na de kennismaking stemt de app zich op je af.</p><button class="knop primair breed" data-ga="kennismaking">${km().gestart ? "Verder met de kennismaking" : "Kennismaken (16 vragen)"}</button>`;
+  if (!profielAf()) h += `<p>${km().gestart ? "Je kennismaking is nog niet af. Na een paar vragen meer ziet de app je patronen." : "Nog geen profiel. Na de kennismaking stemt de app zich op je af."}</p><button class="knop primair breed" data-ga="kennismaking">${km().gestart ? "Verder met de kennismaking" : "Kennismaken"}</button>`;
   else if (!p.top.length) h += `<p>In je antwoorden zie ik weinig gemelde behoefte. Je krijgt de standaardaanpak; alles hieronder kun je zelf aanzetten.</p>`;
   else h += `<ul class="patronen">${p.top.map(c => `<li><b>${esc(c.metafoor)}</b><small>${esc(PT_PATROON[c.id].kort)}</small><small class="patroon-app">→ ${esc(PT_PATROON[c.id].app)}</small></li>`).join("")}</ul>${p.top.length > 1 ? `<p class="klein">Meerdere patronen tegelijk is heel gewoon. Er is geen winnaar.</p>` : ""}`;
   h += `</section>` + sectie("Aanpassingen") + `<p class="klein leeg-regel">Bij een voorstel staat een label. Jij beslist wat aan staat.</p><ul class="aanpassingen">${PT_AANPASSINGEN.map(a => {
@@ -104,14 +108,14 @@ function vwAanpak() {
   if (km().gestart) h += `<div class="paneel acties"><button class="knop rand" data-km="opnieuw">Antwoorden wissen en opnieuw</button>${p && nsVolgende(kmRoute(), km().antwoorden) ? `<button class="knop rand" data-km="verdiepen">Verdiepen</button>` : ""}</div>`;
   return h;
 }
-KOPPEN.aanpak = () => { const p = profiel(); return ["Mijn aanpak", p && p.top.length ? p.top.map(c => c.metafoor).join(" · ") : "Hoe de app zich op je afstemt"]; };
+KOPPEN.aanpak = () => { const p = profielAf() ? profiel() : null; return ["Mijn aanpak", p && p.top.length ? p.top.map(c => c.metafoor).join(" · ") : "Hoe de app zich op je afstemt"]; };
 VIEWS.aanpak = vwAanpak;
 
 /* ---------- Aanpassingen toepassen ---------- */
 const AP_ZET = {
-  wip2: async aan => { if (aan) await zetInst("ap_vorigWip", wipLimiet()); await zetInst("wipLimiet", aan ? 2 : Math.max(3, +inst("ap_vorigWip", 3))); },
-  kortBlok: async aan => zetInst("blokDuur", aan ? 15 : 25),
-  rustig: async aan => { await zetInst("beweging", aan ? "rustig" : "vol"); },
+  wip2: async aan => { if (aan) { await zetInst("ap_vorigWip", wipLimiet()); await zetInst("wipLimiet", Math.min(wipLimiet(), 2)); } else await zetInst("wipLimiet", +inst("ap_vorigWip", 3)); },
+  kortBlok: async aan => { if (aan) await zetInst("blokDuurZelf", false); },   // toegepast als standaard in het focusblok
+  rustig: async () => {},   // toegepast in pasInstellingenToe, zonder je eigen instelling te overschrijven
   groot: async () => {}, zacht: async () => {}, ochtend: async () => {}, energie: async () => {}, ideeEerst: async () => {}
 };
 {
@@ -126,15 +130,15 @@ const AP_ZET = {
 {
   const _meer = VIEWS.meer;
   VIEWS.meer = function () {
-    const p = profiel();
+    const p = profielAf() ? profiel() : null;
     return `<button class="paneel rij-knop" data-ga="aanpak"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><span><b>Mijn aanpak</b><small>${p && p.top.length ? esc(p.top.map(c => c.metafoor).join(" · ")) : "Kennismaking en aanpassingen"}</small></span>${ico("pijl")}</button>` + _meer.apply(this, arguments);
   };
   // Na het eerste project: een uitnodiging om kennis te maken (weg te tikken).
   const _cmd = VIEWS.commando;
   VIEWS.commando = function () {
     const h = _cmd.apply(this, arguments);
-    if (!S.projecten.length || profiel() || inst("kmLater", false)) return h;
-    return h + `<section class="paneel"><p class="hud-label">Leer de app kennen</p><p>Zestien korte vragen, dan stemt de app zich af op hoe jij werkt.</p>
+    if (!S.projecten.length || profielAf() || inst("kmLater", false)) return h;
+    return h + `<section class="paneel"><p class="hud-label">Leer de app kennen</p><p>${km().gestart ? "Nog een paar vragen, dan stemt de app zich af op hoe jij werkt." : "Een korte kennismaking, dan stemt de app zich af op hoe jij werkt."}</p>
       <div class="knoprij"><button class="knop primair" data-ga="kennismaking">${km().gestart ? "Verdergaan" : "Kennismaken"}</button><button class="knop rand" data-km="later">Niet nu</button></div></section>`;
   };
 }
@@ -146,7 +150,7 @@ document.addEventListener("click", async e => {
   if (d.kmAntwoord !== undefined) {
     const k = km(), id = nsVolgende(kmRoute(), k.antwoorden); if (!id) return;
     await zetInst("km", Object.assign({}, k, { antwoorden: Object.assign({}, k.antwoorden, { [id]: d.kmAntwoord }), geschiedenis: (k.geschiedenis || []).concat(id) }));
-    tril(6); teken(); const t = $("#km-tekst"); if (t) t.focus({ preventScroll: true });
+    tril(6); teken(); const t = $("#km-tekst") || $("#scherm h2"); if (t) t.focus({ preventScroll: true });
     return;
   }
   if (d.km === "start") { await zetInst("km", Object.assign({}, km(), { gestart: new Date().toISOString() })); return teken(); }
@@ -164,3 +168,6 @@ document.addEventListener("click", async e => {
     const b = document.querySelector(`#scherm [data-ap="${d.ap}"]`); if (b) b.focus({ preventScroll: true });
   }
 });
+
+// Zelf de limiet gewijzigd in Meer? Dan staat "Hooguit 2" niet meer aan.
+document.addEventListener("click", e => { const b = e.target.closest && e.target.closest('[data-inst="wipLimiet"]'); if (b && aanAan("wip2")) zetInst("ap_wip2", false); }, true);

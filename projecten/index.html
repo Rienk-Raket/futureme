@@ -338,7 +338,8 @@ select { width: auto; min-height: 44px; padding: 0 12px; }
 .dagniveau .segment { margin-bottom: 0; }
 .min-blok { margin-bottom: 12px; }
 .ochtend { border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
-[data-groot="1"] #scherm, [data-groot="1"] #blad { zoom: 1.13; }
+[data-groot="1"] #scherm, [data-groot="1"] #bladinhoud, [data-groot="1"] #bladknoppen { zoom: 1.13; }
+.checkin-knoppen.twee { grid-template-columns: 1fr 1fr; }
 
 </style>
 </head>
@@ -747,7 +748,7 @@ function toast(tekst, knop, doe, ms) {
 function pasInstellingenToe() {
   const h = document.documentElement;
   h.dataset.thema = inst("thema", "donker");
-  h.dataset.beweging = inst("beweging", "vol");
+  h.dataset.beweging = inst("beweging", "vol") === "rustig" || inst("ap_rustig", false) ? "rustig" : "vol";
 }
 
 /* ---------- Start ---------- */
@@ -1392,13 +1393,13 @@ function belofteBlad(projectId, tekst, stapId) {
     <div class="veld"><label for="bf-tijd">Hoe laat check ik bij je in?</label><input class="invoer" id="bf-tijd" type="time" value="${rond(120)}"></div>
     <details class="waarom"><summary>Waarom een belofte?</summary><p>Een plan met een vast moment ("om 17:00 bel ik de drukker") wordt vaker uitgevoerd dan een losse bedoeling, en terugkijken of het lukte houdt je op koers. Indirect: als-dan-plannen en zelfmonitoring zijn onderzocht in brede groepen, niet specifiek bij ADHD.</p></details>`,
     `<button class="knop primair breed" id="bf-bewaar">Beloven</button>`);
-  $("#bladinhoud").addEventListener("click", e => {
+  $("#bladinhoud").onclick = e => {
     const b = e.target.closest("[data-bf-wanneer]"); if (!b) return;
     wanneer = b.dataset.bfWanneer;
     document.querySelectorAll("[data-bf-wanneer]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
     $("#bf-datumveld").hidden = wanneer !== "datum";
     if (wanneer === "morgen" && $("#bf-tijd").value < "08:00") $("#bf-tijd").value = "10:00";
-  });
+  };
   $("#bf-bewaar").onclick = async () => {
     const t = $("#bf-tekst").value.trim(), tijd = $("#bf-tijd").value || "17:00"; if (!t) { toast("Schrijf op wat je doet"); return; }
     const datum = wanneer === "vandaag" ? vandaagISO() : wanneer === "morgen" ? (d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`)((d => { d.setDate(d.getDate() + 1); return d; })(new Date())) : ($("#bf-datum").value || vandaagISO());
@@ -1449,7 +1450,8 @@ function checkinHTML() {
 function focusBlad(projectId) {
   const p = vind("projecten", projectId); if (!p) return;
   const open = stappenVan(p.id).filter(s => !s.af), stap = ptVolgendeStap(p, S.stappen);
-  let duur = +inst("blokDuur", 25), stapId = stap ? stap.id : "";
+  // Korte blokken (Mijn aanpak) is een standaard, geen overschrijving van wat je zelf kiest.
+  let duur = typeof aanAan === "function" && aanAan("kortBlok") && !inst("blokDuurZelf", false) ? 15 : +inst("blokDuur", 25), stapId = stap ? stap.id : "";
   bladOpen(`Focusblok · ${p.titel}`, `<p class="hud-label">Hoe lang?</p><div class="chips">${[5, 15, 25, 45, 60].map(m => `<button type="button" class="chip-knop" data-fb-duur="${m}" aria-pressed="${m === duur}">${m} min</button>`).join("")}</div>
     ${open.length ? `<div class="veld"><label for="fb-stap">Waaraan?</label><select id="fb-stap" class="invoer"><option value="">Het project in het algemeen</option>${open.map(s => `<option value="${esc(s.id)}"${s.id === stapId ? " selected" : ""}>${esc(s.tekst)}</option>`).join("")}</select></div>` : ""}
     <details class="waarom"><summary>Waarom een blok met een eind?</summary><p>Een blok met een duidelijk einde vraagt minder volhouden dan een open taak, en de timer maakt tijd zichtbaar. Praktisch: een experiment, kijk welke lengte bij jou past.</p></details>`,
@@ -1458,6 +1460,7 @@ function focusBlad(projectId) {
   $("#fb-start").onclick = async () => {
     if (inst("timer", null)) { bladSluit(); timerTeken(); return; }
     if ($("#fb-stap")) stapId = $("#fb-stap").value;
+    if (duur !== +inst("blokDuur", 25)) await zetInst("blokDuurZelf", true);
     await zetInst("blokDuur", duur);
     await zetInst("timer", { projectId: p.id, stapId: stapId || null, start: Date.now(), duur, pauzeOp: null, gepauzeerd: 0 });
     bladSluit(); tril(10); timerTeken();
@@ -1981,20 +1984,24 @@ function profiel() {
   return profielCache;
 }
 const aanAan = id => !!inst("ap_" + id, false);
+/** Is het profiel af? Pas als er patronen zijn, of als er geen vragen meer over zijn. */
+function profielAf() { const p = profiel(); return !!p && (p.top.length > 0 || !nsVolgende(kmRoute(), km().antwoorden)); }
+/** Tussenstop: alle open A-domeinen hebben hun verdiepingsvragen (Q2 en Q3), dus het eerste beeld is compleet. */
+function kmTussenstop() { const a = km().antwoorden; return kmRoute().filter(id => id.startsWith("A")).every(id => a[id] !== undefined && a[id] !== null); }
 
 /* ---------- Kennismaking ---------- */
 function vwKennismaking() {
   const d = km(), route = kmRoute(), volgende = nsVolgende(route, d.antwoorden), v = ptKmVoortgang(route, d.antwoorden), kernKlaar = nsKernKlaar(PT_VRAGENBANK, d.antwoorden);
   if (!d.gestart) return `<section class="paneel"><p class="hud-label">Kennismaking</p><h2>Hoe werk jij?</h2>
-    <p>Zestien korte vragen over aandacht, plannen, prikkels, energie en routines. Daarna kun je verdiepen, maar dat hoeft niet.</p>
+    <p>Zestien korte vragen over aandacht, plannen, prikkels, energie en routines, daarna een paar vragen over wat bij jou speelt. Samen 20 tot 45 vragen.</p>
     <p class="klein">Elke vraag mag je overslaan. Je kunt stoppen en later verdergaan. Alles blijft op dit toestel.</p>
     <p class="klein">${esc(PT_VRAGENBANK.disclaimer)}</p>
     <div class="knoprij"><button class="knop primair" data-km="start">Beginnen</button><button class="knop rand" data-ga="commando">Later</button></div></section>`;
   // Na de kernvragen: pas een tussenstop als er al patronen zijn; anders eerst de verdieping (daar komen de patronen uit).
-  const tussen = kernKlaar && !d.verdiepen && volgende && profiel() && profiel().top.length;
+  const tussen = kernKlaar && !d.verdiepen && volgende && kmTussenstop() && profiel() && profiel().top.length;
   if (kernKlaar && (tussen || !volgende)) {
     const p = profiel(), rest = route.length - v.n;
-    return `<section class="paneel"><p class="hud-label">${volgende ? "Kernvragen klaar" : "Kennismaking klaar"}</p><h2>Je profiel is er</h2>
+    return `<section class="paneel"><p class="hud-label">${volgende ? "Eerste beeld" : "Kennismaking klaar"}</p><h2 tabindex="-1">Je profiel is er</h2>
       <p>${p && p.top.length ? `Je patronen: <b>${p.top.map(c => esc(c.metafoor)).join(", ")}</b>.` : "In je antwoorden zie ik weinig gemelde behoefte. Je krijgt de standaardaanpak."}</p>
       ${volgende && !d.verdiepen ? `<p class="klein">Verdiepen geeft een preciezere afstemming: nog ongeveer ${rest} vragen.</p>` : ""}
       <div class="knoprij"><button class="knop primair" data-ga="aanpak">Mijn aanpak bekijken</button>${volgende && !d.verdiepen ? `<button class="knop rand" data-km="verdiepen">Verdiepen</button>` : ""}</div></section>`;
@@ -2002,7 +2009,7 @@ function vwKennismaking() {
   const q = kmVraag(volgende); if (!q) return `<div class="paneel"><p>Geen vragen meer.</p></div>`;
   const hoofd = q.response_options.slice(0, 5), extra = q.response_options.slice(5);
   return `<div class="km-voortgang" role="progressbar" aria-valuemin="0" aria-valuemax="${v.van}" aria-valuenow="${v.n}" aria-label="Voortgang kennismaking"><i style="width:${v.pct}%"></i></div>
-    <section class="paneel km-vraag" aria-live="polite"><p class="hud-label">${esc(q.pillar_name || "")}</p><h2 id="km-tekst" tabindex="-1">${esc(q.question_text)}</h2>
+    <section class="paneel km-vraag"><p class="hud-label">${esc(q.pillar_name || "")}</p><h2 id="km-tekst" tabindex="-1">${esc(q.question_text)}</h2>
     <div class="km-opties" role="group" aria-labelledby="km-tekst">${hoofd.map(o => `<button type="button" class="knop rand km-optie" data-km-antwoord="${esc(o.value)}" aria-pressed="${d.antwoorden[q.question_id] === o.value}">${esc(o.label)}</button>`).join("")}</div>
     <div class="km-extra">${extra.map(o => `<button type="button" class="link klein" data-km-antwoord="${esc(o.value)}">${esc(o.label)}</button>`).join("")}</div></section>
     <div class="knoprij"><button class="knop rand" data-km="vorige"${v.n ? "" : " disabled"}>Vorige</button><button class="knop rand" data-ga="commando">Pauzeren</button></div>
@@ -2016,7 +2023,7 @@ VIEWS.kennismaking = vwKennismaking;
 function vwAanpak() {
   const p = profiel(), voor = ptVoorgesteld(p ? p.top : []);
   let h = `<section class="paneel"><p class="hud-label">Jouw patronen</p>`;
-  if (!p) h += `<p>Nog geen profiel. Na de kennismaking stemt de app zich op je af.</p><button class="knop primair breed" data-ga="kennismaking">${km().gestart ? "Verder met de kennismaking" : "Kennismaken (16 vragen)"}</button>`;
+  if (!profielAf()) h += `<p>${km().gestart ? "Je kennismaking is nog niet af. Na een paar vragen meer ziet de app je patronen." : "Nog geen profiel. Na de kennismaking stemt de app zich op je af."}</p><button class="knop primair breed" data-ga="kennismaking">${km().gestart ? "Verder met de kennismaking" : "Kennismaken"}</button>`;
   else if (!p.top.length) h += `<p>In je antwoorden zie ik weinig gemelde behoefte. Je krijgt de standaardaanpak; alles hieronder kun je zelf aanzetten.</p>`;
   else h += `<ul class="patronen">${p.top.map(c => `<li><b>${esc(c.metafoor)}</b><small>${esc(PT_PATROON[c.id].kort)}</small><small class="patroon-app">→ ${esc(PT_PATROON[c.id].app)}</small></li>`).join("")}</ul>${p.top.length > 1 ? `<p class="klein">Meerdere patronen tegelijk is heel gewoon. Er is geen winnaar.</p>` : ""}`;
   h += `</section>` + sectie("Aanpassingen") + `<p class="klein leeg-regel">Bij een voorstel staat een label. Jij beslist wat aan staat.</p><ul class="aanpassingen">${PT_AANPASSINGEN.map(a => {
@@ -2027,14 +2034,14 @@ function vwAanpak() {
   if (km().gestart) h += `<div class="paneel acties"><button class="knop rand" data-km="opnieuw">Antwoorden wissen en opnieuw</button>${p && nsVolgende(kmRoute(), km().antwoorden) ? `<button class="knop rand" data-km="verdiepen">Verdiepen</button>` : ""}</div>`;
   return h;
 }
-KOPPEN.aanpak = () => { const p = profiel(); return ["Mijn aanpak", p && p.top.length ? p.top.map(c => c.metafoor).join(" · ") : "Hoe de app zich op je afstemt"]; };
+KOPPEN.aanpak = () => { const p = profielAf() ? profiel() : null; return ["Mijn aanpak", p && p.top.length ? p.top.map(c => c.metafoor).join(" · ") : "Hoe de app zich op je afstemt"]; };
 VIEWS.aanpak = vwAanpak;
 
 /* ---------- Aanpassingen toepassen ---------- */
 const AP_ZET = {
-  wip2: async aan => { if (aan) await zetInst("ap_vorigWip", wipLimiet()); await zetInst("wipLimiet", aan ? 2 : Math.max(3, +inst("ap_vorigWip", 3))); },
-  kortBlok: async aan => zetInst("blokDuur", aan ? 15 : 25),
-  rustig: async aan => { await zetInst("beweging", aan ? "rustig" : "vol"); },
+  wip2: async aan => { if (aan) { await zetInst("ap_vorigWip", wipLimiet()); await zetInst("wipLimiet", Math.min(wipLimiet(), 2)); } else await zetInst("wipLimiet", +inst("ap_vorigWip", 3)); },
+  kortBlok: async aan => { if (aan) await zetInst("blokDuurZelf", false); },   // toegepast als standaard in het focusblok
+  rustig: async () => {},   // toegepast in pasInstellingenToe, zonder je eigen instelling te overschrijven
   groot: async () => {}, zacht: async () => {}, ochtend: async () => {}, energie: async () => {}, ideeEerst: async () => {}
 };
 {
@@ -2049,15 +2056,15 @@ const AP_ZET = {
 {
   const _meer = VIEWS.meer;
   VIEWS.meer = function () {
-    const p = profiel();
+    const p = profielAf() ? profiel() : null;
     return `<button class="paneel rij-knop" data-ga="aanpak"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><span><b>Mijn aanpak</b><small>${p && p.top.length ? esc(p.top.map(c => c.metafoor).join(" · ")) : "Kennismaking en aanpassingen"}</small></span>${ico("pijl")}</button>` + _meer.apply(this, arguments);
   };
   // Na het eerste project: een uitnodiging om kennis te maken (weg te tikken).
   const _cmd = VIEWS.commando;
   VIEWS.commando = function () {
     const h = _cmd.apply(this, arguments);
-    if (!S.projecten.length || profiel() || inst("kmLater", false)) return h;
-    return h + `<section class="paneel"><p class="hud-label">Leer de app kennen</p><p>Zestien korte vragen, dan stemt de app zich af op hoe jij werkt.</p>
+    if (!S.projecten.length || profielAf() || inst("kmLater", false)) return h;
+    return h + `<section class="paneel"><p class="hud-label">Leer de app kennen</p><p>${km().gestart ? "Nog een paar vragen, dan stemt de app zich af op hoe jij werkt." : "Een korte kennismaking, dan stemt de app zich af op hoe jij werkt."}</p>
       <div class="knoprij"><button class="knop primair" data-ga="kennismaking">${km().gestart ? "Verdergaan" : "Kennismaken"}</button><button class="knop rand" data-km="later">Niet nu</button></div></section>`;
   };
 }
@@ -2069,7 +2076,7 @@ document.addEventListener("click", async e => {
   if (d.kmAntwoord !== undefined) {
     const k = km(), id = nsVolgende(kmRoute(), k.antwoorden); if (!id) return;
     await zetInst("km", Object.assign({}, k, { antwoorden: Object.assign({}, k.antwoorden, { [id]: d.kmAntwoord }), geschiedenis: (k.geschiedenis || []).concat(id) }));
-    tril(6); teken(); const t = $("#km-tekst"); if (t) t.focus({ preventScroll: true });
+    tril(6); teken(); const t = $("#km-tekst") || $("#scherm h2"); if (t) t.focus({ preventScroll: true });
     return;
   }
   if (d.km === "start") { await zetInst("km", Object.assign({}, km(), { gestart: new Date().toISOString() })); return teken(); }
@@ -2087,6 +2094,9 @@ document.addEventListener("click", async e => {
     const b = document.querySelector(`#scherm [data-ap="${d.ap}"]`); if (b) b.focus({ preventScroll: true });
   }
 });
+
+// Zelf de limiet gewijzigd in Meer? Dan staat "Hooguit 2" niet meer aan.
+document.addEventListener("click", e => { const b = e.target.closest && e.target.closest('[data-inst="wipLimiet"]'); if (b && aanAan("wip2")) zetInst("ap_wip2", false); }, true);
 
 
 "use strict";
@@ -2147,9 +2157,10 @@ function vastRoute(p, o) {
       <div class="chips">${o.voorbeelden.map(v => `<button type="button" class="chip-knop" data-vast-vb="${esc(v)}">${esc(v)}</button>`).join("")}</div>` : stap ? `<p class="klein">Aan: ${esc(stap.tekst)}</p>` : ""}
     <details class="waarom"><summary>Waarom zeg je dit?</summary><p>${esc(o.waarom)} ${esc(PT_VAST_BEWIJS)}</p></details>`,
     `<button class="knop primair breed" id="vast-doe">${invoer ? `Opslaan en ${o.duur} minuten starten` : `Start ${o.duur} minuten`}</button>${o.tweede ? `<button class="knop rand breed" id="vast-moment">Nieuw moment kiezen</button>` : ""}`);
-  $("#bladinhoud").addEventListener("click", e => { const v = e.target.closest("[data-vast-vb]"); if (v) { $("#vast-stap").value = v.dataset.vastVb; $("#vast-stap").focus(); } });
+  $("#bladinhoud").onclick = e => { const v = e.target.closest("[data-vast-vb]"); if (v) { $("#vast-stap").value = v.dataset.vastVb; $("#vast-stap").focus(); } };
   if (o.tweede) $("#vast-moment").onclick = () => belofteBlad(p.id);
   $("#vast-doe").onclick = async () => {
+    if (inst("timer", null)) { bladSluit(); timerTeken(); toast("Er loopt al een blok. Maak dat eerst af."); return; }
     let stapId = stap ? stap.id : null;
     if (invoer) {
       const t = $("#vast-stap").value.trim(); if (!t) { toast("Schrijf eerst één handeling op"); return; }
@@ -2158,7 +2169,6 @@ function vastRoute(p, o) {
       stapId = nieuw.id;
     }
     await log(p.id, "notitie", `Vastgelopen (${o.label.toLowerCase()}): ${invoer ? "eerste handeling gekozen" : `${o.duur} minuten`}`);
-    if (inst("timer", null)) { bladSluit(); timerTeken(); toast("Er loopt al een blok."); return; }
     await zetInst("timer", { projectId: p.id, stapId, start: Date.now(), duur: o.duur, pauzeOp: null, gepauzeerd: 0 });
     bladSluit(); tril(10); timerTeken();
   };
@@ -2169,7 +2179,7 @@ function kiesBlad(vanId) {
   const actief = S.projecten.filter(p => p.status === "actief");
   if (actief.length < 2) { bladSluit(); toast("Er is maar één actief project. Dat is je keuze."); return; }
   const a = vind("projecten", vanId) && vind("projecten", vanId).status === "actief" ? vind("projecten", vanId) : actief[0], rest = actief.filter(p => p.id !== a.id);
-  const ant = { b: rest[0].id }, start = Date.now();
+  const ant = { b: rest[0].id }, start = Date.now();   // zin/energie/dichtbij = "a" of "b"; b is wie er "Tegen" staat
   const vraag = (k, tekst) => `<p class="hud-label">${tekst}</p><div class="segment" role="group" aria-label="${esc(tekst)}"><button type="button" data-kies="${k}" data-waarde="a" aria-pressed="false">${esc(a.titel)}</button><button type="button" data-kies="${k}" data-waarde="b" aria-pressed="false" class="kies-b">${esc(rest[0].titel)}</button></div>`;
   bladOpen("Kiezen in twee minuten", `${rest.length > 1 ? `<div class="veld"><label for="kies-b">Tegen</label><select id="kies-b" class="invoer">${rest.map(p => `<option value="${esc(p.id)}">${esc(p.titel)}</option>`).join("")}</select></div>` : ""}
     ${vraag("zin", "Waar heb je nu het meest zin in?")}${vraag("energie", "Wat past bij je energie van nu?")}${vraag("dichtbij", "Wat brengt je het dichtst bij 'klaar'?")}
@@ -2177,13 +2187,14 @@ function kiesBlad(vanId) {
     `<button class="knop primair breed" id="kies-klaar">Kies voor mij</button><button class="knop rand breed" id="kies-munt">Gooi een munt</button>`);
   const naam = id => (vind("projecten", id) || {}).titel || "";
   const bSel = $("#kies-b"); if (bSel) bSel.onchange = () => { ant.b = bSel.value; document.querySelectorAll(".kies-b").forEach(x => { x.textContent = naam(ant.b); }); };
-  $("#bladinhoud").addEventListener("click", e => { const b = e.target.closest("[data-kies]"); if (!b) return; ant[b.dataset.kies] = b.dataset.waarde === "a" ? a.id : ant.b; document.querySelectorAll(`[data-kies="${b.dataset.kies}"]`).forEach(x => x.setAttribute("aria-pressed", String(x === b))); });
+  $("#bladinhoud").onclick = e => { const b = e.target.closest("[data-kies]"); if (!b) return; ant[b.dataset.kies] = b.dataset.waarde; document.querySelectorAll(`[data-kies="${b.dataset.kies}"]`).forEach(x => x.setAttribute("aria-pressed", String(x === b))); };
+  const ids = () => { const o = {}; for (const k of ["zin", "energie", "dichtbij"]) o[k] = ant[k] === "a" ? a.id : ant[k] === "b" ? ant.b : null; return o; };
   const kies = async (winnaar, hoe) => {
     await zetInst("focusId", winnaar.id);
     await log(winnaar.id, "notitie", `Gekozen boven ${winnaar.id === a.id ? naam(ant.b) : a.titel} (${hoe}, ${Math.max(1, Math.round((Date.now() - start) / 1000))} s)`);
     bladSluit(); ga("commando"); toast(`${winnaar.titel} staat in focus. De ander loopt niet weg.`);
   };
-  $("#kies-klaar").onclick = () => { const B = vind("projecten", ant.b); kies(ptKiesScore(a, ant, Date.now()) >= ptKiesScore(B, ant, Date.now()) ? a : B, "drie vragen"); };
+  $("#kies-klaar").onclick = () => { const B = vind("projecten", ant.b), x = ids(); kies(ptKiesScore(a, x, Date.now()) >= ptKiesScore(B, x, Date.now()) ? a : B, "drie vragen"); };
   $("#kies-munt").onclick = () => kies(Math.random() < .5 ? a : vind("projecten", ant.b), "munt");
 }
 
@@ -2199,7 +2210,7 @@ function kiesBlad(vanId) {
       <details class="waarom"><summary>Waarom?</summary><p>Een kleinere versie op een zware dag houdt de draad vast, zodat je niet helemaal stilvalt. Praktisch: een experiment.</p></details></section>`;
     // Minimum: alleen de focus (met één blok van vijf minuten) en de check-ins; de rest is morgen weer.
     if (n === "minimum") {
-      const f = h.match(/<section class="paneel focus"[\s\S]*?<\/section>/), ci = (h.match(/<section class="paneel checkin"[\s\S]*?<\/section>/g) || []).join("");
+      const f = h.match(/<section class="paneel focus"[\s\S]*?<\/section>/), ci = (h.match(/<section class="paneel checkin"[\s\S]*?<\/section>/g) || []).join("") + ((h.match(/<p class="klein">En nog \d+ check-ins\.<\/p>/) || [""])[0]);
       const fp = focusProject();
       h = ci + (f ? f[0] : "") + (fp ? `<button class="knop primair breed min-blok" data-focus-start="${esc(fp.id)}" data-duur="5">${ico("klok")} Vijf minuten, meer hoeft niet</button>` : "") + blok;
       return h;
@@ -2209,12 +2220,15 @@ function kiesBlad(vanId) {
       const e = V.energieNu || "";
       const lijst = e ? S.projecten.filter(p => p.status === "actief" && ptPastBijEnergie(p, e)) : [];
       extra += `<section class="paneel"><p class="hud-label">Wat past bij je energie?</p><div class="segment" role="group" aria-label="Energie van nu">${[["laag", "Laag"], ["midden", "Midden"], ["hoog", "Hoog"]].map(([k, l]) => `<button type="button" data-energie-nu="${k}" aria-pressed="${e === k}">${l}</button>`).join("")}</div>
-        ${e ? (lijst.length ? `<div class="lijst">${lijst.map(projectKaart).join("")}</div>` : `<p class="klein">Geen project dat hierbij past. Rust is ook een plan.</p>`) : ""}</section>`;
+        ${e ? (lijst.length ? `<div class="lijst">${lijst.map(projectKaart).join("")}</div>` : `<p class="klein">Geen project dat hierbij past. Rust is ook een plan.</p>`) : ""}
+        <details class="waarom"><summary>Waarom?</summary><p>${esc(PT_AANPASSINGEN.find(a => a.id === "energie").waarom)} ${esc(PT_BEWIJS.praktisch)}</p></details></section>`;
     }
-    if (aanAan("ochtend") && new Date().getHours() < 12 && inst("ochtendGedaan", null) !== vandaagISO()) {
-      const fp = focusProject();
+    const fp0 = focusProject(), vandaagBeloofd = fp0 && S.beloftes.some(b => b.projectId === fp0.id && b.gemaakt && vandaagISO() === (d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`)(new Date(b.gemaakt)));
+    if (aanAan("ochtend") && new Date().getHours() < 12 && inst("ochtendGedaan", null) !== vandaagISO() && !vandaagBeloofd) {
+      const fp = fp0;
       if (fp) extra = `<section class="paneel ochtend"><p class="hud-label">Ochtendstart</p><p>Welke ene stap zet je vandaag voor <b>${esc(fp.titel)}</b>?</p>
-        <div class="knoprij"><button class="knop primair" data-belofte="${esc(fp.id)}" data-ochtend="1">Stap kiezen</button><button class="knop rand" data-ochtend-klaar>Vandaag niet</button></div></section>` + extra;
+        <div class="knoprij"><button class="knop primair" data-belofte="${esc(fp.id)}">Stap kiezen</button><button class="knop rand" data-ochtend-klaar>Vandaag niet</button></div>
+        <details class="waarom"><summary>Waarom?</summary><p>${esc(PT_AANPASSINGEN.find(a => a.id === "ochtend").waarom)} ${esc(PT_BEWIJS.indirect)}</p></details></section>` + extra;
     }
     const i = h.indexOf('<section class="tellers"');
     h = i < 0 ? h + extra + blok : h.slice(0, i) + extra + h.slice(i) + blok;
@@ -2241,7 +2255,7 @@ function kiesBlad(vanId) {
   checkinHTML = function () {
     const h = _ci.apply(this, arguments);
     if (!aanAan("zacht")) return h;
-    return h.replace(/<button class="knop rand" data-ci="half"[^>]*>Half<\/button>/g, "").replace(/(data-ci="niet"[^>]*>)Niet(<\/button>)/g, "$1Nog niet$2").replace(/grid-template-columns/g, "");
+    return h.replace(/<button class="knop rand" data-ci="half"[^>]*>Half<\/button>/g, "").replace(/data-ci="niet"([^>]*)>Niet(<\/button>)/g, "data-ci-later$1>Nog niet$2").replace(/class="checkin-knoppen"/g, 'class="checkin-knoppen twee"');
   };
   const _week = VIEWS.week;
   VIEWS.week = function () {
@@ -2257,9 +2271,16 @@ function kiesBlad(vanId) {
 
 /* ---------- Klikken ---------- */
 document.addEventListener("click", async e => {
-  const el = e.target.closest("[data-vast],[data-vast-oorzaak],[data-vast-los],[data-niveau],[data-energie-nu],[data-ochtend-klaar],[data-ochtend]"); if (!el) return;
+  const el = e.target.closest("[data-vast],[data-vast-oorzaak],[data-vast-los],[data-niveau],[data-energie-nu],[data-ochtend-klaar],[data-ci-later]"); if (!el) return;
   const d = el.dataset;
   if (d.vast) return vastBlad(d.vast);
+  if (d.ciLater !== undefined) {
+    // Zacht: geen 'niet gelukt', gewoon een nieuw moment. Telt niet mee in de cijfers.
+    const b = vind("beloftes", d.id); if (!b || b.status !== "open") return;
+    b.status = "los"; b.antwoordOp = new Date().toISOString(); b.verzet = true; await bewaar("beloftes", b);
+    await log(b.projectId, "notitie", `Belofte verzet: ${b.tekst}`);
+    return belofteBlad(b.projectId, b.tekst, b.stapId);
+  }
   if (d.vastOorzaak) return vastRoute(vind("projecten", d.id), PT_OORZAKEN.find(o => o.id === d.vastOorzaak));
   if (d.vastLos) {
     await log(d.vastLos, "notitie", "Vastgelopen: vandaag niet, morgen weer");
@@ -2268,7 +2289,6 @@ document.addEventListener("click", async e => {
   if (d.niveau) { await zetInst("dagniveau", { datum: vandaagISO(), niveau: d.niveau }); tril(6); teken(); const b = document.querySelector(`#scherm [data-niveau="${d.niveau}"]`); if (b) b.focus({ preventScroll: true }); return; }
   if (d.energieNu) { V.energieNu = V.energieNu === d.energieNu ? "" : d.energieNu; return teken(); }
   if (d.ochtendKlaar !== undefined) { await zetInst("ochtendGedaan", vandaagISO()); return teken(); }
-  if (d.ochtend) { await zetInst("ochtendGedaan", vandaagISO()); }   // de belofte zelf opent via data-belofte
 });
 // Pijltjes in de radiogroep Dagniveau
 document.addEventListener("keydown", e => {
