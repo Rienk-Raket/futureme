@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="nl" data-thema="donker">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#05070d">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="FutureMe">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'none'; font-src 'self' data:; manifest-src 'self' data:">
+<title>FutureMe Projecten</title>
+<link rel="manifest" href="__MANIFEST__">
+<link rel="apple-touch-icon" href="__ICOON__">
+<style>
+__CSS__
+</style>
+</head>
+<body>
+<div class="achtergrond" aria-hidden="true"><div class="raster"></div><div class="gloed g1"></div><div class="gloed g2"></div></div>
+<header class="kop">
+  <button type="button" class="icoonknop" id="terugknop" aria-label="Terug" hidden><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <div class="kop-tekst"><h1 id="titel">FutureMe</h1><p id="subtitel"></p></div>
+  <span class="kop-merk mono" aria-hidden="true">FM//</span>
+</header>
+<main id="scherm" tabindex="-1"></main>
+<nav id="tabs" aria-label="Hoofdmenu">
+  <button type="button" data-tab="commando"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg><span>Commando</span></button>
+  <button type="button" data-tab="projecten"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="7" height="7" rx="1.5"/><rect x="14" y="4" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>Projecten</span></button>
+  <button type="button" data-tab="nieuw" class="tab-plus" aria-label="Nieuw project"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+  <button type="button" data-tab="log"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h10M4 18h13"/></svg><span>Log</span></button>
+  <button type="button" data-tab="meer"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg><span>Meer</span></button>
+</nav>
+<div id="dek"></div>
+<section id="blad" role="dialog" aria-modal="true" aria-labelledby="bladtitel" aria-hidden="true">
+  <div class="blad-kop"><h2 id="bladtitel"></h2><button type="button" class="icoonknop" id="bladsluit" aria-label="Sluiten"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+  <div id="bladinhoud"></div>
+  <div id="bladknoppen"></div>
+</section>
+<div id="toast" role="status" aria-live="polite"></div>
+<script>
+__JS__
+start();
+</script>
+</body>
+</html>
