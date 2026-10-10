@@ -36,6 +36,10 @@ function ptTimer(t, nu) {
   const tot = t.duur * 60000, nuEff = t.pauzeOp || nu, verstreken = Math.max(0, nuEff - t.start - (t.gepauzeerd || 0));
   return { rest: Math.max(0, Math.ceil((tot - verstreken) / 1000)), minuten: Math.round(verstreken / 60000), klaar: verstreken >= tot, gepauzeerd: !!t.pauzeOp, deel: Math.min(1, verstreken / tot) };
 }
+/** De week die de weekreview bekijkt: op maandag nog de week die net voorbij is. */
+function ptReviewWeek(nu) { const w = ptWeekStart(nu); return new Date(nu).getDay() === 1 ? ptWeekStart(w - 1) : w; }
+/** Het einde van een week (volgende maandag 00:00), ook in de week van de zomertijdwissel. */
+function ptWeekEinde(w) { return ptWeekStart(w + 8 * 86400000); }
 /** Maandag 00:00 (lokaal) van de week waar nu in valt. */
 function ptWeekStart(nu) { const d = new Date(nu); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); return d.getTime(); }
 /** Cijfers van een week per project: minuten, stappen af, winsten; plus totalen. */
@@ -86,7 +90,7 @@ function belofteBlad(projectId, tekst, stapId) {
   });
   $("#bf-bewaar").onclick = async () => {
     const t = $("#bf-tekst").value.trim(), tijd = $("#bf-tijd").value || "17:00"; if (!t) { toast("Schrijf op wat je doet"); return; }
-    const datum = wanneer === "vandaag" ? vandaagISO() : wanneer === "morgen" ? (d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`)(new Date(Date.now() + PT_DAG)) : ($("#bf-datum").value || vandaagISO());
+    const datum = wanneer === "vandaag" ? vandaagISO() : wanneer === "morgen" ? (d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`)((d => { d.setDate(d.getDate() + 1); return d; })(new Date())) : ($("#bf-datum").value || vandaagISO());
     let moment = `${datum}T${tijd}`;
     if (ptMomentMs(moment) <= Date.now()) moment = nuMoment(60);   // al voorbij: over een uur
     await bewaar("beloftes", { id: uid(), projectId: p.id, stapId: stap && stap.tekst === t ? stap.id : null, tekst: t, moment, status: "open", gemaakt: new Date().toISOString() });
@@ -95,12 +99,12 @@ function belofteBlad(projectId, tekst, stapId) {
   };
 }
 async function belofteAntwoord(id, uitkomst, reden) {
-  const b = vind("beloftes", id); if (!b) return;
+  const b = vind("beloftes", id); if (!b || b.status !== "open") return false;   // al beantwoord (bv. dubbel getikt)
   b.status = uitkomst; b.antwoordOp = new Date().toISOString(); if (reden) b.reden = reden;
   await bewaar("beloftes", b);
   if (uitkomst === "gedaan" && b.stapId) { const s = vind("stappen", b.stapId); if (s && !s.af) { s.af = true; s.afOp = b.antwoordOp; await bewaar("stappen", s); } }
-  await log(b.projectId, uitkomst === "gedaan" ? "winst" : uitkomst === "niet" ? "blokkade" : "notitie",
-    `Belofte ${PT_UITKOMST[uitkomst].toLowerCase()}: ${b.tekst}${reden ? ` (${(PT_REDENEN.find(r => r[0] === reden) || ["", reden])[1].toLowerCase()})` : ""}`);
+  return !!(await log(b.projectId, uitkomst === "gedaan" ? "winst" : uitkomst === "niet" ? "blokkade" : "notitie",
+    `Belofte ${PT_UITKOMST[uitkomst].toLowerCase()}: ${b.tekst}${reden ? ` (${(PT_REDENEN.find(r => r[0] === reden) || ["", reden])[1].toLowerCase()})` : ""}`));
 }
 function nietGeluktBlad(id) {
   const b = vind("beloftes", id); if (!b) return;
@@ -108,7 +112,8 @@ function nietGeluktBlad(id) {
   bladOpen("Niet gelukt", `<p>Dat gebeurt. Niet gelukt is informatie, geen oordeel.</p><p class="hud-label">Wat zat in de weg? <small>(mag leeg)</small></p>
     <div class="chips">${PT_REDENEN.map(([k, l]) => `<button type="button" class="chip-knop" data-ng-reden="${k}" aria-pressed="false">${l}</button>`).join("")}</div>
     <p class="hud-label">Hoe nu verder?</p>
-    <div class="lijst"><button class="knop primair breed" data-ng="kleiner">Kleiner maken</button><button class="knop rand breed" data-ng="moment">Nieuw moment</button><button class="knop rand breed" data-ng="los">Loslaten</button></div>`);
+    <div class="lijst"><button class="knop primair breed" data-ng="kleiner">Kleiner maken</button><button class="knop rand breed" data-ng="moment">Nieuw moment</button><button class="knop rand breed" data-ng="los">Loslaten</button></div>
+    <details class="waarom"><summary>Waarom deze keuzes?</summary><p>Een kleinere stap of een nieuw, concreet moment maakt de volgende poging haalbaarder dan dezelfde belofte nog eens. Indirect: als-dan-plannen en taakopdeling, onderzocht in brede groepen.</p></details>`);
   $("#bladinhoud").onclick = async e => {
     const r = e.target.closest("[data-ng-reden]"), k = e.target.closest("[data-ng]");
     if (r) { reden = reden === r.dataset.ngReden ? null : r.dataset.ngReden; document.querySelectorAll("[data-ng-reden]").forEach(x => x.setAttribute("aria-pressed", String(x.dataset.ngReden === reden))); return; }
@@ -140,6 +145,7 @@ function focusBlad(projectId) {
     `<button class="knop primair breed" id="fb-start">${ico("klok")} Start</button>`);
   $("#bladinhoud").onclick = e => { const b = e.target.closest("[data-fb-duur]"); if (!b) return; duur = +b.dataset.fbDuur; document.querySelectorAll("[data-fb-duur]").forEach(x => x.setAttribute("aria-pressed", String(x === b))); };
   $("#fb-start").onclick = async () => {
+    if (inst("timer", null)) { bladSluit(); timerTeken(); return; }
     if ($("#fb-stap")) stapId = $("#fb-stap").value;
     await zetInst("blokDuur", duur);
     await zetInst("timer", { projectId: p.id, stapId: stapId || null, start: Date.now(), duur, pauzeOp: null, gepauzeerd: 0 });
@@ -149,7 +155,10 @@ function focusBlad(projectId) {
 let timerTik = null, wekslot = null;
 function timerTeken() {
   const t = inst("timer", null), el = $("#timer");
-  if (!t) { if (el) el.remove(); clearInterval(timerTik); timerTik = null; try { wekslot && wekslot.release(); } catch (e) {} wekslot = null; return; }
+  if (!t) {
+    if (el) { el.remove(); for (const x of ["#scherm", "#tabs", ".kop"]) { const n = $(x); if (n) n.inert = false; } const sc = $("#scherm"); if (sc) sc.focus({ preventScroll: true }); }
+    clearInterval(timerTik); timerTik = null; try { wekslot && wekslot.release(); } catch (e) {} wekslot = null; return;
+  }
   const p = vind("projecten", t.projectId), s = t.stapId && vind("stappen", t.stapId), st = ptTimer(t, Date.now());
   if (!el) {
     document.body.insertAdjacentHTML("beforeend", `<section id="timer" role="dialog" aria-modal="true" aria-label="Focusblok"><div class="timer-binnen" style="--pk:${p ? kleurVan(p) : "var(--accent)"}">
@@ -160,7 +169,8 @@ function timerTeken() {
     $("#timer-pauze").onclick = async () => { const x = inst("timer", null); if (!x) return; if (x.pauzeOp) { x.gepauzeerd += Date.now() - x.pauzeOp; x.pauzeOp = null; } else x.pauzeOp = Date.now(); await zetInst("timer", x); timerTeken(); };
     $("#timer-plus").onclick = async () => { const x = inst("timer", null); if (!x) return; x.duur += 5; await zetInst("timer", x); timerTeken(); };
     $("#timer-stop").onclick = () => timerKlaar(false);
-    try { if (navigator.wakeLock) navigator.wakeLock.request("screen").then(w => { wekslot = w; }).catch(() => {}); } catch (e) {}
+    for (const x of ["#scherm", "#tabs", ".kop"]) { const n = $(x); if (n) n.inert = true; }   // echt modaal
+    wekslotVraag();
     setTimeout(() => { const b = $("#timer-stop"); if (b) b.focus(); }, 50);
   }
   $("#timer-titel").textContent = p ? p.titel : "Project";
@@ -171,27 +181,34 @@ function timerTeken() {
   if (st.klaar) return timerKlaar(true);
   if (!timerTik) timerTik = setInterval(timerTeken, 1000);
 }
+/** Scherm aan houden; de browser laat het slot los als je wegschakelt, dus bij terugkomst opnieuw. */
+function wekslotVraag() {
+  try { if (navigator.wakeLock && (!wekslot || wekslot.released)) navigator.wakeLock.request("screen").then(w => { wekslot = w; w.addEventListener("release", () => { if (wekslot === w) wekslot = null; }); }).catch(() => {}); } catch (e) {}
+}
 async function timerKlaar(vanzelf) {
   const t = inst("timer", null); if (!t) return;
-  const st = ptTimer(t, Date.now()), min = Math.max(1, Math.min(st.minuten, t.duur)), s = t.stapId && vind("stappen", t.stapId);
+  const st = ptTimer(t, Date.now()), min = Math.min(st.minuten, t.duur), s = t.stapId && vind("stappen", t.stapId);
   await zetInst("timer", null); timerTeken();
   if (vanzelf) tril([30, 60, 30]);
+  if (min < 1) { toast("Blok gestopt. Korter dan een minuut, dus niets gelogd."); return; }
+  // Meteen loggen: wie het blad wegveegt, verliest de minuten niet. Het blad vult alleen nog aan.
+  const werk = await log(t.projectId, "werk", "", { minuten: min }); teken();
   bladOpen(vanzelf ? "Blok klaar" : "Blok gestopt", `<p class="blok-klaar mono">${duurTekst(min)}</p>
     ${s ? `<button type="button" class="schakel" id="bk-stap" aria-pressed="false"><span><b>Stap klaar</b><small class="klein">${esc(s.tekst)}</small></span><span class="toggle" aria-hidden="true"></span></button>` : ""}
     <div class="veld"><label for="bk-tekst">Wat deed je? <small>(mag leeg)</small></label><textarea class="invoer" id="bk-tekst" rows="2" maxlength="300"></textarea></div>`,
     `<button class="knop primair breed" id="bk-bewaar">Vastleggen</button>`);
   if ($("#bk-stap")) $("#bk-stap").onclick = e => { const b = e.currentTarget; b.setAttribute("aria-pressed", String(b.getAttribute("aria-pressed") !== "true")); };
   $("#bk-bewaar").onclick = async () => {
-    await log(t.projectId, "werk", $("#bk-tekst").value.trim(), { minuten: min });
+    const tekst = $("#bk-tekst").value.trim(); if (tekst) { werk.tekst = tekst; await bewaar("logs", werk); }
     if (s && $("#bk-stap") && $("#bk-stap").getAttribute("aria-pressed") === "true" && !s.af) { s.af = true; s.afOp = new Date().toISOString(); await bewaar("stappen", s); await log(s.projectId, "winst", `Stap: ${s.tekst}`); }
     bladSluit(); teken(); toast(`${duurTekst(min)} gelogd. De draad loopt.`);
   };
 }
 
 /* ---------- Weekreview ---------- */
-function weekGedaan() { const w = ptWeekStart(Date.now()); return (inst("weekreviews", []) || []).some(r => r.week === w); }
+function weekGedaan() { const w = ptReviewWeek(Date.now()); return (inst("weekreviews", []) || []).some(r => r.week === w); }
 function vwWeek() {
-  const nu = Date.now(), w = ptWeekStart(nu), c = ptWeekCijfers(S.projecten, S.stappen, S.logs, S.beloftes, w, w + 7 * PT_DAG);
+  const nu = Date.now(), w = ptReviewWeek(nu), c = ptWeekCijfers(S.projecten, S.stappen, S.logs, S.beloftes, w, ptWeekEinde(w));
   const open = S.projecten.filter(p => ["actief", "wacht"].includes(p.status));
   const tip = PT_REDEN_TIP[ptVaaksteReden(S.beloftes.filter(b => b.antwoordOp && Date.parse(b.antwoordOp) >= nu - 28 * PT_DAG))] || "";
   let h = `<section class="tellers"><div class="teller"><b class="mono">${duurTekst(c.minuten).replace(" min", "<small>m</small>").replace(" u", "<small>u</small>")}</b><span>gewerkt</span></div>
@@ -207,7 +224,7 @@ function vwWeek() {
     <details class="waarom"><summary>Waarom een weekreview?</summary><p>Eens per week kort terugkijken en bewust kiezen wat doorgaat, houdt je projecten in beweging en voorkomt dat er te veel tegelijk loopt. Indirect: terugkijken en bijsturen zijn onderdeel van ADHD-gerichte coaching en CGT, niet als losse oefening onderzocht.</p></details></div>`;
   return h;
 }
-KOPPEN.week = () => ["Weekreview", `week van ${datumKort((d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`)(new Date(ptWeekStart(Date.now()))))}`];
+KOPPEN.week = () => ["Weekreview", `week van ${datumKort((d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`)(new Date(ptReviewWeek(Date.now()))))}`];
 VIEWS.week = vwWeek;
 
 /* ---------- Commandocentrum en projectscherm uitbreiden ---------- */
@@ -219,7 +236,7 @@ VIEWS.week = vwWeek;
     const ci = checkinHTML();
     // Weer in beweging: afkoelende en stille projecten met één tik naar een blok van 5 minuten.
     const koud = S.projecten.filter(p => p.status === "actief" && ["afkoelend", "stil"].includes(ptGezondheid(p, S.logs, Date.now()).id));
-    const beweging = koud.length ? `<section class="paneel"><p class="hud-label">Weer in beweging</p><p class="klein">Vijf minuten is genoeg om de draad weer op te pakken.</p>
+    const beweging = koud.length ? `<section class="paneel"><p class="hud-label">Weer in beweging</p><p class="klein">Vijf minuten is genoeg om de draad weer op te pakken.</p><details class="waarom"><summary>Waarom?</summary><p>Opnieuw beginnen is het lastigste deel; een heel kort blok verlaagt die drempel. Praktisch: een experiment.</p></details>
       <div class="lijst">${koud.slice(0, 3).map(p => `<button class="knop rand breed" data-focus-start="${esc(p.id)}" data-duur="5">${ico("klok")} 5 minuten aan ${esc(p.titel)}</button>`).join("")}</div></section>` : "";
     const dag = new Date().getDay(), week = !weekGedaan() && [0, 1, 5, 6].includes(dag) ? `<button class="paneel rij-knop" data-ga="week">${ico("log")}<span><b>Weekreview</b><small>Tien minuten terugkijken en kiezen wat doorgaat.</small></span>${ico("pijl")}</button>` : "";
     // Check-ins bovenaan, de rest onder de focus.
@@ -258,7 +275,8 @@ document.addEventListener("click", async e => {
   const d = el.dataset;
   if (d.ci) {
     if (d.ci === "niet") return nietGeluktBlad(d.id);
-    await belofteAntwoord(d.id, d.ci); tril(d.ci === "gedaan" ? [15, 30, 15] : 8); teken();
+    if (!(await belofteAntwoord(d.id, d.ci))) return;
+    tril(d.ci === "gedaan" ? [15, 30, 15] : 8); teken();
     const b = vind("beloftes", d.id);
     if (d.ci === "gedaan") toast("Gedaan. Afspraak met jezelf nagekomen.");
     else toast("Half is ook vooruit.", "Rest beloven", () => belofteBlad(b.projectId, `Rest van: ${b.tekst}`));
@@ -266,15 +284,16 @@ document.addEventListener("click", async e => {
   }
   if (d.belofte) return belofteBlad(d.belofte);
   if (d.focusStart) {
+    if (inst("timer", null)) { timerTeken(); toast("Er loopt al een blok."); return; }
     if (d.duur) { await zetInst("timer", { projectId: d.focusStart, stapId: (ptVolgendeStap(vind("projecten", d.focusStart), S.stappen) || {}).id || null, start: Date.now(), duur: +d.duur, pauzeOp: null, gepauzeerd: 0 }); tril(10); return timerTeken(); }
     return focusBlad(d.focusStart);
   }
   if (d.wkKeuze) { V.weekKeuzes = Object.assign({}, V.weekKeuzes, { [d.id]: d.wkKeuze }); V.weekTekst = ($("#wk-mee") || {}).value || V.weekTekst; return teken(); }
   if (d.wkKlaar !== undefined) {
-    const tekst = $("#wk-mee").value.trim(), w = ptWeekStart(Date.now());
+    const tekst = $("#wk-mee").value.trim(), w = ptReviewWeek(Date.now());
     for (const [id, k] of Object.entries(V.weekKeuzes || {})) {
       const p = vind("projecten", id); if (!p || k === "door" || p.status === k) continue;
-      const oud = p.status; p.status = k; await bewaar("projecten", p); await log(p.id, "fase", `Weekreview: ${PT_STATUS[oud].naam} → ${PT_STATUS[k].naam}`);
+      await statusToepassen(p, k, "Weekreview");
     }
     await zetInst("weekreviews", (inst("weekreviews", []) || []).filter(r => r.week !== w).concat({ week: w, tekst, ts: new Date().toISOString() }).slice(-104));
     V.weekKeuzes = {}; V.weekTekst = "";
@@ -283,4 +302,16 @@ document.addEventListener("click", async e => {
 });
 // Een lopend blok overleeft herladen en schermwissel.
 NA_TEKENEN.push(() => { if (inst("timer", null) && !$("#timer")) timerTeken(); });
-document.addEventListener("visibilitychange", () => { if (!document.hidden && inst("timer", null)) timerTeken(); });
+document.addEventListener("visibilitychange", () => { if (!document.hidden && inst("timer", null)) { timerTeken(); wekslotVraag(); } });
+// Check-ins verschijnen ook als het moment voorbijgaat terwijl de app openstaat (elke minuut, alleen op het Commandocentrum, niet tijdens typen of met een blad open).
+setInterval(() => {
+  if (V.view !== "commando" || $("#blad").classList.contains("open") || $("#timer") || document.hidden) return;
+  if (ptCheckinsNodig(S.beloftes, Date.now()).length !== document.querySelectorAll("#scherm .checkin").length) teken();
+}, 60000);
+
+// Weekreview: elke keer vers beginnen (geen keuzes van een eerder, afgebroken bezoek), en getypte tekst bewaren.
+{
+  const _ga = ga;
+  ga = function (view) { if (view === "week" && V.view !== "week") { V.weekKeuzes = {}; V.weekTekst = ""; } return _ga.apply(this, arguments); };
+}
+document.addEventListener("input", e => { if (e.target.id === "wk-mee") V.weekTekst = e.target.value; });

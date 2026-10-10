@@ -80,3 +80,30 @@
 **Tests:**
 - `tests/kern.test.mjs` (14) en `tests/accountability.test.mjs` (5).
 - `tests/app.e2e.cjs` (42) en `tests/accountability.e2e.cjs` (28).
+
+### Review fase 2 (verwerkt)
+- **Terug:** de terugknop roept zelf `terug()` aan. Terugvegen werkt met één schildwacht in de geschiedenis: is er iets terug te doen (blad dicht, scherm terug), dan komt de schildwacht terug, anders verlaat de volgende veeg de app. Je komt nooit meer per ongeluk buiten de app.
+- **Check-in:** een belofte krijgt maar één antwoord, ook bij dubbel tikken.
+- **Weekreview:**
+  - Op maandag kijkt hij naar de week die net voorbij is (`ptReviewWeek`).
+  - Het weekeinde klopt rond de zomertijd.
+  - De statuswissel gaat via `statusToepassen`.
+  - Elk bezoek begint vers, en getypte tekst blijft bewaard.
+- **Focusblok:**
+  - De minuten worden meteen gelogd, ook als je het blad wegveegt.
+  - Een blok korter dan een minuut wordt niet gelogd.
+  - Het blok is echt modaal (de rest is `inert`, en de focus komt terug), en meldingen staan erboven.
+  - Er start geen tweede blok over een lopend blok.
+  - Het scherm-aan-slot wordt opnieuw gevraagd na wegschakelen.
+- **Beloftes van een project dat pauzeert, in de ideeënbak gaat, gearchiveerd of afgerond wordt:** die worden losgelaten, dus geen check-ins meer.
+- **Sporen:**
+  - Een verwijdering uit een andere export wordt toegepast.
+  - Bij het verwijderen van een project wordt de lijst met sporen één keer geschreven.
+  - Sporen ouder dan een jaar vallen weg.
+- **Service worker:**
+  - Een fout van de server (404, 500, de inlogpagina van een wifi) maakt plaats voor de opgeslagen app.
+  - Een ontbrekend icoon houdt de installatie niet tegen.
+  - Zonder kopie wacht hij op het netwerk.
+- **Waarom?:** staat nu ook bij "Weer in beweging" en bij de keuzes na "niet gelukt".
+- **Check-ins** verschijnen ook als het moment voorbijgaat terwijl de app openstaat (controle elke minuut).
+- **Tests:** `accountability.test.mjs` (6) en `accountability.e2e.cjs` (39).

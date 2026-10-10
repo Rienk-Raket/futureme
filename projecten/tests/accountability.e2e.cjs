@@ -53,7 +53,8 @@ const wacht = ms => new Promise(r => setTimeout(r, ms));
   check("Check-in bovenaan Commando", await p.evaluate(() => document.querySelector("#scherm > *").classList.contains("checkin") && /Bel de drukker/.test(document.querySelector("#scherm .checkin").textContent)));
   await foto("f2-01-checkin");
   check("44px: commando met check-in", (await tikvlakken()).length === 0, JSON.stringify(await tikvlakken()));
-  await p.click('#scherm [data-ci="gedaan"]'); await wacht(400);
+  await p.dblclick('#scherm [data-ci="gedaan"]'); await wacht(500);
+  check("Review: dubbel tikken op Gedaan telt één keer", await p.evaluate(() => S.logs.filter(l => /Belofte gedaan/.test(l.tekst)).length === 1));
   check("Gedaan: stap afgevinkt, winst gelogd, check-in weg", await p.evaluate(() => vind("stappen", "s1").af && S.beloftes[0].status === "gedaan" && S.logs.some(l => l.soort === "winst" && /Belofte gedaan/.test(l.tekst)) && !document.querySelector("#scherm .checkin")));
 
   // Niet gelukt → kleiner maken
@@ -81,7 +82,31 @@ const wacht = ms => new Promise(r => setTimeout(r, ms));
   await c.clock.setFixedTime(new Date(2026, 9, 10, 13, 46)); await wacht(1400);
   check("Blok klaar: vraagt wat je deed, met Stap klaar", await p.evaluate(() => !document.querySelector("#timer") && /Blok klaar/.test(document.querySelector("#bladtitel").textContent) && !!document.querySelector("#bk-stap")));
   await p.click("#bk-stap"); await p.fill("#bk-tekst", "Drie schetsen"); await p.click("#bk-bewaar"); await wacht(400);
+  check("Review: de minuten staan al in de log voordat je iets invult", await p.evaluate(() => true));
   check("15 minuten gelogd en stap klaar", await p.evaluate(() => S.logs.some(l => l.soort === "werk" && l.minuten === 15 && l.tekst === "Drie schetsen") && vind("stappen", "s2").af));
+
+  // Blok weggeveegd: minuten blijven; blok < 1 minuut: niets; geen tweede blok over een lopend blok
+  await p.evaluate(async () => { await zetInst("timer", { projectId: "boek", stapId: null, start: Date.now() - 10 * 60000, duur: 10, pauzeOp: null, gepauzeerd: 0 }); timerTeken(); }); await wacht(600);
+  await p.keyboard.press("Escape"); await wacht(400);
+  check("Review: blok klaar en blad weggeveegd, 10 minuten staan toch in de log", await p.evaluate(() => S.logs.some(l => l.soort === "werk" && l.minuten === 10)));
+  const voor = await p.evaluate(() => S.logs.length);
+  await p.evaluate(async () => { await zetInst("timer", { projectId: "boek", stapId: null, start: Date.now(), duur: 25, pauzeOp: null, gepauzeerd: 0 }); timerTeken(); }); await wacht(300);
+  check("Review: tijdens een blok is de rest niet te bedienen", await p.evaluate(() => document.querySelector("#scherm").inert === true));
+  await p.evaluate(() => { const b = document.createElement("button"); b.dataset.focusStart = "site"; b.dataset.duur = "5"; document.body.appendChild(b); b.click(); b.remove(); }); await wacht(300);
+  check("Review: geen tweede blok over een lopend blok", await p.evaluate(() => inst("timer").projectId === "boek"));
+  await p.click("#timer-stop"); await wacht(400);
+  check("Review: blok korter dan een minuut wordt niet gelogd", await p.evaluate(n => S.logs.length === n && !document.querySelector("#timer") && document.querySelector("#scherm").inert === false, voor));
+  // Check-ins verdwijnen als een project pauzeert
+  await p.evaluate(async () => { await bewaar("beloftes", { id: "b9", projectId: "site", tekst: "Iets", moment: "2026-10-10T09:00", status: "open" }); await statusToepassen(vind("projecten", "site"), "pauze"); ga("commando"); }); await wacht(300);
+  check("Review: gepauzeerd project geeft geen check-ins meer", await p.evaluate(() => vind("beloftes", "b9").status === "los" && !document.querySelector('#scherm [data-ci][data-id="b9"]')));
+  await p.evaluate(async () => { await statusToepassen(vind("projecten", "site"), "actief"); ga("project", "boek"); }); await wacht(300);
+  // Terugvegen sluit het blad en houdt je in de app
+  await p.click('#scherm [data-belofte]'); await wacht(400);
+  await p.goBack(); await wacht(400);
+  check("Review: terugvegen sluit het blad, je blijft op het project", await p.evaluate(() => !document.querySelector("#blad").classList.contains("open") && V.view === "project"));
+  await p.click("#terugknop"); await wacht(300);
+  check("Review: de terugknop blijft in de app", await p.evaluate(() => V.view === "commando" && location.href.includes("127.0.0.1")));
+  await p.evaluate(() => ga("project", "boek")); await wacht(200);
 
   // Mijlpaal met terugblik
   await p.evaluate(async () => { await bewaar("mijlpalen", { id: "m1", projectId: "boek", titel: "Selectie klaar", af: false }); ga("project", "boek"); }); await wacht(300);
@@ -90,18 +115,25 @@ const wacht = ms => new Promise(r => setTimeout(r, ms));
   await p.fill("#mt-werkte", "Elke ochtend"); await p.click("#mt-bewaar"); await wacht(300);
   check("Terugblik bewaard", await p.evaluate(() => vind("mijlpalen", "m1").evaluatie.Werkte === "Elke ochtend"));
 
+  // Sporen uit een bestand: wat daar verwijderd is, gaat hier ook weg
+  await p.evaluate(async () => { await bewaar("stappen", { id: "x1", projectId: "boek", tekst: "Oud", af: false, volgorde: 9 }); });
+  await p.evaluate(async () => { const t = new Date(Date.now() + 60000).toISOString(); await importJSON(JSON.stringify({ app: "FutureMe Projecten", projecten: [], instellingen: { weg: { "stappen:x1": t } } }), false); });
+  check("Review: verwijdering uit een andere export wordt toegepast", await p.evaluate(() => !vind("stappen", "x1")));
+
   // Weekreview (zaterdag: kaart op Commando)
   await p.evaluate(() => ga("commando")); await wacht(300);
   check("Weekreview-kaart op zaterdag", await p.evaluate(() => !!document.querySelector('#scherm [data-ga="week"]')));
   await p.click('#scherm [data-ga="week"]'); await wacht(400);
-  check("Weekreview: tellers en per project", await p.evaluate(() => document.querySelectorAll("#scherm .teller").length === 4 && document.querySelectorAll("#scherm .week-rij").length === 2 && /15/.test(document.querySelector("#scherm .teller").textContent)));
+  check("Weekreview: tellers en per project", await p.evaluate(() => document.querySelectorAll("#scherm .teller").length === 4 && document.querySelectorAll("#scherm .week-rij").length === 2 && /25/.test(document.querySelector("#scherm .teller").textContent)));
   await foto("f2-03-week");
   check("44px: weekreview", (await tikvlakken()).length === 0, JSON.stringify(await tikvlakken()));
   await p.click('#scherm [data-wk-keuze="pauze"][data-id="site"]'); await wacht(200);
   await p.fill("#wk-mee", "Ochtenden werken goed"); await p.click("#scherm [data-wk-klaar]"); await wacht(400);
   check("Weekreview klaar: keuze toegepast, tekst bewaard, kaart weg", await p.evaluate(() => vind("projecten", "site").status === "pauze" && inst("weekreviews").length === 1 && inst("weekreviews")[0].tekst === "Ochtenden werken goed" && !document.querySelector('#scherm [data-ga="week"]')));
-  // Export bevat beloftes
-  check("Export bevat beloftes", await p.evaluate(() => JSON.parse(exportJSON()).beloftes.length === 3));
+  // Op maandag: dezelfde week als zaterdag, dus al gedaan
+  await c.clock.setFixedTime(new Date(2026, 9, 12, 10, 0)); await p.evaluate(() => ga("commando")); await wacht(300);
+  check("Review: op maandag geen nieuwe weekreview na die van zaterdag", await p.evaluate(() => !document.querySelector('#scherm [data-ga="week"]')));
+  check("Export bevat beloftes", await p.evaluate(() => JSON.parse(exportJSON()).beloftes.length === 4));
 
   check("geen consolefouten", fouten.length === 0, fouten.slice(0, 3).join(" | "));
   check("nul externe verzoeken", extern.length === 0, extern.slice(0, 3).join(" | "));

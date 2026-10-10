@@ -34,7 +34,7 @@ const TABS = ["commando", "projecten", "log", "meer"];
 const KOPPEN = {};   // view → () => [titel, ondertitel]
 const VIEWS = {};    // view → () => html
 function ga(view, param, terugStap) {
-  if (!terugStap && V.view !== view && !TABS.includes(view)) { V.stapel.push({ view: V.view, param: V.param }); try { history.pushState({ fm: V.stapel.length }, ""); } catch (e) {} }
+  if (!terugStap && V.view !== view && !TABS.includes(view)) V.stapel.push({ view: V.view, param: V.param });
   if (TABS.includes(view)) V.stapel = [];
   V.view = view; V.param = param == null ? null : param;
   teken();
@@ -94,9 +94,15 @@ async function start() {
     const t = e.target.closest("[data-tab]"); if (t) { e.preventDefault(); return t.dataset.tab === "nieuw" ? nieuwProject() : ga(t.dataset.tab); }
     const g = e.target.closest("[data-ga]"); if (g) { e.preventDefault(); return ga(g.dataset.ga, g.dataset.param || null); }
   });
-  // Terugvegen in Safari en de terugknop doen hetzelfde: één scherm terug (of het blad dicht).
-  $("#terugknop").onclick = () => { try { history.back(); } catch (e) { terug(); } };
-  window.addEventListener("popstate", () => { if ($("#blad").classList.contains("open")) bladSluit(); else if (V.stapel.length) terug(); });
+  // Terugvegen in Safari: één schildwacht in de geschiedenis. Was er iets terug te doen (blad dicht, scherm terug),
+  // dan komt de schildwacht terug; anders niet, en verlaat de volgende veeg de app zoals gewoonlijk.
+  $("#terugknop").onclick = terug;
+  try { history.pushState({ fm: 1 }, ""); } catch (e) {}
+  window.addEventListener("popstate", () => {
+    const blad = $("#blad").classList.contains("open"), timer = !!$("#timer");
+    if (timer) {} else if (blad) bladSluit(); else if (V.stapel.length) terug(); else return;
+    try { history.pushState({ fm: 1 }, ""); } catch (e) {}
+  });
   $("#dek").onclick = bladSluit;
   $("#bladsluit").onclick = bladSluit;
   document.addEventListener("keydown", e => { if (e.key === "Escape" && $("#blad").classList.contains("open")) bladSluit(); });

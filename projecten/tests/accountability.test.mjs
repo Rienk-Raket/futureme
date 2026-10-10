@@ -7,7 +7,7 @@ import vm from "node:vm";
 const src = readFileSync(fileURLToPath(new URL("../src/accountability.js", import.meta.url)), "utf8");
 const i = src.indexOf("/* PT-ACC-BEGIN */"), j = src.indexOf("/* PT-ACC-EINDE */");
 const ctx = vm.createContext({});
-vm.runInContext(src.slice(i, j) + ";globalThis.A = { ptCheckinsNodig, ptBeloftesCijfers, ptVaaksteReden, ptTimer, ptWeekStart, ptWeekCijfers, ptKlok };", ctx);
+vm.runInContext(src.slice(i, j) + ";globalThis.A = { ptCheckinsNodig, ptBeloftesCijfers, ptVaaksteReden, ptTimer, ptWeekStart, ptWeekCijfers, ptKlok, ptReviewWeek, ptWeekEinde };", ctx);
 const A = ctx.A, kaal = x => JSON.parse(JSON.stringify(x));
 const NU = new Date(2026, 9, 10, 12, 0).getTime();
 
@@ -47,4 +47,12 @@ test("week: maandag 00:00 en cijfers per project binnen de week", () => {
   const c = A.ptWeekCijfers([{ id: "a", titel: "A" }], [{ projectId: "a", af: true, afOp: new Date(NU - 3600000).toISOString() }],
     [{ projectId: "a", soort: "werk", minuten: 25, ts: new Date(NU - 7200000).toISOString() }, { projectId: "a", soort: "werk", minuten: 40, ts: new Date(w - 1000).toISOString() }], [], w, w + 7 * 86400000);
   assert.equal(c.minuten, 25); assert.equal(c.stappen, 1);
+});
+
+test("review: op maandag kijkt de weekreview naar de week die net voorbij is; weekeinde klopt rond de zomertijd", () => {
+  const ma = new Date(2026, 9, 12, 10, 0).getTime(), za = new Date(2026, 9, 10, 10, 0).getTime();
+  assert.equal(A.ptReviewWeek(ma), A.ptWeekStart(za));
+  assert.equal(A.ptReviewWeek(za), A.ptWeekStart(za));
+  const w = A.ptWeekStart(new Date(2026, 9, 20).getTime());   // week van 19 okt, wissel op 25 okt
+  assert.equal(new Date(A.ptWeekEinde(w)).getDate(), 26); assert.equal(new Date(A.ptWeekEinde(w)).getHours(), 0);
 });

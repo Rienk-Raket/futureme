@@ -61,7 +61,14 @@ async function verwijder(w, id, geenSpoor) {
   const i = S[w].findIndex(x => x.id === id); if (i >= 0) S[w].splice(i, 1);
   try { await dbWis(w, id); } catch (e) {}
   // Een spoor van wat weg is, zodat samenvoegen met een oude export het niet terugbrengt.
-  if (!geenSpoor) { const weg = Object.assign({}, inst("weg", {})); weg[w + ":" + id] = new Date().toISOString(); await zetInst("weg", weg); }
+  if (!geenSpoor) await sporen([w + ":" + id]);
+}
+/** Sporen in één keer bijschrijven; sporen ouder dan een jaar vallen weg. */
+async function sporen(sleutels, nieuweKaart) {
+  const nu = new Date().toISOString(), grens = new Date(Date.now() - 365 * 86400000).toISOString(), weg = {};
+  for (const [k, v] of Object.entries(Object.assign({}, inst("weg", {}), nieuweKaart || {}))) if (v >= grens) weg[k] = v > (weg[k] || "") ? v : weg[k];
+  for (const k of sleutels || []) weg[k] = nu;
+  await zetInst("weg", weg);
 }
 const inst = (k, std) => S.instellingen[k] === undefined ? std : S.instellingen[k];
 async function zetInst(k, v) { S.instellingen[k] = v; try { await dbZet("instellingen", { sleutel: k, waarde: v }); } catch (e) {} }
@@ -81,7 +88,15 @@ async function importJSON(tekst, vervangen) {
   for (const w of IMPORT_WINKELS) if (d[w] !== undefined && (!Array.isArray(d[w]) || d[w].some(x => !x || typeof x !== "object" || !x.id)))
     throw new Error("Dit bestand is beschadigd. Er is niets veranderd.");
   if (!Array.isArray(d.projecten)) throw new Error("Dit bestand bevat geen projecten. Er is niets veranderd.");
-  const tel = {}, weg = vervangen ? {} : inst("weg", {}) || {};
+  // Samenvoegen: sporen uit het bestand gelden ook hier (wat daar verwijderd is na de versie hier, gaat hier ook weg).
+  const bestandWeg = (d.instellingen && d.instellingen.weg && typeof d.instellingen.weg === "object") ? d.instellingen.weg : {};
+  if (!vervangen) for (const [k, ts] of Object.entries(bestandWeg)) {
+    const [w, id] = [k.slice(0, k.indexOf(":")), k.slice(k.indexOf(":") + 1)];
+    const lokaal = IMPORT_WINKELS.includes(w) && vind(w, id);
+    if (lokaal && String(ts) >= String(lokaal.bijgewerkt || "")) await verwijder(w, id, true);
+  }
+  const weg = vervangen ? {} : Object.assign({}, bestandWeg, inst("weg", {}) || {});
+  const tel = {};
   for (const w of IMPORT_WINKELS) {
     const nieuw = d[w] || [];
     if (vervangen) for (const x of S[w].slice()) await verwijder(w, x.id, true);
@@ -99,7 +114,7 @@ async function importJSON(tekst, vervangen) {
     tel[w] = n;
   }
   if (d.instellingen && typeof d.instellingen === "object") for (const [k, v] of Object.entries(d.instellingen)) {
-    if (k === "weg" && !vervangen) await zetInst("weg", Object.assign({}, v || {}, inst("weg", {})));
+    if (k === "weg" && !vervangen) await sporen([], v || {});
     else if (vervangen || S.instellingen[k] === undefined) await zetInst(k, v);
   }
   return tel;

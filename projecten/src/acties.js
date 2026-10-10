@@ -103,6 +103,7 @@ async function statusToepassen(p, status, reden) {
   p.afgerondOp = status === "archief" ? p.afgerondOp || null : null;
   await bewaar("projecten", p);
   if (status !== "actief" && inst("focusId", null) === p.id) await zetInst("focusId", null);
+  if (!["actief", "wacht"].includes(status)) await beloftesLoslaten(p.id);
   await log(p.id, "fase", `${reden ? reden + ": " : "Status: "}${PT_STATUS[oud].naam} → ${PT_STATUS[status].naam}`);
 }
 function afrondBlad(p) {
@@ -119,6 +120,7 @@ function afrondBlad(p) {
     await bewaar("projecten", p);
     await log(p.id, "winst", "Afgerond" + (delen.length ? ". " + delen.map(([l, v]) => `${l}: ${v}`).join(" · ") : ""));
     if (inst("focusId", null) === p.id) await zetInst("focusId", null);
+    await beloftesLoslaten(p.id);
     bladSluit(); tril([20, 40, 20]); teken();
     feest(p);
   };
@@ -179,6 +181,10 @@ function mijlpaalTerugblik(m) {
 }
 
 const BEZIG = new Set(), PRULLENBAK = [];
+/** Open beloftes van een project dat stopt: losgelaten (geen check-ins meer, tellen niet mee). */
+async function beloftesLoslaten(projectId) {
+  for (const b of (S.beloftes || []).filter(x => x.projectId === projectId && x.status === "open")) { b.status = "los"; b.antwoordOp = new Date().toISOString(); b.vanzelf = true; await bewaar("beloftes", b); }
+}
 
 /* ---------- Eén klikafhandeling voor alles ---------- */
 document.addEventListener("click", async e => {
@@ -240,8 +246,9 @@ document.addEventListener("click", async e => {
   if (d.projectWeg) {
     const p = vind("projecten", d.projectWeg);
     return bevestig("Project verwijderen?", `${p.titel} en alle stappen, mijlpalen en logs verdwijnen. Archiveren bewaart alles.`, "Verwijderen", async () => {
-      for (const w of ["stappen", "mijlpalen", "logs", "beloftes"]) for (const x of S[w].filter(x => x.projectId === p.id)) await verwijder(w, x.id);
-      await verwijder("projecten", p.id); ga("projecten"); toast("Verwijderd");
+      const sleutels = [];
+      for (const w of ["stappen", "mijlpalen", "logs", "beloftes"]) for (const x of S[w].filter(x => x.projectId === p.id)) { await verwijder(w, x.id, true); sleutels.push(w + ":" + x.id); }
+      await verwijder("projecten", p.id, true); await sporen(sleutels.concat("projecten:" + p.id)); ga("projecten"); toast("Verwijderd");
     });
   }
   if (d.fase) {

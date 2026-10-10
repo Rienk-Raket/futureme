@@ -245,7 +245,7 @@ select { width: auto; min-height: 44px; padding: 0 12px; }
 .instellingen .segment { margin-bottom: 14px; }
 
 /* Melding en afronden */
-#toast { position: fixed; z-index: 30; left: 16px; right: 16px; bottom: calc(env(safe-area-inset-bottom) + 90px); max-width: 520px; margin: 0 auto; display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 16px;
+#toast { position: fixed; z-index: 45; left: 16px; right: 16px; bottom: calc(env(safe-area-inset-bottom) + 90px); max-width: 520px; margin: 0 auto; display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 16px;
   background: var(--paneel-sterk); border: 1px solid var(--rand-sterk); box-shadow: var(--schaduw), var(--gloed); transform: translateY(20px); opacity: 0; pointer-events: none; transition: .25s; }
 #toast.open { transform: none; opacity: 1; pointer-events: auto; }
 #toast span { flex: 1; }
