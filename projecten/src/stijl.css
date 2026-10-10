@@ -298,3 +298,30 @@ select { width: auto; min-height: 44px; padding: 0 12px; }
 }
 .orbit .knoop-meer circle { fill: var(--paneel-sterk); stroke: var(--rand-sterk); }
 .orbit .meer-tekst { fill: var(--tekst); font-weight: 700; font-size: 12px; }
+
+/* === Fase 3: kennismaking, aanpak, vastlopen === */
+.km-voortgang { height: 6px; border-radius: 6px; background: var(--rand); overflow: hidden; margin: 4px auto 12px; }
+.km-voortgang i { display: block; height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); box-shadow: 0 0 10px var(--accent); transition: width .3s; }
+.km-vraag h2 { margin: 6px 0 14px; font-size: 21px; line-height: 1.3; outline: none; }
+.km-opties { display: grid; gap: 8px; }
+.km-optie[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.km-extra { display: flex; justify-content: space-between; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+.patronen { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 12px; }
+.patronen li { display: flex; flex-direction: column; gap: 2px; }
+.patronen b { font-size: 19px; }
+.patronen small { color: var(--zacht); }
+.patroon-app { color: var(--accent) !important; }
+.aanpassingen { list-style: none; margin: 0; padding: 0; }
+.aanpassingen .paneel { padding: 8px 12px; }
+.aanpassingen .schakel { margin: 0; border: 0; background: none; padding: 8px 0; }
+.voorstel { display: inline-block; margin: 2px 0; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--accent); color: var(--accent); font-size: 12px; font-weight: 700; align-self: flex-start; }
+.vast-keuzes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0 12px; }
+.vast-keuze { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-height: 72px; padding: 12px; border-radius: 16px; border: 1px solid var(--rand-sterk); background: var(--paneel); text-align: left; cursor: pointer; }
+.vast-keuze small { color: var(--zacht); font-size: 13px; }
+.vast-zin { font-size: 18px; font-weight: 600; }
+.vast-link { margin-top: 4px; }
+.dagniveau .dn-kop { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.dagniveau .segment { margin-bottom: 0; }
+.min-blok { margin-bottom: 12px; }
+.ochtend { border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
+[data-groot="1"] #scherm, [data-groot="1"] #blad { zoom: 1.13; }

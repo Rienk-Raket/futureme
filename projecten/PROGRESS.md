@@ -107,3 +107,43 @@
 - **Waarom?:** staat nu ook bij "Weer in beweging" en bij de keuzes na "niet gelukt".
 - **Check-ins** verschijnen ook als het moment voorbijgaat terwijl de app openstaat (controle elke minuut).
 - **Tests:** `accountability.test.mjs` (6) en `accountability.e2e.cjs` (39).
+
+## Fase 3: profiel en vastloop-hulp
+
+**Nieuwe bestanden:**
+- `src/score.js`: de scorekern uit Brain-Mate Nate, ongewijzigd.
+- `src/profiel.js`: kennismaking en Mijn aanpak (kern `PT-PROFIEL`).
+- `src/vastlopen.js`: Ik loop vast, kiezen, dagniveau, energie, ochtendstart en zachte check-ins (kern `PT-VAST`).
+- `bouw.py` zet `kennis/vragenbank.json` en `kennis/scoreweging.json` (dezelfde bestanden als Brain-Mate Nate) als `PT_VRAGENBANK` en `PT_WEGING` in de app. Daarbij wordt gecontroleerd dat er 96 vragen en 7 patronen zijn, en dat er geen totaalscore en geen diagnosekans in zit.
+
+**Kennismaking:**
+- Eerst een intro met disclaimer. Daarna 16 kernvragen, elk met 5 antwoorden plus "Niet van toepassing" en "Liever niet".
+- Er is een knop Vorige, en je kunt pauzeren en later verdergaan.
+- Na de kernvragen volgt automatisch de verdieping, want daar komen de patronen uit. Een tussenstop komt pas als er al patronen zijn.
+- Het resultaat is hooguit drie patronen, als metafoor (De Jongleur, De Vonk …), zonder winnaar en zonder diagnose.
+
+**Mijn aanpak:** je patronen, met per patroon wat de app doet, en 8 aanpassingen met een schakelaar. Bij een voorstel staat het label "Voorgesteld", en elke aanpassing heeft een "Waarom?" met bewijsniveau. Niets gaat vanzelf aan.
+
+| Aanpassing | Voor | Wat |
+|---|---|---|
+| Hooguit 2 projecten tegelijk | P1 | WIP-limiet 2 (uitzetten zet je vorige limiet terug) |
+| Nieuwe ideeën eerst in de ideeënbak | P2 | de wizard start in de ideeënbak |
+| Korte focusblokken | P2, P7 | een nieuw blok staat op 15 minuten |
+| Rustige weergave | P3 | geen beweging |
+| Grotere tekst | P4 | zoom 1.13 |
+| Zachte check-ins | P5 | alleen "Gedaan" en "Nog niet", geen tellers van wat niet lukte |
+| Ochtendstart | P6 | voor 12 uur: welke ene stap doe je vandaag? |
+| Kiezen op energie | P7 | laag, midden of hoog, en welke projecten passen |
+
+**Vastloop-hulp:**
+- **Ik loop vast** (op de focuskaart en het projectscherm), met 6 keuzes:
+  - Onduidelijk of Te groot: een eerste handeling (vastgepind) en een blok van 5 minuten.
+  - Saai of Spannend: een blok van 10 minuten.
+  - Leeg: 2 minuten of een nieuw moment.
+  - Kan niet kiezen: zie hieronder.
+  - "Vandaag niet, morgen weer" mag ook.
+- **Kiezen tussen projecten** in twee minuten:
+  - Drie vragen (zin, energie, dichtst bij klaar) en dan een voorstel, of een munt. De winnaar komt in focus.
+- **Dagniveau** Minimum, Standaard of Extra (per dag). Bij Minimum zie je alleen de focus, de check-ins en "Vijf minuten, meer hoeft niet".
+
+**Tests:** `tests/profiel.test.mjs` (6, met de echte vragenbank) en `tests/profiel.e2e.cjs` (25).

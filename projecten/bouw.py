@@ -3,7 +3,14 @@
 import base64, json, pathlib
 HIER = pathlib.Path(__file__).resolve().parent
 SRC = HIER / "src"
-JS = ["kern.js", "db.js", "app.js", "schermen.js", "acties.js", "accountability.js"]
+JS = ["kern.js", "db.js", "app.js", "schermen.js", "acties.js", "accountability.js", "score.js", "profiel.js", "vastlopen.js"]
+# Kennismaking: de vragenbank en scoreweging uit kennis/ (dezelfde bestanden als Brain-Mate Nate), letterlijk in de app.
+KENNIS = HIER.parent / "kennis"
+VRAGEN = json.loads((KENNIS / "vragenbank.json").read_text(encoding="utf-8"))
+WEGING = json.loads((KENNIS / "scoreweging.json").read_text(encoding="utf-8"))
+assert len(VRAGEN["questions"]) == 96 and len(WEGING["pattern_clusters"]) == 7, "vragenbank of scoreweging klopt niet"
+assert WEGING["global_neurodivergence_score"] is False and WEGING["diagnosis_probabilities_enabled"] is False, "verboden uitkomst aan"
+KENNIS_JS = "const PT_VRAGENBANK = " + json.dumps(VRAGEN, ensure_ascii=False).replace("</", "<\\/") + ";\nconst PT_WEGING = " + json.dumps(WEGING, ensure_ascii=False).replace("</", "<\\/") + ";\n"
 icoon = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#36e2ff"/><stop offset="1" stop-color="#8b7bff"/></linearGradient></defs>
 <rect width="180" height="180" rx="40" fill="#04060c"/><circle cx="90" cy="90" r="58" fill="none" stroke="url(#g)" stroke-width="6" stroke-dasharray="6 10"/><circle cx="90" cy="90" r="34" fill="none" stroke="url(#g)" stroke-width="8"/><circle cx="90" cy="90" r="10" fill="#36e2ff"/></svg>"""
 icoon_uri = "data:image/svg+xml;base64," + base64.b64encode(icoon.encode()).decode()
@@ -24,7 +31,7 @@ manifest = {"name": "FutureMe Projecten", "short_name": "FutureMe", "start_url":
 (HIER / "manifest.webmanifest").write_text(json.dumps(manifest, ensure_ascii=False, indent=1), encoding="utf-8")
 manifest_uri = "manifest.webmanifest"
 html = (SRC / "schil.html").read_text(encoding="utf-8")
-js = "\n\n".join((SRC / n).read_text(encoding="utf-8") for n in JS)
+js = KENNIS_JS + "\n\n".join((SRC / n).read_text(encoding="utf-8") for n in JS)
 css = (SRC / "stijl.css").read_text(encoding="utf-8")
 for a, b in (("__CSS__", css), ("__JS__", js.replace("</script", "<\\/script")), ("__MANIFEST__", manifest_uri), ("__ICOON__", "icoon-180.png")):
     assert a in html, a
