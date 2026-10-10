@@ -1,8 +1,8 @@
 "use strict";
 // === OPSLAG: IndexedDB op het toestel. Alles staat ook in het geheugen (S), zodat lezen synchroon is. ===
-const DB_NAAM = "futureme-projecten", DB_VERSIE = 1;
-const WINKELS = ["projecten", "stappen", "mijlpalen", "logs", "instellingen"];
-const S = { projecten: [], stappen: [], mijlpalen: [], logs: [], instellingen: {} };
+const DB_NAAM = "futureme-projecten", DB_VERSIE = 2;   // 2: beloftes (fase 2)
+const WINKELS = ["projecten", "stappen", "mijlpalen", "logs", "beloftes", "instellingen"];
+const S = { projecten: [], stappen: [], mijlpalen: [], logs: [], beloftes: [], instellingen: {} };
 let DB = null;
 
 function dbOpen() {
@@ -66,14 +66,14 @@ async function zetInst(k, v) { S.instellingen[k] = v; try { await dbZet("instell
 /* ---------- Export en import (één JSON-bestand) ---------- */
 function exportJSON() {
   return JSON.stringify({ app: "FutureMe Projecten", versie: 1, gemaakt: new Date().toISOString(),
-    projecten: S.projecten, stappen: S.stappen, mijlpalen: S.mijlpalen, logs: S.logs, instellingen: S.instellingen }, null, 1);
+    projecten: S.projecten, stappen: S.stappen, mijlpalen: S.mijlpalen, logs: S.logs, beloftes: S.beloftes, instellingen: S.instellingen }, null, 1);
 }
 /** Importeren: samenvoegen (nieuwste per id wint) of vervangen. Geeft het aantal per winkel terug. */
 async function importJSON(tekst, vervangen) {
   const d = JSON.parse(tekst);
   if (!d || d.app !== "FutureMe Projecten") throw new Error("Dit is geen export van FutureMe Projecten.");
   const tel = {};
-  for (const w of ["projecten", "stappen", "mijlpalen", "logs"]) {
+  for (const w of ["projecten", "stappen", "mijlpalen", "logs", "beloftes"]) {
     const nieuw = Array.isArray(d[w]) ? d[w] : [];
     if (vervangen) for (const x of S[w].slice()) await verwijder(w, x.id);
     let n = 0;

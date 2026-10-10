@@ -154,6 +154,20 @@ function bevestig(titel, tekst, knop, doe) {
   $("#bv-nee").onclick = bladSluit; $("#bv-ja").onclick = async () => { bladSluit(); await doe(); };
 }
 
+/* ---------- Mijlpaal gehaald: kort terugkijken (mag overslaan) ---------- */
+function mijlpaalTerugblik(m) {
+  bladOpen(`Mijlpaal gehaald`, `<p class="blok-klaar">${esc(m.titel)}</p>
+    <div class="veld"><label for="mt-werkte">Wat werkte? <small>(mag leeg)</small></label><textarea class="invoer" id="mt-werkte" rows="2" maxlength="300"></textarea></div>
+    <div class="veld"><label for="mt-mee">Wat neem je mee naar het volgende stuk?</label><textarea class="invoer" id="mt-mee" rows="2" maxlength="300"></textarea></div>`,
+    `<button class="knop rand" id="mt-over">Overslaan</button><button class="knop primair" id="mt-bewaar">Bewaren</button>`);
+  $("#mt-over").onclick = bladSluit;
+  $("#mt-bewaar").onclick = async () => {
+    const delen = [["Werkte", $("#mt-werkte").value.trim()], ["Meenemen", $("#mt-mee").value.trim()]].filter(([, v]) => v);
+    if (delen.length) { m.evaluatie = Object.fromEntries(delen); await bewaar("mijlpalen", m); await log(m.projectId, "notitie", `Terugblik ${m.titel}: ` + delen.map(([l, v]) => `${l}: ${v}`).join(" · ")); }
+    bladSluit(); teken();
+  };
+}
+
 /* ---------- Eén klikafhandeling voor alles ---------- */
 document.addEventListener("click", async e => {
   const el = e.target.closest("[data-wz],[data-wz-vb],[data-wz-energie],[data-wz-kleur],[data-wz-status],[data-stap-af],[data-stap-vink],[data-stap-pin],[data-stap-op],[data-stap-weg],[data-mijl-nieuw],[data-mijl-vink],[data-mijl-weg],[data-snel-log],[data-status],[data-wip-pauze],[data-wip-toch],[data-project-bewerk],[data-project-weg],[data-fase],[data-filter-status],[data-filter-cluster],[data-filter-tag],[data-log-filter],[data-inst],[data-export],[data-focus-kies],[data-focus-zet]");
@@ -192,7 +206,9 @@ document.addEventListener("click", async e => {
       await bewaar("mijlpalen", { id: uid(), projectId: d.mijlNieuw, titel: t, datum: $("#mp-datum").value || null, af: false, gemaakt: new Date().toISOString() }); bladSluit(); teken(); };
     return;
   }
-  if (d.mijlVink) { const m = vind("mijlpalen", d.mijlVink); m.af = !m.af; m.afOp = m.af ? new Date().toISOString() : null; await bewaar("mijlpalen", m); if (m.af) await log(m.projectId, "winst", `Mijlpaal: ${m.titel}`); tril(m.af ? [15, 30, 15] : 6); teken(); if (m.af) toast(`Mijlpaal gehaald: ${m.titel}`); return; }
+  if (d.mijlVink) { const m = vind("mijlpalen", d.mijlVink); m.af = !m.af; m.afOp = m.af ? new Date().toISOString() : null; await bewaar("mijlpalen", m); if (m.af) await log(m.projectId, "winst", `Mijlpaal: ${m.titel}`); tril(m.af ? [15, 30, 15] : 6); teken();
+    if (m.af) mijlpaalTerugblik(m);
+    return; }
   if (d.mijlWeg) { await verwijder("mijlpalen", d.mijlWeg); return teken(); }
   if (d.snelLog) return snelLog(d.snelLog);
   if (d.status) return zetStatus(d.id, d.status);
@@ -202,7 +218,7 @@ document.addEventListener("click", async e => {
   if (d.projectWeg) {
     const p = vind("projecten", d.projectWeg);
     return bevestig("Project verwijderen?", `${p.titel} en alle stappen, mijlpalen en logs verdwijnen. Archiveren bewaart alles.`, "Verwijderen", async () => {
-      for (const w of ["stappen", "mijlpalen", "logs"]) for (const x of S[w].filter(x => x.projectId === p.id)) await verwijder(w, x.id);
+      for (const w of ["stappen", "mijlpalen", "logs", "beloftes"]) for (const x of S[w].filter(x => x.projectId === p.id)) await verwijder(w, x.id);
       await verwijder("projecten", p.id); ga("projecten"); toast("Verwijderd");
     });
   }
