@@ -3,7 +3,9 @@
 
 /* ---------- Nieuw project: vier korte vragen ---------- */
 const WZ = { stap: 0, d: null };
-function nieuwProject() {
+function nieuwProject(opnieuw) {
+  // Per ongeluk dichtgetikt? Dan ga je verder waar je was.
+  if (!opnieuw && WZ.d && (WZ.d.titel || WZ.d.waarom)) return wizardTeken();
   WZ.stap = 0;
   WZ.d = { titel: "", waarom: "", klaar: "", eersteStap: "", cluster: "", tags: "", energie: "", deadline: "", kleur: PT_KLEUREN[S.projecten.length % PT_KLEUREN.length], status: "actief", prioriteit: 2 };
   wizardTeken();
@@ -29,7 +31,7 @@ function wizardTeken() {
       ${d.status === "actief" && !wip.vrij ? `<p class="hint">Er zijn al ${wip.actief} projecten actief (limiet ${wip.limiet}). De ideeënbak houdt dit project veilig tot er ruimte is.</p>` : ""}`
   ];
   const titels = ["Wat ga je maken?", "Wanneer is het klaar?", "De eerste stap", "Indelen"];
-  bladOpen(`${titels[n]} · ${n + 1}/4`, `<div class="wz-voortgang" aria-hidden="true">${[0, 1, 2, 3].map(i => `<i class="${i <= n ? "aan" : ""}"></i>`).join("")}</div>${stappen[n]()}`,
+  bladOpen(`${titels[n]} · ${n + 1}/4`, `${d.titel && n === 0 ? `<button type="button" class="link klein" data-wz="opnieuw">Opnieuw beginnen</button>` : ""}<div class="wz-voortgang" aria-hidden="true">${[0, 1, 2, 3].map(i => `<i class="${i <= n ? "aan" : ""}"></i>`).join("")}</div>${stappen[n]()}`,
     `${n ? `<button class="knop rand" data-wz="terug">Terug</button>` : ""}<button class="knop primair" data-wz="verder">${n < 3 ? "Verder" : "Project starten"}</button>`);
   const stap = $("#wz-stap");
   if (stap) stap.addEventListener("input", () => { $("#wz-hint").textContent = stap.value.trim() && ptStapVaag(stap.value) ? "Nog wat vaag. Wat doen je handen als eerste?" : ""; });
@@ -46,6 +48,7 @@ async function wizardKlaar() {
   await bewaar("projecten", p);
   if (d.eersteStap) await bewaar("stappen", { id: uid(), projectId: p.id, tekst: d.eersteStap, af: false, volgorde: 1, gemaakt: t });
   await log(p.id, "fase", "Project gestart", { fase: "idee" });
+  WZ.d = null; WZ.stap = 0;
   bladSluit(); tril(10);
   ga("project", p.id);
   toast(d.status === "idee" ? "In de ideeënbak. Hij loopt niet weg." : "Project gestart. De eerste stap staat klaar.");
@@ -82,18 +85,25 @@ async function zetStatus(id, status) {
     if (!wip.vrij) {
       bladOpen("Even kiezen", `<p>Er zijn al <b>${wip.actief}</b> projecten actief, je limiet is ${wip.limiet}. Minder tegelijk maakt afmaken makkelijker.</p>
         <p class="klein">Zet er een op pauze, of maak dit project toch actief.</p>
+        <details class="waarom"><summary>Waarom?</summary><p>Wisselen tussen taken kost tijd en aandacht; met minder lopend werk komt er meer af. Indirect: onderzocht bij taakwisselen en werkprocessen, niet specifiek bij ADHD.</p></details>
         <div class="lijst">${S.projecten.filter(x => x.status === "actief").map(x => `<button class="knop rand breed" data-wip-pauze="${esc(x.id)}" data-nieuw="${esc(p.id)}">${esc(x.titel)} pauzeren</button>`).join("")}</div>`,
         `<button class="knop rand breed" data-wip-toch="${esc(p.id)}">Toch actief maken</button>`);
       return;
     }
   }
   if (status === "klaar") return afrondBlad(p);
-  const oud = p.status;
-  p.status = status; if (status !== "klaar") p.afgerondOp = status === "archief" ? p.afgerondOp || null : null;
-  await bewaar("projecten", p);
-  await log(p.id, "fase", `Status: ${PT_STATUS[oud].naam} → ${PT_STATUS[status].naam}`);
+  await statusToepassen(p, status);
   tril(8); teken();
-  toast({ actief: "Actief. Kies een volgende stap.", wacht: "Op wacht. Noteer waarop, dan weet je het straks nog.", pauze: "Gepauzeerd. Pauze is ook een keuze.", idee: "Terug in de ideeënbak.", archief: "Gearchiveerd." }[status] || "Bijgewerkt");
+  toast({ actief: "Actief. Kies een volgende stap.", wacht: "Op wacht gezet.", pauze: "Gepauzeerd. Pauze is ook een keuze.", idee: "Terug in de ideeënbak.", archief: "Gearchiveerd." }[status] || "Bijgewerkt");
+}
+/** De enige plek die een status zet (behalve afronden): afgerondOp en focus kloppen altijd. */
+async function statusToepassen(p, status, reden) {
+  const oud = p.status;
+  p.status = status;
+  p.afgerondOp = status === "archief" ? p.afgerondOp || null : null;
+  await bewaar("projecten", p);
+  if (status !== "actief" && inst("focusId", null) === p.id) await zetInst("focusId", null);
+  await log(p.id, "fase", `${reden ? reden + ": " : "Status: "}${PT_STATUS[oud].naam} → ${PT_STATUS[status].naam}`);
 }
 function afrondBlad(p) {
   bladOpen(`Afronden · ${p.titel}`, `<p class="hud-label">Klaar als</p><p>${esc(p.klaar || "Geen eindpunt vastgelegd.")}</p>
@@ -168,6 +178,8 @@ function mijlpaalTerugblik(m) {
   };
 }
 
+const BEZIG = new Set(), PRULLENBAK = [];
+
 /* ---------- Eén klikafhandeling voor alles ---------- */
 document.addEventListener("click", async e => {
   const el = e.target.closest("[data-wz],[data-wz-vb],[data-wz-energie],[data-wz-kleur],[data-wz-status],[data-stap-af],[data-stap-vink],[data-stap-pin],[data-stap-op],[data-stap-weg],[data-mijl-nieuw],[data-mijl-vink],[data-mijl-weg],[data-snel-log],[data-status],[data-wip-pauze],[data-wip-toch],[data-project-bewerk],[data-project-weg],[data-fase],[data-filter-status],[data-filter-cluster],[data-filter-tag],[data-log-filter],[data-inst],[data-export],[data-focus-kies],[data-focus-zet]");
@@ -176,6 +188,7 @@ document.addEventListener("click", async e => {
   if (d.wz) {
     wizardLees();
     if (d.wz === "terug") { WZ.stap--; return wizardTeken(); }
+    if (d.wz === "opnieuw") return nieuwProject(true);
     if (WZ.stap === 0 && !WZ.d.titel) { toast("Geef je project een naam"); return; }
     if (WZ.stap < 3) { WZ.stap++; return wizardTeken(); }
     return wizardKlaar();
@@ -185,7 +198,9 @@ document.addEventListener("click", async e => {
   if (d.wzKleur) { wizardLees(); WZ.d.kleur = d.wzKleur; return wizardTeken(); }
   if (d.wzStatus) { wizardLees(); WZ.d.status = d.wzStatus; return wizardTeken(); }
   if (d.stapAf || d.stapVink) {
-    const s = vind("stappen", d.stapAf || d.stapVink); if (!s) return;
+    const id = d.stapAf || d.stapVink, s = vind("stappen", id); if (!s || BEZIG.has(id)) return;
+    if (d.stapAf && s.af) return;   // "Stap klaar" zet af, nooit terug
+    BEZIG.add(id); setTimeout(() => BEZIG.delete(id), 400);
     s.af = !s.af; s.afOp = s.af ? new Date().toISOString() : null; await bewaar("stappen", s);
     if (s.af) await log(s.projectId, "winst", `Stap: ${s.tekst}`);
     tril(s.af ? 12 : 6); teken();
@@ -198,7 +213,14 @@ document.addEventListener("click", async e => {
     if (i > 0) { l.forEach((x, j) => { x.volgorde = j; }); [l[i - 1].volgorde, s.volgorde] = [s.volgorde, l[i - 1].volgorde]; await bewaar("stappen", s); await bewaar("stappen", l[i - 1]); for (const x of l) await bewaar("stappen", x); }
     return teken();
   }
-  if (d.stapWeg) { const s = vind("stappen", d.stapWeg); await verwijder("stappen", d.stapWeg); teken(); toast("Stap verwijderd", "Ongedaan", async () => { await bewaar("stappen", s); teken(); }); return; }
+  if (d.stapWeg) {
+    const s = vind("stappen", d.stapWeg); if (!s) return;
+    PRULLENBAK.push(s); clearTimeout(PRULLENBAK.timer); PRULLENBAK.timer = setTimeout(() => { PRULLENBAK.length = 0; }, 6500);
+    await verwijder("stappen", d.stapWeg); teken();
+    const n = PRULLENBAK.length;
+    toast(n > 1 ? `${n} stappen verwijderd` : "Stap verwijderd", "Ongedaan", async () => { for (const x of PRULLENBAK.splice(0)) await bewaar("stappen", x); teken(); });
+    return;
+  }
   if (d.mijlNieuw) {
     bladOpen("Mijlpaal", `<div class="veld"><label for="mp-titel">Tussendoel</label><input class="invoer" id="mp-titel" maxlength="80" placeholder="Bijvoorbeeld: eerste versie klaar"></div>
       <div class="veld"><label for="mp-datum">Wanneer? <small>(mag leeg)</small></label><input class="invoer" id="mp-datum" type="date"></div>`, `<button class="knop primair breed" id="mp-bewaar">Toevoegen</button>`);
@@ -212,8 +234,8 @@ document.addEventListener("click", async e => {
   if (d.mijlWeg) { await verwijder("mijlpalen", d.mijlWeg); return teken(); }
   if (d.snelLog) return snelLog(d.snelLog);
   if (d.status) return zetStatus(d.id, d.status);
-  if (d.wipPauze) { const x = vind("projecten", d.wipPauze); x.status = "pauze"; await bewaar("projecten", x); await log(x.id, "fase", "Status: Actief → Gepauzeerd"); bladSluit(); return zetStatus(d.nieuw, "actief"); }
-  if (d.wipToch) { const p = vind("projecten", d.wipToch); const oud = p.status; p.status = "actief"; await bewaar("projecten", p); await log(p.id, "fase", `Status: ${PT_STATUS[oud].naam} → Actief`); bladSluit(); return teken(); }
+  if (d.wipPauze) { await statusToepassen(vind("projecten", d.wipPauze), "pauze"); bladSluit(); return zetStatus(d.nieuw, "actief"); }
+  if (d.wipToch) { await statusToepassen(vind("projecten", d.wipToch), "actief"); bladSluit(); teken(); toast("Actief. Kies een volgende stap."); return; }
   if (d.projectBewerk) return bewerkBlad(vind("projecten", d.projectBewerk));
   if (d.projectWeg) {
     const p = vind("projecten", d.projectWeg);
@@ -253,7 +275,7 @@ document.addEventListener("submit", async e => {
   await bewaar("stappen", { id: uid(), projectId: id, tekst, af: false, volgorde: max + 1, gemaakt: new Date().toISOString() });
   tril(6); teken();
   const nieuw = $("#stap-tekst"); if (nieuw) nieuw.focus();
-  if (ptStapVaag(tekst)) { const h = $("#stap-hint"); if (h) h.textContent = "Toegevoegd. Tip: begin met een werkwoord, dan weet je straks meteen wat je doet."; }
+  if (ptStapVaag(tekst)) { const h = $("#stap-hint"); if (h) h.textContent = "Toegevoegd. Tip: begin met een werkwoord, dan weet je straks meteen wat je doet (indirect onderbouwd: taakopdeling en plannen)."; }
 });
 document.addEventListener("input", e => {
   if (e.target.id === "zoek") { V.filter.zoek = e.target.value; const pos = e.target.selectionStart; teken(); const z = $("#zoek"); if (z) { z.focus(); z.setSelectionRange(pos, pos); } }
@@ -263,7 +285,7 @@ document.addEventListener("change", async e => {
   if (e.target.id === "sorteer-op") { V.sorteer = e.target.value; teken(); }
   if (e.target.id === "import-bestand" && e.target.files[0]) {
     const tekst = await e.target.files[0].text();
-    bladOpen("Importeren", `<p>Samenvoegen houdt wat je hebt en voegt nieuwere versies toe. Vervangen wist eerst alles op dit toestel.</p>`,
+    bladOpen("Importeren", `<p>Samenvoegen houdt wat je hebt en voegt nieuwere versies toe. Wat je hier verwijderd hebt, komt niet terug.</p><p class="hint">Vervangen wist eerst alles op dit toestel. Maak eerst een export als je twijfelt.</p>`,
       `<button class="knop rand" id="im-vervang">Vervangen</button><button class="knop primair" id="im-samen">Samenvoegen</button>`);
     const doe = async vervangen => { try { const t = await importJSON(tekst, vervangen); bladSluit(); pasInstellingenToe(); teken(); toast(`Geïmporteerd: ${t.projecten} projecten, ${t.logs} logs`); } catch (err) { bladSluit(); toast(err.message || "Importeren lukte niet"); } };
     $("#im-samen").onclick = () => doe(false); $("#im-vervang").onclick = () => doe(true);

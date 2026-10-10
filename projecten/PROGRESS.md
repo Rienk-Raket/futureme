@@ -34,3 +34,49 @@
 - **Meer**: thema (donker, licht, systeem), beweging, WIP-limiet, export en import (samenvoegen of vervangen).
 
 **Tests:** `node --test tests/kern.test.mjs` (11) en `tests/app.e2e.cjs` (37, met schermafbeeldingen).
+
+### Review fase 1 (verwerkt)
+- **Import:** wordt eerst helemaal gecontroleerd. Een kapot bestand verandert niets, ook niet bij Vervangen. Verwijderde items krijgen een spoor (`weg`), zodat samenvoegen met een oude export ze niet terugbrengt. Bij Vervangen staat het advies om eerst te exporteren.
+- **Draad** telt kalenderdagen, dus nooit meer 15/14.
+- **Status:** één helper (`statusToepassen`) voor alle statuswissels. `afgerondOp` en focus kloppen altijd, ook via "Toch actief" en via pauzeren bij de WIP-keuze.
+- **Stappen:**
+  - Ongedaan zet alle stappen terug die je in de laatste seconden verwijderd hebt.
+  - "Stap klaar" zet altijd op af en is beschermd tegen dubbel tikken.
+- **Wizard:** per ongeluk dichtgetikt? Dan ga je verder waar je was, met "Opnieuw beginnen" als keuze.
+- **Toegankelijkheid:**
+  - Het dichte onderblad staat uit de tabvolgorde. Achter een open blad is alles `inert`, en de focus gaat terug naar de knop waarmee je het blad opende.
+  - Licht thema: donkere tekst op de neonfase en donkerder projectkleur als tekst. `--vaag` voldoet aan contrast AA.
+- **Radar:** hooguit 8 projecten plus "+N", een ruimere viewBox, en labels aan de onderkant naar binnen.
+- **Waarom?:** staat nu bij de focuszin (stil of koelt af) en bij de WIP-keuze. De staptip noemt het bewijs, de wacht-toast is neutraal, en de lege mijlpalen zijn een neutrale regel.
+- **PWA:**
+  - Een echte `manifest.webmanifest` en PNG-iconen van 180 en 512 px, voor het iPhone-beginscherm.
+  - De service worker wacht hooguit 3 seconden op het netwerk en bewaart alleen goede antwoorden.
+- **Kleiner:**
+  - Geen deadline-alarm voor ideeën en gepauzeerde projecten.
+  - De werkwoordcheck kent ga, doe, neem en kijk; één los woord is te kaal.
+  - Terugvegen in Safari gaat een scherm terug.
+  - Opslag wordt vastgehouden (`storage.persist`), en er is een back-upherinnering na 14 dagen zonder export.
+
+## Fase 2: accountability
+
+`src/accountability.js` (de pure kern zit tussen `PT-ACC-BEGIN` en `PT-ACC-EINDE`). DB-versie 2 voegt de winkel `beloftes` toe.
+- **Belofte:** "wat doe je, wanneer check ik bij je in". Vandaag, morgen of een andere dag, met een tijd. Staat voorgevuld met de volgende stap.
+- **Check-in** bovenaan het Commandocentrum zodra het moment voorbij is.
+  - **Gedaan:** de gekoppelde stap gaat af en er komt een winst in de log.
+  - **Half:** "Rest beloven".
+  - **Niet:** "geen oordeel". Je kiest eventueel een reden (te groot, geen tijd, vergeten, geen zin, onduidelijk, anders) en daarna kleiner maken, een nieuw moment of loslaten.
+  - Een terugkerende reden geeft een tip in de weekreview.
+- **Focusblok** van 5–60 minuten op een stap:
+  - Timer op het hele scherm, met pauze, +5 minuten en klaar. Het scherm blijft aan (wake lock) en een lopend blok overleeft herladen.
+  - Na het blok: "Wat deed je?" en eventueel "Stap klaar", daarna wordt het blok gelogd.
+- **Weer in beweging:** voor projecten die afkoelen of stil liggen, één tik op "5 minuten aan X".
+- **Weekreview:**
+  - Tellers: gewerkt, stappen, beloftes, dagen.
+  - Een patroon uit je check-ins.
+  - Per project kies je door, pauze of ideeënbak, plus "Wat neem je mee?".
+  - Van vrijdag tot maandag staat er een kaart op het Commandocentrum tot je de weekreview hebt gedaan.
+- **Mijlpaal gehaald:** kort terugkijken; overslaan mag.
+
+**Tests:**
+- `tests/kern.test.mjs` (14) en `tests/accountability.test.mjs` (5).
+- `tests/app.e2e.cjs` (42) en `tests/accountability.e2e.cjs` (28).

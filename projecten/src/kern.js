@@ -50,7 +50,8 @@ function ptDagenStil(p, logs, nu) {
 /** Gezondheid van een open project: op koers, afkoelend, stil, deadline dichtbij of verlopen. */
 function ptGezondheid(p, logs, nu) {
   if (!ptIsOpen(p)) return { id: "rust", naam: PT_STATUS[p.status] ? PT_STATUS[p.status].naam : "Rust" };
-  if (p.deadline) {
+  // Ideeën en gepauzeerde projecten lopen niet weg: daar geen deadline-alarm.
+  if (p.deadline && ["actief", "wacht"].includes(p.status)) {
     const dagen = Math.floor((Date.parse(p.deadline + "T23:59:59") - nu) / PT_DAG);
     if (dagen < 0) return { id: "verlopen", naam: "Deadline voorbij", dagen };
     if (dagen <= 3 && p.status === "actief") return { id: "deadline", naam: dagen === 0 ? "Deadline vandaag" : `Deadline over ${dagen} ${dagen === 1 ? "dag" : "dagen"}`, dagen };
@@ -125,10 +126,11 @@ function ptCluster(projecten, op, nu) {
 
 /** De draad: op hoeveel van de laatste n dagen heb je iets gelogd (geen streak, geen schuld). */
 function ptDraad(logs, nu, n, projectId) {
-  const dagen = n || 14, set = new Set();
+  const dagen = n || 14, set = new Set(), begin = new Date(nu);
+  begin.setHours(0, 0, 0, 0); begin.setDate(begin.getDate() - (dagen - 1));   // kalenderdagen: vandaag plus de n-1 dagen ervoor
   for (const l of logs || []) {
     if (projectId && l.projectId !== projectId) continue;
-    const t = Date.parse(l.ts); if (!t || nu - t > dagen * PT_DAG || t > nu) continue;
+    const t = Date.parse(l.ts); if (!t || t < begin.getTime() || t > nu) continue;
     const d = new Date(t); set.add(d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate());
   }
   return { actief: set.size, van: dagen };
@@ -147,12 +149,13 @@ function ptWip(projecten, limiet, behalveId) {
 
 /** Werkwoordcheck light: is een eerste stap concreet genoeg (begint met een handeling)? */
 const PT_VAAG = ["regelen", "fixen", "uitzoeken", "oppakken", "afhandelen", "organiseren", "iets", "dingen", "zaken", "nadenken", "bezig", "werken"];
-const PT_GEBIEDEND = ["bel", "mail", "app", "koop", "schrijf", "maak", "stuur", "betaal", "plan", "lees", "zoek", "pak", "leg", "zet", "breng", "haal", "check", "vul", "print", "open", "teken", "scan", "bestel", "vraag", "test", "bouw", "kies", "noteer", "lijst", "schets", "kopieer", "installeer", "maak", "zoek", "bekijk", "sorteer", "verwijder", "ruim"];
+const PT_GEBIEDEND = ["ga", "doe", "neem", "kijk", "geef", "loop", "fiets", "rij", "bel", "mail", "app", "koop", "schrijf", "maak", "stuur", "betaal", "plan", "lees", "zoek", "pak", "leg", "zet", "breng", "haal", "check", "vul", "print", "open", "teken", "scan", "bestel", "vraag", "test", "bouw", "kies", "noteer", "lijst", "schets", "kopieer", "installeer", "maak", "zoek", "bekijk", "sorteer", "verwijder", "ruim"];
 function ptStapVaag(tekst) {
   const w = ptNorm(tekst).replace(/[^a-z0-9 ]+/g, " ").trim().split(/\s+/).filter(Boolean);
   if (!w.length) return true;
+  if (PT_GEBIEDEND.includes(w[0])) return false;               // gebiedende wijs vooraan: concreet ("Bel Jan over iets")
   if (w.some(x => PT_VAAG.includes(x))) return true;
-  if (PT_GEBIEDEND.includes(w[0])) return false;
+  if (w.length === 1) return true;                             // één woord ("Facturen", "Website") is te kaal
   return !w.some(x => x.length >= 5 && /(en|eren|elen)$/.test(x));
 }
 

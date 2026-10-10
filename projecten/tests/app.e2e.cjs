@@ -120,6 +120,23 @@ const wacht = ms => new Promise(r => setTimeout(r, ms));
   await p.evaluate(() => ga("archief")); await wacht(300);
   check("Archief toont het afgeronde project", await p.evaluate(() => /Fotoboek Japan/.test(document.querySelector("#scherm").textContent)));
 
+  // Wizard: per ongeluk dicht, antwoorden blijven
+  await p.click('#tabs [data-tab="nieuw"]'); await wacht(300); await p.fill("#wz-titel", "Zolder"); await p.click('[data-wz="verder"]'); await wacht(250);
+  await p.keyboard.press("Escape"); await wacht(350);
+  await p.click('#tabs [data-tab="nieuw"]'); await wacht(300);
+  check("Wizard: na per ongeluk dichttikken ga je verder waar je was", await p.evaluate(() => /2\/4/.test(document.querySelector("#bladtitel").textContent) && WZ.d.titel === "Zolder"));
+  await p.keyboard.press("Escape"); await wacht(350);
+  // Twee stappen weg, één keer ongedaan
+  await p.evaluate(async () => { const id = S.projecten.find(x => x.titel === "Website café").id; await bewaar("stappen", { id: "u1", projectId: id, tekst: "Bel A", af: false, volgorde: 1 }); await bewaar("stappen", { id: "u2", projectId: id, tekst: "Bel B", af: false, volgorde: 2 }); ga("project", id); });
+  await wacht(300);
+  await p.click('#scherm [data-stap-weg="u1"]'); await wacht(200); await p.click('#scherm [data-stap-weg="u2"]'); await wacht(200);
+  await p.click("#toastknop"); await wacht(300);
+  check("Ongedaan zet beide verwijderde stappen terug", await p.evaluate(() => !!vind("stappen", "u1") && !!vind("stappen", "u2")));
+  // Stap klaar: dubbel tikken zet hem niet terug
+  await p.evaluate(() => { const pr = S.projecten.find(x => x.titel === "Website café"); zetInst("focusId", pr.id); ga("commando"); }); await wacht(300);
+  await p.dblclick("#scherm .focus [data-stap-af]"); await wacht(500);
+  check("Dubbel tikken op Stap klaar: stap blijft af", await p.evaluate(() => vind("stappen", "u1").af === true));
+
   // Log
   await p.click('#tabs [data-tab="log"]'); await wacht(300);
   check("Log: tijdlijn met projectlinks", await p.evaluate(() => document.querySelectorAll("#scherm .tijdlijn .log").length >= 5 && !!document.querySelector('#scherm .tijdlijn [data-ga="project"]')));
@@ -131,10 +148,17 @@ const wacht = ms => new Promise(r => setTimeout(r, ms));
   const exportPad = path.join(UIT, "export.json"); await dl.saveAs(exportPad);
   const exp = JSON.parse(fs.readFileSync(exportPad, "utf8"));
   check("Export bevat alles", exp.app === "FutureMe Projecten" && exp.projecten.length === 4 && exp.logs.length > 5);
-  await p.evaluate(async () => { for (const x of S.projecten.slice()) await verwijder("projecten", x.id); teken(); });
+  // Kapot bestand: er verandert niets, ook niet bij Vervangen.
+  const kapotPad = path.join(UIT, "kapot.json"); fs.writeFileSync(kapotPad, JSON.stringify({ app: "FutureMe Projecten", projecten: "kapot" }));
+  await p.setInputFiles("#import-bestand", kapotPad); await wacht(400); await p.click("#im-vervang"); await wacht(400);
+  check("Kapotte import wist niets", await p.evaluate(() => S.projecten.length === 4 && /beschadigd|geen projecten/.test(document.querySelector("#toast").textContent)));
+  await p.evaluate(async () => { await verwijder("projecten", S.projecten.find(x => x.titel === "Moestuin").id); teken(); });
   await p.setInputFiles("#import-bestand", exportPad); await wacht(400);
   await p.click("#im-samen"); await wacht(500);
-  check("Import zet alles terug", await p.evaluate(() => S.projecten.length === 4));
+  check("Samenvoegen brengt een zelf verwijderd project niet terug", await p.evaluate(() => S.projecten.length === 3 && !S.projecten.some(x => x.titel === "Moestuin")));
+  await p.setInputFiles("#import-bestand", exportPad); await wacht(400);
+  await p.click("#im-vervang"); await wacht(500);
+  check("Vervangen zet de export volledig terug", await p.evaluate(() => S.projecten.length === 4));
   await p.reload(); await wacht(800);
   check("Na herladen staat alles er nog (IndexedDB)", await p.evaluate(() => S.projecten.length === 4 && S.logs.length > 5));
   // Thema licht

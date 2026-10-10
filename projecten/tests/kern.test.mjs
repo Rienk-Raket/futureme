@@ -95,3 +95,18 @@ test("statuszin: kort en zonder 'moet'", () => {
   const zinnen = [K.ptStatusZin(p("Boek"), { id: "stil", dagen: 15 }), K.ptStatusZin(p("Boek"), { id: "koers" }, { tekst: "Map openen" }), K.ptStatusZin(p("Boek"), { id: "verlopen" })];
   for (const z of zinnen) { assert.ok((z.match(/[.?!](\s|$)/g) || []).length <= 2, z); assert.ok(!/\bmoet/i.test(z), z); }
 });
+
+test("review: draad telt kalenderdagen (nooit 15/14)", () => {
+  const logs = [];
+  for (let d = 1; d <= 14; d++) logs.push({ projectId: "a", ts: new Date(NU - d * 86400000 + 3600000).toISOString() });
+  logs.push({ projectId: "a", ts: new Date(NU - 3600000).toISOString() });
+  assert.ok(K.ptDraad(logs, NU, 14).actief <= 14);
+});
+test("review: geen deadline-alarm voor ideeën en pauze", () => {
+  assert.equal(K.ptGezondheid(p("a", { status: "idee", deadline: "2026-10-01" }), [], NU).id, "rust");
+  assert.equal(K.ptGezondheid(p("a", { status: "wacht", deadline: "2026-10-01" }), [], NU).id, "verlopen");
+});
+test("review: werkwoordcheck kent ga, doe, neem en kijk; één woord is te kaal", () => {
+  for (const t of ["Ga naar de winkel", "Doe de was", "Neem contact op met Jan", "Kijk naar planning", "Bel Jan over iets"]) assert.equal(K.ptStapVaag(t), false, t);
+  assert.equal(K.ptStapVaag("Facturen"), true);
+});

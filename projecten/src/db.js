@@ -40,6 +40,7 @@ function dbWis(w, id) {
 }
 async function dbLaad() {
   try { DB = await dbOpen(); } catch (e) { DB = null; }
+  try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (e) {}
   for (const w of WINKELS) {
     const l = await dbAlles(w).catch(() => []);
     if (w === "instellingen") { S.instellingen = {}; for (const x of l) S.instellingen[x.sleutel] = x.waarde; }
@@ -56,9 +57,11 @@ async function bewaar(w, obj) {
   try { await dbZet(w, obj); } catch (e) { toast("Opslaan lukte niet. Maak een export als dat vaker gebeurt."); }
   return obj;
 }
-async function verwijder(w, id) {
+async function verwijder(w, id, geenSpoor) {
   const i = S[w].findIndex(x => x.id === id); if (i >= 0) S[w].splice(i, 1);
   try { await dbWis(w, id); } catch (e) {}
+  // Een spoor van wat weg is, zodat samenvoegen met een oude export het niet terugbrengt.
+  if (!geenSpoor) { const weg = Object.assign({}, inst("weg", {})); weg[w + ":" + id] = new Date().toISOString(); await zetInst("weg", weg); }
 }
 const inst = (k, std) => S.instellingen[k] === undefined ? std : S.instellingen[k];
 async function zetInst(k, v) { S.instellingen[k] = v; try { await dbZet("instellingen", { sleutel: k, waarde: v }); } catch (e) {} }
@@ -69,16 +72,23 @@ function exportJSON() {
     projecten: S.projecten, stappen: S.stappen, mijlpalen: S.mijlpalen, logs: S.logs, beloftes: S.beloftes, instellingen: S.instellingen }, null, 1);
 }
 /** Importeren: samenvoegen (nieuwste per id wint) of vervangen. Geeft het aantal per winkel terug. */
+const IMPORT_WINKELS = ["projecten", "stappen", "mijlpalen", "logs", "beloftes"];
 async function importJSON(tekst, vervangen) {
-  const d = JSON.parse(tekst);
+  let d;
+  try { d = JSON.parse(tekst); } catch (e) { throw new Error("Dit bestand is geen geldige export."); }
   if (!d || d.app !== "FutureMe Projecten") throw new Error("Dit is geen export van FutureMe Projecten.");
-  const tel = {};
-  for (const w of ["projecten", "stappen", "mijlpalen", "logs", "beloftes"]) {
-    const nieuw = Array.isArray(d[w]) ? d[w] : [];
-    if (vervangen) for (const x of S[w].slice()) await verwijder(w, x.id);
+  // Eerst alles controleren, pas daarna iets wissen: een kapot bestand laat je gegevens met rust.
+  for (const w of IMPORT_WINKELS) if (d[w] !== undefined && (!Array.isArray(d[w]) || d[w].some(x => !x || typeof x !== "object" || !x.id)))
+    throw new Error("Dit bestand is beschadigd. Er is niets veranderd.");
+  if (!Array.isArray(d.projecten)) throw new Error("Dit bestand bevat geen projecten. Er is niets veranderd.");
+  const tel = {}, weg = vervangen ? {} : inst("weg", {}) || {};
+  for (const w of IMPORT_WINKELS) {
+    const nieuw = d[w] || [];
+    if (vervangen) for (const x of S[w].slice()) await verwijder(w, x.id, true);
     let n = 0;
     for (const x of nieuw) {
-      if (!x || !x.id) continue;
+      const verwijderd = weg[w + ":" + x.id];
+      if (verwijderd && verwijderd >= String(x.bijgewerkt || "")) continue;   // hier al verwijderd, na deze versie
       const oud = vind(w, x.id);
       if (!oud || String(x.bijgewerkt || "") >= String(oud.bijgewerkt || "")) {
         const i = S[w].findIndex(y => y.id === x.id); if (i >= 0) S[w][i] = x; else S[w].push(x);
@@ -88,6 +98,9 @@ async function importJSON(tekst, vervangen) {
     }
     tel[w] = n;
   }
-  if (d.instellingen && typeof d.instellingen === "object") for (const [k, v] of Object.entries(d.instellingen)) if (vervangen || S.instellingen[k] === undefined) await zetInst(k, v);
+  if (d.instellingen && typeof d.instellingen === "object") for (const [k, v] of Object.entries(d.instellingen)) {
+    if (k === "weg" && !vervangen) await zetInst("weg", Object.assign({}, v || {}, inst("weg", {})));
+    else if (vervangen || S.instellingen[k] === undefined) await zetInst(k, v);
+  }
   return tel;
 }

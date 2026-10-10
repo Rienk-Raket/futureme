@@ -45,7 +45,9 @@ function focusProject() {
   if (f && f.status === "actief") return f;
   return ptSorteer(S.projecten.filter(p => p.status === "actief"), "prioriteit", S.stappen)[0] || null;
 }
-function orbit(actief) {
+const ORBIT_MAX = 8;
+function orbit(alleActief) {
+  const actief = alleActief.slice(0, ORBIT_MAX), meer = alleActief.length - actief.length;
   const banen = { koers: 70, afkoelend: 105, deadline: 70, stil: 140, verlopen: 105 };
   const per = {};
   actief.forEach(p => { const g = ptGezondheid(p, S.logs, nu()).id; (per[g] = per[g] || []).push(p); });
@@ -57,9 +59,10 @@ function orbit(actief) {
     const r = +r0, hoek = ((r === 70 ? -60 : r === 105 ? 25 : 110) + i * 360 / l.length) * Math.PI / 180, x = 160 + r * Math.cos(hoek), y = 160 + r * Math.sin(hoek);
     knopen += `<a href="#" class="knoop g-${g}" data-ga="project" data-param="${esc(p.id)}" aria-label="${esc(p.titel)}: ${esc(ptGezondheid(p, S.logs, nu()).naam)}">
       <circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="13" style="fill:${kleurVan(p)}"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="22" class="knoop-halo" style="stroke:${kleurVan(p)}"/>
-      <text x="${x.toFixed(1)}" y="${(y + 36).toFixed(1)}" class="knoop-naam">${esc(p.titel.length > 14 ? p.titel.slice(0, 13) + "…" : p.titel)}</text></a>`;
+      <text x="${x.toFixed(1)}" y="${(y > 200 ? y - 28 : y + 36).toFixed(1)}" class="knoop-naam">${esc(p.titel.length > 14 ? p.titel.slice(0, 13) + "…" : p.titel)}</text></a>`;
   });
-  return `<svg class="orbit" viewBox="0 0 320 320" role="group" aria-label="Actieve projecten op gezondheid: binnen op koers, buiten stil">
+  if (meer > 0) knopen += `<a href="#" class="knoop knoop-meer" data-ga="projecten" data-param="actief" aria-label="Nog ${meer} actieve projecten"><circle cx="292" cy="292" r="18"/><text x="292" y="297" class="knoop-naam meer-tekst">+${meer}</text></a>`;
+  return `<svg class="orbit" viewBox="-30 -30 380 380" role="group" aria-label="Actieve projecten op gezondheid: binnen op koers, buiten stil">
     <circle cx="160" cy="160" r="70" class="baan"/><circle cx="160" cy="160" r="105" class="baan"/><circle cx="160" cy="160" r="140" class="baan"/>
     <line x1="160" y1="10" x2="160" y2="310" class="kruis"/><line x1="10" y1="160" x2="310" y2="160" class="kruis"/>
     <g class="sweep"><path d="M160 160 L160 18 A142 142 0 0 1 280 85 Z"/></g>
@@ -80,6 +83,7 @@ function vwCommando() {
       <div class="focus-kop"><p class="hud-label">Focus</p>${gezondheidChip(g)}</div>
       <div class="focus-midden">${ring(pct, 92, kleurVan(f))}<div><h2><button type="button" class="link" data-ga="project" data-param="${esc(f.id)}">${esc(f.titel)}</button></h2>
         <p class="focus-zin">${esc(ptStatusZin(f, g, stap))}</p></div></div>
+      ${["stil", "afkoelend"].includes(g.id) ? `<details class="waarom"><summary>Waarom zeg je dit?</summary><p>Na een pauze is opnieuw beginnen het lastigst; een heel kleine stap verlaagt die drempel. Praktisch: een experiment, kijk of het bij jou werkt.</p></details>` : ""}
       ${stap ? `<div class="knoprij"><button class="knop primair" data-stap-af="${esc(stap.id)}">${ico("check")} Stap klaar</button><button class="knop rand" data-snel-log="${esc(f.id)}">${ico("klok")} Loggen</button></div>`
         : `<div class="knoprij"><button class="knop primair" data-ga="project" data-param="${esc(f.id)}">Volgende stap kiezen</button></div>`}
       ${actief.length > 1 ? `<button class="link klein" data-focus-kies>Ander project in focus</button>` : ""}
@@ -95,6 +99,9 @@ function vwCommando() {
   if (aandacht.length) h += sectie("Vraagt aandacht") + `<div class="lijst">${aandacht.map(x => projectKaart(x.p)).join("")}</div>`;
   if (wip.actief > wip.limiet) h += `<section class="paneel let"><p><b>${wip.actief} projecten actief, je limiet is ${wip.limiet}.</b> Minder tegelijk maakt afmaken makkelijker. Zet er een op pauze of in de ideeënbak.</p>
     <details class="waarom"><summary>Waarom?</summary><p>Wisselen tussen taken kost tijd en aandacht; met minder lopend werk komt er meer af. Indirect: onderzocht bij taakwisselen en werkprocessen, niet specifiek bij ADHD.</p></details></section>`;
+  const laatst = inst("laatsteExport", null);
+  if (S.logs.length >= 10 && (!laatst || Date.now() - Date.parse(laatst) > 14 * PT_DAG))
+    h += `<button class="paneel rij-knop" data-ga="meer">${ico("export")}<span><b>Tijd voor een back-up</b><small>${laatst ? "Je laatste export is meer dan twee weken oud." : "Je hebt nog geen export."} Alles staat alleen op dit toestel.</small></span>${ico("pijl")}</button>`;
   const ideeen = S.projecten.filter(p => p.status === "idee").length;
   if (ideeen) h += `<button class="paneel rij-knop" data-ga="projecten" data-param="idee">${ico("ster")}<span><b>Ideeënbak</b><small>${ideeen} ${ideeen === 1 ? "idee wacht" : "ideeën wachten"}. Ze lopen niet weg.</small></span>${ico("pijl")}</button>`;
   return h;
@@ -149,7 +156,7 @@ function vwProject() {
   h += sectie("Mijlpalen", `<button class="link klein" data-mijl-nieuw="${esc(p.id)}">${ico("plus")} Mijlpaal</button>`);
   h += mijl.length ? `<ul class="paneel mijlpalen">${mijl.map(m => `<li class="${m.af ? "af" : ""}"><button type="button" class="vink" data-mijl-vink="${esc(m.id)}" aria-pressed="${!!m.af}" aria-label="${esc(m.titel)} ${m.af ? "gehaald" : "afvinken"}">${ico("vlag")}</button>
     <span><b>${esc(m.titel)}</b>${m.datum ? `<small class="mono">${esc(datumKort(m.datum))}</small>` : ""}</span><button type="button" class="mini" data-mijl-weg="${esc(m.id)}" aria-label="Mijlpaal verwijderen">${ico("x")}</button></li>`).join("")}</ul>`
-    : `<p class="klein leeg-regel">Nog geen mijlpalen. Een tussendoel met een datum maakt een groot project overzichtelijk.</p>`;
+    : `<p class="klein leeg-regel">Nog geen mijlpalen.</p>`;
   // Log
   h += sectie("Log", `<button class="link klein" data-snel-log="${esc(p.id)}">${ico("plus")} Loggen</button>`);
   h += logs.length ? tijdlijn(logs.slice(0, 30), false) : `<p class="klein leeg-regel">Nog niets gelogd. Ook vijf minuten telt.</p>`;

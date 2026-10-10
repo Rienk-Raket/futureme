@@ -34,7 +34,7 @@ const TABS = ["commando", "projecten", "log", "meer"];
 const KOPPEN = {};   // view → () => [titel, ondertitel]
 const VIEWS = {};    // view → () => html
 function ga(view, param, terugStap) {
-  if (!terugStap && V.view !== view && !TABS.includes(view)) V.stapel.push({ view: V.view, param: V.param });
+  if (!terugStap && V.view !== view && !TABS.includes(view)) { V.stapel.push({ view: V.view, param: V.param }); try { history.pushState({ fm: V.stapel.length }, ""); } catch (e) {} }
   if (TABS.includes(view)) V.stapel = [];
   V.view = view; V.param = param == null ? null : param;
   teken();
@@ -57,7 +57,8 @@ const NA_TEKENEN = [];
 /* ---------- Onderblad en meldingen ---------- */
 let bladTerug = null;
 function bladOpen(titel, inhoud, knoppen) {
-  bladTerug = document.activeElement;
+  if (!$("#blad").classList.contains("open")) bladTerug = document.activeElement;
+  for (const s of ["#scherm", "#tabs", ".kop"]) { const el = $(s); if (el) el.inert = true; }
   $("#bladtitel").textContent = titel;
   $("#bladinhoud").innerHTML = inhoud;
   $("#bladknoppen").innerHTML = knoppen || "";
@@ -66,6 +67,7 @@ function bladOpen(titel, inhoud, knoppen) {
 }
 function bladSluit() {
   $("#blad").classList.remove("open"); $("#blad").setAttribute("aria-hidden", "true"); $("#dek").classList.remove("open");
+  for (const s of ["#scherm", "#tabs", ".kop"]) { const el = $(s); if (el) el.inert = false; }
   if (bladTerug && document.body.contains(bladTerug)) bladTerug.focus({ preventScroll: true });
 }
 let toastTimer = null;
@@ -92,7 +94,9 @@ async function start() {
     const t = e.target.closest("[data-tab]"); if (t) { e.preventDefault(); return t.dataset.tab === "nieuw" ? nieuwProject() : ga(t.dataset.tab); }
     const g = e.target.closest("[data-ga]"); if (g) { e.preventDefault(); return ga(g.dataset.ga, g.dataset.param || null); }
   });
-  $("#terugknop").onclick = terug;
+  // Terugvegen in Safari en de terugknop doen hetzelfde: één scherm terug (of het blad dicht).
+  $("#terugknop").onclick = () => { try { history.back(); } catch (e) { terug(); } };
+  window.addEventListener("popstate", () => { if ($("#blad").classList.contains("open")) bladSluit(); else if (V.stapel.length) terug(); });
   $("#dek").onclick = bladSluit;
   $("#bladsluit").onclick = bladSluit;
   document.addEventListener("keydown", e => { if (e.key === "Escape" && $("#blad").classList.contains("open")) bladSluit(); });

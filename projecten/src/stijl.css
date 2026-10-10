@@ -1,7 +1,7 @@
 /* === FutureMe Projecten: futuristische HUD, donker als standaard, licht als keuze === */
 :root, [data-thema="donker"] {
   --bg: #04060c; --bg2: #0a1020; --paneel: rgba(14, 22, 40, .66); --paneel-sterk: rgba(20, 30, 54, .9); --rand: rgba(110, 200, 255, .18); --rand-sterk: rgba(110, 200, 255, .42);
-  --tekst: #e9f2ff; --zacht: #93a8c8; --vaag: #5b6f8f; --accent: #36e2ff; --accent2: #8b7bff; --accent3: #ff5fd2; --op-accent: #021018;
+  --tekst: #e9f2ff; --zacht: #93a8c8; --vaag: #8196b8; --accent: #36e2ff; --accent2: #8b7bff; --accent3: #ff5fd2; --op-accent: #021018;
   --koers: #4dffa6; --koelt: #ffb84d; --stil: #ff6b6b; --rust: #7f93b3;
   --gloed: 0 0 0 1px rgba(54, 226, 255, .25), 0 0 24px rgba(54, 226, 255, .18);
   --schaduw: 0 10px 40px rgba(0, 0, 0, .45);
@@ -9,7 +9,7 @@
 }
 [data-thema="licht"] {
   --bg: #edf2fb; --bg2: #f7f9fe; --paneel: rgba(255, 255, 255, .78); --paneel-sterk: #fff; --rand: rgba(30, 70, 140, .16); --rand-sterk: rgba(30, 70, 140, .38);
-  --tekst: #0b1530; --zacht: #46597a; --vaag: #6b7c98; --accent: #006f9e; --accent2: #5a46d6; --accent3: #b0237f; --op-accent: #fff;
+  --tekst: #0b1530; --zacht: #46597a; --vaag: #56677f; --accent: #006f9e; --accent2: #5a46d6; --accent3: #b0237f; --op-accent: #fff;
   --koers: #0f8a55; --koelt: #a35f00; --stil: #c0302f; --rust: #5d6f8f;
   --gloed: 0 0 0 1px rgba(0, 111, 158, .25), 0 6px 18px rgba(0, 111, 158, .12);
   --schaduw: 0 8px 30px rgba(20, 40, 80, .12);
@@ -18,7 +18,7 @@
 @media (prefers-color-scheme: light) {
   [data-thema="systeem"] {
     --bg: #edf2fb; --bg2: #f7f9fe; --paneel: rgba(255, 255, 255, .78); --paneel-sterk: #fff; --rand: rgba(30, 70, 140, .16); --rand-sterk: rgba(30, 70, 140, .38);
-    --tekst: #0b1530; --zacht: #46597a; --vaag: #6b7c98; --accent: #006f9e; --accent2: #5a46d6; --accent3: #b0237f; --op-accent: #fff;
+    --tekst: #0b1530; --zacht: #46597a; --vaag: #56677f; --accent: #006f9e; --accent2: #5a46d6; --accent3: #b0237f; --op-accent: #fff;
     --koers: #0f8a55; --koelt: #a35f00; --stil: #c0302f; --rust: #5d6f8f;
     --gloed: 0 0 0 1px rgba(0, 111, 158, .25), 0 6px 18px rgba(0, 111, 158, .12); --schaduw: 0 8px 30px rgba(20, 40, 80, .12); color-scheme: light;
   }
@@ -230,7 +230,8 @@ select { width: auto; min-height: 44px; padding: 0 12px; }
 #dek.open { opacity: 1; pointer-events: auto; }
 #blad { position: fixed; z-index: 21; left: 0; right: 0; bottom: 0; max-width: 640px; margin: 0 auto; max-height: 88vh; overflow-y: auto; padding: 8px 18px calc(env(safe-area-inset-bottom) + 18px);
   background: var(--paneel-sterk); border: 1px solid var(--rand-sterk); border-bottom: 0; border-radius: 26px 26px 0 0; box-shadow: 0 -10px 50px rgba(0, 0, 0, .5); transform: translateY(105%); transition: transform .32s cubic-bezier(.2, .9, .3, 1); }
-#blad.open { transform: none; }
+#blad.open { transform: none; visibility: visible; transition: transform .32s cubic-bezier(.2, .9, .3, 1), visibility 0s; }
+#blad:not(.open) { visibility: hidden; transition: transform .32s cubic-bezier(.2, .9, .3, 1), visibility 0s .32s; }
 .blad-kop { display: flex; align-items: center; justify-content: space-between; gap: 8px; position: sticky; top: -8px; padding: 10px 0; background: var(--paneel-sterk); z-index: 1; }
 .blad-kop h2 { margin: 0; font-size: 19px; }
 #bladknoppen { display: flex; gap: 8px; margin-top: 8px; }
@@ -287,3 +288,13 @@ select { width: auto; min-height: 44px; padding: 0 12px; }
 .week-rij:first-child { border-top: 0; }
 .week-rij > div:first-child { display: flex; flex-direction: column; margin-bottom: 6px; }
 .week-rij .segment { margin: 0; }
+
+/* Licht thema: neonkleuren als vlak met donkere tekst, als tekst donkerder (contrast ≥ 4.5:1). */
+[data-thema="licht"] .fasebalk .nu button, [data-thema="licht"] .fasebalk .nu span { color: #04060c; }
+[data-thema="licht"] .fase-letter, [data-thema="licht"] .fasebalk .gedaan button, [data-thema="licht"] .fasebalk .gedaan span { color: color-mix(in srgb, var(--pk) 40%, #000); }
+@media (prefers-color-scheme: light) {
+  [data-thema="systeem"] .fasebalk .nu button, [data-thema="systeem"] .fasebalk .nu span { color: #04060c; }
+  [data-thema="systeem"] .fase-letter, [data-thema="systeem"] .fasebalk .gedaan button, [data-thema="systeem"] .fasebalk .gedaan span { color: color-mix(in srgb, var(--pk) 40%, #000); }
+}
+.orbit .knoop-meer circle { fill: var(--paneel-sterk); stroke: var(--rand-sterk); }
+.orbit .meer-tekst { fill: var(--tekst); font-weight: 700; font-size: 12px; }
